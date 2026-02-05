@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8FDFB;
+  --foreground: #1a1a1a;
+  --primary: #16FDDB;
+  --primary-dark: #0FA992;
+  --primary-darker: #075449;
+  --secondary: #DDFBEE;
+  --accent: #B1FEF3;
+  --footer-bg: #2C3230;
+  --text-muted: #5A6462;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-darker: var(--primary-darker);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-footer: var(--footer-bg);
+  --color-muted: var(--text-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary-dark);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-darker);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-dark);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: 2px solid var(--primary-dark);
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+/* Progress bar */
+.progress-bar {
+  background-color: var(--secondary);
+  border-radius: 9999px;
+  overflow: hidden;
+  height: 8px;
+}
+
+.progress-bar-fill {
+  background-color: var(--primary-dark);
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+/* Subject cards */
+.subject-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e5e7eb;
+}
+
+.subject-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Lesson item */
+.lesson-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.lesson-item:hover {
+  background-color: var(--secondary);
+}
+
+.lesson-item.completed {
+  opacity: 0.7;
+}
+
+.lesson-item.completed .lesson-title {
+  text-decoration: line-through;
 }
