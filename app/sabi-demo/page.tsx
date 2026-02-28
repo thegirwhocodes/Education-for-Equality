@@ -902,7 +902,7 @@ export default function SabiDemo() {
 
   // Chat screen
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]">
       {/* Header with student info + end button */}
       <div className="bg-[var(--primary-darker)] text-white py-4 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -930,7 +930,7 @@ export default function SabiDemo() {
 
       {/* Info banner */}
       <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="bg-[var(--secondary)] border border-[var(--accent)] rounded-xl px-4 py-3 text-sm text-[var(--primary-darker)]">
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-sm text-white/90">
           <strong>Two channels, same AI:</strong> Text chat (left) simulates a{" "}
           <strong>smartphone app</strong>. Voice chat (right) simulates a{" "}
           <strong>phone call</strong> — tap the mic to talk. Both channels
@@ -968,11 +968,11 @@ export default function SabiDemo() {
 
       {/* Research callout */}
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-          <h3 className="font-bold text-lg text-[var(--primary-darker)] mb-3">
+        <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6">
+          <h3 className="font-bold text-lg text-white mb-3">
             Why Market Math?
           </h3>
-          <p className="text-sm text-gray-700 leading-relaxed mb-3">
+          <p className="text-sm text-white/80 leading-relaxed mb-3">
             Research from <strong>Nature (2025)</strong> and a study of{" "}
             <strong>5,997 children in Sokoto, Nigeria (2024)</strong> found that
             children who sell at markets solve the{" "}
@@ -980,7 +980,7 @@ export default function SabiDemo() {
             <strong>9x more often</strong> when framed as a market transaction
             vs. abstract math (48.5% vs 5.4%).
           </p>
-          <p className="text-sm text-gray-700 leading-relaxed">
+          <p className="text-sm text-white/80 leading-relaxed">
             <strong>Persistent memory</strong> means Sabi remembers each
             child&apos;s name, level, and mistakes across sessions — just like a
             real tutor. End this lesson and start another to see it in action.

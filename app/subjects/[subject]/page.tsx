@@ -46,35 +46,35 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
       <div className={isFoundational
-        ? "relative overflow-hidden bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]"
+        ? "relative overflow-hidden bg-gradient-to-br from-[var(--secondary)] via-[var(--accent)] to-[#c2f5e9]"
         : "bg-white border-b border-gray-100"
       }>
         {isFoundational && (
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 opacity-20">
             <div className="absolute top-10 left-10 w-48 h-48 bg-[var(--primary)] rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-10 w-64 h-64 bg-[var(--accent)] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-10 w-64 h-64 bg-[var(--secondary)] rounded-full blur-3xl" />
           </div>
         )}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className={`flex items-center gap-2 text-sm mb-4 ${isFoundational ? 'text-white/70' : 'text-gray-500'}`}>
-            <Link href="/subjects" className={isFoundational ? "hover:text-white" : "hover:text-[var(--primary-dark)]"}>
+          <div className={`flex items-center gap-2 text-sm mb-4 ${isFoundational ? 'text-[var(--primary-darker)]/70' : 'text-gray-500'}`}>
+            <Link href="/subjects" className={isFoundational ? "hover:text-[var(--primary-darker)]" : "hover:text-[var(--primary-dark)]"}>
               Subjects
             </Link>
             <span>/</span>
-            <span className={isFoundational ? 'text-white' : ''} style={isFoundational ? {} : { color: subject.color }}>{subject.name}</span>
+            <span className={isFoundational ? 'text-[var(--primary-darker)]' : ''} style={isFoundational ? {} : { color: subject.color }}>{subject.name}</span>
           </div>
 
           <div className="flex items-start gap-4">
             <div
               className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl flex-shrink-0"
-              style={{ backgroundColor: isFoundational ? 'rgba(255,255,255,0.15)' : `${subject.color}15` }}
+              style={{ backgroundColor: isFoundational ? 'rgba(7,84,73,0.1)' : `${subject.color}15` }}
             >
               {subject.icon}
             </div>
             <div>
-              <h1 className={`text-3xl font-bold mb-2 ${isFoundational ? 'text-white' : 'text-gray-900'}`}>{subject.name}</h1>
-              <p className={isFoundational ? 'text-white/80' : 'text-[var(--text-muted)]'}>{subject.description}</p>
-              <div className={`flex gap-6 mt-4 text-sm ${isFoundational ? 'text-white/60' : 'text-gray-500'}`}>
+              <h1 className={`text-3xl font-bold mb-2 ${isFoundational ? 'text-[var(--primary-darker)]' : 'text-gray-900'}`}>{subject.name}</h1>
+              <p className={isFoundational ? 'text-[var(--primary-darker)]/80' : 'text-[var(--text-muted)]'}>{subject.description}</p>
+              <div className={`flex gap-6 mt-4 text-sm ${isFoundational ? 'text-[var(--primary-darker)]/60' : 'text-gray-500'}`}>
                 <span>{subject.units.length} units</span>
                 <span>{totalLessons} lessons</span>
                 <span>~{Math.round(totalMinutes)} min total</span>

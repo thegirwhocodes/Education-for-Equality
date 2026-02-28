@@ -36,26 +36,26 @@ export default function LessonPage() {
     <div className="min-h-screen bg-[var(--background)]">
       {/* Breadcrumb */}
       <div className={isFoundational
-        ? "relative overflow-hidden bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]"
+        ? "relative overflow-hidden bg-gradient-to-br from-[var(--secondary)] via-[var(--accent)] to-[#c2f5e9]"
         : "bg-white border-b border-gray-100"
       }>
         {isFoundational && (
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 opacity-20">
             <div className="absolute top-5 left-10 w-32 h-32 bg-[var(--primary)] rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-10 w-48 h-48 bg-[var(--accent)] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-10 w-48 h-48 bg-[var(--secondary)] rounded-full blur-3xl" />
           </div>
         )}
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className={`flex items-center gap-2 text-sm ${isFoundational ? 'text-white/70' : 'text-gray-500'}`}>
-            <Link href="/subjects" className={isFoundational ? "hover:text-white" : "hover:text-[var(--primary-dark)]"}>
+          <div className={`flex items-center gap-2 text-sm ${isFoundational ? 'text-[var(--primary-darker)]/70' : 'text-gray-500'}`}>
+            <Link href="/subjects" className={isFoundational ? "hover:text-[var(--primary-darker)]" : "hover:text-[var(--primary-dark)]"}>
               Subjects
             </Link>
             <span>/</span>
-            <Link href={`/subjects/${subject.slug}`} className={isFoundational ? "hover:text-white" : "hover:text-[var(--primary-dark)]"}>
+            <Link href={`/subjects/${subject.slug}`} className={isFoundational ? "hover:text-[var(--primary-darker)]" : "hover:text-[var(--primary-dark)]"}>
               {subject.name}
             </Link>
             <span>/</span>
-            <span className={`truncate max-w-[200px] ${isFoundational ? 'text-white' : 'text-gray-900'}`}>{lesson.title}</span>
+            <span className={`truncate max-w-[200px] ${isFoundational ? 'text-[var(--primary-darker)]' : 'text-gray-900'}`}>{lesson.title}</span>
           </div>
         </div>
       </div>
