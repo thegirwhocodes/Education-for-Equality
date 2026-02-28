@@ -15,13 +15,16 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/logo.png"
+              src="/tree-icon.png"
               alt="Education for Equality"
-              width={140}
-              height={40}
-              className="h-9 w-auto"
+              width={36}
+              height={36}
+              className="h-9 w-9"
               priority
             />
+            <span className="font-semibold text-lg text-[var(--primary-darker)]">
+              Education for Equality
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

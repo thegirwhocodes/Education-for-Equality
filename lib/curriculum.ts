@@ -29,8 +29,13 @@ export interface Subject {
   units: Unit[];
 }
 
+import { foundationalLiteracy } from './foundational-literacy';
+import { foundationalNumeracy } from './foundational-numeracy';
+
 // Sample curriculum data for K3 (3rd Grade)
 export const subjects: Subject[] = [
+  foundationalLiteracy,
+  foundationalNumeracy,
   {
     id: 'math',
     name: 'Mathematics',

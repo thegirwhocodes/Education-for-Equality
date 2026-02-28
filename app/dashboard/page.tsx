@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
-import { getCambridgeSubjects } from '@/lib/curriculum';
+import { getCambridgeSubjects, subjects as allSubjects } from '@/lib/curriculum';
 import { useProgress } from '@/lib/useProgress';
 
 export default function DashboardPage() {
   const { user } = useUser();
-  const subjects = getCambridgeSubjects();
+  // Include foundational courses + Cambridge subjects
+  const cambridgeSubjects = getCambridgeSubjects();
+  const subjects = [...allSubjects, ...cambridgeSubjects];
   const { completions, loading, completedBySubject, completedCount } = useProgress();
 
   // Calculate total lessons across all subjects
