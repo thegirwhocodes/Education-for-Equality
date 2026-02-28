@@ -49,13 +49,13 @@ function EntryScreen({
   const isReturning = student && student.total_sessions > 0;
 
   return (
-    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center px-4">
       <div className="max-w-lg w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-[var(--primary-darker)] mb-2">
+          <h1 className="text-4xl font-bold text-white mb-2">
             Sabi
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-white/70">
             &quot;To Know&quot; in Nigerian Pidgin
           </p>
         </div>
@@ -194,7 +194,7 @@ function EntryScreen({
           )}
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-6">
+        <p className="text-center text-xs text-white/50 mt-6">
           Powered by Education for Equality — Free, world-class education for
           every child.
         </p>
@@ -222,7 +222,7 @@ function EndScreen({
       : 0;
 
   return (
-    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center px-4">
       <div className="max-w-lg w-full">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
           <div className="text-center mb-6">
@@ -858,8 +858,8 @@ export default function SabiDemo() {
   // Loading state
   if (studentLoading && !sessionStarted) {
     return (
-      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <div className="animate-pulse text-[var(--primary-darker)] text-lg">
+      <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center">
+        <div className="animate-pulse text-white text-lg">
           Loading...
         </div>
       </div>
