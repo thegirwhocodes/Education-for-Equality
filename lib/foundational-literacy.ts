@@ -2494,6 +2494,1559 @@ export const foundationalLiteracy: Subject = {
         },
       ],
     },
-    // PLACEHOLDER_UNITS_6_TO_8
+    {
+      id: 'fl-unit-6',
+      title: 'Phonics',
+      description: 'Learn letter-sound relationships and start reading your first words using Jolly Phonics ordering.',
+      order: 6,
+      lessons: [
+        {
+          id: 'fl-6-1',
+          title: 'Letters s, a, t: Sound and Shape',
+          description: 'Learn the sounds and shapes of the letters s, a, and t.',
+          duration: 12,
+          order: 1,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to recognise and sound out the letters <strong>s</strong>, <strong>a</strong>, and <strong>t</strong> — your first three reading letters!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Today is a very special day — you are going to learn your first letters for reading! We will start with three letters: <strong>s</strong>, <strong>a</strong>, and <strong>t</strong>. With just these three letters, you can already make a real word!</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Letter s:</strong></p>
+<ul>
+<li>Sound: /s/ — like a snake hissing: sssssss</li>
+<li>Shape: It looks like a curvy snake. Start at the top, curve left, then curve right.</li>
+<li>Words: <strong>s</strong>un, <strong>s</strong>it, <strong>s</strong>at</li>
+</ul>
+<p><strong>Letter a:</strong></p>
+<ul>
+<li>Sound: /a/ — open your mouth wide: aaa (like the a in ant)</li>
+<li>Shape: Start with a small circle, then add a line going down on the right side.</li>
+<li>Words: <strong>a</strong>nt, <strong>a</strong>t, <strong>a</strong>m</li>
+</ul>
+<p><strong>Letter t:</strong></p>
+<ul>
+<li>Sound: /t/ — a short, sharp sound: t-t-t (tap your tongue behind your top teeth)</li>
+<li>Shape: Draw a line going down, then cross it near the top.</li>
+<li>Words: <strong>t</strong>en, <strong>t</strong>ap, <strong>t</strong>op</li>
+</ul>
+<p><strong>Your first word!</strong> Put them together: s-a-t → <strong>sat</strong>! "The girl <strong>sat</strong> on the chair." You just read your first word!</p>
+<p>Also try: <strong>at</strong> (a-t) and <strong>as</strong> (a-s).</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What sound does the letter <strong>s</strong> make?</li>
+<li>Blend these letters: s-a-t. What word do you get?</li>
+<li>Blend these letters: a-t. What word do you get?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>The letter <strong>s</strong> makes the /s/ sound — like a snake: sssss.</li>
+<li>s-a-t = <strong>sat</strong>.</li>
+<li>a-t = <strong>at</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Your first three letters are s, a, and t. Each one makes a sound. When you blend the sounds together, you read a word! s-a-t = sat. You are reading!</p>`,
+        },
+        {
+          id: 'fl-6-2',
+          title: 'Letters i, p, n: Sound and Shape',
+          description: 'Learn the sounds and shapes of the letters i, p, and n.',
+          duration: 12,
+          order: 2,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn three more letters: <strong>i</strong>, <strong>p</strong>, and <strong>n</strong>. Now you will know six letters and can read many words!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You already know s, a, and t. Today you will add three more letters to your reading toolkit: i, p, and n. With six letters, you can make lots of words!</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Letter i:</strong></p>
+<ul>
+<li>Sound: /i/ — a short sound like the i in <strong>i</strong>t or <strong>i</strong>nk</li>
+<li>Shape: Draw a short line going down, with a dot on top.</li>
+<li>Words: <strong>i</strong>t, <strong>i</strong>n, <strong>i</strong>s</li>
+</ul>
+<p><strong>Letter p:</strong></p>
+<ul>
+<li>Sound: /p/ — a short puff of air: p-p-p (pop your lips)</li>
+<li>Shape: Draw a line going down, then a bump on the top right side.</li>
+<li>Words: <strong>p</strong>an, <strong>p</strong>at, <strong>p</strong>in</li>
+</ul>
+<p><strong>Letter n:</strong></p>
+<ul>
+<li>Sound: /n/ — hum with your tongue touching the roof of your mouth: nnnnn</li>
+<li>Shape: Draw a line going down, then a hump going down.</li>
+<li>Words: <strong>n</strong>et, <strong>n</strong>ap, <strong>n</strong>it</li>
+</ul>
+<p><strong>New words you can read with s, a, t, i, p, n:</strong></p>
+<ul>
+<li><strong>pin</strong> (p-i-n), <strong>pan</strong> (p-a-n), <strong>tap</strong> (t-a-p)</li>
+<li><strong>nap</strong> (n-a-p), <strong>tip</strong> (t-i-p), <strong>tin</strong> (t-i-n)</li>
+<li><strong>sit</strong> (s-i-t), <strong>nip</strong> (n-i-p), <strong>sip</strong> (s-i-p)</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Blend: p-i-n. What word?</li>
+<li>Blend: t-a-p. What word?</li>
+<li>Blend: s-i-t. What word?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>p-i-n = <strong>pin</strong></li>
+<li>t-a-p = <strong>tap</strong></li>
+<li>s-i-t = <strong>sit</strong></li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You now know six letters: s, a, t, i, p, n. You can already read many words like pin, pan, tap, nap, tip, tin, sit, and sip. Amazing!</p>`,
+        },
+        {
+          id: 'fl-6-3',
+          title: 'First Words: sat, pin, tap, nap, tip, sit',
+          description: 'Practise reading your first words using the letters you know.',
+          duration: 12,
+          order: 3,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise <strong>reading real words</strong> using the six letters you know: s, a, t, i, p, n.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You are a reader now! You know six letters and their sounds. Today we will read lots of words and use them in sentences. Emeka is so proud of himself — he can read the word "sit" on the classroom wall!</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Reading words step by step:</strong></p>
+<p>When you see a word, point to each letter, say its sound, then blend:</p>
+<p><strong>Word: sat</strong></p>
+<ol>
+<li>Point to <strong>s</strong> → say /s/</li>
+<li>Point to <strong>a</strong> → say /a/</li>
+<li>Point to <strong>t</strong> → say /t/</li>
+<li>Blend: /s/-/a/-/t/ → <strong>sat</strong>!</li>
+</ol>
+<p><strong>Read these words:</strong></p>
+<ul>
+<li><strong>sat</strong> — "Bola <strong>sat</strong> on the mat."</li>
+<li><strong>pin</strong> — "Do not step on the <strong>pin</strong>!"</li>
+<li><strong>tap</strong> — "<strong>Tap</strong> the table three times."</li>
+<li><strong>nap</strong> — "The baby is taking a <strong>nap</strong>."</li>
+<li><strong>tip</strong> — "The <strong>tip</strong> of the pencil is sharp."</li>
+<li><strong>sit</strong> — "Please <strong>sit</strong> down."</li>
+<li><strong>pan</strong> — "Mama cooks in a <strong>pan</strong>."</li>
+<li><strong>tin</strong> — "The beans are in a <strong>tin</strong>."</li>
+<li><strong>sip</strong> — "I <strong>sip</strong> my water slowly."</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read this word: <strong>nap</strong>. Use it in a sentence.</li>
+<li>Read this word: <strong>tin</strong>. Use it in a sentence.</li>
+<li>Read this word: <strong>sip</strong>. Use it in a sentence.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>nap</strong> = n-a-p. Example: "I take a <strong>nap</strong> after lunch."</li>
+<li><strong>tin</strong> = t-i-n. Example: "The milk is in a <strong>tin</strong>."</li>
+<li><strong>sip</strong> = s-i-p. Example: "I <strong>sip</strong> my tea."</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>To read a word: look at each letter, say its sound, then blend the sounds together. You are reading real English words!</p>`,
+        },
+        {
+          id: 'fl-6-4',
+          title: 'Letters c/k, e, h: Sound and Shape',
+          description: 'Learn the sounds and shapes of the letters c, k, e, and h.',
+          duration: 12,
+          order: 4,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn four more letters: <strong>c</strong>, <strong>k</strong>, <strong>e</strong>, and <strong>h</strong>. Notice that c and k make the same sound!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You already know 6 letters. Today you will learn 4 more! An interesting fact: the letters <strong>c</strong> and <strong>k</strong> make the same sound — /k/! After today, you will know 10 letters.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Letter c:</strong></p>
+<ul>
+<li>Sound: /k/ — the same sound as k!</li>
+<li>Shape: Like a curve that does not close. Start at the top, curve left and around.</li>
+<li>Words: <strong>c</strong>at, <strong>c</strong>ap, <strong>c</strong>an</li>
+</ul>
+<p><strong>Letter k:</strong></p>
+<ul>
+<li>Sound: /k/ — same as c!</li>
+<li>Shape: A line going down with two diagonal lines meeting in the middle.</li>
+<li>Words: <strong>k</strong>it, <strong>k</strong>in, <strong>k</strong>ick</li>
+</ul>
+<p><strong>Letter e:</strong></p>
+<ul>
+<li>Sound: /e/ — like the e in <strong>e</strong>gg or <strong>e</strong>nd</li>
+<li>Shape: Start with a line in the middle, then curve around.</li>
+<li>Words: <strong>e</strong>gg, <strong>e</strong>nd, p<strong>e</strong>n</li>
+</ul>
+<p><strong>Letter h:</strong></p>
+<ul>
+<li>Sound: /h/ — a breathy sound: hhhhh (like panting)</li>
+<li>Shape: A line going down, then a hump from the middle.</li>
+<li>Words: <strong>h</strong>en, <strong>h</strong>at, <strong>h</strong>it</li>
+</ul>
+<p><strong>New words:</strong> cat, cap, can, kit, hen, hat, hit, pet, ten, ken, peck, neck</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Blend: c-a-t. What word?</li>
+<li>Blend: h-e-n. What word?</li>
+<li>Blend: h-a-t. What word?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>c-a-t = <strong>cat</strong></li>
+<li>h-e-n = <strong>hen</strong></li>
+<li>h-a-t = <strong>hat</strong></li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>The letters c and k both make the /k/ sound. The letter e says /e/ as in egg. The letter h says /h/ as in hat. You now know 10 letters!</p>`,
+        },
+        {
+          id: 'fl-6-5',
+          title: 'Letters r, m, d: Sound and Shape',
+          description: 'Learn the sounds and shapes of the letters r, m, and d.',
+          duration: 12,
+          order: 5,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn three more letters: <strong>r</strong>, <strong>m</strong>, and <strong>d</strong>. After this, you will know 13 letters!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Amina is excited — she can already read words like cat, hat, sit, and pin. Now with three more letters, she will be able to read even more words! Let us learn r, m, and d.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Letter r:</strong></p>
+<ul>
+<li>Sound: /r/ — growl like a lion: rrrrrr</li>
+<li>Shape: A short line going down, then a small curve at the top.</li>
+<li>Words: <strong>r</strong>at, <strong>r</strong>an, <strong>r</strong>ip</li>
+</ul>
+<p><strong>Letter m:</strong></p>
+<ul>
+<li>Sound: /m/ — close your lips and hum: mmmmmm</li>
+<li>Shape: A line going down with two humps.</li>
+<li>Words: <strong>m</strong>at, <strong>m</strong>an, <strong>m</strong>ap</li>
+</ul>
+<p><strong>Letter d:</strong></p>
+<ul>
+<li>Sound: /d/ — tap your tongue behind your top teeth: d-d-d</li>
+<li>Shape: Start with a circle on the left, then a tall line going up on the right.</li>
+<li>Words: <strong>d</strong>ig, <strong>d</strong>ad, <strong>d</strong>ip</li>
+</ul>
+<p><strong>New words with all your letters:</strong></p>
+<ul>
+<li><strong>mat</strong> (m-a-t), <strong>man</strong> (m-a-n), <strong>map</strong> (m-a-p)</li>
+<li><strong>rat</strong> (r-a-t), <strong>ran</strong> (r-a-n), <strong>rip</strong> (r-i-p)</li>
+<li><strong>dim</strong> (d-i-m), <strong>dip</strong> (d-i-p), <strong>dam</strong> (d-a-m)</li>
+<li><strong>red</strong> (r-e-d), <strong>rid</strong> (r-i-d), <strong>ram</strong> (r-a-m)</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Blend: m-a-t. What word?</li>
+<li>Blend: r-e-d. What word?</li>
+<li>Blend: d-i-m. What word?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>m-a-t = <strong>mat</strong></li>
+<li>r-e-d = <strong>red</strong></li>
+<li>d-i-m = <strong>dim</strong></li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You now know 13 letters: s, a, t, i, p, n, c, k, e, h, r, m, d. That is half the alphabet! You can read dozens of words!</p>`,
+        },
+        {
+          id: 'fl-6-6',
+          title: 'More Words: cat, hen, mat, red, dim, ham',
+          description: 'Practise reading more words with your 13 letters.',
+          duration: 12,
+          order: 6,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading many more words and putting them into sentences.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Emeka can read so many words now! He looked at the classroom door and read the word "EXIT" — well, almost! He knows the letters e and t. Let us practise reading even more words with all 13 letters.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Reading practice — sound out each word:</strong></p>
+<p><strong>Words with 'a' in the middle:</strong></p>
+<ul>
+<li><strong>cat</strong> — "The <strong>cat</strong> is on the mat."</li>
+<li><strong>mat</strong> — "Sit on the <strong>mat</strong>."</li>
+<li><strong>ham</strong> — "We eat <strong>ham</strong> for dinner."</li>
+<li><strong>cap</strong> — "He has a red <strong>cap</strong>."</li>
+<li><strong>map</strong> — "Look at the <strong>map</strong>."</li>
+<li><strong>rat</strong> — "A <strong>rat</strong> ran past!"</li>
+</ul>
+<p><strong>Words with 'e' in the middle:</strong></p>
+<ul>
+<li><strong>hen</strong> — "The <strong>hen</strong> has ten chicks."</li>
+<li><strong>red</strong> — "I like the <strong>red</strong> dress."</li>
+<li><strong>ten</strong> — "I can count to <strong>ten</strong>."</li>
+<li><strong>pen</strong> — "Give me a <strong>pen</strong>."</li>
+</ul>
+<p><strong>Words with 'i' in the middle:</strong></p>
+<ul>
+<li><strong>dim</strong> — "The light is <strong>dim</strong>."</li>
+<li><strong>hip</strong> — "She put her hand on her <strong>hip</strong>."</li>
+<li><strong>hit</strong> — "<strong>Hit</strong> the ball!"</li>
+<li><strong>rim</strong> — "The <strong>rim</strong> of the cup."</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read this sentence: "The cat sat."</li>
+<li>Read this sentence: "A red hen."</li>
+<li>Read this sentence: "The man has a map."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>The cat sat.</strong> — The + c-a-t + s-a-t.</li>
+<li><strong>A red hen.</strong> — A + r-e-d + h-e-n.</li>
+<li><strong>The man has a map.</strong> — The + m-a-n + has + a + m-a-p.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>The more you practise reading words, the faster you get. Sound out each letter, blend the sounds, and you will read the word! Keep practising every day.</p>`,
+        },
+        {
+          id: 'fl-6-7',
+          title: 'Letters g, o, u: Sound and Shape',
+          description: 'Learn the sounds and shapes of the letters g, o, and u.',
+          duration: 12,
+          order: 7,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn three more letters: <strong>g</strong>, <strong>o</strong>, and <strong>u</strong>. Now you will know all 5 vowels!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Great news — after today, you will know all 5 vowels: a, e, i, o, u! Vowels are the heart of every word. Let us also learn the consonant g.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Letter g:</strong></p>
+<ul>
+<li>Sound: /g/ — a sound from the back of your throat: g-g-g</li>
+<li>Shape: Like the letter c but with a tail going down.</li>
+<li>Words: <strong>g</strong>ot, <strong>g</strong>ap, <strong>g</strong>um</li>
+</ul>
+<p><strong>Letter o:</strong></p>
+<ul>
+<li>Sound: /o/ — make your mouth round: /o/ as in <strong>o</strong>n, <strong>o</strong>x</li>
+<li>Shape: A round circle.</li>
+<li>Words: <strong>o</strong>n, <strong>o</strong>x, h<strong>o</strong>t</li>
+</ul>
+<p><strong>Letter u:</strong></p>
+<ul>
+<li>Sound: /u/ — a short sound: /u/ as in <strong>u</strong>p, <strong>u</strong>s</li>
+<li>Shape: A curve going down and back up, with a line on the right.</li>
+<li>Words: <strong>u</strong>p, c<strong>u</strong>p, r<strong>u</strong>n</li>
+</ul>
+<p><strong>All 5 vowels:</strong> <strong>a, e, i, o, u</strong> — every word needs at least one vowel!</p>
+<p><strong>New words:</strong> got, dog, log, gun, gum, cup, cut, run, sun, hot, not, mug, hug, dug, rug</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Blend: d-o-g. What word?</li>
+<li>Blend: c-u-p. What word?</li>
+<li>Blend: h-o-t. What word?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>d-o-g = <strong>dog</strong></li>
+<li>c-u-p = <strong>cup</strong></li>
+<li>h-o-t = <strong>hot</strong></li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You now know all 5 vowels: a, e, i, o, u. Every word needs at least one vowel. You also know the letter g. You can read so many words now!</p>`,
+        },
+        {
+          id: 'fl-6-8',
+          title: 'Letters l, f, b: Sound and Shape',
+          description: 'Learn the sounds and shapes of the letters l, f, and b.',
+          duration: 12,
+          order: 8,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn three more letters: <strong>l</strong>, <strong>f</strong>, and <strong>b</strong>. After today, you will know 19 letters!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You are learning letters so fast! Let us add three more to your collection: l, f, and b. These letters will help you read even more words.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Letter l:</strong></p>
+<ul>
+<li>Sound: /l/ — lift your tongue to the roof of your mouth: lllll</li>
+<li>Shape: A simple tall line going down.</li>
+<li>Words: <strong>l</strong>eg, <strong>l</strong>ip, <strong>l</strong>og</li>
+</ul>
+<p><strong>Letter f:</strong></p>
+<ul>
+<li>Sound: /f/ — put your top teeth on your bottom lip and blow: fffff</li>
+<li>Shape: A curve at the top going down with a cross line in the middle.</li>
+<li>Words: <strong>f</strong>an, <strong>f</strong>it, <strong>f</strong>un</li>
+</ul>
+<p><strong>Letter b:</strong></p>
+<ul>
+<li>Sound: /b/ — close your lips then open them with a burst: b-b-b</li>
+<li>Shape: A tall line going down with a bump at the bottom right.</li>
+<li>Words: <strong>b</strong>at, <strong>b</strong>ig, <strong>b</strong>us</li>
+</ul>
+<p><strong>New words:</strong> leg, lip, log, lit, let, lot, fan, fin, fig, fun, fit, bat, big, bit, bus, bun, bed, but, bag, bad, bell, bill, full, bull, fill, fell</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Blend: b-u-s. What word?</li>
+<li>Blend: f-u-n. What word?</li>
+<li>Blend: l-e-g. What word?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>b-u-s = <strong>bus</strong></li>
+<li>f-u-n = <strong>fun</strong></li>
+<li>l-e-g = <strong>leg</strong></li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You now know 19 letters! With l, f, and b added, you can read words like bus, fun, leg, big, bat, fan, and many more. Keep going!</p>`,
+        },
+        {
+          id: 'fl-6-9',
+          title: 'Even More Words: dog, fun, log, but, fig, gum',
+          description: 'Practise reading many new words with your growing letter knowledge.',
+          duration: 12,
+          order: 9,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading many new words and using them in sentences.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Bola is reading words everywhere — on signs, on food packets, and in books. She read "BUS STOP" at the bus stop and was so excited! Let us practise reading more words like Bola.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Read these words with the 'o' sound:</strong></p>
+<ul>
+<li><strong>dog</strong> — "The <strong>dog</strong> runs fast."</li>
+<li><strong>log</strong> — "Sit on the <strong>log</strong>."</li>
+<li><strong>hot</strong> — "The sun is <strong>hot</strong>."</li>
+<li><strong>got</strong> — "I <strong>got</strong> a gift."</li>
+<li><strong>not</strong> — "I am <strong>not</strong> tired."</li>
+</ul>
+<p><strong>Read these words with the 'u' sound:</strong></p>
+<ul>
+<li><strong>fun</strong> — "School is <strong>fun</strong>!"</li>
+<li><strong>but</strong> — "I like mango, <strong>but</strong> I love banana."</li>
+<li><strong>gum</strong> — "Do not chew <strong>gum</strong> in class."</li>
+<li><strong>fig</strong> — "A <strong>fig</strong> is a fruit."</li>
+<li><strong>bug</strong> — "A <strong>bug</strong> is on the leaf."</li>
+<li><strong>hug</strong> — "Give me a <strong>hug</strong>!"</li>
+<li><strong>mug</strong> — "Drink from the <strong>mug</strong>."</li>
+<li><strong>rug</strong> — "The <strong>rug</strong> is on the floor."</li>
+</ul>
+<p><strong>Read short sentences:</strong></p>
+<ul>
+<li>"The big dog got a <strong>bone</strong>."</li>
+<li>"It is hot, but fun!"</li>
+<li>"I sit on the rug."</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "A big red bug." Sound out each word.</li>
+<li>Read: "The dog sat on the rug." Sound out each word.</li>
+<li>Make a sentence with the word <strong>fun</strong>.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"A big red bug." — A + b-i-g + r-e-d + b-u-g.</li>
+<li>"The dog sat on the rug." — The + d-o-g + s-a-t + on + the + r-u-g.</li>
+<li>Example: "I have <strong>fun</strong> at school." (any sentence with fun is correct)</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You can read so many words now! Practise reading every day — read signs, labels, and books. The more you read, the better you get!</p>`,
+        },
+        {
+          id: 'fl-6-10',
+          title: 'Review: All 18 Sounds',
+          description: 'Review all the letter sounds you have learned.',
+          duration: 12,
+          order: 10,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will review all 19 letters and their sounds: s, a, t, i, p, n, c, k, e, h, r, m, d, g, o, u, l, f, b.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You have learned 19 letters that make 18 different sounds (remember, c and k make the same sound!). That is amazing! Let us review them all and make sure you know each one.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>All your letter sounds:</strong></p>
+<ul>
+<li><strong>s</strong> = /s/ (snake), <strong>a</strong> = /a/ (ant), <strong>t</strong> = /t/ (tap)</li>
+<li><strong>i</strong> = /i/ (ink), <strong>p</strong> = /p/ (pop), <strong>n</strong> = /n/ (nose)</li>
+<li><strong>c</strong> = /k/ (cat), <strong>k</strong> = /k/ (kit), <strong>e</strong> = /e/ (egg)</li>
+<li><strong>h</strong> = /h/ (hat), <strong>r</strong> = /r/ (run), <strong>m</strong> = /m/ (mum)</li>
+<li><strong>d</strong> = /d/ (dog), <strong>g</strong> = /g/ (got), <strong>o</strong> = /o/ (on)</li>
+<li><strong>u</strong> = /u/ (up), <strong>l</strong> = /l/ (leg), <strong>f</strong> = /f/ (fan)</li>
+<li><strong>b</strong> = /b/ (bat)</li>
+</ul>
+<p><strong>Quick reading test — read these words:</strong></p>
+<p>cat, dog, sun, red, big, fun, hot, map, leg, cup, pin, bat, hen, rug, lip, hit, not, dim, ram, fog</p>
+<p>If you can read all 20 words, you are doing an excellent job!</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What sound does the letter <strong>g</strong> make? Give a word.</li>
+<li>What sound does the letter <strong>f</strong> make? Give a word.</li>
+<li>Read this sentence: "The fat cat sat on the red mat."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>g</strong> = /g/. Word: <strong>got</strong>, <strong>gum</strong>, or <strong>big</strong>.</li>
+<li><strong>f</strong> = /f/. Word: <strong>fan</strong>, <strong>fun</strong>, or <strong>fig</strong>.</li>
+<li>"The fat cat sat on the red mat." — You read a whole sentence! Well done!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You know 18 sounds from 19 letters. You can read lots of words. You are well on your way to becoming a strong reader!</p>`,
+        },
+        {
+          id: 'fl-6-11',
+          title: 'Tricky Words: the, is, I, to, a, was',
+          description: 'Learn common words that cannot be sounded out in the usual way.',
+          duration: 12,
+          order: 11,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn <strong>tricky words</strong> — common words that do not follow the usual sound rules. You need to memorise them.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Most words can be sounded out letter by letter. But some words are tricky — they do not sound the way you expect! The word "the" does not sound like t-h-e. You just have to learn these words by looking at them again and again.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Tricky words</strong> (also called sight words) are words you must memorise because they cannot be easily sounded out:</p>
+<ul>
+<li><strong>the</strong> — "Give me <strong>the</strong> book." (the most common word in English!)</li>
+<li><strong>is</strong> — "He <strong>is</strong> a good boy."</li>
+<li><strong>I</strong> — "<strong>I</strong> am happy." (always written as a capital letter)</li>
+<li><strong>to</strong> — "I go <strong>to</strong> school."</li>
+<li><strong>a</strong> — "I have <strong>a</strong> pen."</li>
+<li><strong>was</strong> — "She <strong>was</strong> at home."</li>
+</ul>
+<p><strong>How to learn tricky words:</strong></p>
+<ol>
+<li><strong>Look</strong> at the word carefully.</li>
+<li><strong>Say</strong> the word out loud.</li>
+<li><strong>Cover</strong> the word with your hand.</li>
+<li><strong>Write</strong> the word from memory.</li>
+<li><strong>Check</strong> — did you get it right?</li>
+</ol>
+<p><strong>Practice sentences:</strong></p>
+<ul>
+<li>"<strong>The</strong> cat <strong>is</strong> big."</li>
+<li>"<strong>I</strong> go <strong>to</strong> <strong>the</strong> market."</li>
+<li>"She <strong>was</strong> <strong>a</strong> kind girl."</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "The dog is hot."</li>
+<li>Read: "I sat on a mat."</li>
+<li>Read: "She was not in."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"<strong>The dog is hot.</strong>" — the (tricky) + d-o-g + is (tricky) + h-o-t.</li>
+<li>"<strong>I sat on a mat.</strong>" — I (tricky) + s-a-t + on + a (tricky) + m-a-t.</li>
+<li>"<strong>She was not in.</strong>" — She + was (tricky) + n-o-t + i-n.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Tricky words like the, is, I, to, a, and was must be memorised. You will see them in almost every sentence. The more you read, the more you will remember them!</p>`,
+        },
+        {
+          id: 'fl-6-12',
+          title: 'Reading Simple Sentences',
+          description: 'Put it all together and read complete sentences.',
+          duration: 12,
+          order: 12,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will read <strong>complete sentences</strong> by combining your letter sounds and tricky words. You are reading!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>This is the moment you have been working towards! You can now read real sentences in English. Chidi reads the sentence on the board: "The big dog ran fast." His teacher claps! Let us read sentences together.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>How to read a sentence:</strong></p>
+<ol>
+<li>Look at the first word. Is it a tricky word or can you sound it out?</li>
+<li>Read each word one at a time.</li>
+<li>After reading all the words, say the whole sentence smoothly.</li>
+</ol>
+<p><strong>Read these sentences:</strong></p>
+<ul>
+<li>"<strong>The cat is on the mat.</strong>"</li>
+<li>"<strong>I can run fast.</strong>"</li>
+<li>"<strong>The hen has ten eggs.</strong>"</li>
+<li>"<strong>A big red bus.</strong>"</li>
+<li>"<strong>The dog dug in the mud.</strong>"</li>
+<li>"<strong>I sat on a log.</strong>"</li>
+<li>"<strong>He got a hat and a cap.</strong>"</li>
+<li>"<strong>The sun is hot.</strong>"</li>
+</ul>
+<p><strong>Tips for smooth reading:</strong></p>
+<ul>
+<li>Do not stop too long between words.</li>
+<li>Read the sentence again to make it smoother.</li>
+<li>Think about what the sentence means.</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "The fat cat sat on the red rug."</li>
+<li>Read: "I hid the cup in the bag."</li>
+<li>Read: "The man had a big hat."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"The fat cat sat on the red rug." Well done! You read 8 words!</li>
+<li>"I hid the cup in the bag." Excellent! You understood every word.</li>
+<li>"The man had a big hat." Perfect reading!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You are reading sentences! Sound out each word, use your tricky word knowledge, and read from left to right. You are now a reader. Keep practising every single day!</p>`,
+        },
+      ],
+    },
+    {
+      id: 'fl-unit-7',
+      title: 'Blending & Decoding',
+      description: 'Build reading fluency with blends, digraphs, and sight words.',
+      order: 7,
+      lessons: [
+        {
+          id: 'fl-7-1',
+          title: 'CVC Words: Sounding Out',
+          description: 'Master reading Consonant-Vowel-Consonant words.',
+          duration: 10,
+          order: 1,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will master reading <strong>CVC words</strong> — words that have a Consonant, then a Vowel, then a Consonant (like cat, dog, sun).</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You have been reading CVC words already! Now let us understand the pattern. In the word <strong>cat</strong>: c (consonant) + a (vowel) + t (consonant) = CVC. Most of the words you have learned follow this pattern. Let us get really good at reading them.</p>
+
+<h3>📚 New Concept</h3>
+<p>A <strong>CVC word</strong> follows the pattern: <strong>Consonant - Vowel - Consonant</strong>.</p>
+<p><strong>CVC words with each vowel:</strong></p>
+<p><strong>Short a:</strong> bat, bag, cab, can, cap, cat, dad, fan, gap, had, ham, hat, jam, lap, mad, man, map, mat, nap, pad, pan, pat, ran, rat, sad, sat, tap, van</p>
+<p><strong>Short e:</strong> bed, beg, bet, den, fed, gem, get, hen, jet, leg, let, men, met, net, peg, pen, pet, red, set, ten, vet, web, wet</p>
+<p><strong>Short i:</strong> big, bin, bit, did, dig, dim, dip, fig, fin, fit, hid, him, hip, hit, kid, kit, lid, lip, lit, mix, nit, pig, pin, rip, sit, six, tip, wig, win, zip</p>
+<p><strong>Short o:</strong> bog, box, cob, cod, cog, cop, cot, dog, dot, fog, fox, got, hog, hop, hot, job, jog, log, lot, mob, mop, nod, not, pod, pop, pot, rob, rod, rot, sob, top</p>
+<p><strong>Short u:</strong> bud, bug, bun, bus, but, cub, cup, cut, dug, fun, gum, gun, gut, hub, hug, hum, hut, jug, mud, mug, mum, nut, pug, pun, pub, rug, run, rub, rut, sub, sum, sun, tub, tug</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read these CVC words: <strong>fig, pot, bun</strong>.</li>
+<li>What is the vowel in each word: <strong>mug, pet, cab</strong>?</li>
+<li>Read this sentence: "The pup dug in the mud."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>fig</strong> (f-i-g), <strong>pot</strong> (p-o-t), <strong>bun</strong> (b-u-n).</li>
+<li><strong>mug</strong> has u, <strong>pet</strong> has e, <strong>cab</strong> has a.</li>
+<li>"The pup dug in the mud." — Great reading!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>CVC words are the building blocks of reading: consonant + vowel + consonant. Practise reading them quickly and you will become a fluent reader!</p>`,
+        },
+        {
+          id: 'fl-7-2',
+          title: 'CVC Words: Reading Practice',
+          description: 'Practise reading CVC words quickly and in sentences.',
+          duration: 10,
+          order: 2,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading CVC words <strong>quickly</strong> and in context to build fluency.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Reading is like running — the more you practise, the faster you get! At first, you sound out each letter slowly: c...a...t. But with practice, you see the word and say "cat!" right away. Let us practise reading lots of words.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Speed reading practice!</strong> Read each word as fast as you can:</p>
+<p><strong>Row 1:</strong> cat, dog, sun, bed, lip</p>
+<p><strong>Row 2:</strong> run, hot, big, map, ten</p>
+<p><strong>Row 3:</strong> cup, pin, log, hen, bat</p>
+<p><strong>Row 4:</strong> rug, fit, mop, den, gum</p>
+<p><strong>Now read these short stories:</strong></p>
+<p><strong>Story 1:</strong> "A fat cat sat on a red mat. The cat had a nap."</p>
+<p><strong>Story 2:</strong> "The big dog ran to the hut. The dog dug in the mud. The dog got wet."</p>
+<p><strong>Story 3:</strong> "I got a pen and a pad. I sat at the desk. I did not get up."</p>
+<p><strong>Tips to read faster:</strong></p>
+<ul>
+<li>Look at the whole word, not just one letter at a time.</li>
+<li>Read a sentence, then read it again faster.</li>
+<li>Remember your tricky words: the, is, I, to, a, was.</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read Story 1 out loud as fast as you can.</li>
+<li>Read Story 2 out loud. What happened in the story?</li>
+<li>Read these words in 10 seconds: cat, bed, sun, log, cup.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"A fat cat sat on a red mat. The cat had a nap." (read smoothly)</li>
+<li>In Story 2, a big dog ran to a hut, dug in the mud, and got wet.</li>
+<li>cat, bed, sun, log, cup — try to read them faster each time!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>The more you read, the faster you get. Read the same words and sentences again and again. Soon you will read them without sounding out each letter!</p>`,
+        },
+        {
+          id: 'fl-7-3',
+          title: 'Consonant Blends: Two Sounds Together',
+          description: 'Learn to read words with two consonant sounds at the beginning.',
+          duration: 10,
+          order: 3,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to read words that start with <strong>two consonant sounds together</strong>, called <strong>consonant blends</strong>.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You can read words like cat and dog. But what about words like <strong>stop</strong> or <strong>clap</strong>? These words start with TWO consonant sounds pushed together. In <strong>stop</strong>, you hear /s/ and /t/ together at the start. These are called <strong>blends</strong>.</p>
+
+<h3>📚 New Concept</h3>
+<p>A <strong>consonant blend</strong> is when two consonant sounds are pushed together. You can hear both sounds.</p>
+<p><strong>Common beginning blends:</strong></p>
+<ul>
+<li><strong>bl:</strong> black, blue, bless, block</li>
+<li><strong>cl:</strong> clap, clip, club, class</li>
+<li><strong>cr:</strong> crab, cross, crop, crib</li>
+<li><strong>dr:</strong> drum, drop, dress, drink</li>
+<li><strong>fl:</strong> flag, flip, flat, frog</li>
+<li><strong>fr:</strong> frog, from, free, fresh</li>
+<li><strong>gr:</strong> grab, grin, green, grass</li>
+<li><strong>pl:</strong> plan, plug, plum, play</li>
+<li><strong>sl:</strong> slip, slim, slap, slug</li>
+<li><strong>st:</strong> stop, step, still, stick</li>
+<li><strong>tr:</strong> trip, trap, tree, truck</li>
+</ul>
+<p><strong>How to read a blend:</strong> Do NOT separate the sounds too much. Push them together smoothly: /s/-/t/-/o/-/p/ → stop.</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: <strong>stop</strong>. What blend does it start with?</li>
+<li>Read: <strong>clap</strong>. What blend does it start with?</li>
+<li>Read this sentence: "I grab the drum and tap it."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>stop</strong> starts with the blend <strong>st</strong>.</li>
+<li><strong>clap</strong> starts with the blend <strong>cl</strong>.</li>
+<li>"I grab the drum and tap it." — grab starts with gr, drum starts with dr. Great reading!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Consonant blends are two consonant sounds pushed together at the start of a word. You can hear both sounds: st in stop, cl in clap, dr in drum. Blend them smoothly!</p>`,
+        },
+        {
+          id: 'fl-7-4',
+          title: 'Consonant Blends: Reading Practice',
+          description: 'Practise reading words and sentences with consonant blends.',
+          duration: 10,
+          order: 4,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading words with <strong>consonant blends</strong> in sentences and short stories.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Now that you know consonant blends, you can read bigger words! Funke just read the word "black" on her friend's shirt. She sounded it out: bl-a-ck. Let us practise reading even more blend words.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Ending blends</strong> are also important! Words can end with two consonant sounds too:</p>
+<ul>
+<li><strong>-nd:</strong> hand, band, sand, end, and</li>
+<li><strong>-nk:</strong> bank, pink, sink, think, drink</li>
+<li><strong>-nt:</strong> ant, tent, went, hunt, plant</li>
+<li><strong>-st:</strong> best, fast, just, lost, must, rest</li>
+<li><strong>-mp:</strong> camp, lamp, jump, stamp, dump</li>
+<li><strong>-lk:</strong> milk, silk, walk, talk</li>
+</ul>
+<p><strong>Read these sentences with blends:</strong></p>
+<ul>
+<li>"I <strong>clap</strong> my <strong>hands</strong>."</li>
+<li>"The <strong>frog</strong> can <strong>jump</strong> in the <strong>pond</strong>."</li>
+<li>"We <strong>drink</strong> <strong>milk</strong> at the <strong>camp</strong>."</li>
+<li>"I <strong>stand</strong> on the <strong>step</strong> and <strong>stamp</strong> my feet."</li>
+<li>"The <strong>best</strong> gift is a <strong>drum</strong>."</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "The frog sat on a flat rock." Find the blend words.</li>
+<li>Read: "I must stop and rest." Find the ending blends.</li>
+<li>Read: "Clap and stamp to the drum."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Blend words: <strong>frog</strong> (fr-), <strong>flat</strong> (fl-), <strong>rock</strong> (ends with -ck).</li>
+<li>Ending blends: mu<strong>st</strong>, <strong>st</strong>op, re<strong>st</strong>.</li>
+<li>"Clap and stamp to the drum." — cl, st, dr. Great blend reading!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Blends can be at the beginning or end of a word. Read them smoothly — push the sounds together. You are reading longer words now!</p>`,
+        },
+        {
+          id: 'fl-7-5',
+          title: 'Digraphs: sh, ch, th',
+          description: 'Learn letter pairs that make one new sound.',
+          duration: 10,
+          order: 5,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn about <strong>digraphs</strong> — two letters that team up to make one completely new sound: <strong>sh</strong>, <strong>ch</strong>, and <strong>th</strong>.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>In a blend, you hear both sounds (like s and t in stop). But in a <strong>digraph</strong>, two letters make one brand new sound! In the word <strong>ship</strong>, the letters s and h work together to make the /sh/ sound — not /s/ and not /h/, but /sh/!</p>
+
+<h3>📚 New Concept</h3>
+<p>A <strong>digraph</strong> is two letters that make ONE new sound.</p>
+<p><strong>sh — the "quiet" sound:</strong></p>
+<ul>
+<li>Put your finger to your lips: shhhh!</li>
+<li>Words: <strong>sh</strong>ip, <strong>sh</strong>op, fi<strong>sh</strong>, wa<strong>sh</strong>, <strong>sh</strong>ell, <strong>sh</strong>ut</li>
+</ul>
+<p><strong>ch — the "sneeze" sound:</strong></p>
+<ul>
+<li>Like a train: ch-ch-ch!</li>
+<li>Words: <strong>ch</strong>ip, <strong>ch</strong>op, <strong>ch</strong>in, ri<strong>ch</strong>, mu<strong>ch</strong>, su<strong>ch</strong></li>
+</ul>
+<p><strong>th — the "tongue" sound:</strong></p>
+<ul>
+<li>Put your tongue between your teeth and blow: th!</li>
+<li>Words: <strong>th</strong>is, <strong>th</strong>at, <strong>th</strong>en, <strong>th</strong>in, wi<strong>th</strong>, ba<strong>th</strong></li>
+</ul>
+<p><strong>Important:</strong> Do not try to hear two separate sounds. sh is ONE sound, ch is ONE sound, th is ONE sound.</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: <strong>shop</strong>. What digraph does it start with?</li>
+<li>Read: <strong>chin</strong>. What digraph does it start with?</li>
+<li>Read this sentence: "I fish in the thin ship."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>shop</strong> starts with the digraph <strong>sh</strong>.</li>
+<li><strong>chin</strong> starts with the digraph <strong>ch</strong>.</li>
+<li>"I fish in the thin ship." — fish has sh at the end, thin has th at the start, ship has sh at the start. Well read!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Digraphs are two letters that make one new sound. sh says /sh/, ch says /ch/, th says /th/. They are different from blends because you hear ONE new sound, not two separate sounds.</p>`,
+        },
+        {
+          id: 'fl-7-6',
+          title: 'Digraphs: Reading Practice',
+          description: 'Practise reading words and sentences with digraphs.',
+          duration: 10,
+          order: 6,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading words and sentences that contain <strong>digraphs</strong> (sh, ch, th).</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Tunde saw a sign that said "FISH SHOP" at the market. He read it: fish — sh at the end! Shop — sh at the start! He was so proud. Let us read more words and sentences with digraphs.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Reading practice with digraphs:</strong></p>
+<p><strong>sh words:</strong> shed, shell, shin, shock, shot, shrug, shut, ash, bash, cash, dash, dish, gush, lash, mash, mesh, mush, push, rush, wish</p>
+<p><strong>ch words:</strong> chap, chat, check, chess, chest, chill, chop, chum, chug, bench, bunch, catch, fetch, hatch, inch, lunch, match, much, punch, rich, such, touch, which</p>
+<p><strong>th words:</strong> than, that, them, then, thick, thin, thing, think, this, bath, both, cloth, math, moth, path, teeth, with, worth</p>
+<p><strong>Read these sentences:</strong></p>
+<ul>
+<li>"I wish to eat <strong>fish</strong> and <strong>chips</strong> for lunch."</li>
+<li>"The <strong>thin</strong> man sat on the <strong>bench</strong> in the <strong>shed</strong>."</li>
+<li>"<strong>This</strong> <strong>shell</strong> is from the <strong>beach</strong>."</li>
+<li>"She had a <strong>bath</strong> and <strong>then</strong> went to <strong>the shop</strong>."</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "I think the fish is fresh." Find all the digraphs.</li>
+<li>Read: "The chick got in the bath."</li>
+<li>Read: "She shut the shop at six."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Digraphs: <strong>th</strong>ink, fi<strong>sh</strong>, fre<strong>sh</strong> — three digraphs in one sentence!</li>
+<li>"The chick got in the bath." — <strong>Th</strong>e, <strong>ch</strong>ick, <strong>th</strong>e, ba<strong>th</strong>.</li>
+<li>"She shut the shop at six." — <strong>Sh</strong>e, <strong>sh</strong>ut, <strong>th</strong>e, <strong>sh</strong>op.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>When you see sh, ch, or th in a word, remember they make one sound, not two. The more you practise, the faster you will spot and read them!</p>`,
+        },
+        {
+          id: 'fl-7-7',
+          title: 'Reading Short Sentences',
+          description: 'Build fluency by reading short, simple sentences.',
+          duration: 10,
+          order: 7,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading short sentences <strong>smoothly</strong>, building your reading fluency.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Amina reads three words: "The... cat... sat." Now she reads them smoothly: "The cat sat." The second time sounds much better! Reading smoothly means not stopping too long between words. Let us practise.</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Reading fluently</strong> means reading smoothly, at a good speed, with expression.</p>
+<p><strong>Read these sentences. First slowly, then smoothly:</strong></p>
+<ol>
+<li>"The dog is big."</li>
+<li>"I can run fast."</li>
+<li>"She has a red bag."</li>
+<li>"The cat sat on the mat."</li>
+<li>"I like to eat fish."</li>
+<li>"The bus is at the stop."</li>
+<li>"He got a pen from the shop."</li>
+<li>"The sun is hot and I am glad."</li>
+</ol>
+<p><strong>Tips for smooth reading:</strong></p>
+<ul>
+<li>Read each sentence twice — the second time will be smoother.</li>
+<li>Point to each word with your finger as you read.</li>
+<li>Try to look at the next word while you are saying the current word.</li>
+<li>Pause briefly at full stops (periods) — that is where the sentence ends.</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read smoothly: "The hen had ten chicks."</li>
+<li>Read smoothly: "I went to the shop to get a bun."</li>
+<li>Read smoothly: "The frog sat on a log in the pond."</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"The hen had ten chicks." — Read it twice to be smoother!</li>
+<li>"I went to the shop to get a bun." — This is a longer sentence, well done!</li>
+<li>"The frog sat on a log in the pond." — Blend words: frog, pond. Excellent!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Fluent reading means reading smoothly without long stops between words. Read each sentence twice — the second time will always be better!</p>`,
+        },
+        {
+          id: 'fl-7-8',
+          title: 'Reading Longer Sentences',
+          description: 'Build fluency by reading longer, more complex sentences.',
+          duration: 10,
+          order: 8,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise reading <strong>longer sentences</strong> with more words and ideas.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You have been reading short sentences. Now let us try longer ones! Longer sentences tell you more. "The dog ran." is short. "The big black dog ran fast to the gate and jumped over it." tells you much more!</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Read these longer sentences:</strong></p>
+<ol>
+<li>"The man went to the shop and got a bag of rice and some fish."</li>
+<li>"I had a bath, put on my dress, and then I went to school."</li>
+<li>"The big red bus was full, so we had to stand and hold on tight."</li>
+<li>"Mum said I must shut the door, wash the dish, and then sit and rest."</li>
+<li>"The thin cat sat on the mat and did not want to get up."</li>
+</ol>
+<p><strong>When reading longer sentences:</strong></p>
+<ul>
+<li>Take a small breath at a comma (,).</li>
+<li>Stop at a full stop (.).</li>
+<li>Break the sentence into chunks: "The man went to the shop / and got a bag of rice / and some fish."</li>
+<li>Think about what the sentence means as you read it.</li>
+</ul>
+<p><strong>Try reading with feeling:</strong></p>
+<ul>
+<li>"Stop! Do not run!" — say this with urgency.</li>
+<li>"I am so glad!" — say this with happiness.</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "The children clap and stamp and sing a fun song at the end."</li>
+<li>Read: "I got a fresh fish from the man at the shop on the hill."</li>
+<li>Read with feeling: "Help! The dog is in the pond!"</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"The children clap and stamp and sing a fun song at the end." Great job reading 14 words!</li>
+<li>"I got a fresh fish from the man at the shop on the hill." 14 words again!</li>
+<li>"Help! The dog is in the pond!" Say it with urgency — you are calling for help!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Longer sentences tell you more. Break them into chunks, breathe at commas, and stop at full stops. Read with feeling to make it come alive!</p>`,
+        },
+        {
+          id: 'fl-7-9',
+          title: 'Sight Words: Common Words to Know',
+          description: 'Learn more high-frequency words that you will see everywhere.',
+          duration: 10,
+          order: 9,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn more <strong>sight words</strong> — common words that appear in almost every text you read.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You already know the tricky words: the, is, I, to, a, was. Now let us learn even more common words. These words appear again and again in books, so knowing them quickly will help you read faster!</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>More sight words to learn:</strong></p>
+<ul>
+<li><strong>he</strong> — "<strong>He</strong> is my friend."</li>
+<li><strong>she</strong> — "<strong>She</strong> is kind."</li>
+<li><strong>we</strong> — "<strong>We</strong> go to school."</li>
+<li><strong>they</strong> — "<strong>They</strong> are playing."</li>
+<li><strong>you</strong> — "<strong>You</strong> are smart."</li>
+<li><strong>my</strong> — "This is <strong>my</strong> book."</li>
+<li><strong>are</strong> — "We <strong>are</strong> happy."</li>
+<li><strong>do</strong> — "What <strong>do</strong> you want?"</li>
+<li><strong>said</strong> — "She <strong>said</strong> hello."</li>
+<li><strong>have</strong> — "I <strong>have</strong> a dog."</li>
+<li><strong>go</strong> — "Let us <strong>go</strong>!"</li>
+<li><strong>no</strong> — "<strong>No</strong>, thank you."</li>
+</ul>
+<p><strong>Practice reading with sight words:</strong></p>
+<ul>
+<li>"<strong>He said</strong> that <strong>we</strong> can <strong>go</strong> to the shop."</li>
+<li>"<strong>She</strong> and <strong>I have</strong> a dog. <strong>They are</strong> playing."</li>
+<li>"<strong>Do you</strong> want <strong>my</strong> pen?"</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "She said we can go to the market."</li>
+<li>Read: "He and I have a big red ball."</li>
+<li>Read: "They are not at the shop. Do you know where they are?"</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"She said we can go to the market." — Sight words: she, said, we, can, go, to, the.</li>
+<li>"He and I have a big red ball." — Sight words: he, and, I, have, a.</li>
+<li>"They are not at the shop. Do you know where they are?" — Many sight words! Well done.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Sight words are common words you should recognise instantly: he, she, we, they, you, my, are, do, said, have, go, no. The more you see them, the faster you read!</p>`,
+        },
+        {
+          id: 'fl-7-10',
+          title: 'Blending Review: Word Reader',
+          description: 'Review all blending and decoding skills.',
+          duration: 12,
+          order: 10,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will review all your blending and decoding skills and prove you are a <strong>Word Reader</strong>!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>You have learned CVC words, consonant blends, digraphs, and sight words. You can read sentences and short stories. Let us put it all together and celebrate how far you have come!</p>
+
+<h3>📚 New Concept</h3>
+<p><strong>Your reading toolkit:</strong></p>
+<p><strong>1. CVC words:</strong> cat, dog, sun, big, red, cup, map, hen, log, pin</p>
+<p><strong>2. Consonant blends:</strong> stop, clap, drum, frog, step, hand, jump, best</p>
+<p><strong>3. Digraphs:</strong> ship, shop, chin, chop, thin, this, fish, bath, much</p>
+<p><strong>4. Sight words:</strong> the, is, I, to, a, was, he, she, we, they, you, my, are, do, said, have, go, no</p>
+<p><strong>Read this story:</strong></p>
+<p>"Chidi and his dog went to the shop. The shop had fish, chips, and buns. Chidi said, 'I want a bun and some chips.' He got them and sat on a bench to eat. The dog sat next to him. 'This is the best lunch!' said Chidi. Then they went back home."</p>
+<p>You just read a whole story with CVC words, blends, digraphs, and sight words! You are a reader!</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Read: "The children clap and sing. They are glad."</li>
+<li>Read: "She went to the shop and got a fresh fish."</li>
+<li>How many of these words can you read in 15 seconds: cat, stop, fish, they, jump, thin, my, drop, she, bench?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"The children clap and sing. They are glad." Well done!</li>
+<li>"She went to the shop and got a fresh fish." Excellent reading!</li>
+<li>If you read all 10 words, you are a Word Reader champion! If you read 7 or more, you are doing great. Keep practising!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You are a Word Reader! You can sound out CVC words, read blends and digraphs, and recognise sight words. You have the tools to read any simple English text. Keep reading every day!</p>`,
+        },
+      ],
+    },
+    {
+      id: 'fl-unit-8',
+      title: 'Reading Comprehension',
+      description: 'Read passages and stories with understanding — find main ideas, answer questions, and think about what you read.',
+      order: 8,
+      lessons: [
+        {
+          id: 'fl-8-1',
+          title: 'Reading and Understanding Short Passages',
+          description: 'Read short passages and show you understand them.',
+          duration: 12,
+          order: 1,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will read short passages and answer questions to show you <strong>understand</strong> what you read.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Reading is not just saying the words — it is understanding what the words mean! When you read "The cat sat on the mat," you should picture a cat sitting on a mat. Let us practise reading AND understanding.</p>
+
+<h3>📚 Read This Passage</h3>
+<p><strong>Passage: Bola's Pet</strong></p>
+<p>Bola has a pet cat. The cat is black and white. Its name is Mimi. Mimi likes to sit on the bed. She likes to drink milk from a cup. Bola feeds Mimi fish and rice. Mimi is a happy cat.</p>
+<p><strong>Understanding what you read:</strong></p>
+<p>After reading, ask yourself these questions:</p>
+<ul>
+<li><strong>Who</strong> is the passage about? (Bola and her cat Mimi)</li>
+<li><strong>What</strong> does Mimi look like? (black and white)</li>
+<li><strong>Where</strong> does Mimi like to sit? (on the bed)</li>
+<li><strong>What</strong> does Mimi eat? (fish and rice)</li>
+</ul>
+<p><strong>Tips for understanding:</strong></p>
+<ul>
+<li>Read the passage slowly.</li>
+<li>Picture what is happening in your mind.</li>
+<li>After reading, ask: Who? What? Where? When? Why?</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What colour is Mimi?</li>
+<li>What does Mimi like to drink?</li>
+<li>Is Mimi a happy or sad cat?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Mimi is <strong>black and white</strong>.</li>
+<li>Mimi likes to drink <strong>milk</strong>.</li>
+<li>Mimi is a <strong>happy</strong> cat.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Reading is understanding, not just saying the words. After you read, ask yourself questions about what you just read. If you can answer them, you understood it!</p>`,
+        },
+        {
+          id: 'fl-8-2',
+          title: 'Finding the Main Idea',
+          description: 'Learn to find what a passage is mostly about.',
+          duration: 12,
+          order: 2,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to find the <strong>main idea</strong> — what a passage is mostly about.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Every passage has a main idea — the most important thing it is about. If you read about a boy who goes fishing, the main idea is not "the boy has legs" — it is "the boy goes fishing." Let us practise finding the main idea.</p>
+
+<h3>📚 Read This Passage</h3>
+<p><strong>Passage: The School Garden</strong></p>
+<p>The children at Bright Star School planted a garden. They dug the soil and put in seeds. They planted tomato seeds, pepper seeds, and corn seeds. Every day, they gave the plants water. After six weeks, the plants grew big and tall. The children picked the tomatoes and peppers. They were very proud of their garden.</p>
+<p><strong>Finding the main idea:</strong></p>
+<p>Ask yourself: "What is this passage mostly about?"</p>
+<ul>
+<li>Is it about water? No, water is just one detail.</li>
+<li>Is it about tomatoes? No, tomatoes are just one thing they grew.</li>
+<li>Is it about children growing a garden? <strong>YES!</strong> That is the main idea.</li>
+</ul>
+<p><strong>The main idea</strong> is: The children at Bright Star School grew a garden and were proud of it.</p>
+<p><strong>How to find the main idea:</strong></p>
+<ul>
+<li>Read the whole passage first.</li>
+<li>Ask: "What is this mostly about?"</li>
+<li>The main idea covers the whole passage, not just one sentence.</li>
+</ul>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What is the main idea of the passage?</li>
+<li>What detail tells you the children worked hard?</li>
+<li>How did the children feel at the end?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>The main idea is that <strong>children planted and grew a garden at their school</strong>.</li>
+<li>They dug the soil, planted seeds, and watered the plants every day — this shows hard work.</li>
+<li>The children felt <strong>proud</strong> of their garden.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>The main idea is what the passage is mostly about. It covers the whole passage, not just one small detail. Ask: "What is this mostly about?"</p>`,
+        },
+        {
+          id: 'fl-8-3',
+          title: 'Answering Questions About What You Read',
+          description: 'Practise answering who, what, where, when, and why questions.',
+          duration: 12,
+          order: 3,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise answering <strong>who, what, where, when, and why</strong> questions about a passage.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>When you read, you can use the question words you learned in grammar — who, what, where, when, and why — to check your understanding. Let us read a passage and answer all kinds of questions.</p>
+
+<h3>📚 Read This Passage</h3>
+<p><strong>Passage: Tunde's Saturday</strong></p>
+<p>On Saturday morning, Tunde woke up early. He helped his mother sweep the compound. Then he had breakfast — bread and tea. After breakfast, Tunde went to the football field with his friends. They played football for two hours. Tunde scored three goals! In the afternoon, Tunde went to the market with his father to buy vegetables. They got tomatoes, onions, and peppers. In the evening, Tunde did his homework and then watched a film on TV. It was a great day!</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li><strong>Who</strong> is the passage about?</li>
+<li><strong>What</strong> did Tunde eat for breakfast?</li>
+<li><strong>Where</strong> did Tunde play football?</li>
+<li><strong>When</strong> did Tunde go to the market?</li>
+<li><strong>Why</strong> do you think Tunde said it was a great day?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>The passage is about <strong>Tunde</strong>.</li>
+<li>Tunde ate <strong>bread and tea</strong> for breakfast.</li>
+<li>Tunde played football at <strong>the football field</strong>.</li>
+<li>Tunde went to the market <strong>in the afternoon</strong>.</li>
+<li>Tunde had a great day because he <strong>played football, scored goals, went to the market with his father, and watched a film</strong> — he had lots of fun!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Use question words to check your understanding: Who is it about? What happened? Where did it happen? When did it happen? Why did it happen? You can answer all of these by reading carefully!</p>`,
+        },
+        {
+          id: 'fl-8-4',
+          title: 'Characters in Stories',
+          description: 'Learn to understand the characters in what you read.',
+          duration: 12,
+          order: 4,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to understand <strong>characters</strong> — the people or animals in a story — by reading about what they do and say.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Characters are the people (or animals) in a story. You can learn about characters by reading what they do, what they say, and how they feel. Let us meet some characters!</p>
+
+<h3>📚 Read This Story</h3>
+<p><strong>Story: Two Friends</strong></p>
+<p>Amina and Chidi sat next to each other in class. They were best friends.</p>
+<p>Amina was quiet and liked to read books. She always finished her homework first. When other children needed help, Amina would explain things patiently.</p>
+<p>Chidi was loud and funny. He made everyone laugh. He loved to play football at break time. Sometimes Chidi forgot to do his homework, but Amina always reminded him.</p>
+<p>One day, Chidi fell and hurt his knee during football. Amina ran to get the teacher. She stayed with Chidi until he felt better. "Thank you, Amina," said Chidi. "You are the best friend I have."</p>
+<p>Amina smiled. "And you make school fun, Chidi. That is why you are MY best friend."</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Describe Amina. What kind of person is she?</li>
+<li>Describe Chidi. What kind of person is he?</li>
+<li>How do you know Amina cares about Chidi? Give evidence from the story.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Amina is <strong>quiet, helpful, patient, and caring</strong>. She likes to read and always does her homework.</li>
+<li>Chidi is <strong>loud, funny, and playful</strong>. He loves football and makes everyone laugh. He sometimes forgets homework.</li>
+<li>Amina cares about Chidi because she <strong>reminded him about homework, ran to get the teacher when he was hurt, and stayed with him until he felt better</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You learn about characters by reading what they do, what they say, and how they feel. Characters can be kind, funny, brave, shy, clever, or many other things!</p>`,
+        },
+        {
+          id: 'fl-8-5',
+          title: 'Sequence: What Happened First, Next, Last?',
+          description: 'Practise putting story events in the correct order.',
+          duration: 12,
+          order: 5,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise finding the <strong>sequence</strong> — the order in which things happen in a story.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Stories happen in order — something happens first, then next, then last. Signal words like <em>first, next, then, after, finally</em> help you follow the order. Let us read a passage and track the sequence.</p>
+
+<h3>📚 Read This Passage</h3>
+<p><strong>Passage: Making Chin-Chin</strong></p>
+<p>Emeka's grandmother taught him how to make chin-chin, a popular Nigerian snack.</p>
+<p><strong>First</strong>, they mixed flour, sugar, and butter in a big bowl. Grandmother let Emeka stir the mixture with a wooden spoon.</p>
+<p><strong>Next</strong>, they added eggs and a little milk. They mixed everything together until it became smooth dough.</p>
+<p><strong>Then</strong>, Grandmother rolled out the dough on the table. She cut it into small squares using a knife. Emeka helped cut some too.</p>
+<p><strong>After that</strong>, Grandmother heated oil in a deep pot. When the oil was hot, she carefully dropped the small dough squares into the oil.</p>
+<p><strong>Finally</strong>, the chin-chin turned golden brown. Grandmother scooped them out and put them on paper to cool. Emeka could not wait — he ate five pieces right away!</p>
+<p>"Delicious!" Emeka said. "Can we make more tomorrow?"</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What did Emeka and his grandmother do <strong>first</strong>?</li>
+<li>What happened <strong>after</strong> they cut the dough into squares?</li>
+<li>What happened at the <strong>end</strong>?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>First, they <strong>mixed flour, sugar, and butter</strong> in a bowl.</li>
+<li>After cutting the dough, Grandmother <strong>heated oil and dropped the squares into the hot oil</strong>.</li>
+<li>At the end, the chin-chin turned golden brown, and <strong>Emeka ate five pieces right away</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Sequence is the order things happen. Look for signal words: first, next, then, after that, finally. These words help you follow the story!</p>`,
+        },
+        {
+          id: 'fl-8-6',
+          title: 'Informational Text: Learning Facts',
+          description: 'Read non-fiction text and learn to identify key facts.',
+          duration: 12,
+          order: 6,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will read an <strong>informational text</strong> and practise finding the important facts.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Not everything you read is a story. Some texts give you real information and facts. These are called <strong>informational texts</strong>. A text about animals, weather, or how things work is informational. Let us read one and find the important facts.</p>
+
+<h3>📚 Read This Passage</h3>
+<p><strong>Passage: The Mosquito</strong></p>
+<p>Mosquitoes are small insects that can make people sick. They are found in many parts of Nigeria, especially during the rainy season.</p>
+<p>Mosquitoes bite people to drink their blood. When a mosquito bites, it can pass a disease called <strong>malaria</strong> into the person's body. Malaria makes people very sick with fever and body pain.</p>
+<p>There are ways to stop mosquitoes from biting you. You can sleep under a <strong>mosquito net</strong>. You can wear long sleeves and trousers in the evening. You can also remove standing water near your home because mosquitoes lay their eggs in standing water.</p>
+<p>If someone gets malaria, they must see a <strong>doctor</strong> quickly. The doctor will give medicine to help them get better. Malaria can be dangerous, but it can be treated if caught early.</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What disease can mosquitoes spread?</li>
+<li>Name two ways to stop mosquitoes from biting you.</li>
+<li>What should you do if someone gets malaria?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Mosquitoes can spread <strong>malaria</strong>.</li>
+<li>Two ways: <strong>sleep under a mosquito net</strong> and <strong>remove standing water near your home</strong> (or wear long sleeves).</li>
+<li>If someone gets malaria, they should <strong>see a doctor quickly</strong> to get medicine.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Informational texts teach you real facts. When reading them, look for the important information: what, why, and how. This is how you learn about the world through reading!</p>`,
+        },
+        {
+          id: 'fl-8-7',
+          title: 'Stories with Dialogue',
+          description: 'Read stories where characters talk to each other.',
+          duration: 12,
+          order: 7,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to read <strong>dialogue</strong> — the words that characters say in a story, shown with speech marks.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>In stories, characters talk to each other. When a character speaks, their words are put inside <strong>speech marks</strong> (" "). For example: Bola said, "I am happy!" The words inside the speech marks are what Bola actually said.</p>
+
+<h3>📚 Read This Story</h3>
+<p><strong>Story: The Lost Ball</strong></p>
+<p>Funke and Tunde were playing in the garden.</p>
+<p>"Kick the ball to me!" said Tunde.</p>
+<p>Funke kicked the ball hard. It flew over the fence and into the neighbour's garden.</p>
+<p>"Oh no!" said Funke. "The ball is gone!"</p>
+<p>"Do not worry," said Tunde. "I will ask the neighbour for it."</p>
+<p>Tunde knocked on the neighbour's door. An old woman opened it.</p>
+<p>"Good afternoon, Ma. Our ball went into your garden. Please, can I get it?" asked Tunde politely.</p>
+<p>The old woman smiled. "Of course, my dear. Let me get it for you."</p>
+<p>She came back with the ball. "Here you go. Try not to kick it so hard next time!" she said, laughing.</p>
+<p>"Thank you, Ma!" said Tunde and Funke together.</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>Who said "Kick the ball to me"?</li>
+<li>Who said "Oh no! The ball is gone!"?</li>
+<li>Was Tunde polite to the neighbour? How do you know?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>Tunde</strong> said "Kick the ball to me!"</li>
+<li><strong>Funke</strong> said "Oh no! The ball is gone!"</li>
+<li>Yes, Tunde was polite. He said <strong>"Good afternoon, Ma"</strong> and <strong>"Please, can I get it?"</strong> and <strong>"Thank you, Ma!"</strong></li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Dialogue is when characters speak. Their words go inside speech marks (" "). Look for "said" to know who is speaking. Dialogue makes stories come alive!</p>`,
+        },
+        {
+          id: 'fl-8-8',
+          title: 'Making Predictions from Reading',
+          description: 'Use what you read to predict what will happen next.',
+          duration: 12,
+          order: 8,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will use clues in a passage to <strong>predict</strong> what might happen next.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Good readers think ahead! When you read a story, you can use clues to guess what might happen next. This is called <strong>making a prediction</strong>. You learned to predict by listening — now let us predict from reading.</p>
+
+<h3>📚 Read This Story (It Stops Before the End!)</h3>
+<p><strong>Story: The Big Storm</strong></p>
+<p>Amina looked out of the window. The sky was getting dark. Big grey clouds were rolling in. The wind was blowing hard, shaking the trees.</p>
+<p>"Amina! Come inside quickly!" called her mother. "A big storm is coming!"</p>
+<p>Amina ran inside. Her mother closed all the windows and locked the door. She brought out candles and matches.</p>
+<p>"Why do we need candles, Mama?" asked Amina.</p>
+<p>"Because the lights might go off during the storm," said Mama.</p>
+<p>Just then, they heard a loud sound: BOOM! Thunder crashed in the sky. Rain started falling — first lightly, then harder and harder. The lights flickered once, twice, and then...</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li><strong>Predict:</strong> What do you think happened next? Did the lights go off or stay on?</li>
+<li>What clue in the story helped you make your prediction?</li>
+<li>What do you think Amina and her mother did after that?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>The lights probably <strong>went off</strong>. The clue is that they flickered, and Mama had already prepared candles because she expected the power to go out.</li>
+<li>The clues were: Mama brought out <strong>candles and matches</strong>, she said "the lights might go off," and the lights <strong>flickered</strong> twice.</li>
+<li>They probably <strong>lit the candles and waited for the storm to pass</strong>. They might have told stories or talked to pass the time.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Making predictions means using clues from the text to guess what will happen next. Look for hints the author gives you. Your prediction does not have to be perfect — just smart!</p>`,
+        },
+        {
+          id: 'fl-8-9',
+          title: 'Summarizing What You Read',
+          description: 'Learn to tell the most important parts of a passage in a few sentences.',
+          duration: 12,
+          order: 9,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to <strong>summarize</strong> — tell the most important parts of a passage in just a few sentences.</p>
+
+<h3>🌟 Let's Start</h3>
+<p>Imagine your friend asks, "What was that story about?" You would not tell them every single word — you would tell them the most important parts. That is <strong>summarizing</strong>! A good summary is short and includes only the main points.</p>
+
+<h3>📚 Read This Story</h3>
+<p><strong>Story: Emeka's Garden</strong></p>
+<p>Emeka wanted to grow vegetables in his backyard. He asked his grandfather for help. Grandfather showed him how to dig the soil and make rows. Emeka planted tomato seeds and pepper seeds. Every morning before school, Emeka watered the plants. Sometimes the sun was very hot and the plants looked tired. Emeka gave them extra water on those days. After eight weeks, the plants had grown big. Red tomatoes and green peppers hung from the plants. Emeka picked them and gave some to his neighbours. His grandfather said, "I am proud of you, Emeka. You worked hard and did not give up." Emeka felt happy.</p>
+<p><strong>How to summarize:</strong></p>
+<ol>
+<li>Find the <strong>main idea</strong>: What is the passage mostly about?</li>
+<li>Find the <strong>key events</strong>: What are the most important things that happened?</li>
+<li>Say it in 2-3 sentences.</li>
+</ol>
+<p><strong>Summary:</strong> "Emeka wanted to grow vegetables. With his grandfather's help, he planted seeds and watered them every day. After eight weeks, the vegetables grew and Emeka shared them with his neighbours."</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li>What is the main idea of the story?</li>
+<li>What are the three most important events?</li>
+<li>Try writing your own summary in 2-3 sentences.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>The main idea is that <strong>Emeka grew a vegetable garden through hard work and patience</strong>.</li>
+<li>Three important events: <strong>1) Emeka planted seeds with his grandfather's help. 2) He watered them every day. 3) The vegetables grew and he shared them.</strong></li>
+<li>Example summary: "Emeka and his grandfather planted a garden. Emeka took care of it every day. The vegetables grew, and Emeka shared them with his neighbours."</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>A summary tells the most important parts in a few sentences. Find the main idea, pick the key events, and say it briefly. You do not need to include every detail!</p>`,
+        },
+        {
+          id: 'fl-8-10',
+          title: 'Reading Review: Comprehension Champion',
+          description: 'Use all your reading comprehension skills in a final review.',
+          duration: 12,
+          order: 10,
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will use ALL your reading skills — main idea, questions, characters, sequence, facts, dialogue, predictions, and summarizing — to show you are a <strong>Comprehension Champion</strong>!</p>
+
+<h3>🌟 Let's Start</h3>
+<p>This is the final lesson of the Foundational Literacy course. You have come SO far — from listening to sounds, to learning letters, to reading words, to reading stories with understanding. You should be very proud! Let us use all your skills one final time.</p>
+
+<h3>📚 Read This Story</h3>
+<p><strong>Story: The School Concert</strong></p>
+<p>The children at Green Hills School were excited. Their school was having a concert at the end of the term.</p>
+<p>"I will sing a song!" said Bola.</p>
+<p>"I will play the drum," said Tunde.</p>
+<p>"I want to tell a story on stage," said Amina quietly.</p>
+<p>Mrs. Okafor, the teacher, helped them practise every day after school. First, Bola sang her song again and again until it sounded beautiful. Next, Tunde practised his drum beats until they were perfect. Then, Amina wrote a short story about a clever tortoise and practised reading it with a loud, clear voice.</p>
+<p>On the day of the concert, the hall was full of parents and families. Bola felt nervous, but when she started singing, her voice was strong and sweet. Everyone clapped. Tunde played his drum and the whole audience tapped their feet. Then Amina walked to the front. Her hands were shaking, but she began to read her story. The audience laughed at the funny parts and clapped loudly at the end.</p>
+<p>"You were all wonderful!" said Mrs. Okafor. "I am so proud of you."</p>
+<p>On the way home, Amina's mother said, "I did not know you could read so well, Amina!" Amina smiled. "I have been practising," she said. "Reading is my superpower."</p>
+
+<h3>🎮 Let's Practice</h3>
+<ol>
+<li><strong>Main idea:</strong> What is this story mostly about?</li>
+<li><strong>Characters:</strong> How is Amina different at the start compared to the end?</li>
+<li><strong>Summarize:</strong> Tell this story in 3 sentences.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>The main idea is that <strong>three children prepared for and performed at their school concert, and all did well because they practised hard</strong>.</li>
+<li>At the start, Amina spoke <strong>quietly</strong> and was nervous (her hands were shaking). At the end, she read with a loud, clear voice and confidently said <strong>"Reading is my superpower."</strong> She grew in confidence.</li>
+<li>Example summary: "Bola, Tunde, and Amina prepared for their school concert. They practised every day with their teacher. At the concert, they all performed well and their families were proud."</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Congratulations — you are a <strong>Comprehension Champion</strong>! You started this course by learning to listen to sounds. Now you can READ and UNDERSTAND stories and texts in English. Reading is your superpower. Never stop reading, and your power will only grow stronger!</p>`,
+        },
+      ],
+    },
   ],
 };

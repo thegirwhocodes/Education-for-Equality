@@ -3475,5 +3475,692 @@ export const foundationalNumeracy: Subject = {
         },
       ],
     },
+    {
+      id: 'fn-unit-6',
+      title: 'Word Problems — Mixed Operations',
+      description: 'Apply all four operations to solve real-world problems set in Nigerian markets and daily life.',
+      order: 6,
+      lessons: [
+        {
+          id: 'fn-6-1',
+          title: 'Choosing the Right Operation',
+          description: 'Learn to decide whether to add, subtract, multiply, or divide.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn how to read a word problem and decide which operation (addition, subtraction, multiplication, or division) to use.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Amina faces four different problems at the market. She needs to pick the right tool for each one — just like choosing the right tool from a toolbox. Addition, subtraction, multiplication, and division are her four maths tools!</p>
+
+<h3>📝 Let's Learn</h3>
+<p>Here's how to choose:</p>
+<ul>
+<li><strong>Addition (+):</strong> Use when combining, joining, or finding the total. Key words: altogether, total, in all, combined, sum.</li>
+<li><strong>Subtraction (−):</strong> Use when taking away, finding the difference, or finding what's left. Key words: left, remain, change, difference, less, fewer.</li>
+<li><strong>Multiplication (×):</strong> Use when you have equal groups. Key words: each, every, per, times, groups of.</li>
+<li><strong>Division (÷):</strong> Use when sharing equally or making groups. Key words: share, divide, split, per item, each gets.</li>
+</ul>
+<p><strong>Example 1:</strong> "Emeka buys 5 oranges at ₦10 each." → Equal groups → <strong>Multiply</strong>: 5 × ₦10 = ₦50.</p>
+<p><strong>Example 2:</strong> "Bola has ₦100 and spends ₦35." → Taking away → <strong>Subtract</strong>: ₦100 − ₦35 = ₦65.</p>
+<p><strong>Example 3:</strong> "₦60 is shared among 3 children." → Sharing equally → <strong>Divide</strong>: ₦60 ÷ 3 = ₦20.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Tunde has 25 marbles and Chidi has 18. How many do they have together? (Which operation?)</li>
+<li>Funke buys 4 pens at ₦15 each. How much does she pay? (Which operation?)</li>
+<li>₦80 is shared equally between 2 sisters. How much does each get? (Which operation?)</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>Addition.</strong> 25 + 18 = <strong>43 marbles</strong>.</li>
+<li><strong>Multiplication.</strong> 4 × ₦15 = <strong>₦60</strong>.</li>
+<li><strong>Division.</strong> ₦80 ÷ 2 = <strong>₦40 each</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Read the problem carefully and look for clue words. "How many altogether" = add. "How much is left" = subtract. "Each costs" = multiply. "Share equally" = divide.</p>`,
+          duration: 12,
+          order: 1,
+        },
+        {
+          id: 'fn-6-2',
+          title: 'Key Words in Word Problems',
+          description: 'Learn to spot key words that tell you which operation to use.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn specific key words and phrases that signal which math operation to use in a word problem.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Mrs. Okafor teaches her class a trick: "Look for special words in the problem. These words are clues that tell you what to do!" She writes clue words on the board for each operation.</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Addition clue words:</strong> total, altogether, in all, combined, sum, both, and, plus, more than (when joining), how many together.</p>
+<p><strong>Subtraction clue words:</strong> left, remain, change, difference, how much more, how much less, fewer, take away, spent.</p>
+<p><strong>Multiplication clue words:</strong> each, every, per, times, groups of, rows of, twice, triple.</p>
+<p><strong>Division clue words:</strong> share, divide, split, each gets, per person, equal parts, half, one-third.</p>
+<p><strong>Example 1:</strong> "What is the <em>total</em> cost?" → Addition.</p>
+<p><strong>Example 2:</strong> "How much <em>change</em> does he get?" → Subtraction.</p>
+<p><strong>Example 3:</strong> "She buys 3 bags at ₦20 <em>each</em>." → Multiplication.</p>
+<p><strong>Example 4:</strong> "They <em>share</em> ₦100 <em>equally</em>." → Division.</p>
+<p><strong>Warning:</strong> Key words are helpful hints, but always think about what the problem is really asking. Sometimes "more" can mean subtraction (how much more = difference)!</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>"Bola has 15 sweets and gives away 6. How many does she have <em>left</em>?" What operation? Solve it.</li>
+<li>"Chidi buys 7 mangoes at ₦8 <em>each</em>." What operation? Solve it.</li>
+<li>"Amina and Funke have 23 and 31 beads. How many do they have <em>altogether</em>?" What operation? Solve it.</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>"Left" = <strong>subtraction</strong>. 15 − 6 = <strong>9 sweets</strong>.</li>
+<li>"Each" = <strong>multiplication</strong>. 7 × ₦8 = <strong>₦56</strong>.</li>
+<li>"Altogether" = <strong>addition</strong>. 23 + 31 = <strong>54 beads</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Key words are clues, not rules. Always read the whole problem and think about what makes sense. With practice, you'll know the right operation instantly!</p>`,
+          duration: 12,
+          order: 2,
+        },
+        {
+          id: 'fn-6-3',
+          title: 'Addition or Subtraction?',
+          description: 'Practise deciding between addition and subtraction.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will get better at deciding whether a problem needs addition or subtraction.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Tunde and Emeka are shopping together. They face different situations: sometimes they need to add prices together, sometimes they need to figure out change. Let's help them decide!</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Add when:</strong> You're putting groups together, finding a total, or things are increasing.</p>
+<p><strong>Subtract when:</strong> You're taking away, finding what's left, finding change, or comparing two amounts.</p>
+<p><strong>Problem 1:</strong> "Tunde has ₦45 and earns ₦30 more." Things are increasing → <strong>Add</strong>: ₦45 + ₦30 = <strong>₦75</strong>.</p>
+<p><strong>Problem 2:</strong> "Emeka has ₦80 and spends ₦35 on food." Things are decreasing → <strong>Subtract</strong>: ₦80 − ₦35 = <strong>₦45</strong>.</p>
+<p><strong>Problem 3:</strong> "Amina scored 72 in English and 85 in Maths. How much more did she score in Maths?" Comparing → <strong>Subtract</strong>: 85 − 72 = <strong>13 more marks</strong>.</p>
+<p><strong>Problem 4:</strong> "Bola has 23 red beads and 37 blue beads. How many beads in total?" Combining → <strong>Add</strong>: 23 + 37 = <strong>60 beads</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Chidi has ₦120. He gets ₦65 from his father. How much does he have now? (Add or subtract?)</li>
+<li>A market trader has 80 oranges. She sells 45. How many are left? (Add or subtract?)</li>
+<li>Funke's class has 28 girls and 24 boys. How many students are there in all? (Add or subtract?)</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>Add.</strong> ₦120 + ₦65 = <strong>₦185</strong>.</li>
+<li><strong>Subtract.</strong> 80 − 45 = <strong>35 oranges left</strong>.</li>
+<li><strong>Add.</strong> 28 + 24 = <strong>52 students</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>If amounts are coming together, add. If amounts are being taken away or you're finding a difference, subtract. Ask yourself: "Is the answer going to be bigger or smaller than what I started with?"</p>`,
+          duration: 12,
+          order: 3,
+        },
+        {
+          id: 'fn-6-4',
+          title: 'Multiplication or Division?',
+          description: 'Practise deciding between multiplication and division.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will get better at deciding whether a problem needs multiplication or division.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Bola and Funke are at the market. Sometimes they know the price of one item and need the total for many (multiply!). Other times they know the total and need to find the price of one (divide!). Let's practise telling the difference.</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Multiply when:</strong> You know the amount for one and need the total for many.</p>
+<p><strong>Divide when:</strong> You know the total and need to find the amount for one, or you need to split into groups.</p>
+<p><strong>Problem 1:</strong> "6 pencils at ₦8 each. What's the total?" Know price of one, want total → <strong>Multiply</strong>: 6 × ₦8 = <strong>₦48</strong>.</p>
+<p><strong>Problem 2:</strong> "₦48 for 6 pencils. What's the price of one?" Know total, want price of one → <strong>Divide</strong>: ₦48 ÷ 6 = <strong>₦8</strong>.</p>
+<p><strong>Problem 3:</strong> "3 people each carry 4 bags." Equal groups → <strong>Multiply</strong>: 3 × 4 = <strong>12 bags</strong>.</p>
+<p><strong>Problem 4:</strong> "12 bags shared among 3 people." Sharing equally → <strong>Divide</strong>: 12 ÷ 3 = <strong>4 bags each</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Emeka buys 5 meat pies at ₦30 each. How much in total? (Multiply or divide?)</li>
+<li>₦150 is shared equally among 5 children. How much does each get? (Multiply or divide?)</li>
+<li>A crate holds 4 rows of eggs with 8 eggs per row. How many eggs? (Multiply or divide?)</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li><strong>Multiply.</strong> 5 × ₦30 = <strong>₦150</strong>.</li>
+<li><strong>Divide.</strong> ₦150 ÷ 5 = <strong>₦30 each</strong>.</li>
+<li><strong>Multiply.</strong> 4 × 8 = <strong>32 eggs</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>If you know the price of one and want the total: multiply. If you know the total and want to find one: divide. They are opposites!</p>`,
+          duration: 12,
+          order: 4,
+        },
+        {
+          id: 'fn-6-5',
+          title: 'Two-Step Problems: Buy and Get Change',
+          description: 'Solve problems that require multiplying then subtracting.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will solve two-step problems where you first calculate a total cost (multiplication), then find the change (subtraction).</p>
+
+<h3>🏪 Market Story</h3>
+<p>Chidi has ₦200. He buys 3 exercise books at ₦45 each. How much change does he get? This needs two steps: Step 1: Find the total cost. Step 2: Find the change.</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Step 1:</strong> Total cost = 3 × ₦45 = ₦135.</p>
+<p><strong>Step 2:</strong> Change = ₦200 − ₦135 = <strong>₦65</strong>.</p>
+<p><strong>Example 1:</strong> Amina buys 4 bananas at ₦15 each and pays ₦100. Step 1: 4 × ₦15 = ₦60. Step 2: ₦100 − ₦60 = <strong>₦40 change</strong>.</p>
+<p><strong>Example 2:</strong> Tunde buys 6 pencils at ₦10 each and pays ₦100. Step 1: 6 × ₦10 = ₦60. Step 2: ₦100 − ₦60 = <strong>₦40 change</strong>.</p>
+<p><strong>Example 3:</strong> Funke buys 5 biscuit packs at ₦25 each and pays ₦200. Step 1: 5 × ₦25 = ₦125. Step 2: ₦200 − ₦125 = <strong>₦75 change</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Bola buys 3 pens at ₦20 each. She pays with ₦100. How much change?</li>
+<li>Emeka buys 4 mangoes at ₦12 each. He pays with ₦100. How much change?</li>
+<li>Amina buys 7 sweets at ₦5 each and pays with a ₦50 note. How much change does she receive?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>3 × ₦20 = ₦60. Change: ₦100 − ₦60 = <strong>₦40</strong>.</li>
+<li>4 × ₦12 = ₦48. Change: ₦100 − ₦48 = <strong>₦52</strong>.</li>
+<li>7 × ₦5 = ₦35. Change: ₦50 − ₦35 = <strong>₦15</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Two-step problems are common in real life. First multiply to find the total cost, then subtract from what you paid to find the change. Take it one step at a time!</p>`,
+          duration: 14,
+          order: 5,
+        },
+        {
+          id: 'fn-6-6',
+          title: 'Two-Step Problems: Earn and Share',
+          description: 'Solve problems that require adding then dividing.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will solve two-step problems where you first add amounts together, then divide to share equally.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Tunde and Chidi wash cars together on Saturday. Tunde earns ₦80 and Chidi earns ₦70. They decide to combine their money and split it equally. How much does each get?</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Step 1:</strong> Combine the earnings: ₦80 + ₦70 = ₦150.</p>
+<p><strong>Step 2:</strong> Divide equally: ₦150 ÷ 2 = <strong>₦75 each</strong>.</p>
+<p><strong>Example 1:</strong> Three friends earn ₦60, ₦45, and ₦75 doing chores. They share equally. Step 1: ₦60 + ₦45 + ₦75 = ₦180. Step 2: ₦180 ÷ 3 = <strong>₦60 each</strong>.</p>
+<p><strong>Example 2:</strong> Amina and Bola sell 16 and 24 mangoes. They share the total equally. Step 1: 16 + 24 = 40. Step 2: 40 ÷ 2 = <strong>20 mangoes each</strong>.</p>
+<p><strong>Example 3:</strong> 4 students collect ₦25 each for a group project. They buy materials for ₦60 and split the remainder. Step 1: Total collected: 4 × ₦25 = ₦100. After spending: ₦100 − ₦60 = ₦40. Step 2: ₦40 ÷ 4 = <strong>₦10 each</strong> gets back.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Funke earns ₦50 on Monday and ₦70 on Tuesday. She splits it equally over 2 days. How much per day? (Trick: she already earned different amounts, so this doesn't need dividing — but what if she wants to save equally?)</li>
+<li>3 siblings get ₦90, ₦60, and ₦30 as gifts. They combine and share equally. How much does each get?</li>
+<li>Emeka and Tunde find ₦40 and ₦20 on the ground. They share their total find equally. How much does each get?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>₦50 + ₦70 = ₦120. ₦120 ÷ 2 = <strong>₦60 per day</strong> on average.</li>
+<li>₦90 + ₦60 + ₦30 = ₦180. ₦180 ÷ 3 = <strong>₦60 each</strong>.</li>
+<li>₦40 + ₦20 = ₦60. ₦60 ÷ 2 = <strong>₦30 each</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>When you need to combine and then share, first add everything together, then divide by the number of people. Two steps, two operations!</p>`,
+          duration: 14,
+          order: 6,
+        },
+        {
+          id: 'fn-6-7',
+          title: 'Market Day: Shopping with a Budget',
+          description: 'Plan purchases within a budget using all four operations.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will practise shopping with a budget, deciding what you can afford and calculating totals and change.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Bola has ₦500 to buy food for the week. She needs to be smart about her spending. Here are the market prices:</p>
+<ul>
+<li>Rice (bag): ₦200</li>
+<li>Beans: ₦100</li>
+<li>Garri: ₦80</li>
+<li>Tomatoes (pile): ₦50</li>
+<li>Peppers (pile): ₦30</li>
+<li>Oil: ₦120</li>
+<li>Onions: ₦40</li>
+</ul>
+
+<h3>📝 Let's Learn</h3>
+<p>Bola makes a list: rice, beans, tomatoes, peppers, and oil.</p>
+<p><strong>Step 1 — Add up the total:</strong> ₦200 + ₦100 + ₦50 + ₦30 + ₦120 = ₦500. Exactly her budget!</p>
+<p>But wait — can she also get onions (₦40)? ₦500 + ₦40 = ₦540. That's more than ₦500. She can't afford onions too.</p>
+<p>What if she drops the beans? ₦500 − ₦100 = ₦400. Now she has ₦100 left, enough for garri (₦80) and onions (₦40) — total: ₦400 + ₦80 + ₦40 = ₦520. Still too much by ₦20!</p>
+<p>Final plan: Rice (₦200) + Garri (₦80) + Tomatoes (₦50) + Peppers (₦30) + Oil (₦120) + Onions (₦40) = <strong>₦520</strong>. Over budget by ₦20. She removes onions: <strong>₦480</strong>. Change: ₦500 − ₦480 = <strong>₦20 left</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Chidi has ₦300. Can he buy rice (₦200) and beans (₦100)? What change would he get?</li>
+<li>Funke has ₦200. She wants tomatoes (₦50), peppers (₦30), and oil (₦120). Can she afford it all?</li>
+<li>Emeka has ₦400. He buys garri (₦80) and 2 piles of tomatoes at ₦50 each. How much does he have left?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>₦200 + ₦100 = ₦300. Yes! Change: ₦300 − ₦300 = <strong>₦0</strong>. Exact change.</li>
+<li>₦50 + ₦30 + ₦120 = ₦200. Yes! Exactly ₦200. She can afford it with <strong>₦0 left</strong>.</li>
+<li>Garri: ₦80. Tomatoes: 2 × ₦50 = ₦100. Total: ₦180. Left: ₦400 − ₦180 = <strong>₦220</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Shopping with a budget means adding up costs and checking they don't exceed your money. Subtract the total from your budget to find what's left. Planning ahead saves you from running out of money!</p>`,
+          duration: 14,
+          order: 7,
+        },
+        {
+          id: 'fn-6-8',
+          title: 'Market Day: Running a Stall',
+          description: 'Calculate profits and totals as a market trader.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will think like a market trader, calculating how much you earn, spend, and profit.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Emeka sets up a small stall selling pure water. He buys a bag of 20 sachets for ₦200. He sells each sachet for ₦20. If he sells all 20, how much does he make? And what's his profit?</p>
+
+<h3>📝 Let's Learn</h3>
+<p>Let's help Emeka calculate:</p>
+<p><strong>Step 1 — Revenue (money from selling):</strong> 20 sachets × ₦20 each = ₦400.</p>
+<p><strong>Step 2 — Cost (money spent buying):</strong> ₦200.</p>
+<p><strong>Step 3 — Profit (money earned):</strong> Revenue − Cost = ₦400 − ₦200 = <strong>₦200 profit</strong>!</p>
+<p><strong>Profit = What you sell for − What you paid</strong></p>
+<p><strong>Example 1:</strong> Funke buys 10 oranges for ₦50 (₦5 each) and sells each for ₦10. Revenue: 10 × ₦10 = ₦100. Cost: ₦50. Profit: ₦100 − ₦50 = <strong>₦50</strong>.</p>
+<p><strong>Example 2:</strong> Tunde buys 5 pencils for ₦40 and sells each for ₦15. Revenue: 5 × ₦15 = ₦75. Cost: ₦40. Profit: ₦75 − ₦40 = <strong>₦35</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Amina buys 8 biscuit packs for ₦80 total. She sells each for ₦15. What is her revenue and profit?</li>
+<li>Chidi buys a crate of 30 eggs for ₦150. He sells each egg for ₦10. What is his profit?</li>
+<li>Bola spends ₦100 on 20 sweets and sells each for ₦8. Does she make a profit?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Revenue: 8 × ₦15 = ₦120. Profit: ₦120 − ₦80 = <strong>₦40 profit</strong>.</li>
+<li>Revenue: 30 × ₦10 = ₦300. Profit: ₦300 − ₦150 = <strong>₦150 profit</strong>.</li>
+<li>Revenue: 20 × ₦8 = ₦160. Profit: ₦160 − ₦100 = <strong>₦60 profit</strong>. Yes!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Profit = Revenue (selling price) − Cost (buying price). To make a profit, you must sell for more than you paid. This is how all businesses work!</p>`,
+          duration: 14,
+          order: 8,
+        },
+        {
+          id: 'fn-6-9',
+          title: 'Money Problems: Saving and Spending',
+          description: 'Solve problems about saving money over time and spending it wisely.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will solve problems about saving and spending money, combining addition, subtraction, and multiplication.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Funke wants to buy a school bag that costs ₦600. She saves ₦50 every week. How many weeks will it take her to save enough?</p>
+
+<h3>📝 Let's Learn</h3>
+<p>Funke saves ₦50 per week. She needs ₦600.</p>
+<p><strong>Method:</strong> ₦600 ÷ ₦50 = 12 weeks. She needs to save for <strong>12 weeks</strong>.</p>
+<p><strong>Check:</strong> 12 × ₦50 = ₦600. ✓</p>
+<p><strong>Example 1:</strong> Tunde saves ₦30 per week. After 8 weeks, how much has he saved? 8 × ₦30 = <strong>₦240</strong>. He then buys a book for ₦85. Left: ₦240 − ₦85 = <strong>₦155</strong>.</p>
+<p><strong>Example 2:</strong> Amina has ₦100 saved. She earns ₦25 each day for 4 days. Total: ₦100 + (4 × ₦25) = ₦100 + ₦100 = <strong>₦200</strong>.</p>
+<p><strong>Example 3:</strong> Chidi needs ₦500. He already has ₦180 and earns ₦40 per week. How many more weeks? He needs ₦500 − ₦180 = ₦320 more. ₦320 ÷ ₦40 = <strong>8 more weeks</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Bola saves ₦20 per week. How much does she have after 10 weeks?</li>
+<li>Emeka needs ₦300 for a football. He has ₦120 saved and earns ₦60 per week. How many weeks until he can buy it?</li>
+<li>Funke saves ₦45 per week for 6 weeks, then spends ₦150. How much does she have left?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>10 × ₦20 = <strong>₦200</strong>.</li>
+<li>Needs: ₦300 − ₦120 = ₦180 more. ₦180 ÷ ₦60 = <strong>3 more weeks</strong>.</li>
+<li>Saved: 6 × ₦45 = ₦270. After spending: ₦270 − ₦150 = <strong>₦120 left</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Saving is addition over time (multiply your weekly savings by weeks). To find how long to save, divide the goal by your weekly amount. Always subtract spending to see what's left!</p>`,
+          duration: 14,
+          order: 9,
+        },
+        {
+          id: 'fn-6-10',
+          title: 'Money Problems: Comparing Prices',
+          description: 'Compare prices and find the best deals at the market.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn to compare prices from different sellers and find the best deal using division and subtraction.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Amina's mother sends her to buy tomatoes. Two sellers offer different deals:</p>
+<ul>
+<li>Seller A: 5 tomatoes for ₦100</li>
+<li>Seller B: 8 tomatoes for ₦120</li>
+</ul>
+<p>Which is the better deal? Amina needs to find the price per tomato for each seller.</p>
+
+<h3>📝 Let's Learn</h3>
+<p>To compare deals, find the <strong>price per item</strong> (unit price):</p>
+<p>Seller A: ₦100 ÷ 5 = ₦20 per tomato.</p>
+<p>Seller B: ₦120 ÷ 8 = ₦15 per tomato.</p>
+<p>Seller B is cheaper per tomato! The difference: ₦20 − ₦15 = ₦5 cheaper per tomato.</p>
+<p><strong>Example 1:</strong> Shop A sells 3 pens for ₦45 (₦15 each). Shop B sells 5 pens for ₦60 (₦12 each). <strong>Shop B is cheaper</strong> by ₦3 per pen.</p>
+<p><strong>Example 2:</strong> Pack A: 4 biscuits for ₦40 (₦10 each). Pack B: 6 biscuits for ₦48 (₦8 each). <strong>Pack B is cheaper</strong> by ₦2 per biscuit.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Stall A: 6 oranges for ₦60. Stall B: 10 oranges for ₦80. Which stall has the better price per orange?</li>
+<li>Brand A rice: 2 kg for ₦200. Brand B rice: 5 kg for ₦450. Which brand is cheaper per kg?</li>
+<li>Emeka can buy 4 exercise books for ₦100 or 3 for ₦60. Which is the better deal?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>A: ₦60 ÷ 6 = ₦10 each. B: ₦80 ÷ 10 = ₦8 each. <strong>Stall B is cheaper</strong>.</li>
+<li>A: ₦200 ÷ 2 = ₦100 per kg. B: ₦450 ÷ 5 = ₦90 per kg. <strong>Brand B is cheaper</strong>.</li>
+<li>4 for ₦100: ₦100 ÷ 4 = ₦25 each. 3 for ₦60: ₦60 ÷ 3 = ₦20 each. <strong>3 for ₦60 is cheaper per book</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>To find the best deal, divide the total price by the number of items to get the price per item. Lower price per item = better deal. Smart shoppers always compare!</p>`,
+          duration: 14,
+          order: 10,
+        },
+        {
+          id: 'fn-6-11',
+          title: 'Real Life: Bus Fare and Transport',
+          description: 'Solve real-life problems about transport costs.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will solve problems about bus fares and transport costs that Nigerian families face every day.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Emeka's family needs to travel from Ikeja to Victoria Island. They can take a danfo (₦100 per person) or a BRT bus (₦80 per person). The family has 4 members. Which option is cheaper and by how much?</p>
+
+<h3>📝 Let's Learn</h3>
+<p>Danfo: 4 × ₦100 = ₦400.</p>
+<p>BRT: 4 × ₦80 = ₦320.</p>
+<p>Difference: ₦400 − ₦320 = ₦80. The BRT saves <strong>₦80</strong>.</p>
+<p><strong>Example 1:</strong> Bola takes a keke to school every day. It costs ₦50 each way. Daily cost: 2 × ₦50 = ₦100. Weekly cost (5 days): 5 × ₦100 = <strong>₦500</strong>.</p>
+<p><strong>Example 2:</strong> Tunde's father spends ₦200 on transport daily. How much does he spend in a 5-day work week? 5 × ₦200 = <strong>₦1,000</strong>. In 4 weeks: 4 × ₦1,000 = <strong>₦4,000</strong>.</p>
+<p><strong>Example 3:</strong> A group of 6 friends hire a taxi for ₦300 instead of each paying ₦80 for a danfo. Is the taxi cheaper? Danfo total: 6 × ₦80 = ₦480. Taxi: ₦300. Savings: ₦480 − ₦300 = <strong>₦180</strong>. The taxi is cheaper!</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Funke takes a bus to school (₦30 each way) 5 days a week. What is her weekly transport cost?</li>
+<li>A family of 5 takes a danfo at ₦150 per person. What is the total cost?</li>
+<li>Chidi can take a keke alone for ₦100 or share with 3 friends for ₦160 total. How much does each pay if they share? Is sharing cheaper for Chidi?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Daily: 2 × ₦30 = ₦60. Weekly: 5 × ₦60 = <strong>₦300</strong>.</li>
+<li>5 × ₦150 = <strong>₦750</strong>.</li>
+<li>₦160 ÷ 4 = ₦40 each. Yes, sharing (₦40) is cheaper than ₦100 alone. Chidi saves <strong>₦60</strong>!</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Transport costs add up quickly. Multiply the daily cost by the number of days to see weekly costs. Sharing transport saves money — divide the cost among friends!</p>`,
+          duration: 14,
+          order: 11,
+        },
+        {
+          id: 'fn-6-12',
+          title: 'Real Life: School Supplies Shopping',
+          description: 'Calculate the cost of school supplies using all operations.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will solve a complete school supplies shopping problem using addition, subtraction, multiplication, and division.</p>
+
+<h3>🏪 Market Story</h3>
+<p>It's back-to-school time! Amina's mother gives her ₦1,000 to buy supplies for herself and her younger brother. Here are the prices:</p>
+<ul>
+<li>Exercise books: ₦35 each</li>
+<li>Pens: ₦20 each</li>
+<li>Pencils: ₦10 each</li>
+<li>Erasers: ₦5 each</li>
+<li>School bag: ₦250 each</li>
+<li>Ruler: ₦15 each</li>
+</ul>
+<p>Each child needs: 4 exercise books, 2 pens, 3 pencils, 1 eraser, and 1 ruler. Can they afford it?</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Cost per child:</strong></p>
+<ul>
+<li>Exercise books: 4 × ₦35 = ₦140</li>
+<li>Pens: 2 × ₦20 = ₦40</li>
+<li>Pencils: 3 × ₦10 = ₦30</li>
+<li>Eraser: 1 × ₦5 = ₦5</li>
+<li>Ruler: 1 × ₦15 = ₦15</li>
+</ul>
+<p>Total per child: ₦140 + ₦40 + ₦30 + ₦5 + ₦15 = <strong>₦230</strong>.</p>
+<p>For 2 children: 2 × ₦230 = <strong>₦460</strong>.</p>
+<p>Money left: ₦1,000 − ₦460 = <strong>₦540</strong>. They have enough for the supplies and still have money for other things!</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Can Amina also buy a school bag (₦250) for each child with the remaining ₦540? How much would 2 bags cost?</li>
+<li>After supplies and bags, how much money would be left?</li>
+<li>If Amina's mother gives only ₦700, can she buy supplies for both children (₦460) and one school bag (₦250)?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>2 × ₦250 = ₦500. Yes, ₦540 is enough for 2 bags (₦500).</li>
+<li>₦540 − ₦500 = <strong>₦40 left</strong>.</li>
+<li>₦460 + ₦250 = ₦710. ₦700 < ₦710. <strong>No</strong>, she's ₦10 short.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Big shopping trips need all four operations: multiply for quantities, add for totals, subtract to check your budget, and divide to split costs. Plan before you spend!</p>`,
+          duration: 14,
+          order: 12,
+        },
+        {
+          id: 'fn-6-13',
+          title: 'Multi-Step Challenge Problems',
+          description: 'Tackle problems that need three or more steps to solve.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will solve challenging problems that require three or more steps, combining all your math skills.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Chidi helps his mother plan a party. They need to buy food for 20 guests. Jollof rice costs ₦100 per plate, drinks cost ₦50 each, and small chops cost ₦30 per person. They have a budget of ₦5,000. Is it enough?</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Step 1:</strong> Cost of jollof rice: 20 × ₦100 = ₦2,000.</p>
+<p><strong>Step 2:</strong> Cost of drinks: 20 × ₦50 = ₦1,000.</p>
+<p><strong>Step 3:</strong> Cost of small chops: 20 × ₦30 = ₦600.</p>
+<p><strong>Step 4:</strong> Total: ₦2,000 + ₦1,000 + ₦600 = ₦3,600.</p>
+<p><strong>Step 5:</strong> Budget check: ₦5,000 − ₦3,600 = ₦1,400 remaining. Yes, it's enough!</p>
+<p><strong>Example:</strong> Bola earns ₦40 per day for 6 days. She spends ₦30 per day on transport and ₦15 per day on lunch. How much does she save?</p>
+<p>Earnings: 6 × ₦40 = ₦240. Transport: 6 × ₦30 = ₦180. Lunch: 6 × ₦15 = ₦90. Total spent: ₦180 + ₦90 = ₦270. But ₦270 > ₦240! Bola spends more than she earns — she saves <strong>nothing</strong> and is ₦30 short!</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Tunde earns ₦50 per day for 5 days. He spends ₦20 per day on food. How much does he save over 5 days?</li>
+<li>A teacher buys 30 pencils at ₦10 each and 30 erasers at ₦5 each. She has ₦500. How much change?</li>
+<li>Funke buys 4 packs of biscuits at ₦25 each and 3 bottles of water at ₦20 each. She pays with ₦200. What is her change?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Earnings: 5 × ₦50 = ₦250. Spending: 5 × ₦20 = ₦100. Savings: ₦250 − ₦100 = <strong>₦150</strong>.</li>
+<li>Pencils: 30 × ₦10 = ₦300. Erasers: 30 × ₦5 = ₦150. Total: ₦300 + ₦150 = ₦450. Change: ₦500 − ₦450 = <strong>₦50</strong>.</li>
+<li>Biscuits: 4 × ₦25 = ₦100. Water: 3 × ₦20 = ₦60. Total: ₦100 + ₦60 = ₦160. Change: ₦200 − ₦160 = <strong>₦40</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>Multi-step problems are just several simple steps combined. Break the problem into small parts, solve each one, and combine the results. Take your time and stay organised!</p>`,
+          duration: 15,
+          order: 13,
+        },
+        {
+          id: 'fn-6-14',
+          title: 'Problem-Solving Strategies',
+          description: 'Learn a step-by-step approach to solving any word problem.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will learn a step-by-step strategy for solving any word problem, even difficult ones you haven't seen before.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Mrs. Okafor teaches her class the "RUSC" method for solving word problems. "This works for any problem," she says. "Even ones that look scary at first!"</p>
+
+<h3>📝 Let's Learn</h3>
+<p>The <strong>RUSC method</strong>:</p>
+<ol>
+<li><strong>R — Read</strong> the problem carefully. Read it twice! Understand what is happening in the story.</li>
+<li><strong>U — Understand</strong> what you need to find. What is the question asking?</li>
+<li><strong>S — Solve</strong> the problem step by step. Write down each step.</li>
+<li><strong>C — Check</strong> your answer. Does it make sense? Use the opposite operation to verify.</li>
+</ol>
+<p><strong>Example:</strong> "Amina buys 5 mangoes at ₦12 each and 3 oranges at ₦8 each. She pays with ₦200. How much change does she get?"</p>
+<p><strong>R:</strong> Amina buys mangoes and oranges and pays ₦200.</p>
+<p><strong>U:</strong> I need to find the change (₦200 minus total cost).</p>
+<p><strong>S:</strong> Mangoes: 5 × ₦12 = ₦60. Oranges: 3 × ₦8 = ₦24. Total: ₦60 + ₦24 = ₦84. Change: ₦200 − ₦84 = ₦116.</p>
+<p><strong>C:</strong> ₦84 + ₦116 = ₦200. ✓ Makes sense!</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>Use RUSC: Emeka has ₦300. He buys 4 books at ₦50 each. How much is left?</li>
+<li>Use RUSC: 6 friends share ₦90 equally, then each spends ₦5. How much does each have left?</li>
+<li>Use RUSC: Bola earns ₦35 per day for 4 days. She buys a gift for ₦80. How much does she have left?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>R: Emeka has ₦300, buys 4 books at ₦50. U: Find what's left. S: 4 × ₦50 = ₦200. ₦300 − ₦200 = ₦100. C: ₦200 + ₦100 = ₦300. ✓ Answer: <strong>₦100</strong>.</li>
+<li>R: 6 friends share ₦90, each spends ₦5. U: Find what each has left. S: ₦90 ÷ 6 = ₦15 each. ₦15 − ₦5 = ₦10. C: 6 × ₦15 = ₦90. ✓ Answer: <strong>₦10 each</strong>.</li>
+<li>R: Bola earns ₦35/day for 4 days, spends ₦80. U: Find what's left. S: 4 × ₦35 = ₦140. ₦140 − ₦80 = ₦60. C: ₦80 + ₦60 = ₦140. ✓ Answer: <strong>₦60</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>RUSC: Read, Understand, Solve, Check. This strategy works for every word problem. The most important step is reading the problem carefully — twice!</p>`,
+          duration: 14,
+          order: 14,
+        },
+        {
+          id: 'fn-6-15',
+          title: 'Final Review: All Operations',
+          description: 'Review all four operations with a mixed set of problems.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will review addition, subtraction, multiplication, and division together in a comprehensive practice session.</p>
+
+<h3>🏪 Market Story</h3>
+<p>Congratulations! You have learned all four operations. Mrs. Okafor says, "You are now a maths champion! Let's see if you can handle any problem I give you." The whole class sits up with confidence.</p>
+
+<h3>📝 Let's Learn</h3>
+<p><strong>Quick review of all operations:</strong></p>
+<ul>
+<li><strong>Addition (+):</strong> Combining amounts. ₦45 + ₦30 = ₦75.</li>
+<li><strong>Subtraction (−):</strong> Taking away or finding the difference. ₦100 − ₦65 = ₦35.</li>
+<li><strong>Multiplication (×):</strong> Equal groups. 6 × ₦25 = ₦150.</li>
+<li><strong>Division (÷):</strong> Sharing equally or grouping. ₦150 ÷ 6 = ₦25.</li>
+</ul>
+<p><strong>Mixed Problem 1:</strong> Tunde has ₦500. He buys 3 shirts at ₦120 each. How much is left? 3 × ₦120 = ₦360. ₦500 − ₦360 = <strong>₦140</strong>.</p>
+<p><strong>Mixed Problem 2:</strong> Amina and Bola earn ₦180 together and share equally. How much does each get? ₦180 ÷ 2 = <strong>₦90</strong>.</p>
+<p><strong>Mixed Problem 3:</strong> Funke buys 4 oranges (₦10 each) and 6 bananas (₦5 each). Total: (4 × ₦10) + (6 × ₦5) = ₦40 + ₦30 = <strong>₦70</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>₦85 + ₦67 = ?</li>
+<li>₦200 − ₦135 = ?</li>
+<li>7 × ₦30 = ?</li>
+<li>₦120 ÷ 4 = ?</li>
+<li>Emeka buys 5 items at ₦18 each and pays ₦200. What is his change?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>₦85 + ₦67 = <strong>₦152</strong>.</li>
+<li>₦200 − ₦135 = <strong>₦65</strong>.</li>
+<li>7 × ₦30 = <strong>₦210</strong>.</li>
+<li>₦120 ÷ 4 = <strong>₦30</strong>.</li>
+<li>5 × ₦18 = ₦90. Change: ₦200 − ₦90 = <strong>₦110</strong>.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You now know all four operations! Addition combines, subtraction takes away, multiplication handles equal groups, and division shares equally. You have the tools to solve any number problem!</p>`,
+          duration: 14,
+          order: 15,
+        },
+        {
+          id: 'fn-6-16',
+          title: 'Final Challenge: Lagos Market Master',
+          description: 'Complete the ultimate market challenge using all your numeracy skills.',
+          content: `<h3>🎯 What You'll Learn</h3>
+<p>You will put ALL your numeracy skills to the test in the ultimate Lagos Market Master challenge! Can you solve every problem?</p>
+
+<h3>🏪 Market Story</h3>
+<p>Welcome to the Lagos Market Master Challenge! You are at Balogun Market with ₦2,000. You need to buy food for your family of 6, pay for transport, and save some money. Here are the market prices:</p>
+<ul>
+<li>Rice (bag): ₦350</li>
+<li>Beans (cup): ₦60</li>
+<li>Garri (cup): ₦40</li>
+<li>Tomatoes (basket): ₦150</li>
+<li>Fish: ₦200</li>
+<li>Oil (bottle): ₦180</li>
+<li>Pure water (sachet): ₦20</li>
+<li>Bus fare home: ₦50 per person</li>
+</ul>
+
+<h3>📝 Let's Learn — The Final Challenge</h3>
+<p><strong>Challenge 1: Shopping</strong></p>
+<p>Buy: 1 bag of rice, 3 cups of beans, 1 basket of tomatoes, 1 fish, and 1 bottle of oil.</p>
+<p>Rice: ₦350. Beans: 3 × ₦60 = ₦180. Tomatoes: ₦150. Fish: ₦200. Oil: ₦180.</p>
+<p>Total food: ₦350 + ₦180 + ₦150 + ₦200 + ₦180 = <strong>₦1,060</strong>.</p>
+
+<p><strong>Challenge 2: Transport</strong></p>
+<p>Bus fare for 3 family members (the others walked): 3 × ₦50 = <strong>₦150</strong>.</p>
+
+<p><strong>Challenge 3: Total Spending and Savings</strong></p>
+<p>Total spent: ₦1,060 + ₦150 = <strong>₦1,210</strong>.</p>
+<p>Money left: ₦2,000 − ₦1,210 = <strong>₦790</strong>.</p>
+
+<p><strong>Challenge 4: Sharing</strong></p>
+<p>You buy 6 sachets of pure water (one per family member): 6 × ₦20 = ₦120.</p>
+<p>Updated total: ₦1,210 + ₦120 = ₦1,330.</p>
+<p>Final savings: ₦2,000 − ₦1,330 = <strong>₦670</strong>.</p>
+
+<p><strong>Challenge 5: Per-person cost</strong></p>
+<p>Total spent (₦1,330) divided among 6 family members: ₦1,330 ÷ 6 = 221 r 4, or about <strong>₦222 per person</strong>.</p>
+
+<h3>✏️ Practice Questions</h3>
+<ol>
+<li>If you skip the fish (₦200) and buy 2 cups of garri instead (₦40 each), how much do you save?</li>
+<li>If the whole family of 6 takes the bus (₦50 each), what is the total transport cost?</li>
+<li>With the original ₦670 savings, how many weeks of ₦50 bus fare (one person, one way) can you pay for?</li>
+</ol>
+
+<details><summary>Click to see answers</summary>
+<ol>
+<li>Fish: ₦200. Garri: 2 × ₦40 = ₦80. Savings: ₦200 − ₦80 = <strong>₦120 saved</strong>.</li>
+<li>6 × ₦50 = <strong>₦300</strong>.</li>
+<li>₦670 ÷ ₦50 = 13 r 20. You can pay for <strong>13 rides</strong> with ₦20 left over.</li>
+</ol>
+</details>
+
+<h3>💡 Remember</h3>
+<p>You are now a Lagos Market Master! You can count, add, subtract, multiply, divide, make change, compare prices, plan budgets, and solve real problems. These skills will help you every single day of your life. Keep practising and you will keep getting better. Well done — you should be very proud of yourself!</p>`,
+          duration: 15,
+          order: 16,
+        },
+      ],
+    },
   ],
 };
