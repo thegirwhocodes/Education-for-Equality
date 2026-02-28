@@ -130,11 +130,18 @@ export async function POST(req: NextRequest) {
       memoryContext = await getStudentMemory(student_id);
     }
 
+    // Claude API requires at least one user message.
+    // Empty messages means "start a new lesson" — trigger greeting.
+    const apiMessages =
+      !messages || messages.length === 0
+        ? [{ role: "user" as const, content: "Hi, I want to learn!" }]
+        : messages;
+
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 300,
       system: SABI_SYSTEM_PROMPT + memoryContext,
-      messages: messages,
+      messages: apiMessages,
     });
 
     const text =

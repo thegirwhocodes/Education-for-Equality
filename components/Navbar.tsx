@@ -26,11 +26,14 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
+            <Link href="/sabi" className="text-[var(--primary-dark)] font-semibold hover:text-[var(--primary-darker)] transition-colors">
+              Literacy & Numeracy
+            </Link>
+            <Link href="/sabi-demo" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+              Sabi
+            </Link>
             <Link href="/curriculum" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
               Curriculum
-            </Link>
-            <Link href="/subjects" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
-              Subjects
             </Link>
             <SignedIn>
               <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
@@ -83,11 +86,14 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-100">
             <div className="flex flex-col gap-4">
+              <Link href="/sabi" className="text-[var(--primary-dark)] font-semibold hover:text-[var(--primary-darker)]">
+                Literacy & Numeracy
+              </Link>
+              <Link href="/sabi-demo" className="text-gray-600 hover:text-[var(--primary-dark)]">
+                Sabi
+              </Link>
               <Link href="/curriculum" className="text-gray-600 hover:text-[var(--primary-dark)]">
                 Curriculum
-              </Link>
-              <Link href="/subjects" className="text-gray-600 hover:text-[var(--primary-dark)]">
-                Subjects
               </Link>
               <SignedIn>
                 <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)]">
