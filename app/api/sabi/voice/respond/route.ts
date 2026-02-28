@@ -4,6 +4,7 @@ import {
   createEndCallResponse,
   parseTwilioBody,
   twimlHeaders,
+  isTwilioRequest,
 } from "@/lib/voice/twiml";
 import { getCallState, addMessage } from "@/lib/voice/call-state";
 import { callSabi } from "@/lib/voice/sabi-shared";
@@ -31,6 +32,11 @@ const WRAP_UP_PATTERNS = [
 export async function POST(req: NextRequest) {
   try {
     const body = parseTwilioBody(await req.text());
+
+    if (!isTwilioRequest(req, body)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
     const callSid =
       req.nextUrl.searchParams.get("callSid") || body.CallSid || "";
     const speechResult = body.SpeechResult || "";

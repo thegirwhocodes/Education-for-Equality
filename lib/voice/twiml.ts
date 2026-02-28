@@ -117,3 +117,23 @@ export function twimlHeaders(): HeadersInit {
     "Content-Type": "text/xml",
   };
 }
+
+/**
+ * Verify an incoming request is actually from Twilio.
+ * Returns true if valid, false if spoofed.
+ * Skips validation in development (no auth token set).
+ */
+export function isTwilioRequest(req: { headers: Headers; url: string }, body: Record<string, string>): boolean {
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  if (!authToken) return true; // skip in dev
+
+  const signature = req.headers.get("x-twilio-signature") || "";
+  if (!signature) return false;
+
+  // Use the public URL for validation (Twilio signs against the public URL)
+  const publicUrl = process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL}${new URL(req.url).pathname}`
+    : req.url;
+
+  return twilio.validateRequest(authToken, signature, publicUrl, body);
+}

@@ -3,6 +3,7 @@ import {
   createGatherResponse,
   parseTwilioBody,
   twimlHeaders,
+  isTwilioRequest,
 } from "@/lib/voice/twiml";
 import { createCallState } from "@/lib/voice/call-state";
 import {
@@ -21,6 +22,11 @@ import {
 export async function POST(req: NextRequest) {
   try {
     const body = parseTwilioBody(await req.text());
+
+    // Verify request is from Twilio (prevents unauthorized API usage)
+    if (!isTwilioRequest(req, body)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
     const phoneNumber = body.From || body.Caller || "";
     const callSid = body.CallSid || "";
 

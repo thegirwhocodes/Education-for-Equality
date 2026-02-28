@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
-import { parseTwilioBody } from "@/lib/voice/twiml";
+import { parseTwilioBody, isTwilioRequest } from "@/lib/voice/twiml";
 import { clearCallState } from "@/lib/voice/call-state";
 import { sendSessionSummary, sendPracticeQuestion } from "@/lib/voice/sms";
 
@@ -35,6 +35,11 @@ const MODULE_TOPICS: Record<number, string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = parseTwilioBody(await req.text());
+
+    if (!isTwilioRequest(req, body)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
     const callSid = body.CallSid || "";
     const callStatus = body.CallStatus || "";
     const callDuration = parseInt(body.CallDuration || "0", 10);
