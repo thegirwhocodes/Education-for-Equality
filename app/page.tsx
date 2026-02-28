@@ -324,12 +324,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partner CTA Section */}
-      <section className="bg-gradient-to-br from-[var(--primary-darker)] to-[#1a5c3a] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--primary)] rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[var(--accent)] rounded-full blur-3xl" />
-        </div>
+      {/* Partner CTA Section — photo background */}
+      <section className="relative overflow-hidden">
+        <Image
+          src="/partner-child.jpg"
+          alt="Child smiling in classroom"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary-darker)]/85 to-[#1a5c3a]/90" />
         <div className="relative max-w-3xl mx-auto px-6 py-20 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Partner With Us
@@ -340,14 +343,17 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:info@educationforequality.org"
+              href="tel:+18604367048"
               className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-10 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
             >
-              Get in Touch
+              Call (860) 436-7048
             </a>
-            <Link href="/sabi" className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors">
-              Try the Course
-            </Link>
+            <a
+              href="mailto:info@educationforequality.org"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
+            >
+              Email Us
+            </a>
           </div>
         </div>
       </section>
