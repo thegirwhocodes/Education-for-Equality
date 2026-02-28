@@ -3,11 +3,14 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getLessonByIdExtended, getNextLessonExtended } from '@/lib/curriculum';
+import { useProgress } from '@/lib/useProgress';
+import { SignInButton } from '@clerk/nextjs';
 
 export default function LessonPage() {
   const params = useParams();
   const subjectSlug = params.subject as string;
   const lessonId = params.lesson as string;
+  const { isCompleted, toggleComplete, loading, isSignedIn } = useProgress();
 
   const data = getLessonByIdExtended(subjectSlug, lessonId);
 
@@ -26,6 +29,7 @@ export default function LessonPage() {
 
   const { subject, unit, lesson } = data;
   const nextLesson = getNextLessonExtended(subjectSlug, lessonId);
+  const completed = isCompleted(lessonId);
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -73,8 +77,14 @@ export default function LessonPage() {
               >
                 {subject.name}
               </span>
-              <span className="text-gray-400">•</span>
+              <span className="text-gray-400">&bull;</span>
               <span className="text-gray-500">{unit.title}</span>
+              {completed && (
+                <>
+                  <span className="text-gray-400">&bull;</span>
+                  <span className="text-green-600 text-xs font-medium">Completed</span>
+                </>
+              )}
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">{lesson.title}</h1>
             <p className="text-[var(--text-muted)]">{lesson.description}</p>
@@ -102,14 +112,33 @@ export default function LessonPage() {
             dangerouslySetInnerHTML={{ __html: lesson.content }}
           />
 
-          {/* Mark Complete Button (placeholder - will work with auth) */}
+          {/* Mark Complete Button */}
           <div className="mt-8 pt-6 border-t border-gray-100">
-            <button className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Mark as Complete
-            </button>
+            {isSignedIn ? (
+              <button
+                onClick={() => toggleComplete(lessonId)}
+                disabled={loading}
+                className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                  completed
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                    : 'btn-primary'
+                } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                {loading ? 'Loading...' : completed ? 'Completed!' : 'Mark as Complete'}
+              </button>
+            ) : (
+              <SignInButton mode="modal">
+                <button className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Sign in to track progress
+                </button>
+              </SignInButton>
+            )}
           </div>
         </div>
 

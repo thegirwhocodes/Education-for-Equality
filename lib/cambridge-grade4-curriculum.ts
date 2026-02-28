@@ -1073,6 +1073,468 @@ export const englishGrade4: SubjectCurriculum = {
           externalLink: 'https://www.khanacademy.org/ela'
         }
       ]
+    },
+    {
+      id: 'eng-4-unit-5',
+      title: 'Phonics and Word Reading',
+      description: 'Decoding strategies, phonics patterns, and fluent word reading',
+      standardsAlignment: 'Cambridge Primary 4Rw1-4Rw4',
+      orderIndex: 5,
+      lessons: [
+        {
+          id: 'eng-4-5-1',
+          title: 'Long Vowel Sounds',
+          description: 'Recognise and read words with long vowel patterns (a-e, i-e, o-e, u-e, ee, ea)',
+          videoUrl: 'https://www.youtube.com/embed/3FMmkTayEJo',
+          videoSource: 'Khan Academy',
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rw1:</strong> Read words with common vowel patterns accurately</p>
+
+            <h3>Long Vowel Patterns</h3>
+            <p>Long vowels say their name! Here are the patterns:</p>
+            <ul>
+              <li><strong>a_e</strong> (silent e): c<strong>a</strong>k<strong>e</strong>, m<strong>a</strong>k<strong>e</strong>, l<strong>a</strong>k<strong>e</strong></li>
+              <li><strong>i_e</strong> (silent e): b<strong>i</strong>k<strong>e</strong>, t<strong>i</strong>m<strong>e</strong>, l<strong>i</strong>n<strong>e</strong></li>
+              <li><strong>o_e</strong> (silent e): h<strong>o</strong>m<strong>e</strong>, b<strong>o</strong>n<strong>e</strong>, r<strong>o</strong>p<strong>e</strong></li>
+              <li><strong>ee</strong>: tr<strong>ee</strong>, s<strong>ee</strong>, fr<strong>ee</strong></li>
+              <li><strong>ea</strong>: r<strong>ea</strong>d, m<strong>ea</strong>t, cl<strong>ea</strong>n</li>
+            </ul>
+
+            <h3>Practice: Read These Words</h3>
+            <ol>
+              <li>The snake lives near the <strong>lake</strong>.</li>
+              <li>I need more <strong>time</strong> to finish.</li>
+              <li>The <strong>tree</strong> gives us shade.</li>
+              <li>We <strong>eat</strong> rice at <strong>home</strong>.</li>
+            </ol>
+
+            <h3>Nigerian Context</h3>
+            <p>Many Yoruba, Igbo, and Hausa words have clear vowel sounds too. English vowels can be tricky because the same letter makes different sounds. Practice listening for the long sound!</p>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rw1</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 1,
+          standards: ['4Rw1'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-5-2',
+          title: 'Consonant Blends and Digraphs',
+          description: 'Read words with consonant clusters (bl, cr, str) and digraphs (sh, ch, th, wh)',
+          videoUrl: 'https://www.youtube.com/embed/UTnZI2IG0bk',
+          videoSource: 'Khan Academy',
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rw2:</strong> Decode words with consonant blends and digraphs</p>
+
+            <h3>Consonant Blends (you hear both sounds)</h3>
+            <ul>
+              <li><strong>bl</strong>: black, blue, blow</li>
+              <li><strong>cr</strong>: cry, cross, crowd</li>
+              <li><strong>str</strong>: street, strong, string</li>
+              <li><strong>gr</strong>: green, grow, great</li>
+              <li><strong>sp</strong>: speak, sport, spend</li>
+            </ul>
+
+            <h3>Digraphs (two letters, one sound)</h3>
+            <ul>
+              <li><strong>sh</strong>: shop, she, fish</li>
+              <li><strong>ch</strong>: child, church, teach</li>
+              <li><strong>th</strong>: the, think, three</li>
+              <li><strong>wh</strong>: what, where, white</li>
+            </ul>
+
+            <h3>Practice Sentences</h3>
+            <ol>
+              <li>The <strong>ch</strong>ildren went to <strong>ch</strong>urch on Sunday.</li>
+              <li><strong>Th</strong>e <strong>str</strong>ong man carried <strong>th</strong>ree bags.</li>
+              <li><strong>Sh</strong>e bought fi<strong>sh</strong> at the market in Lagos.</li>
+            </ol>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rw2</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 2,
+          standards: ['4Rw2'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-5-3',
+          title: 'Syllable Types and Division',
+          description: 'Break words into syllables to read longer words',
+          videoUrl: 'https://www.youtube.com/embed/TvcgOhfOaOg',
+          videoSource: 'Khan Academy',
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rw3:</strong> Use syllable knowledge to read multi-syllable words</p>
+
+            <h3>What is a Syllable?</h3>
+            <p>A syllable is a word part with one vowel sound. Clap each part:</p>
+            <ul>
+              <li><strong>wa-ter</strong> = 2 syllables (clap, clap)</li>
+              <li><strong>beau-ti-ful</strong> = 3 syllables (clap, clap, clap)</li>
+              <li><strong>el-e-phant</strong> = 3 syllables</li>
+              <li><strong>un-der-stand</strong> = 3 syllables</li>
+            </ul>
+
+            <h3>How to Divide Words</h3>
+            <ol>
+              <li>Find the vowels in the word</li>
+              <li>Look at the consonants between vowels</li>
+              <li>Split between consonants: <strong>rab-bit</strong>, <strong>hap-py</strong></li>
+              <li>If only one consonant, try splitting before it: <strong>o-pen</strong>, <strong>mu-sic</strong></li>
+            </ol>
+
+            <h3>Practice: Split and Read</h3>
+            <ol>
+              <li>important → im-por-tant</li>
+              <li>education → ed-u-ca-tion</li>
+              <li>Nigeria → Ni-ge-ri-a</li>
+              <li>community → com-mu-ni-ty</li>
+            </ol>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rw3</em>
+            </p>
+          `,
+          durationMinutes: 15,
+          orderIndex: 3,
+          standards: ['4Rw3'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-5-4',
+          title: 'Sight Words and High-Frequency Words',
+          description: 'Recognise common words that appear often in texts',
+          videoUrl: null,
+          videoSource: null,
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rw4:</strong> Read high-frequency words automatically</p>
+
+            <h3>What are Sight Words?</h3>
+            <p>Sight words are common words you should recognise instantly without sounding out. Many don't follow phonics rules.</p>
+
+            <h3>Key Sight Words for Grade 4</h3>
+            <ul>
+              <li><strong>Group 1:</strong> because, through, thought, enough, although</li>
+              <li><strong>Group 2:</strong> different, important, together, beginning, another</li>
+              <li><strong>Group 3:</strong> between, country, example, question, without</li>
+              <li><strong>Group 4:</strong> children, something, government, beautiful, everything</li>
+            </ul>
+
+            <h3>Practice: Read the Paragraph</h3>
+            <p><em>The <strong>children</strong> walked <strong>together</strong> <strong>through</strong> the market. <strong>Although</strong> it was crowded, they found <strong>everything</strong> they needed. It was a <strong>beautiful</strong> day in our <strong>country</strong>.</em></p>
+
+            <h3>Activity</h3>
+            <p>Read the paragraph above three times. Each time, try to read faster and smoother. Can you read it without stopping?</p>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rw4</em>
+            </p>
+          `,
+          durationMinutes: 10,
+          orderIndex: 4,
+          standards: ['4Rw4'],
+          externalLink: null
+        }
+      ]
+    },
+    {
+      id: 'eng-4-unit-6',
+      title: 'Reading Fluency',
+      description: 'Building speed, accuracy, and expression when reading aloud',
+      standardsAlignment: 'Cambridge Primary 4Rf1-4Rf3',
+      orderIndex: 6,
+      lessons: [
+        {
+          id: 'eng-4-6-1',
+          title: 'Reading with Expression',
+          description: 'Use punctuation and meaning to read with natural expression',
+          videoUrl: 'https://www.youtube.com/embed/S7GGkKpBR-g',
+          videoSource: 'Khan Academy',
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rf1:</strong> Read aloud with fluency, expression, and attention to punctuation</p>
+
+            <h3>What is Fluent Reading?</h3>
+            <p>Fluent reading means reading smoothly, at a good speed, with expression — like you are talking to someone.</p>
+
+            <h3>How Punctuation Guides Your Voice</h3>
+            <ul>
+              <li><strong>Period (.)</strong> — pause and lower your voice</li>
+              <li><strong>Comma (,)</strong> — short pause, keep going</li>
+              <li><strong>Question mark (?)</strong> — raise your voice at the end</li>
+              <li><strong>Exclamation mark (!)</strong> — show excitement or surprise</li>
+              <li><strong>Quotation marks (" ")</strong> — change your voice for the character</li>
+            </ul>
+
+            <h3>Practice Passage</h3>
+            <p>Read this aloud with expression:</p>
+            <p><em>"Come quickly!" shouted Amara. "The market is closing soon."<br/>
+            Emeka grabbed his bag and ran. "Are we too late?" he asked, breathing hard.<br/>
+            "No," she smiled. "We made it just in time."</em></p>
+
+            <h3>Tips</h3>
+            <ul>
+              <li>Read the passage silently first to understand it</li>
+              <li>Then read it aloud, following the punctuation</li>
+              <li>Record yourself and listen back — do you sound natural?</li>
+            </ul>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rf1</em>
+            </p>
+          `,
+          durationMinutes: 15,
+          orderIndex: 1,
+          standards: ['4Rf1'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-6-2',
+          title: 'Building Reading Speed',
+          description: 'Practice strategies to increase reading speed while maintaining comprehension',
+          videoUrl: null,
+          videoSource: null,
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rf2:</strong> Read grade-level text at an appropriate rate</p>
+
+            <h3>Why Speed Matters</h3>
+            <p>When you read too slowly, you forget the beginning by the time you reach the end. Reading at a good pace helps you understand the whole text.</p>
+
+            <h3>Grade 4 Target: 100-120 words per minute</h3>
+
+            <h3>Timed Reading Practice</h3>
+            <p>Read this passage and time yourself (ask someone to time you, or count to yourself):</p>
+            <p><em>Nigeria is the most populated country in Africa. Over 200 million people live there. The country has many different languages, cultures, and traditions. Lagos is the biggest city. It is very busy with markets, schools, and businesses. Children in Nigeria love to play football, tell stories, and help their families. Education is very important because it helps children build a better future for themselves and their communities. Every child deserves the chance to learn and grow.</em></p>
+            <p><strong>Word count: 78 words</strong></p>
+            <p>If you read this in about 40-50 seconds, you are on track!</p>
+
+            <h3>Tips to Read Faster</h3>
+            <ol>
+              <li>Don't point at each word — let your eyes move ahead</li>
+              <li>Read phrases, not single words: "in the market" not "in... the... market"</li>
+              <li>Practice the same passage 3 times — you will get faster each time</li>
+            </ol>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rf2</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 2,
+          standards: ['4Rf2'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-6-3',
+          title: 'Self-Monitoring While Reading',
+          description: 'Learn to notice and fix mistakes when reading',
+          videoUrl: null,
+          videoSource: null,
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rf3:</strong> Self-correct errors during reading using meaning and phonics cues</p>
+
+            <h3>What is Self-Monitoring?</h3>
+            <p>Good readers notice when something doesn't make sense and go back to fix it. This is called self-monitoring.</p>
+
+            <h3>Three Questions to Ask Yourself</h3>
+            <ol>
+              <li><strong>Does it make sense?</strong> (meaning) — If not, re-read the sentence</li>
+              <li><strong>Does it sound right?</strong> (grammar) — Would someone say it that way?</li>
+              <li><strong>Does it look right?</strong> (visual/phonics) — Do the letters match what I said?</li>
+            </ol>
+
+            <h3>Example</h3>
+            <p>Text: "The farmer planted corn in the <strong>field</strong>."</p>
+            <p>If you read "filed" instead of "field":</p>
+            <ul>
+              <li>Does "filed" make sense? No — you don't plant corn in a "filed"</li>
+              <li>Look again at the word: f-i-e-l-d → field!</li>
+              <li>Re-read: "The farmer planted corn in the <strong>field</strong>." &#10003;</li>
+            </ul>
+
+            <h3>Practice</h3>
+            <p>Read this paragraph. If you get stuck on a word, use the three questions:</p>
+            <p><em>The village celebrated the harvest festival with great excitement. Everyone brought different dishes to share. The children performed traditional dances while the elders watched proudly. It was a wonderful evening that brought the whole community together.</em></p>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rf3</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 3,
+          standards: ['4Rf3'],
+          externalLink: null
+        }
+      ]
+    },
+    {
+      id: 'eng-4-unit-7',
+      title: 'Reading Comprehension Strategies',
+      description: 'Deep reading strategies: predicting, summarising, questioning, and connecting',
+      standardsAlignment: 'Cambridge Primary 4Rs1-4Rs4, 4Rn3-4Rn5',
+      orderIndex: 7,
+      lessons: [
+        {
+          id: 'eng-4-7-1',
+          title: 'Predicting',
+          description: 'Use clues to predict what will happen next in a text',
+          videoUrl: 'https://www.youtube.com/embed/2aIJD7GGOjk',
+          videoSource: 'Khan Academy',
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rs1:</strong> Make and confirm predictions about texts</p>
+
+            <h3>What is Predicting?</h3>
+            <p>Predicting means guessing what will happen next using clues from the text, the title, and pictures.</p>
+
+            <h3>How to Predict</h3>
+            <ol>
+              <li>Look at the title and any pictures</li>
+              <li>Read the first few sentences</li>
+              <li>Think: "What might happen next?"</li>
+              <li>Keep reading to check your prediction</li>
+            </ol>
+
+            <h3>Practice</h3>
+            <p>Read the beginning of this story. What do you think will happen?</p>
+            <p><em>Chidi looked at the dark clouds gathering in the sky. The wind began to blow harder. His mother had asked him to bring the clothes from the line before it rained. He looked at his unfinished homework, then back at the window...</em></p>
+            <p><strong>My prediction:</strong> (Think about what Chidi will do. Will he go outside? Will the rain come first?)</p>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rs1</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 1,
+          standards: ['4Rs1'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-7-2',
+          title: 'Summarising',
+          description: 'Identify the most important ideas and retell them briefly',
+          videoUrl: 'https://www.youtube.com/embed/jWFzKy9bJkw',
+          videoSource: 'Khan Academy',
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rs2:</strong> Summarise the main points of a text</p>
+
+            <h3>What is Summarising?</h3>
+            <p>Summarising means retelling the most important parts of a text in your own words — shorter than the original.</p>
+
+            <h3>Steps to Summarise</h3>
+            <ol>
+              <li>Read the whole text</li>
+              <li>Ask: "What is the most important thing?"</li>
+              <li>Leave out small details</li>
+              <li>Retell in 2-3 sentences</li>
+            </ol>
+
+            <h3>Practice</h3>
+            <p>Read this text and write a summary:</p>
+            <p><em>The baobab tree is one of the most important trees in Africa. It can live for thousands of years and grow very thick trunks that store water. People use every part of the tree. The fruit is rich in vitamin C and can be made into juice. The bark is used to make rope and cloth. The leaves are eaten as vegetables and used as medicine. Many animals also depend on the baobab for food and shelter.</em></p>
+            <p><strong>Summary:</strong> The baobab tree is an important African tree that lives very long, stores water, and provides food, medicine, and materials for people and animals.</p>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rs2</em>
+            </p>
+          `,
+          durationMinutes: 15,
+          orderIndex: 2,
+          standards: ['4Rs2'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-7-3',
+          title: 'Asking Questions While Reading',
+          description: 'Generate questions before, during, and after reading to deepen understanding',
+          videoUrl: null,
+          videoSource: null,
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rs3:</strong> Ask and answer questions to show understanding of a text</p>
+
+            <h3>Three Types of Questions</h3>
+            <ul>
+              <li><strong>Before reading:</strong> What do I already know? What do I want to learn?</li>
+              <li><strong>During reading:</strong> What is happening? Why? What does this word mean?</li>
+              <li><strong>After reading:</strong> What was the main message? What did I learn?</li>
+            </ul>
+
+            <h3>Question Words</h3>
+            <p>Use these to make strong questions:</p>
+            <ul>
+              <li><strong>Who</strong> — asks about people</li>
+              <li><strong>What</strong> — asks about things or events</li>
+              <li><strong>Where</strong> — asks about places</li>
+              <li><strong>When</strong> — asks about time</li>
+              <li><strong>Why</strong> — asks about reasons</li>
+              <li><strong>How</strong> — asks about methods or processes</li>
+            </ul>
+
+            <h3>Practice</h3>
+            <p>Read this passage and write 3 questions about it:</p>
+            <p><em>Wangari Maathai was a Kenyan woman who won the Nobel Peace Prize in 2004. She started the Green Belt Movement, which planted over 51 million trees across Africa. She believed that taking care of the environment was connected to peace and women's rights. She inspired millions of people to protect their land.</em></p>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rs3</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 3,
+          standards: ['4Rs3'],
+          externalLink: null
+        },
+        {
+          id: 'eng-4-7-4',
+          title: 'Making Connections',
+          description: 'Connect what you read to your own life, other texts, and the world',
+          videoUrl: null,
+          videoSource: null,
+          content: `
+            <h3>Learning Objective</h3>
+            <p><strong>4Rs4:</strong> Make connections between texts and personal experience</p>
+
+            <h3>Three Types of Connections</h3>
+            <ul>
+              <li><strong>Text to Self:</strong> "This reminds me of when I..."</li>
+              <li><strong>Text to Text:</strong> "This is like another story I read..."</li>
+              <li><strong>Text to World:</strong> "This connects to what is happening in..."</li>
+            </ul>
+
+            <h3>Why Connections Help</h3>
+            <p>When you connect what you read to things you already know, you understand and remember it better.</p>
+
+            <h3>Practice</h3>
+            <p>Read this and make one of each connection:</p>
+            <p><em>Adaeze's family moved to a new city. On her first day at her new school, she didn't know anyone. She sat alone at lunch. Then a girl named Fatima came over and said, "Would you like to sit with us?" Adaeze smiled. Maybe this new school wouldn't be so bad after all.</em></p>
+            <ul>
+              <li><strong>Text to Self:</strong> Have you ever been new somewhere?</li>
+              <li><strong>Text to Text:</strong> Does this remind you of another story?</li>
+              <li><strong>Text to World:</strong> Many children in Nigeria move to new cities for school. How does this connect?</li>
+            </ul>
+
+            <p class="text-sm text-gray-500 mt-4">
+              <em>Aligned to Cambridge Primary 4Rs4</em>
+            </p>
+          `,
+          durationMinutes: 12,
+          orderIndex: 4,
+          standards: ['4Rs4'],
+          externalLink: null
+        }
+      ]
     }
   ]
 };
