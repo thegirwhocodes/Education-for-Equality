@@ -784,28 +784,57 @@ export default function SabiDemo() {
     sendToSabi(updated, setTextMessages, setTextLoading);
   };
 
-  // Voice: speak text using Web Speech API
-  const speakText = (text: string) => {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9;
-    utterance.pitch = 1.0;
-
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(
-      (v) =>
-        v.lang.startsWith("en") &&
-        (v.name.includes("Female") ||
-          v.name.includes("Samantha") ||
-          v.name.includes("Google"))
-    );
-    if (preferred) utterance.voice = preferred;
-
+  // Voice: speak text using ElevenLabs Nigerian voice (fallback to Web Speech API)
+  const speakText = async (text: string) => {
     setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-    window.speechSynthesis.speak(utterance);
+    try {
+      // Try ElevenLabs first (Nigerian accent)
+      const res = await fetch("/api/sabi/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audio.onended = () => {
+          setIsSpeaking(false);
+          URL.revokeObjectURL(url);
+        };
+        audio.onerror = () => {
+          setIsSpeaking(false);
+          URL.revokeObjectURL(url);
+        };
+        await audio.play();
+        return;
+      }
+    } catch {
+      // ElevenLabs failed — fall back to Web Speech API
+    }
+
+    // Fallback: Web Speech API
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(
+        (v) =>
+          v.lang.startsWith("en") &&
+          (v.name.includes("Female") ||
+            v.name.includes("Samantha") ||
+            v.name.includes("Google"))
+      );
+      if (preferred) utterance.voice = preferred;
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      setIsSpeaking(false);
+    }
   };
 
   // Voice: start listening
