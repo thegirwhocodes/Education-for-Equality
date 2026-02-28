@@ -1,16 +1,19 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Section — dark gradient with glow effects like Sabi */}
+      {/* Hero Section — photo background with overlay */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]" />
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-[var(--primary)] rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-[var(--accent)] rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-full blur-3xl opacity-5" />
-        </div>
+        <Image
+          src="/hero-children.jpg"
+          alt="Smiling children in Africa"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary-darker)]/85 via-[var(--primary-darker)]/75 to-[#0a6b5a]/85" />
 
         <div className="relative max-w-5xl mx-auto px-6 py-24 md:py-32 text-center text-white">
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-5 py-2 text-sm mb-8 border border-white/20">
@@ -19,9 +22,9 @@ export default function Home() {
             <span className="opacity-80">Ages 8-14</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            Literacy & Numeracy<br className="hidden md:block" /> for Every Learner
+            Empowering Learners<br className="hidden md:block" /> Across Africa
           </h1>
-          <p className="text-lg md:text-xl opacity-85 max-w-2xl mx-auto leading-relaxed mb-10">
+          <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed mb-10">
             70% of children in low-income countries cannot read a simple sentence by age 10.
             Millions of adults never got the chance to learn. We deliver free, AI-powered
             literacy and numeracy courses to anyone who needs them — on any phone.
@@ -280,12 +283,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partner CTA Section — dark gradient like Sabi */}
-      <section className="bg-gradient-to-br from-[var(--primary-darker)] to-[#1a5c3a] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--primary)] rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[var(--accent)] rounded-full blur-3xl" />
-        </div>
+      {/* Partner CTA Section — photo background */}
+      <section className="relative overflow-hidden">
+        <Image
+          src="/partner-child.jpg"
+          alt="Child smiling in classroom"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary-darker)]/85 to-[#1a5c3a]/90" />
         <div className="relative max-w-3xl mx-auto px-6 py-20 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Partner With Us
@@ -296,14 +302,17 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:info@educationforequality.org"
+              href="tel:+18604367048"
               className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-10 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
             >
-              Get in Touch
+              Call (860) 436-7048
             </a>
-            <Link href="/sabi" className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors">
-              Try the Course
-            </Link>
+            <a
+              href="mailto:info@educationforequality.org"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
+            >
+              Email Us
+            </a>
           </div>
         </div>
       </section>
