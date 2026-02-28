@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
       // Streaming response in OpenAI SSE format
       const stream = await anthropic.messages.stream({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 200,
+        max_tokens: 300,
         system: systemPrompt,
         messages: validMessages,
       });
@@ -188,7 +188,7 @@ export async function POST(req: NextRequest) {
       // Non-streaming response
       const response = await anthropic.messages.create({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 200,
+        max_tokens: 300,
         system: systemPrompt,
         messages: validMessages,
       });
