@@ -226,7 +226,8 @@ export default function Home() {
       </section>
 
       {/* Features Section — icons with colored backgrounds */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
+      <section className="bg-[var(--secondary)]/50 py-20">
+        <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
             Why Learn With Us?
@@ -269,6 +270,7 @@ export default function Home() {
               Sabi remembers where each learner left off and adapts to their level automatically.
             </p>
           </div>
+        </div>
         </div>
       </section>
 
