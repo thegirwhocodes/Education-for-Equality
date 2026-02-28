@@ -12,7 +12,7 @@ const VOICE_CONFIG = {
 const SPEECH_CONFIG = {
   input: "speech" as const,
   speechTimeout: "auto" as const,
-  language: "en-NG", // Nigerian English
+  language: "en-GH", // Ghanaian English — closest supported African English in Twilio
   speechModel: "phone_call" as const,
 };
 
@@ -130,9 +130,10 @@ export function isTwilioRequest(req: { headers: Headers; url: string }, body: Re
   const signature = req.headers.get("x-twilio-signature") || "";
   if (!signature) return false;
 
-  // Use the public URL for validation (Twilio signs against the public URL)
+  // Use the public URL for validation (Twilio signs against the full URL including query string)
+  const parsed = new URL(req.url);
   const publicUrl = process.env.NEXT_PUBLIC_APP_URL
-    ? `${process.env.NEXT_PUBLIC_APP_URL}${new URL(req.url).pathname}`
+    ? `${process.env.NEXT_PUBLIC_APP_URL}${parsed.pathname}${parsed.search}`
     : req.url;
 
   return twilio.validateRequest(authToken, signature, publicUrl, body);

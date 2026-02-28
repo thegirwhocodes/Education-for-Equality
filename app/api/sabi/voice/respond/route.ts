@@ -9,6 +9,9 @@ import {
 import { getCallState, addMessage } from "@/lib/voice/call-state";
 import { callSabi } from "@/lib/voice/sabi-shared";
 
+// Allow up to 30 seconds for Claude API + Supabase calls
+export const maxDuration = 30;
+
 // Patterns that indicate Sabi is wrapping up the lesson
 const WRAP_UP_PATTERNS = [
   /call me back/i,
@@ -68,12 +71,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Add child's speech to conversation
-    await addMessage(callSid, "user", speechResult);
-
-    // Build messages array for Claude from call state
-    const updatedState = await getCallState(callSid);
-    const messages = (updatedState?.messages || []).map((m) => ({
+    // Add child's speech to conversation and get updated state in one call
+    const updatedState = await addMessage(callSid, "user", speechResult);
+    const messages = (updatedState?.messages || [...state.messages, { role: "user" as const, content: speechResult }]).map((m) => ({
       role: m.role as "user" | "assistant",
       content: m.content,
     }));
@@ -125,7 +125,8 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(twiml, { headers: twimlHeaders() });
   } catch (error) {
-    console.error("Voice respond error:", error);
+    console.error("Voice respond error:", error instanceof Error ? error.message : error);
+    console.error("Voice respond stack:", error instanceof Error ? error.stack : "no stack");
 
     return new NextResponse(
       createEndCallResponse(

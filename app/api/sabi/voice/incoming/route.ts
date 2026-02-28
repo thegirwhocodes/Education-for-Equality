@@ -11,6 +11,9 @@ import {
   callSabi,
 } from "@/lib/voice/sabi-shared";
 
+// Allow up to 30 seconds for Claude API + Supabase calls
+export const maxDuration = 30;
+
 /**
  * POST /api/sabi/voice/incoming
  *
@@ -63,7 +66,8 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(twiml, { headers: twimlHeaders() });
   } catch (error) {
-    console.error("Voice incoming error:", error);
+    console.error("Voice incoming error:", error instanceof Error ? error.message : error);
+    console.error("Voice incoming stack:", error instanceof Error ? error.stack : "no stack");
 
     // Return a friendly error message via TwiML
     const { createEndCallResponse } = await import("@/lib/voice/twiml");

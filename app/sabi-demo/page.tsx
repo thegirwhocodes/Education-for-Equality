@@ -796,7 +796,24 @@ export default function SabiDemo() {
       });
 
       if (res.ok) {
-        const blob = await res.blob();
+        const arrayBuffer = await res.arrayBuffer();
+        // Use AudioContext for reliable playback on mobile (avoids autoplay restrictions)
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtx) {
+          const ctx = new AudioCtx();
+          const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+          const source = ctx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(ctx.destination);
+          source.onended = () => {
+            setIsSpeaking(false);
+            ctx.close();
+          };
+          source.start(0);
+          return;
+        }
+        // Fallback for browsers without AudioContext: use Audio element
+        const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
         const url = URL.createObjectURL(blob);
         const audio = new Audio(url);
         audio.onended = () => {
@@ -810,8 +827,9 @@ export default function SabiDemo() {
         await audio.play();
         return;
       }
-    } catch {
-      // ElevenLabs failed — fall back to Web Speech API
+      console.warn("ElevenLabs TTS returned", res.status);
+    } catch (err) {
+      console.warn("ElevenLabs TTS failed, falling back to browser voice:", err);
     }
 
     // Fallback: Web Speech API

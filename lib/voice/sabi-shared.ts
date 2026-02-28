@@ -188,12 +188,16 @@ export async function getStudentMemory(studentId: string): Promise<string> {
   try {
     const supabase = getSupabase();
 
-    const { data: student } = await supabase
+    const { data: student, error: studentError } = await supabase
       .from("sabi_students")
       .select("*")
       .eq("id", studentId)
-      .single();
+      .maybeSingle();
 
+    if (studentError) {
+      console.error("getStudentMemory error:", studentError.message);
+      return "";
+    }
     if (!student) return "";
 
     const { data: sessions } = await supabase
@@ -277,12 +281,16 @@ export async function findOrCreateStudentByPhone(
 ): Promise<{ id: string; name: string | null; isNew: boolean }> {
   const supabase = getSupabase();
 
-  // Look up by phone number
-  const { data: existing } = await supabase
+  // Look up by phone number (use maybeSingle to avoid error when no rows found)
+  const { data: existing, error: lookupError } = await supabase
     .from("sabi_students")
     .select("id, name")
     .eq("phone_number", phoneNumber)
-    .single();
+    .maybeSingle();
+
+  if (lookupError) {
+    console.error("Student lookup error:", lookupError.message);
+  }
 
   if (existing) {
     return { id: existing.id, name: existing.name, isNew: false };
@@ -332,5 +340,6 @@ export async function callSabi(
     messages: apiMessages,
   });
 
-  return response.content[0].type === "text" ? response.content[0].text : "";
+  const text = response.content[0]?.type === "text" ? response.content[0].text : "";
+  return text || "Hello! I'm Sabi, your learning friend. What would you like to learn today?";
 }

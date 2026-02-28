@@ -27,12 +27,16 @@ function getSupabase() {
 export async function getCallState(callSid: string): Promise<CallState | null> {
   const supabase = getSupabase();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("sabi_active_calls")
     .select("*")
     .eq("call_sid", callSid)
-    .single();
+    .maybeSingle();
 
+  if (error) {
+    console.error("getCallState error:", error.message);
+    return null;
+  }
   if (!data) return null;
 
   return {
@@ -62,7 +66,7 @@ export async function createCallState(
     startedAt: new Date().toISOString(),
   };
 
-  await supabase.from("sabi_active_calls").upsert({
+  const { error } = await supabase.from("sabi_active_calls").upsert({
     call_sid: callSid,
     student_id: studentId,
     phone_number: phoneNumber,
@@ -70,6 +74,11 @@ export async function createCallState(
     started_at: state.startedAt,
     updated_at: new Date().toISOString(),
   });
+
+  if (error) {
+    console.error("createCallState error:", error.message);
+    throw new Error(`Failed to create call state: ${error.message}`);
+  }
 
   return state;
 }

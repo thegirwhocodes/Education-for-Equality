@@ -5,6 +5,9 @@ import { parseTwilioBody, isTwilioRequest } from "@/lib/voice/twiml";
 import { clearCallState } from "@/lib/voice/call-state";
 import { sendSessionSummary, sendPracticeQuestion } from "@/lib/voice/sms";
 
+// Allow up to 30 seconds for Claude analysis + SMS sends
+export const maxDuration = 30;
+
 const anthropic = new Anthropic();
 
 function getSupabase() {
@@ -44,7 +47,13 @@ export async function POST(req: NextRequest) {
     const callStatus = body.CallStatus || "";
     const callDuration = parseInt(body.CallDuration || "0", 10);
 
-    // Only process completed calls
+    // Clean up call state for failed/canceled calls too
+    if (callStatus === "failed" || callStatus === "canceled") {
+      await clearCallState(callSid);
+      return NextResponse.json({ ok: true });
+    }
+
+    // Only do full processing for completed calls
     if (callStatus !== "completed" && callStatus !== "busy" && callStatus !== "no-answer") {
       return NextResponse.json({ ok: true });
     }
@@ -62,7 +71,7 @@ export async function POST(req: NextRequest) {
       .from("sabi_students")
       .select("*")
       .eq("id", state.studentId)
-      .single();
+      .maybeSingle();
 
     const currentModule = studentBefore?.current_module ?? 0;
 
@@ -143,12 +152,12 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
       channel: "voice",
     });
 
-    // Update student stats (same logic as web session route)
+    // Update student stats
     const { data: student } = await supabase
       .from("sabi_students")
       .select("*")
       .eq("id", state.studentId)
-      .single();
+      .maybeSingle();
 
     if (student) {
       // Merge skills
@@ -194,28 +203,24 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
         callbackNumber
       );
 
-      // Send practice question SMS (if available)
+      // Send practice question SMS immediately (setTimeout doesn't work on serverless)
       if (stats.practice_question && stats.practice_answer) {
-        // Delay sending by using a simple timeout
-        // In production, use a job queue or Vercel cron
-        setTimeout(async () => {
-          try {
-            await sendPracticeQuestion(
-              state.phoneNumber,
-              state.studentId!,
-              stats.practice_question,
-              stats.practice_answer
-            );
-          } catch (err) {
-            console.error("Failed to send practice SMS:", err);
-          }
-        }, 30 * 60 * 1000); // 30 minutes delay
+        try {
+          await sendPracticeQuestion(
+            state.phoneNumber,
+            state.studentId!,
+            stats.practice_question,
+            stats.practice_answer
+          );
+        } catch (err) {
+          console.error("Failed to send practice SMS:", err);
+        }
       }
     }
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Voice status callback error:", error);
+    console.error("Voice status callback error:", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: true }); // Don't fail the webhook
   }
 }

@@ -129,7 +129,7 @@ export async function checkPracticeAnswer(
     .is("actual_answer", null)
     .order("created_at", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (!question) return null;
 
