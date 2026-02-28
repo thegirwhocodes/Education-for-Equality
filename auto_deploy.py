@@ -56,9 +56,16 @@ def main():
     # Push to origin
     push_result = run("git push origin main")
     if push_result is not None:
-        print(f"Deployed {file_count} files to GitHub at {timestamp}", file=sys.stderr)
+        print(f"Pushed {file_count} files to GitHub at {timestamp}", file=sys.stderr)
     else:
         print("Push failed - will retry next session.", file=sys.stderr)
+
+    # Deploy to Vercel production
+    vercel_result = run("npx vercel --prod --yes")
+    if vercel_result is not None:
+        print(f"Deployed to Vercel at {timestamp}", file=sys.stderr)
+    else:
+        print("Vercel deploy failed - deploy manually with: npx vercel --prod", file=sys.stderr)
 
 
 if __name__ == "__main__":

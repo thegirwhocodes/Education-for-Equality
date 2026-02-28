@@ -7,6 +7,330 @@ interface Message {
   content: string;
 }
 
+interface Student {
+  id: string;
+  browser_id: string;
+  name: string;
+  current_level: string;
+  total_sessions: number;
+  total_correct: number;
+  total_wrong: number;
+  last_session_summary: string | null;
+  created_at: string;
+}
+
+interface SessionSummary {
+  summary: string;
+  correct_count: number;
+  wrong_count: number;
+  current_level: string;
+  total_sessions: number;
+  total_correct: number;
+  total_wrong: number;
+}
+
+// ─── Entry Screen ───────────────────────────────────────────────
+
+function EntryScreen({
+  student,
+  nameInput,
+  onNameChange,
+  onStart,
+  isLoading,
+  sessions,
+}: {
+  student: Student | null;
+  nameInput: string;
+  onNameChange: (v: string) => void;
+  onStart: () => void;
+  isLoading: boolean;
+  sessions: { summary: string; created_at: string }[];
+}) {
+  const isReturning = student && student.total_sessions > 0;
+
+  return (
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
+      <div className="max-w-lg w-full">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-[var(--primary-darker)] mb-2">
+            Sabi
+          </h1>
+          <p className="text-lg text-gray-600">
+            &quot;To Know&quot; in Nigerian Pidgin
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+          {isReturning ? (
+            <>
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-[var(--secondary)] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">👋</span>
+                </div>
+                <h2 className="text-2xl font-bold text-[var(--primary-darker)]">
+                  Welcome back, {student.name}!
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  You&apos;ve completed {student.total_sessions} lesson
+                  {student.total_sessions !== 1 ? "s" : ""} so far
+                </p>
+              </div>
+
+              {/* Last session info */}
+              {student.last_session_summary && (
+                <div className="bg-[var(--secondary)] rounded-xl p-4 mb-6">
+                  <p className="text-sm font-semibold text-[var(--primary-darker)] mb-1">
+                    Last time:
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    {student.last_session_summary}
+                  </p>
+                </div>
+              )}
+
+              {/* Quick stats */}
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="text-2xl font-bold text-[var(--primary-darker)]">
+                    {student.total_sessions}
+                  </p>
+                  <p className="text-xs text-gray-500">Sessions</p>
+                </div>
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="text-2xl font-bold text-green-600">
+                    {student.total_correct}
+                  </p>
+                  <p className="text-xs text-gray-500">Correct</p>
+                </div>
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="text-2xl font-bold text-[var(--primary-darker)]">
+                    {student.total_correct + student.total_wrong > 0
+                      ? Math.round(
+                          (student.total_correct /
+                            (student.total_correct + student.total_wrong)) *
+                            100
+                        )
+                      : 0}
+                    %
+                  </p>
+                  <p className="text-xs text-gray-500">Accuracy</p>
+                </div>
+              </div>
+
+              {/* Session history */}
+              {sessions.length > 0 && (
+                <div className="mb-6">
+                  <p className="text-sm font-semibold text-gray-700 mb-2">
+                    Session History:
+                  </p>
+                  <div className="space-y-2">
+                    {sessions.map((s, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-gray-600"
+                      >
+                        <span className="text-green-500 mt-0.5">●</span>
+                        <span>{s.summary}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-[var(--secondary)] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">📞</span>
+                </div>
+                <h2 className="text-2xl font-bold text-[var(--primary-darker)]">
+                  Try Sabi
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  An AI tutor that teaches maths through market scenarios.
+                  <br />
+                  Enter your name to start a lesson.
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => onNameChange(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && nameInput.trim() && onStart()
+                  }
+                  placeholder="What's your name?"
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-center focus:outline-none focus:border-[var(--primary-dark)] focus:ring-1 focus:ring-[var(--primary-dark)]"
+                  autoFocus
+                />
+              </div>
+            </>
+          )}
+
+          <button
+            onClick={onStart}
+            disabled={isLoading || (!isReturning && !nameInput.trim())}
+            className="w-full btn-primary rounded-xl px-6 py-4 text-lg font-semibold disabled:opacity-50"
+          >
+            {isLoading
+              ? "Loading..."
+              : isReturning
+                ? "Continue Learning"
+                : "Start Lesson"}
+          </button>
+
+          {isReturning && (
+            <button
+              onClick={() => {
+                localStorage.removeItem("sabi_browser_id");
+                window.location.reload();
+              }}
+              className="w-full mt-3 text-sm text-gray-400 hover:text-gray-600"
+            >
+              Not {student.name}? Start fresh
+            </button>
+          )}
+        </div>
+
+        <p className="text-center text-xs text-gray-400 mt-6">
+          Powered by Education for Equality — Free, world-class education for
+          every child.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── End Screen ─────────────────────────────────────────────────
+
+function EndScreen({
+  summary,
+  onRestart,
+}: {
+  summary: SessionSummary;
+  onRestart: () => void;
+}) {
+  const accuracy =
+    summary.total_correct + summary.total_wrong > 0
+      ? Math.round(
+          (summary.total_correct /
+            (summary.total_correct + summary.total_wrong)) *
+            100
+        )
+      : 0;
+
+  return (
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
+      <div className="max-w-lg w-full">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+          <div className="text-center mb-6">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl">🌟</span>
+            </div>
+            <h2 className="text-2xl font-bold text-[var(--primary-darker)]">
+              Great job!
+            </h2>
+            <p className="text-gray-600 mt-2">{summary.summary}</p>
+          </div>
+
+          {/* This session */}
+          <div className="bg-[var(--secondary)] rounded-xl p-4 mb-4">
+            <p className="text-sm font-semibold text-[var(--primary-darker)] mb-3">
+              This Session:
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-green-600">
+                  {summary.correct_count}
+                </p>
+                <p className="text-xs text-gray-600">Correct</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-orange-500">
+                  {summary.wrong_count}
+                </p>
+                <p className="text-xs text-gray-600">To practice</p>
+              </div>
+            </div>
+          </div>
+
+          {/* All-time stats */}
+          <div className="bg-gray-50 rounded-xl p-4 mb-6">
+            <p className="text-sm font-semibold text-gray-700 mb-3">
+              All-Time Progress:
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[var(--primary-darker)]">
+                  {summary.total_sessions}
+                </p>
+                <p className="text-xs text-gray-500">Total Sessions</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-green-600">
+                  {summary.total_correct}
+                </p>
+                <p className="text-xs text-gray-500">Total Correct</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[var(--primary-darker)]">
+                  {accuracy}%
+                </p>
+                <p className="text-xs text-gray-500">Accuracy</p>
+              </div>
+            </div>
+
+            {/* Progress bar */}
+            <div className="mt-3">
+              <div className="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Level: {summary.current_level}</span>
+                <span>
+                  {summary.current_level === "beginner"
+                    ? "33%"
+                    : summary.current_level === "intermediate"
+                      ? "66%"
+                      : "100%"}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-[var(--primary-dark)] h-2.5 rounded-full transition-all"
+                  style={{
+                    width:
+                      summary.current_level === "beginner"
+                        ? "33%"
+                        : summary.current_level === "intermediate"
+                          ? "66%"
+                          : "100%",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-[var(--primary-darker)] text-white rounded-xl p-4 mb-6 text-center">
+            <p className="text-sm">
+              In the real Sabi, you&apos;d just call the same phone number
+              tomorrow — and Sabi would remember everything from today.
+            </p>
+          </div>
+
+          <button
+            onClick={onRestart}
+            className="w-full btn-primary rounded-xl px-6 py-4 text-lg font-semibold"
+          >
+            Start Another Lesson
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Chat Panel ─────────────────────────────────────────────────
+
 function ChatPanel({
   title,
   subtitle,
@@ -97,6 +421,8 @@ function ChatPanel({
     </div>
   );
 }
+
+// ─── Voice Panel ────────────────────────────────────────────────
 
 function VoicePanel({
   title,
@@ -215,6 +541,8 @@ function VoicePanel({
   );
 }
 
+// ─── Icons ──────────────────────────────────────────────────────
+
 function MicIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -244,13 +572,29 @@ function SpeakerIcon() {
   );
 }
 
+// ─── Main Page ──────────────────────────────────────────────────
+
 export default function SabiDemo() {
+  // Student state
+  const [student, setStudent] = useState<Student | null>(null);
+  const [sessions, setSessions] = useState<
+    { summary: string; created_at: string }[]
+  >([]);
+  const [nameInput, setNameInput] = useState("");
+  const [studentLoading, setStudentLoading] = useState(true);
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [sessionEnded, setSessionEnded] = useState(false);
+  const [sessionSummary, setSessionSummary] = useState<SessionSummary | null>(
+    null
+  );
+  const [endingSession, setEndingSession] = useState(false);
+  const sessionStartTime = useRef<number>(0);
+
   // Text chat state
   const [textMessages, setTextMessages] = useState<Message[]>([]);
   const [textInput, setTextInput] = useState("");
   const [textLoading, setTextLoading] = useState(false);
   const textInputRef = useRef<HTMLInputElement>(null);
-  const textInitialized = useRef(false);
 
   // Voice chat state
   const [voiceMessages, setVoiceMessages] = useState<Message[]>([]);
@@ -258,18 +602,40 @@ export default function SabiDemo() {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(true);
-  const voiceInitialized = useRef(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
 
-  // Check voice support
+  // Check for returning student on mount
   useEffect(() => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setVoiceSupported(false);
+    const browserId = localStorage.getItem("sabi_browser_id");
+    if (browserId) {
+      loadStudent(browserId);
+    } else {
+      setStudentLoading(false);
     }
   }, []);
+
+  // Check voice support
+  useEffect(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) setVoiceSupported(false);
+  }, []);
+
+  const loadStudent = async (browserId: string) => {
+    try {
+      const res = await fetch(
+        `/api/sabi/student?browser_id=${encodeURIComponent(browserId)}`
+      );
+      const data = await res.json();
+      if (data.student) {
+        setStudent(data.student);
+        setSessions(data.sessions || []);
+      }
+    } catch (e) {
+      console.error("Failed to load student:", e);
+    }
+    setStudentLoading(false);
+  };
 
   // Send message to Sabi API
   const sendToSabi = useCallback(
@@ -277,14 +643,18 @@ export default function SabiDemo() {
       messages: Message[],
       setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
       setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-      speak?: boolean
+      speak?: boolean,
+      studentId?: string
     ) => {
       setLoading(true);
       try {
         const res = await fetch("/api/sabi", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages }),
+          body: JSON.stringify({
+            messages,
+            student_id: studentId || student?.id,
+          }),
         });
         const data = await res.json();
         if (data.error) {
@@ -301,9 +671,7 @@ export default function SabiDemo() {
             ...prev,
             { role: "assistant", content: data.response },
           ]);
-          if (speak) {
-            speakText(data.response);
-          }
+          if (speak) speakText(data.response);
         }
       } catch {
         setMessages((prev) => [
@@ -316,23 +684,95 @@ export default function SabiDemo() {
       }
       setLoading(false);
     },
-    []
+    [student]
   );
 
-  // Initialize both chats with Sabi's greeting
-  useEffect(() => {
-    if (!textInitialized.current) {
-      textInitialized.current = true;
-      sendToSabi([], setTextMessages, setTextLoading);
-    }
-  }, [sendToSabi]);
+  // Start session
+  const startSession = async () => {
+    setStudentLoading(true);
 
-  useEffect(() => {
-    if (!voiceInitialized.current) {
-      voiceInitialized.current = true;
-      sendToSabi([], setVoiceMessages, setVoiceLoading, true);
+    let currentStudent = student;
+
+    if (!currentStudent) {
+      // Create new student
+      const browserId = crypto.randomUUID();
+      localStorage.setItem("sabi_browser_id", browserId);
+
+      try {
+        const res = await fetch("/api/sabi/student", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            browser_id: browserId,
+            name: nameInput.trim(),
+          }),
+        });
+        const data = await res.json();
+        if (data.student) {
+          currentStudent = data.student;
+          setStudent(data.student);
+        }
+      } catch (e) {
+        console.error("Failed to create student:", e);
+        setStudentLoading(false);
+        return;
+      }
     }
-  }, [sendToSabi]);
+
+    setStudentLoading(false);
+    setSessionStarted(true);
+    sessionStartTime.current = Date.now();
+
+    // Initialize both chats
+    sendToSabi(
+      [],
+      setTextMessages,
+      setTextLoading,
+      false,
+      currentStudent?.id
+    );
+    sendToSabi(
+      [],
+      setVoiceMessages,
+      setVoiceLoading,
+      true,
+      currentStudent?.id
+    );
+  };
+
+  // End session
+  const endSession = async () => {
+    setEndingSession(true);
+
+    // Use whichever conversation has more messages
+    const messages =
+      textMessages.length >= voiceMessages.length
+        ? textMessages
+        : voiceMessages;
+
+    const duration = Math.floor(
+      (Date.now() - sessionStartTime.current) / 1000
+    );
+
+    try {
+      const res = await fetch("/api/sabi/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: student?.id,
+          messages,
+          duration_seconds: duration,
+        }),
+      });
+      const data = await res.json();
+      setSessionSummary(data);
+      setSessionEnded(true);
+    } catch (e) {
+      console.error("Failed to save session:", e);
+    }
+
+    setEndingSession(false);
+  };
 
   // Text chat send
   const handleTextSend = () => {
@@ -352,7 +792,6 @@ export default function SabiDemo() {
     utterance.rate = 0.9;
     utterance.pitch = 1.0;
 
-    // Try to find a good English voice
     const voices = window.speechSynthesis.getVoices();
     const preferred = voices.find(
       (v) =>
@@ -371,11 +810,10 @@ export default function SabiDemo() {
 
   // Voice: start listening
   const startListening = () => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
 
-    const recognition = new SpeechRecognition();
+    const recognition = new SR();
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.lang = "en-NG";
@@ -407,7 +845,6 @@ export default function SabiDemo() {
     setIsListening(false);
   };
 
-  // Voice send (for programmatic use)
   const handleVoiceSend = (text: string) => {
     if (!text.trim() || voiceLoading) return;
     const newMsg: Message = { role: "user", content: text.trim() };
@@ -416,32 +853,88 @@ export default function SabiDemo() {
     sendToSabi(updated, setVoiceMessages, setVoiceLoading, true);
   };
 
+  // ─── Render ───────────────────────────────────────────────────
+
+  // Loading state
+  if (studentLoading && !sessionStarted) {
+    return (
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+        <div className="animate-pulse text-[var(--primary-darker)] text-lg">
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  // End screen
+  if (sessionEnded && sessionSummary) {
+    return (
+      <EndScreen
+        summary={sessionSummary}
+        onRestart={() => {
+          setSessionStarted(false);
+          setSessionEnded(false);
+          setSessionSummary(null);
+          setTextMessages([]);
+          setVoiceMessages([]);
+          setTextInput("");
+          // Reload student data
+          const browserId = localStorage.getItem("sabi_browser_id");
+          if (browserId) loadStudent(browserId);
+        }}
+      />
+    );
+  }
+
+  // Entry screen
+  if (!sessionStarted) {
+    return (
+      <EntryScreen
+        student={student}
+        nameInput={nameInput}
+        onNameChange={setNameInput}
+        onStart={startSession}
+        isLoading={studentLoading}
+        sessions={sessions}
+      />
+    );
+  }
+
+  // Chat screen
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Header */}
-      <div className="bg-[var(--primary-darker)] text-white py-6 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-3xl font-bold mb-2">
-            Sabi Demo — &quot;To Know&quot;
-          </h1>
-          <p className="text-lg opacity-90">
-            Same lesson, two channels. Text (app) on the left. Voice (phone
-            call) on the right.
-          </p>
-          <p className="text-sm opacity-70 mt-1">
-            Lesson: Market Math — Addition &amp; Subtraction with Naira
-          </p>
+      {/* Header with student info + end button */}
+      <div className="bg-[var(--primary-darker)] text-white py-4 px-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Sabi Demo</h1>
+            <p className="text-sm opacity-80">
+              {student?.name ? `Student: ${student.name}` : "New Student"} —
+              Market Math Lesson
+              {student && student.total_sessions > 0 && (
+                <span className="ml-2">
+                  (Session #{(student.total_sessions || 0) + 1})
+                </span>
+              )}
+            </p>
+          </div>
+          <button
+            onClick={endSession}
+            disabled={endingSession || textMessages.length < 2}
+            className="bg-white text-[var(--primary-darker)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-100 disabled:opacity-50 transition-colors"
+          >
+            {endingSession ? "Saving..." : "End Lesson"}
+          </button>
         </div>
       </div>
 
       {/* Info banner */}
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="bg-[var(--secondary)] border border-[var(--accent)] rounded-xl px-4 py-3 text-sm text-[var(--primary-darker)]">
-          <strong>How it works:</strong> The left panel simulates the{" "}
-          <strong>app experience</strong> (child types on a smartphone). The
-          right panel simulates the <strong>phone call experience</strong> (child
-          speaks on any phone — tap the mic to talk). Both teach the same lesson
-          with the same AI. Try having two different conversations!
+          <strong>Two channels, same AI:</strong> Text chat (left) simulates a{" "}
+          <strong>smartphone app</strong>. Voice chat (right) simulates a{" "}
+          <strong>phone call</strong> — tap the mic to talk. Both channels
+          remember this student across sessions.
         </div>
       </div>
 
@@ -485,17 +978,12 @@ export default function SabiDemo() {
             children who sell at markets solve the{" "}
             <em>exact same arithmetic</em>{" "}
             <strong>9x more often</strong> when framed as a market transaction
-            vs. abstract math (48.5% vs 5.4%). A child who cannot solve
-            &quot;15 + 7&quot; on paper CAN solve &quot;a customer gives you
-            ₦15 and then buys ₦7 more — how much does she owe?&quot;
+            vs. abstract math (48.5% vs 5.4%).
           </p>
           <p className="text-sm text-gray-700 leading-relaxed">
-            Sabi starts with what children already know — Naira, market
-            trading, everyday life — and bridges to formal math.{" "}
-            <strong>
-              Every child already knows math. They just don&apos;t know they
-              know it.
-            </strong>
+            <strong>Persistent memory</strong> means Sabi remembers each
+            child&apos;s name, level, and mistakes across sessions — just like a
+            real tutor. End this lesson and start another to see it in action.
           </p>
         </div>
       </div>

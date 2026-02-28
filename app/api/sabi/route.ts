@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { createClient } from "@supabase/supabase-js";
 
 const client = new Anthropic();
+
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 const SABI_SYSTEM_PROMPT = `You are Sabi, an AI tutor for children aged 8-14 in Lagos, Nigeria. Your name means "to know" in Nigerian Pidgin.
 
@@ -46,9 +54,68 @@ This is a foundational numeracy lesson for children who may not be able to do ab
 ### ON FIRST MESSAGE:
 Start by greeting them warmly and asking their name. Keep it to 2-3 sentences.`;
 
+async function getStudentMemory(studentId: string): Promise<string> {
+  try {
+    const supabase = getSupabase();
+
+    const { data: student } = await supabase
+      .from("sabi_students")
+      .select("*")
+      .eq("id", studentId)
+      .single();
+
+    if (!student) return "";
+
+    const { data: sessions } = await supabase
+      .from("sabi_sessions")
+      .select("summary, correct_count, wrong_count, created_at")
+      .eq("student_id", studentId)
+      .order("created_at", { ascending: false })
+      .limit(3);
+
+    if (student.total_sessions > 0 && sessions && sessions.length > 0) {
+      const lastSession = sessions[0];
+      const timeSince = getTimeSince(lastSession.created_at);
+
+      return `
+
+## RETURNING STUDENT — YOU KNOW THIS CHILD
+- Name: ${student.name}
+- Sessions completed: ${student.total_sessions}
+- Last session (${timeSince}): ${lastSession.summary}
+- Overall: ${student.total_correct} correct answers, ${student.total_wrong} wrong across all sessions
+- Current level: ${student.current_level}
+${sessions.length > 1 ? `- Previous sessions: ${sessions.slice(1).map((s) => s.summary).join("; ")}` : ""}
+
+IMPORTANT: Greet them by name warmly. Reference what they learned last time. Do NOT ask their name — you already know it. Start from where they left off, not from the beginning. Example: "Welcome back, ${student.name}! Last time ${lastSession.summary} Today let's keep going!"`;
+    } else if (student.name) {
+      return `
+
+## NEW STUDENT
+- Name: ${student.name}
+- This is their FIRST session.
+Greet them by name since they already told you. Start the lesson from step 2 (connect to their life).`;
+    }
+
+    return "";
+  } catch {
+    return "";
+  }
+}
+
+function getTimeSince(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins} minutes ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours} hours ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days > 1 ? "s" : ""} ago`;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const { messages, student_id } = await req.json();
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
@@ -57,10 +124,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Load student memory if available
+    let memoryContext = "";
+    if (student_id) {
+      memoryContext = await getStudentMemory(student_id);
+    }
+
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 300,
-      system: SABI_SYSTEM_PROMPT,
+      system: SABI_SYSTEM_PROMPT + memoryContext,
       messages: messages,
     });
 
