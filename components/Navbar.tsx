@@ -43,7 +43,7 @@ export default function Navbar() {
             <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
               About
             </Link>
-            <Link href="/sabi" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+            <Link href="/sabi" className="text-[var(--primary-dark)] font-bold hover:text-[var(--primary-darker)] transition-colors">
               Sabi
             </Link>
           </div>
@@ -103,7 +103,7 @@ export default function Navbar() {
               <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)]">
                 About
               </Link>
-              <Link href="/sabi" className="text-gray-600 hover:text-[var(--primary-dark)]">
+              <Link href="/sabi" className="text-[var(--primary-dark)] font-bold hover:text-[var(--primary-darker)]">
                 Sabi
               </Link>
               <hr className="border-gray-100" />
