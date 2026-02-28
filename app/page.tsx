@@ -268,6 +268,47 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Founder's Story */}
+      <section className="bg-white border-y border-gray-100">
+        <div className="max-w-5xl mx-auto px-6 py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="absolute -inset-3 bg-gradient-to-br from-[var(--primary-dark)] to-[var(--primary-darker)] rounded-2xl opacity-20 blur-lg" />
+                <Image
+                  src="/founder-naomi.png"
+                  alt="Naomi Ivie, Founder of Education for Equality"
+                  width={360}
+                  height={360}
+                  className="relative rounded-2xl object-cover shadow-lg"
+                />
+              </div>
+            </div>
+            <div>
+              <p className="text-sm uppercase tracking-widest text-[var(--primary-dark)] font-medium mb-4">Our Founder</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-6">
+                Why I Started This
+              </h2>
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <p>
+                  Growing up in Lagos, Nigeria, I attended my secondary school on a scholarship and a discount based on my mother&apos;s salary as a teacher. Sometimes my family didn&apos;t have food to eat.
+                </p>
+                <p>
+                  On the way to school every day, I saw children my age hawking wares or fixing cars so their families could survive. I knew there was no difference between me and them. Without the grace of God and the extreme sacrifices of my parents, I would have been one of those kids.
+                </p>
+                <p>
+                  Education gave me a way out. Now I want to extend the same opportunity to every child who didn&apos;t get one. If we can teach people across Africa to solve problems around them, we can set off a chain reaction of transformation across the continent.
+                </p>
+              </div>
+              <p className="mt-6 font-semibold text-[var(--primary-darker)]">
+                Naomi Ivie
+              </p>
+              <p className="text-sm text-gray-500">Founder, Education for Equality</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Grade 4 Curriculum - subtle mention */}
       <section className="bg-[var(--secondary)]">
         <div className="max-w-4xl mx-auto px-6 py-14 text-center">
