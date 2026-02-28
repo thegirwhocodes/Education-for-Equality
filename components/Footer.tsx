@@ -52,7 +52,7 @@ export default function Footer() {
                   info@educationforequality.org
                 </a>
               </li>
-              <li>+1 (667) 415 5712</li>
+              <li>+1 (860) 436-7048</li>
               <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><a href="https://naomiivie04.wixsite.com/mysite/support-us" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Donate</a></li>
             </ul>

@@ -161,7 +161,7 @@ export default function AboutPage() {
               info@educationforequality.org
             </a>
             <span className="hidden sm:inline">|</span>
-            <span>+1 (667) 415 5712</span>
+            <span>+1 (860) 436-7048</span>
           </div>
         </div>
       </section>
