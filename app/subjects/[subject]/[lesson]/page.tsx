@@ -30,22 +30,32 @@ export default function LessonPage() {
   const { subject, unit, lesson } = data;
   const nextLesson = getNextLessonExtended(subjectSlug, lessonId);
   const completed = isCompleted(lessonId);
+  const isFoundational = subject.slug === 'foundational-literacy' || subject.slug === 'foundational-numeracy';
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href="/subjects" className="hover:text-[var(--primary-dark)]">
+      <div className={isFoundational
+        ? "relative overflow-hidden bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]"
+        : "bg-white border-b border-gray-100"
+      }>
+        {isFoundational && (
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-5 left-10 w-32 h-32 bg-[var(--primary)] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-10 w-48 h-48 bg-[var(--accent)] rounded-full blur-3xl" />
+          </div>
+        )}
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className={`flex items-center gap-2 text-sm ${isFoundational ? 'text-white/70' : 'text-gray-500'}`}>
+            <Link href="/subjects" className={isFoundational ? "hover:text-white" : "hover:text-[var(--primary-dark)]"}>
               Subjects
             </Link>
             <span>/</span>
-            <Link href={`/subjects/${subject.slug}`} className="hover:text-[var(--primary-dark)]">
+            <Link href={`/subjects/${subject.slug}`} className={isFoundational ? "hover:text-white" : "hover:text-[var(--primary-dark)]"}>
               {subject.name}
             </Link>
             <span>/</span>
-            <span className="text-gray-900 truncate max-w-[200px]">{lesson.title}</span>
+            <span className={`truncate max-w-[200px] ${isFoundational ? 'text-white' : 'text-gray-900'}`}>{lesson.title}</span>
           </div>
         </div>
       </div>

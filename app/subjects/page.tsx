@@ -91,10 +91,14 @@ export default function SubjectsPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">All Courses</h1>
-          <p className="text-[var(--text-muted)] max-w-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-48 h-48 bg-[var(--primary)] rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-10 w-64 h-64 bg-[var(--accent)] rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-3xl font-bold text-white mb-4">All Courses</h1>
+          <p className="text-white/80 max-w-2xl">
             Start with our foundational courses to build reading and math skills from scratch,
             or dive into the full Grade 4 Cambridge curriculum.
           </p>
