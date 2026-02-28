@@ -29,6 +29,13 @@ export async function POST(req: NextRequest) {
     const incomingMessages: Array<{ role: string; content: string }> = body.messages || [];
     const shouldStream = body.stream !== false;
 
+    // Log what ElevenLabs transcribed so we can debug STT issues
+    const lastUserMsg = incomingMessages.filter(m => m.role === "user").pop();
+    if (lastUserMsg) {
+      console.log(`[Sabi LLM] Child said: "${lastUserMsg.content}"`);
+    }
+    console.log(`[Sabi LLM] Total messages: ${incomingMessages.length}, stream: ${shouldStream}`);
+
     // Extract phone number from the conversation or dynamic variables
     // ElevenLabs can pass custom variables; phone comes from Twilio integration
     let phoneNumber = "";
