@@ -27,11 +27,11 @@ export default function Home() {
               aligned to Cambridge International curriculum. Designed for children in Nigeria and across Africa.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/curriculum/grade-4" className="btn-primary text-center">
-                Start Grade 4
+              <Link href="/sabi" className="btn-primary text-center">
+                Literacy
               </Link>
-              <Link href="/curriculum" className="btn-secondary text-center">
-                Browse Curriculum
+              <Link href="/sabi" className="btn-primary text-center">
+                Numeracy
               </Link>
             </div>
           </div>
