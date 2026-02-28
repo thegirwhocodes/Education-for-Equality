@@ -172,50 +172,54 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Economic Gains Section — research-backed cards with borders */}
-      <section className="bg-white border-y border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 py-20">
+      {/* Economic Gains Section — dark green background */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-[var(--primary)] rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-[var(--accent)] rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-6 py-20">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               The Economic Case for Foundational Skills
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-white/80 max-w-2xl mx-auto">
               Investing in foundational literacy and numeracy isn&apos;t charity — it&apos;s the highest-return investment a government can make.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="border border-gray-200 rounded-2xl p-8 hover:shadow-md transition-shadow">
-              <p className="text-4xl font-bold text-[var(--primary-dark)] mb-2">+20%</p>
-              <p className="font-semibold text-gray-800 mb-2">Boost in labor earnings</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+              <p className="text-4xl font-bold text-[var(--primary)] mb-2">+20%</p>
+              <p className="font-semibold text-white mb-2">Boost in labor earnings</p>
+              <p className="text-sm text-white/75 leading-relaxed">
                 If schools delivered effective foundational learning, labor earnings would rise by 20%. A child who can actually read earns NGN 4.4 million more over a lifetime than one who sat in school the same years but can&apos;t.
               </p>
-              <p className="text-xs text-gray-400 mt-3">World Bank HCI+ 2026 / Aromolaran (2004)</p>
+              <p className="text-xs text-white/50 mt-3">World Bank HCI+ 2026 / Aromolaran (2004)</p>
             </div>
-            <div className="border border-gray-200 rounded-2xl p-8 hover:shadow-md transition-shadow">
-              <p className="text-4xl font-bold text-[var(--primary-dark)] mb-2">161-260x</p>
-              <p className="font-semibold text-gray-800 mb-2">Return on AI tutoring investment</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+              <p className="text-4xl font-bold text-[var(--primary)] mb-2">161-260x</p>
+              <p className="font-semibold text-white mb-2">Return on AI tutoring investment</p>
+              <p className="text-sm text-white/75 leading-relaxed">
                 AI tutoring in Nigerian public schools produced 1.5-2 years of learning gains in just 6 weeks, with a benefit-cost ratio of 161-260. No other education intervention comes close.
               </p>
-              <p className="text-xs text-gray-400 mt-3">World Bank RCT, Edo State 2024</p>
+              <p className="text-xs text-white/50 mt-3">World Bank RCT, Edo State 2024</p>
             </div>
-            <div className="border border-gray-200 rounded-2xl p-8 hover:shadow-md transition-shadow">
-              <p className="text-4xl font-bold text-[var(--primary-dark)] mb-2">$40B/yr</p>
-              <p className="font-semibold text-gray-800 mb-2">Recoverable lost productivity</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+              <p className="text-4xl font-bold text-[var(--primary)] mb-2">$40B/yr</p>
+              <p className="font-semibold text-white mb-2">Recoverable lost productivity</p>
+              <p className="text-sm text-white/75 leading-relaxed">
                 Nigeria currently loses $40 billion annually — 8% of GDP — from an under-educated workforce. Foundational skills programs can recover a significant share of this, generating returns that dwarf the investment.
               </p>
-              <p className="text-xs text-gray-400 mt-3">SBM Intelligence</p>
+              <p className="text-xs text-white/50 mt-3">SBM Intelligence</p>
             </div>
-            <div className="border border-gray-200 rounded-2xl p-8 hover:shadow-md transition-shadow">
-              <p className="text-4xl font-bold text-[var(--primary-dark)] mb-2">47M</p>
-              <p className="font-semibold text-gray-800 mb-2">People lifted from poverty across Africa</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+              <p className="text-4xl font-bold text-[var(--primary)] mb-2">47M</p>
+              <p className="font-semibold text-white mb-2">People lifted from poverty across Africa</p>
+              <p className="text-sm text-white/75 leading-relaxed">
                 Quality foundational education could lift 47 million people out of poverty across Sub-Saharan Africa and add $368 billion to the continent&apos;s GDP — a 4.3% increase.
               </p>
-              <p className="text-xs text-gray-400 mt-3">ISS Africa</p>
+              <p className="text-xs text-white/50 mt-3">ISS Africa</p>
             </div>
           </div>
         </div>
