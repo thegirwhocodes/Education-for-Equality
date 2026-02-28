@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// ElevenLabs Nigerian voice — matches the phone agent voice
-const VOICE_ID = "oC2pCZZWEDRe6lmZpaaw";
+// ElevenLabs Nigerian voice: Olufunmilola — African Female with Nigerian Accent
+const VOICE_ID = "9Dbo4hEvXQ5l7MXGZFQA";
 
 /**
  * POST /api/sabi/tts
