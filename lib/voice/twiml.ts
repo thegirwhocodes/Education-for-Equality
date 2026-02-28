@@ -2,16 +2,16 @@ import twilio from "twilio";
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
-// Voice configuration — Nigerian-accented English
+// Voice configuration — warm British English (closest to Nigerian English)
 const VOICE_CONFIG = {
-  voice: "Polly.Aditi" as const, // Indian English female — closest to Nigerian accent in Polly
-  language: "en-IN" as const, // Closer to Nigerian English intonation than US/UK
+  voice: "Polly.Amy" as const, // British English female neural — Nigerian English is British-based
+  language: "en-GB" as const,
 };
 
 // Speech recognition configuration
 const SPEECH_CONFIG = {
   input: "speech" as const,
-  speechTimeout: "auto" as const,
+  speechTimeout: "2" as const, // 2 seconds of silence = done talking (reduces long pauses)
   language: "en-GH", // Ghanaian English — closest supported African English in Twilio
   speechModel: "phone_call" as const,
 };

@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         createGatherResponse(
           "I didn't quite hear that. Can you say it again?",
           actionUrl,
-          { timeout: 8 }
+          { timeout: 5 }
         ),
         { headers: twimlHeaders() }
       );

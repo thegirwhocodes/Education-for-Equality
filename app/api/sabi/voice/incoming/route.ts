@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
     const twiml = createGatherResponse(greeting, actionUrl, {
-      timeout: 8,
+      timeout: 5,
     });
 
     return new NextResponse(twiml, { headers: twimlHeaders() });
