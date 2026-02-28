@@ -47,14 +47,27 @@ export async function POST(req: NextRequest) {
       phoneNumber = body.metadata.phone_number;
     }
 
-    // Also check the system message for phone number (ElevenLabs may inject it)
+    // Check the system message for phone number
+    // ElevenLabs injects {{system__caller_id}} into the system prompt
     const systemMsg = incomingMessages.find((m) => m.role === "system");
     if (systemMsg && !phoneNumber) {
-      const phoneMatch = systemMsg.content.match(/phone[_\s]?number[:\s]+(\+?[\d]+)/i);
-      if (phoneMatch) {
-        phoneNumber = phoneMatch[1];
+      // Match various formats: "caller_id: +234...", "phone_number: +234...", "phone number is: +1..."
+      const phonePatterns = [
+        /caller[_\s]?id[:\s]+(\+?[\d]+)/i,
+        /phone[_\s]?number[:\s]+(\+?[\d]+)/i,
+        /phone[_\s]?number\s+is[:\s]+(\+?[\d]+)/i,
+        /(\+\d{10,15})/,  // Any international phone number
+      ];
+      for (const pattern of phonePatterns) {
+        const match = systemMsg.content.match(pattern);
+        if (match) {
+          phoneNumber = match[1];
+          break;
+        }
       }
     }
+
+    console.log(`[Sabi LLM] Phone: ${phoneNumber || "none"}, System msg: ${systemMsg ? "yes" : "no"}`);
 
     // Look up or create student by phone number
     let studentId: string | null = null;
