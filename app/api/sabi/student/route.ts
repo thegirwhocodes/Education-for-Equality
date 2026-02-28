@@ -8,20 +8,25 @@ function getSupabase() {
   );
 }
 
-// GET /api/sabi/student?browser_id=xxx — Find student + recent sessions
+// GET /api/sabi/student?browser_id=xxx OR ?phone=+234... — Find student + recent sessions
 export async function GET(req: NextRequest) {
   const browserId = req.nextUrl.searchParams.get("browser_id");
-  if (!browserId) {
-    return NextResponse.json({ error: "browser_id required" }, { status: 400 });
+  const phone = req.nextUrl.searchParams.get("phone");
+
+  if (!browserId && !phone) {
+    return NextResponse.json({ error: "browser_id or phone required" }, { status: 400 });
   }
 
   const supabase = getSupabase();
 
-  const { data: student, error } = await supabase
-    .from("sabi_students")
-    .select("*")
-    .eq("browser_id", browserId)
-    .single();
+  let query = supabase.from("sabi_students").select("*");
+  if (phone) {
+    query = query.eq("phone_number", phone);
+  } else {
+    query = query.eq("browser_id", browserId!);
+  }
+
+  const { data: student, error } = await query.single();
 
   if (error || !student) {
     return NextResponse.json({ student: null });
@@ -38,13 +43,13 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ student, sessions: sessions || [] });
 }
 
-// POST /api/sabi/student — Create new student
+// POST /api/sabi/student — Create new student (supports browser_id or phone_number)
 export async function POST(req: NextRequest) {
-  const { browser_id, name } = await req.json();
+  const { browser_id, phone_number, name } = await req.json();
 
-  if (!browser_id) {
+  if (!browser_id && !phone_number) {
     return NextResponse.json(
-      { error: "browser_id required" },
+      { error: "browser_id or phone_number required" },
       { status: 400 }
     );
   }
@@ -52,20 +57,30 @@ export async function POST(req: NextRequest) {
   const supabase = getSupabase();
 
   // Check if student already exists
-  const { data: existing } = await supabase
-    .from("sabi_students")
-    .select("*")
-    .eq("browser_id", browser_id)
-    .single();
+  let existingQuery = supabase.from("sabi_students").select("*");
+  if (phone_number) {
+    existingQuery = existingQuery.eq("phone_number", phone_number);
+  } else {
+    existingQuery = existingQuery.eq("browser_id", browser_id);
+  }
+
+  const { data: existing } = await existingQuery.single();
 
   if (existing) {
     return NextResponse.json({ student: existing });
   }
 
   // Create new student
+  const insertData: Record<string, string | null> = { name: name || null };
+  if (phone_number) {
+    insertData.phone_number = phone_number;
+  } else {
+    insertData.browser_id = browser_id;
+  }
+
   const { data: student, error } = await supabase
     .from("sabi_students")
-    .insert({ browser_id, name: name || null })
+    .insert(insertData)
     .select()
     .single();
 
