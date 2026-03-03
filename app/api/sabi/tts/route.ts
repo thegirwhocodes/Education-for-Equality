@@ -17,6 +17,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "text required" }, { status: 400 });
     }
 
+    // Replace symbols with spoken words for natural pronunciation
+    const spokenText = text.replace(/₦/g, "naira ");
+
     const apiKey = process.env.ELEVENLABS_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
@@ -34,7 +37,7 @@ export async function POST(req: NextRequest) {
           "xi-api-key": apiKey,
         },
         body: JSON.stringify({
-          text,
+          text: spokenText,
           model_id: "eleven_multilingual_v2",
           voice_settings: {
             stability: 0.5,

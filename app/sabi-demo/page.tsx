@@ -787,12 +787,13 @@ export default function SabiDemo() {
   // Voice: speak text using ElevenLabs Nigerian voice (fallback to Web Speech API)
   const speakText = async (text: string) => {
     setIsSpeaking(true);
+    const spokenText = text.replace(/₦/g, "naira ");
     try {
       // Try ElevenLabs first (Nigerian accent)
       const res = await fetch("/api/sabi/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text: spokenText }),
       });
 
       if (res.ok) {
@@ -835,7 +836,7 @@ export default function SabiDemo() {
     // Fallback: Web Speech API
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
+      const utterance = new SpeechSynthesisUtterance(spokenText);
       utterance.rate = 0.9;
       utterance.pitch = 1.0;
       const voices = window.speechSynthesis.getVoices();
