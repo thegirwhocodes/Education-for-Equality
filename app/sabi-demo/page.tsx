@@ -1028,10 +1028,15 @@ export default function SabiDemo() {
             <strong>9x more often</strong> when framed as a market transaction
             vs. abstract math (48.5% vs 5.4%).
           </p>
-          <p className="text-sm text-white/80 leading-relaxed">
+          <p className="text-sm text-white/80 leading-relaxed mb-3">
             <strong>Persistent memory</strong> means Sabi remembers each
             child&apos;s name, level, and mistakes across sessions — just like a
             real tutor. End this lesson and start another to see it in action.
+          </p>
+          <p className="text-sm text-white/60 leading-relaxed">
+            Sabi&apos;s voice tutoring approach is inspired by{" "}
+            <a href="https://bakame.ai" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80">Bakame AI</a>,
+            pioneers in toll-free voice AI tutoring across Africa.
           </p>
         </div>
       </div>
