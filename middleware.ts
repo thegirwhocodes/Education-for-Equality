@@ -7,29 +7,20 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 // Demo pages locked behind a secret key (pre-release)
-const isDemoRoute = createRouteMatcher([
-  '/sabi/demo(.*)',
-  '/sabi-voice(.*)',
-  '/sabi-demo(.*)',
-]);
+// Match both direct paths (/sabi/demo) and subdomain paths (/demo on sabi.*)
+const DEMO_PATHS = ['/sabi/demo', '/sabi-voice', '/sabi-demo', '/demo'];
 
 export default clerkMiddleware(async (auth, req) => {
-  // Route sabi.eduforequality.org/* to /sabi/*
   const host = req.headers.get('host') || '';
-  if (host.startsWith('sabi.')) {
-    const path = req.nextUrl.pathname;
-    // sabi.eduforequality.org/ → /sabi
-    // sabi.eduforequality.org/demo → /sabi/demo
-    if (path === '/') {
-      return NextResponse.rewrite(new URL('/sabi', req.url));
-    }
-    if (!path.startsWith('/sabi')) {
-      return NextResponse.rewrite(new URL(`/sabi${path}`, req.url));
-    }
-  }
+  const path = req.nextUrl.pathname;
+  const isSubdomain = host.startsWith('sabi.');
 
-  // Demo routes: require ?key=SECRET or sabi_demo cookie
-  if (isDemoRoute(req)) {
+  // Check if this is a demo route (before rewrite)
+  const isDemoPath = DEMO_PATHS.some((p) => path.startsWith(p)) ||
+    (isSubdomain && path.startsWith('/demo'));
+
+  // Demo routes: require ?key=SECRET or sabi_demo cookie (check BEFORE rewrite)
+  if (isDemoPath) {
     const secret = process.env.SABI_DEMO_KEY;
     if (secret) {
       const urlKey = req.nextUrl.searchParams.get('key');
@@ -60,6 +51,17 @@ export default clerkMiddleware(async (auth, req) => {
         '<html><body style="background:#0a1a15;color:white;display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui"><div style="text-align:center"><h1>Sabi Demo</h1><p style="opacity:0.5">This demo is private. Contact naomi@eduforequality.org for access.</p></div></body></html>',
         { status: 403, headers: { 'Content-Type': 'text/html' } }
       );
+    }
+  }
+
+  // Route sabi.eduforequality.org to /sabi landing page
+  // Only rewrite root and /demo — other paths (sign-in, dashboard, etc.) pass through normally
+  if (isSubdomain) {
+    if (path === '/') {
+      return NextResponse.rewrite(new URL('/sabi', req.url));
+    }
+    if (path === '/demo' || path.startsWith('/demo/')) {
+      return NextResponse.rewrite(new URL(`/sabi${path}`, req.url));
     }
   }
 

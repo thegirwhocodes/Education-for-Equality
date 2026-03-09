@@ -27,16 +27,15 @@ export default function SabiVoice() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [elapsed, setElapsed] = useState(0);
   const [error, setError] = useState("");
+  const [voiceSupported, setVoiceSupported] = useState(true);
 
   const callActiveRef = useRef(false);
   const messagesRef = useRef<Message[]>([]);
   const studentRef = useRef<{ id: string; name: string } | null>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const streamRef = useRef<MediaStream | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const callStartRef = useRef(0);
-  const resolveRecordingRef = useRef<((blob: Blob) => void) | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
 
   // Keep refs in sync
   useEffect(() => {
@@ -48,6 +47,15 @@ export default function SabiVoice() {
   useEffect(() => {
     callActiveRef.current = callActive;
   }, [callActive]);
+
+  // Check voice support
+  useEffect(() => {
+    const SR =
+      typeof window !== "undefined"
+        ? window.SpeechRecognition || window.webkitSpeechRecognition
+        : null;
+    if (!SR) setVoiceSupported(false);
+  }, []);
 
   // Load returning student
   useEffect(() => {
@@ -81,153 +89,200 @@ export default function SabiVoice() {
   const formatTime = (s: number) =>
     `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
 
-  // Play base64 audio and return a promise
-  const playAudio = useCallback((base64: string): Promise<void> => {
-    return new Promise((resolve) => {
-      const bytes = atob(base64);
-      const buffer = new Uint8Array(bytes.length);
-      for (let i = 0; i < bytes.length; i++) buffer[i] = bytes.charCodeAt(i);
+  // Play audio from TTS API and return a promise
+  const speakText = useCallback((text: string): Promise<void> => {
+    return new Promise(async (resolve) => {
+      setCallState("speaking");
+      const spokenText = text.replace(/₦/g, "naira ");
 
-      const blob = new Blob([buffer], { type: "audio/mpeg" });
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
+      try {
+        const res = await fetch("/api/sabi/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: spokenText }),
+        });
 
-      audio.onended = () => {
-        URL.revokeObjectURL(url);
-        resolve();
-      };
-      audio.onerror = () => {
-        URL.revokeObjectURL(url);
-        resolve();
-      };
-      audio.play().catch(() => resolve());
-    });
-  }, []);
+        if (res.ok) {
+          const arrayBuffer = await res.arrayBuffer();
+          const AudioCtx =
+            window.AudioContext ||
+            (window as unknown as { webkitAudioContext: typeof AudioContext })
+              .webkitAudioContext;
+          if (AudioCtx) {
+            const ctx = new AudioCtx();
+            const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+            const source = ctx.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(ctx.destination);
+            source.onended = () => {
+              ctx.close();
+              resolve();
+            };
+            source.start(0);
+            return;
+          }
 
-  // Start recording — returns a promise that resolves when stopRecording is called
-  const startRecording = useCallback((): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-      if (!streamRef.current) {
-        reject(new Error("No microphone stream"));
-        return;
+          // Fallback: Audio element
+          const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          audio.onended = () => {
+            URL.revokeObjectURL(url);
+            resolve();
+          };
+          audio.onerror = () => {
+            URL.revokeObjectURL(url);
+            resolve();
+          };
+          await audio.play();
+          return;
+        }
+      } catch (err) {
+        console.warn("TTS failed, falling back to browser voice:", err);
       }
 
-      audioChunksRef.current = [];
-      const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-        ? "audio/webm;codecs=opus"
-        : "audio/webm";
-      const recorder = new MediaRecorder(streamRef.current, { mimeType });
-      mediaRecorderRef.current = recorder;
-
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) audioChunksRef.current.push(e.data);
-      };
-
-      recorder.onstop = () => {
-        const blob = new Blob(audioChunksRef.current, { type: mimeType });
-        resolve(blob);
-      };
-
-      recorder.onerror = () => reject(new Error("Recording failed"));
-      recorder.start();
-      resolveRecordingRef.current = null; // will be set when we want to stop
+      // Last fallback: browser speech synthesis
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(spokenText);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        const voices = window.speechSynthesis.getVoices();
+        const preferred = voices.find(
+          (v) =>
+            v.lang.startsWith("en") &&
+            (v.name.includes("Female") ||
+              v.name.includes("Samantha") ||
+              v.name.includes("Google"))
+        );
+        if (preferred) utterance.voice = preferred;
+        utterance.onend = () => resolve();
+        utterance.onerror = () => resolve();
+        window.speechSynthesis.speak(utterance);
+      } else {
+        resolve();
+      }
     });
   }, []);
 
-  // Stop recording
-  const stopRecording = useCallback(() => {
-    if (mediaRecorderRef.current?.state === "recording") {
-      mediaRecorderRef.current.stop();
-    }
-  }, []);
-
-  // Send audio through full pipeline
-  const sendToPipeline = useCallback(
-    async (audioBlob: Blob | null, currentMessages: Message[]) => {
-      const formData = new FormData();
-      if (audioBlob) formData.append("audio", audioBlob);
-      formData.append("messages", JSON.stringify(currentMessages));
-      if (studentRef.current?.id)
-        formData.append("student_id", studentRef.current.id);
-
-      const res = await fetch("/api/sabi/voice-chat", {
+  // Get Sabi's response via Claude
+  const getSabiResponse = useCallback(
+    async (msgs: Message[]): Promise<string> => {
+      const res = await fetch("/api/sabi", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: msgs,
+          student_id: studentRef.current?.id,
+        }),
       });
-
-      if (!res.ok) throw new Error("Pipeline failed");
-      return res.json();
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      return data.response;
     },
     []
   );
 
-  // Handle one turn: listen → process → speak
-  const handleTurn = useCallback(async () => {
-    if (!callActiveRef.current) return;
-
-    try {
-      // 1. Listen
-      setCallState("listening");
-      const recordPromise = startRecording();
-
-      // Wait for user to tap stop (stopRecording will be called by button)
-      // But also set a max timeout of 15 seconds
-      const timeoutPromise = new Promise<Blob>((resolve) => {
-        setTimeout(() => {
-          stopRecording();
-          // The recordPromise will resolve from onstop
-          recordPromise.then(resolve);
-        }, 15000);
-      });
-
-      const audioBlob = await Promise.race([recordPromise, timeoutPromise]);
-
-      if (!callActiveRef.current) return;
-
-      // 2. Process
-      setCallState("processing");
-      const result = await sendToPipeline(audioBlob, messagesRef.current);
-
-      if (!callActiveRef.current) return;
-
-      if (result.error) {
-        setError(result.error);
-        setCallState("ready");
+  // Start listening with Web Speech API — auto-detects when user stops talking
+  const startListening = useCallback((): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        reject(new Error("Speech recognition not supported"));
         return;
       }
 
-      // 3. Update messages
-      const newMessages = [...messagesRef.current];
-      if (result.transcript) {
-        newMessages.push({ role: "user", content: result.transcript });
-      }
-      newMessages.push({ role: "assistant", content: result.response });
-      setMessages(newMessages);
+      let resolved = false;
 
-      // 4. Speak
-      if (result.audio) {
-        setCallState("speaking");
-        await playAudio(result.audio);
-      }
+      const recognition = new SR();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "en-NG";
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      recognition.onresult = (event: any) => {
+        if (!resolved) {
+          resolved = true;
+          const transcript = event.results[0][0].transcript;
+          resolve(transcript.trim());
+        }
+      };
+
+      recognition.onerror = (event: { error: string }) => {
+        if (!resolved) {
+          resolved = true;
+          if (event.error === "no-speech") {
+            resolve(""); // Silence — will retry
+          } else {
+            reject(new Error(event.error));
+          }
+        }
+      };
+
+      recognition.onend = () => {
+        if (!resolved) {
+          resolved = true;
+          resolve("");
+        }
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+      setCallState("listening");
+    });
+  }, []);
+
+  // One conversation turn: listen → process → speak → repeat
+  const runTurn = useCallback(async () => {
+    if (!callActiveRef.current) return;
+
+    try {
+      // 1. Listen — Web Speech API auto-detects speech end
+      const transcript = await startListening();
 
       if (!callActiveRef.current) return;
 
-      // 5. Ready for next turn — auto-start listening
-      setCallState("ready");
-      // Small delay before auto-listening
-      setTimeout(() => {
+      // Handle silence or empty — auto-retry
+      if (!transcript) {
         if (callActiveRef.current) {
-          handleTurn();
+          runTurn();
         }
-      }, 500);
+        return;
+      }
+
+      // 2. Add user message
+      const userMsg: Message = { role: "user", content: transcript };
+      const updatedMessages = [...messagesRef.current, userMsg];
+      setMessages(updatedMessages);
+      messagesRef.current = updatedMessages;
+
+      // 3. Get Sabi's response
+      setCallState("processing");
+      const response = await getSabiResponse(updatedMessages);
+
+      if (!callActiveRef.current) return;
+
+      // 4. Add assistant message
+      const assistantMsg: Message = { role: "assistant", content: response };
+      const finalMessages = [...updatedMessages, assistantMsg];
+      setMessages(finalMessages);
+      messagesRef.current = finalMessages;
+
+      // 5. Speak the response (TTS)
+      await speakText(response);
+
+      if (!callActiveRef.current) return;
+
+      // 6. Auto-start next turn — no tap needed
+      runTurn();
     } catch (err) {
       console.error("Turn error:", err);
       if (callActiveRef.current) {
-        setError("Something went wrong. Tap the mic to try again.");
+        setError("Something went wrong. Tap to try again.");
         setCallState("ready");
       }
     }
-  }, [startRecording, stopRecording, sendToPipeline, playAudio]);
+  }, [startListening, getSabiResponse, speakText]);
 
   // Start call
   const startCall = async () => {
@@ -235,7 +290,6 @@ export default function SabiVoice() {
     setMessages([]);
     setCallState("connecting");
 
-    // Create student if needed
     let currentStudent = student;
     if (!currentStudent) {
       const browserId =
@@ -263,46 +317,28 @@ export default function SabiVoice() {
       }
     }
 
-    // Get microphone
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-    } catch {
-      setError("Microphone access denied. Please allow microphone access.");
-      setCallState("idle");
-      return;
-    }
-
     setCallActive(true);
     callActiveRef.current = true;
 
-    // Get Sabi's greeting
     try {
       setCallState("processing");
-      const result = await sendToPipeline(null, []);
+      const greeting = await getSabiResponse([]);
 
-      if (result.error) {
-        setError(result.error);
-        endCall();
-        return;
-      }
+      if (!callActiveRef.current) return;
 
       const initialMessages: Message[] = [
-        { role: "assistant", content: result.response },
+        { role: "assistant", content: greeting },
       ];
       setMessages(initialMessages);
       messagesRef.current = initialMessages;
 
-      // Play greeting
-      if (result.audio) {
-        setCallState("speaking");
-        await playAudio(result.audio);
-      }
+      // Speak greeting
+      await speakText(greeting);
 
-      // Start listening loop
-      if (callActiveRef.current) {
-        handleTurn();
-      }
+      if (!callActiveRef.current) return;
+
+      // Start auto-listening loop
+      runTurn();
     } catch (err) {
       console.error("Init error:", err);
       setError("Failed to start. Check that API keys are configured.");
@@ -316,16 +352,9 @@ export default function SabiVoice() {
     setCallActive(false);
     setCallState("idle");
 
-    // Stop recording
-    if (mediaRecorderRef.current?.state === "recording") {
-      mediaRecorderRef.current.stop();
-    }
+    recognitionRef.current?.abort();
+    recognitionRef.current = null;
 
-    // Stop mic
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-
-    // Save session
     if (messagesRef.current.length >= 2 && studentRef.current?.id) {
       try {
         await fetch("/api/sabi/session", {
@@ -343,29 +372,26 @@ export default function SabiVoice() {
     }
   };
 
-  // Tap mic during listening → stop recording early
-  const handleMicTap = () => {
-    if (callState === "listening") {
-      stopRecording();
-    } else if (callState === "ready") {
-      handleTurn();
+  const handleOrbTap = () => {
+    if (callState === "ready") {
+      setError("");
+      runTurn();
     }
   };
 
   const statusText: Record<CallState, string> = {
     idle: "Tap to call Sabi",
     connecting: "Connecting...",
-    listening: "Listening... tap when done",
+    listening: "Listening...",
     processing: "Sabi is thinking...",
     speaking: "Sabi is speaking...",
-    ready: "Tap to speak",
+    ready: "Tap to continue",
   };
 
   // ─── Idle Screen ────────────────────────────────────────────────
   if (!callActive && callState === "idle") {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-center px-4">
-        {/* Branding */}
         <div className="text-center mb-10">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0f6b4f] to-[#1a8c6a] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#0f6b4f]/30">
             <svg
@@ -383,12 +409,17 @@ export default function SabiVoice() {
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Sabi</h1>
-          <p className="text-white/50 text-sm">
-            Voice AI Tutor
-          </p>
+          <p className="text-white/50 text-sm">Voice AI Tutor</p>
         </div>
 
-        {/* Name input for new users */}
+        {!voiceSupported && (
+          <div className="bg-red-500/20 border border-red-500/30 rounded-xl px-4 py-3 max-w-xs mb-6">
+            <p className="text-red-300 text-sm text-center">
+              Voice not supported in this browser. Please use Chrome.
+            </p>
+          </div>
+        )}
+
         {!student && (
           <div className="w-full max-w-xs mb-8">
             <input
@@ -404,7 +435,6 @@ export default function SabiVoice() {
           </div>
         )}
 
-        {/* Returning student */}
         {student && (
           <div className="text-center mb-8">
             <p className="text-white/70 text-sm">
@@ -418,10 +448,9 @@ export default function SabiVoice() {
           </div>
         )}
 
-        {/* Call button */}
         <button
           onClick={startCall}
-          disabled={!student && !nameInput.trim()}
+          disabled={(!student && !nameInput.trim()) || !voiceSupported}
           className="w-20 h-20 rounded-full bg-green-500 hover:bg-green-400 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg shadow-green-500/30"
         >
           <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
@@ -436,7 +465,6 @@ export default function SabiVoice() {
           </div>
         )}
 
-        {/* Previous conversation */}
         {messages.length > 0 && (
           <div className="mt-8 w-full max-w-md">
             <p className="text-white/40 text-xs text-center mb-3">
@@ -458,7 +486,6 @@ export default function SabiVoice() {
           </div>
         )}
 
-        {/* Not me */}
         {student && (
           <button
             onClick={() => {
@@ -481,7 +508,6 @@ export default function SabiVoice() {
   // ─── Active Call Screen ─────────────────────────────────────────
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-between px-4 py-8">
-      {/* Top bar */}
       <div className="text-center">
         <p className="text-white/40 text-xs uppercase tracking-widest mb-1">
           {callState === "connecting" ? "Connecting" : "In Call"}
@@ -490,16 +516,10 @@ export default function SabiVoice() {
         <p className="text-white/50 text-sm mt-1">{formatTime(elapsed)}</p>
       </div>
 
-      {/* Center — orb + status */}
       <div className="flex flex-col items-center gap-6">
-        {/* Interactive orb */}
         <button
-          onClick={handleMicTap}
-          disabled={
-            callState === "processing" ||
-            callState === "speaking" ||
-            callState === "connecting"
-          }
+          onClick={handleOrbTap}
+          disabled={callState !== "ready"}
           className="relative focus:outline-none disabled:cursor-default"
         >
           <div
@@ -513,7 +533,6 @@ export default function SabiVoice() {
                     : "bg-white/5 hover:bg-white/10"
             }`}
           >
-            {/* Inner circle */}
             <div
               className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
                 callState === "listening"
@@ -530,10 +549,15 @@ export default function SabiVoice() {
                   width="32"
                   height="32"
                   viewBox="0 0 24 24"
-                  fill="white"
-                  className="opacity-90"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  className="opacity-90 animate-pulse"
                 >
-                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" y1="19" x2="12" y2="23" />
+                  <line x1="8" y1="23" x2="16" y2="23" />
                 </svg>
               ) : callState === "speaking" ? (
                 <svg
@@ -580,7 +604,6 @@ export default function SabiVoice() {
             </div>
           </div>
 
-          {/* Pulse rings when listening */}
           {callState === "listening" && (
             <>
               <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping" />
@@ -592,10 +615,8 @@ export default function SabiVoice() {
           )}
         </button>
 
-        {/* Status */}
         <p className="text-white/60 text-sm">{statusText[callState]}</p>
 
-        {/* Transcript */}
         <div className="w-full max-w-sm space-y-3 max-h-56 overflow-y-auto px-2">
           {messages.slice(-6).map((m, i) => (
             <div
@@ -617,7 +638,6 @@ export default function SabiVoice() {
         {error && <p className="text-red-400 text-xs">{error}</p>}
       </div>
 
-      {/* End call */}
       <div className="flex flex-col items-center gap-2">
         <button
           onClick={endCall}
@@ -632,3 +652,13 @@ export default function SabiVoice() {
     </div>
   );
 }
+
+// Type declarations for Web Speech API
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
