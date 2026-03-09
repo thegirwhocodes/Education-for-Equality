@@ -54,23 +54,23 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">
               {loading ? '...' : completedCount}
             </div>
             <div className="text-gray-600 text-sm">Lessons Completed</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">{totalLessons}</div>
             <div className="text-gray-600 text-sm">Total Lessons Available</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">
               {loading ? '...' : `${overallPercent}%`}
             </div>
             <div className="text-gray-600 text-sm">Overall Progress</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">
               {loading ? '...' : `${Math.round(completedCount * 12 / 60)}h`}
             </div>
@@ -79,7 +79,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Continue Learning */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border mb-8">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md transition-all duration-200 mb-8">
           <h2 className="text-xl font-semibold mb-4">Continue Learning</h2>
           {nextLesson ? (
             <div className="flex items-center justify-between">
@@ -115,7 +115,7 @@ export default function DashboardPage() {
             const subjectPercent = subjectTotal > 0 ? Math.round((subjectCompleted / subjectTotal) * 100) : 0;
 
             return (
-              <div key={subject.slug} className="bg-white rounded-xl p-6 shadow-sm border">
+              <div key={subject.slug} className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl">{subject.icon}</span>
                   <div>
