@@ -37,7 +37,7 @@ const WRAP_UP_PATTERNS = [
  *   1. Download recording from AT's URL
  *   2. Transcribe via Groq Whisper (free)
  *   3. Get Sabi's response from Claude
- *   4. Convert response to audio via ElevenLabs
+ *   4. Convert response to audio via YarnGPT (or ElevenLabs fallback)
  *   5. Upload audio to Supabase Storage
  *   6. Return AT XML: <Play response> + <Record> (or just <Play> to end)
  */

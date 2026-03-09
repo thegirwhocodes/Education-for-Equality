@@ -11,7 +11,7 @@ import { findOrCreateStudentByPhone, callSabi } from "@/lib/voice/sabi-shared";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
 import { uploadAudio } from "@/lib/voice/audio-storage";
 
-// AT recording download + Groq STT + Claude + ElevenLabs TTS + Supabase upload
+// AT voice pipeline: Groq STT + Claude Haiku + YarnGPT TTS (ElevenLabs fallback)
 export const maxDuration = 60;
 
 /**
@@ -23,7 +23,7 @@ export const maxDuration = 60;
  * Flow:
  *   1. Find or create student by callerNumber
  *   2. Generate greeting via Claude
- *   3. TTS via ElevenLabs → upload to Supabase Storage
+ *   3. TTS via YarnGPT (or ElevenLabs fallback) → upload to Supabase Storage
  *   4. Return AT XML: <Play greeting> + <Record> with callback to /at/recording
  */
 export async function POST(req: NextRequest) {

@@ -1,26 +1,51 @@
 /**
- * ElevenLabs TTS client — shared by both the /api/sabi/tts route
- * and the Africa's Talking voice pipeline.
+ * TTS client — routes to YarnGPT (primary) or ElevenLabs (fallback).
  *
- * Returns raw audio buffer (audio/mpeg) for upload to Supabase Storage.
+ * YarnGPT: Free, 16 Nigerian voices, beta.
+ * ElevenLabs: Paid (or free via Impact Program), Nigerian voice "Olufunmilola".
+ *
+ * All downstream code imports `synthesizeSpeech` from this file — no changes needed
+ * in AT routes, Twilio routes, or TTS API route.
  */
 
-// Olufunmilola — African Female with Nigerian Accent
-const VOICE_ID = "9Dbo4hEvXQ5l7MXGZFQA";
+import { synthesizeWithYarnGPT } from "./yarngpt-client";
+
+// ElevenLabs — Olufunmilola (African Female, Nigerian Accent)
+const ELEVENLABS_VOICE_ID = "9Dbo4hEvXQ5l7MXGZFQA";
 
 /**
- * Convert text to speech using ElevenLabs.
- * Returns audio/mpeg buffer.
+ * Convert text to speech. Tries YarnGPT first, falls back to ElevenLabs.
+ * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
+  // Try YarnGPT first (free, Nigerian voices)
+  if (process.env.YARNGPT_API_KEY) {
+    try {
+      return await synthesizeWithYarnGPT(text);
+    } catch (error) {
+      console.warn(
+        "YarnGPT failed, falling back to ElevenLabs:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
+
+  // Fallback: ElevenLabs
+  return synthesizeWithElevenLabs(text);
+}
+
+/**
+ * ElevenLabs TTS — fallback provider.
+ */
+async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
   const apiKey = process.env.ELEVENLABS_API_KEY;
-  if (!apiKey) throw new Error("ELEVENLABS_API_KEY not configured");
+  if (!apiKey) throw new Error("No TTS provider configured (need YARNGPT_API_KEY or ELEVENLABS_API_KEY)");
 
   // Replace symbols with spoken words for natural pronunciation
   const spokenText = text.replace(/₦/g, "naira ");
 
   const response = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+    `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`,
     {
       method: "POST",
       headers: {
@@ -43,7 +68,7 @@ export async function synthesizeSpeech(text: string): Promise<Buffer> {
   if (!response.ok) {
     const errorText = await response.text();
     console.error("ElevenLabs error:", response.status, errorText);
-    throw new Error(`TTS generation failed: ${response.status}`);
+    throw new Error(`ElevenLabs TTS failed: ${response.status}`);
   }
 
   const arrayBuffer = await response.arrayBuffer();
