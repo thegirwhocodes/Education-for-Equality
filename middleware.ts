@@ -28,20 +28,28 @@ export default clerkMiddleware(async (auth, req) => {
 
       if (urlKey === secret) {
         // Valid key in URL — set cookie so they don't need it again
-        const response = NextResponse.next();
+        // On subdomain, rewrite /demo → /sabi/demo so the page resolves
+        const url = isSubdomain && (path === '/demo' || path.startsWith('/demo/'))
+          ? new URL(`/sabi${path}`, req.url)
+          : req.url;
+        const response = isSubdomain && (path === '/demo' || path.startsWith('/demo/'))
+          ? NextResponse.rewrite(url)
+          : NextResponse.next();
         response.cookies.set('sabi_demo', secret, {
           httpOnly: true,
           secure: true,
           sameSite: 'lax',
           maxAge: 60 * 60 * 24 * 30, // 30 days
         });
-        // Add noindex header
         response.headers.set('X-Robots-Tag', 'noindex, nofollow');
         return response;
       }
 
       if (cookieKey === secret) {
-        const response = NextResponse.next();
+        // On subdomain, rewrite /demo → /sabi/demo so the page resolves
+        const response = isSubdomain && (path === '/demo' || path.startsWith('/demo/'))
+          ? NextResponse.rewrite(new URL(`/sabi${path}`, req.url))
+          : NextResponse.next();
         response.headers.set('X-Robots-Tag', 'noindex, nofollow');
         return response;
       }
