@@ -2,9 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
 
-// Session analysis involves Claude API call + multiple DB writes
-export const maxDuration = 30;
-
 const anthropic = new Anthropic();
 
 function getSupabase() {

@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
 
-// TTS can take a few seconds per provider (YarnGPT → ElevenLabs fallback)
-export const maxDuration = 30;
-
 /**
  * POST /api/sabi/tts
  *

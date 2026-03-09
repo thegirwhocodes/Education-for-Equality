@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callSabi } from "@/lib/voice/sabi-shared";
 
-// Claude API call + optional RAG + Supabase lookup
-export const maxDuration = 30;
-
 /**
  * POST /api/sabi
  *
@@ -30,9 +27,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ response });
   } catch (error) {
     console.error("Sabi API error:", error);
-    const msg = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: `Sabi error: ${msg}` },
+      { error: "Failed to get response from Sabi" },
       { status: 500 }
     );
   }

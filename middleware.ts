@@ -19,14 +19,6 @@ export default clerkMiddleware(async (auth, req) => {
   const isDemoPath = DEMO_PATHS.some((p) => path.startsWith(p)) ||
     (isSubdomain && path.startsWith('/demo'));
 
-  // Helper: on subdomain /demo paths, rewrite to /sabi/demo; otherwise pass through
-  const createDemoPassResponse = () => {
-    if (isSubdomain && (path === '/demo' || path.startsWith('/demo/'))) {
-      return NextResponse.rewrite(new URL(`/sabi${path}`, req.url));
-    }
-    return NextResponse.next();
-  };
-
   // Demo routes: require ?key=SECRET or sabi_demo cookie (check BEFORE rewrite)
   if (isDemoPath) {
     const secret = process.env.SABI_DEMO_KEY;
@@ -36,7 +28,7 @@ export default clerkMiddleware(async (auth, req) => {
 
       if (urlKey === secret) {
         // Valid key in URL — set cookie so they don't need it again
-        const response = createDemoPassResponse();
+        const response = NextResponse.next();
         response.cookies.set('sabi_demo', secret, {
           httpOnly: true,
           secure: true,
@@ -49,7 +41,7 @@ export default clerkMiddleware(async (auth, req) => {
       }
 
       if (cookieKey === secret) {
-        const response = createDemoPassResponse();
+        const response = NextResponse.next();
         response.headers.set('X-Robots-Tag', 'noindex, nofollow');
         return response;
       }
