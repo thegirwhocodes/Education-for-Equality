@@ -355,7 +355,7 @@ export default function Home() {
               Call (860) 436-7048
             </a>
             <a
-              href="mailto:info@educationforequality.org"
+              href="mailto:info@eduforequality.org"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
             >
               Email Us

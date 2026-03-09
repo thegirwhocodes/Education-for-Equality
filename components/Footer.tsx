@@ -48,8 +48,8 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-gray-300">
               <li>
-                <a href="mailto:info@educationforequality.org" className="hover:text-white transition-colors">
-                  info@educationforequality.org
+                <a href="mailto:info@eduforequality.org" className="hover:text-white transition-colors">
+                  info@eduforequality.org
                 </a>
               </li>
               <li>+1 (860) 436-7048</li>

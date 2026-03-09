@@ -140,7 +140,7 @@ export default function AboutPage() {
               Donate Now
             </a>
             <a
-              href="mailto:info@educationforequality.org"
+              href="mailto:info@eduforequality.org"
               className="btn-secondary text-center"
             >
               Contact Us
@@ -157,8 +157,8 @@ export default function AboutPage() {
             Have questions or want to learn more? We'd love to hear from you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center text-[var(--text-muted)]">
-            <a href="mailto:info@educationforequality.org" className="hover:text-[var(--primary-dark)]">
-              info@educationforequality.org
+            <a href="mailto:info@eduforequality.org" className="hover:text-[var(--primary-dark)]">
+              info@eduforequality.org
             </a>
             <span className="hidden sm:inline">|</span>
             <span>+1 (860) 436-7048</span>
