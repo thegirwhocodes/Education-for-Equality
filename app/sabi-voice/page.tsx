@@ -167,8 +167,12 @@ export default function SabiVoice() {
               v.name.includes("Google"))
         );
         if (preferred) utterance.voice = preferred;
-        utterance.onend = () => resolve();
-        utterance.onerror = () => resolve();
+        // Safety timeout: Chrome's onend sometimes never fires
+        let resolved = false;
+        const safeResolve = () => { if (!resolved) { resolved = true; resolve(); } };
+        const timeout = setTimeout(safeResolve, Math.max(5000, spokenText.length * 80));
+        utterance.onend = () => { clearTimeout(timeout); safeResolve(); };
+        utterance.onerror = () => { clearTimeout(timeout); safeResolve(); };
         window.speechSynthesis.speak(utterance);
       } else {
         resolve();
@@ -216,6 +220,7 @@ export default function SabiVoice() {
 
         // Recording state
         const chunks: Blob[] = [];
+        let didDetectSpeech = false;
         const recorder = new MediaRecorder(stream, {
           mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
             ? "audio/webm;codecs=opus"
@@ -232,6 +237,9 @@ export default function SabiVoice() {
           if (!callActiveRef.current) { resolve(""); return; }
           if (chunks.length === 0) { resolve(""); return; }
 
+          // Skip API call entirely if no speech was detected (saves Groq quota)
+          if (!didDetectSpeech) { resolve(""); return; }
+
           const blob = new Blob(chunks, { type: recorder.mimeType });
           if (blob.size < 1000) { resolve(""); return; } // Too small = silence
 
@@ -246,6 +254,11 @@ export default function SabiVoice() {
             });
             if (res.ok) {
               const data = await res.json();
+              // Reject low-confidence transcriptions (noise/hallucination)
+              if (data.confidence !== undefined && data.confidence < 0.4) {
+                resolve("");
+                return;
+              }
               resolve(data.text?.trim() || "");
             } else {
               console.warn("STT API error:", res.status);
@@ -282,6 +295,7 @@ export default function SabiVoice() {
 
           if (volume > SILENCE_THRESHOLD) {
             speechDetected = true;
+            didDetectSpeech = true;
             silenceStart = 0;
           } else if (speechDetected) {
             if (!silenceStart) silenceStart = Date.now();
