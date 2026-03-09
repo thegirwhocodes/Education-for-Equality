@@ -34,8 +34,8 @@ export default function SabiVoice() {
   const studentRef = useRef<{ id: string; name: string } | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const callStartRef = useRef(0);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recognitionRef = useRef<any>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const recorderRef = useRef<MediaRecorder | null>(null);
 
   // Keep refs in sync
   useEffect(() => {
@@ -48,13 +48,12 @@ export default function SabiVoice() {
     callActiveRef.current = callActive;
   }, [callActive]);
 
-  // Check voice support
+  // Check voice support (need MediaRecorder + getUserMedia)
   useEffect(() => {
-    const SR =
-      typeof window !== "undefined"
-        ? window.SpeechRecognition || window.webkitSpeechRecognition
-        : null;
-    if (!SR) setVoiceSupported(false);
+    if (typeof window === "undefined") return;
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      setVoiceSupported(false);
+    }
   }, []);
 
   // Stop browser TTS on page unload/refresh (prevents audio playing after reload)
@@ -195,56 +194,110 @@ export default function SabiVoice() {
     []
   );
 
-  // Start listening with Web Speech API — auto-detects when user stops talking
+  // Record audio with MediaRecorder + silence detection, then transcribe via Groq Whisper
   const startListening = useCallback((): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) {
-        reject(new Error("Speech recognition not supported"));
-        return;
-      }
-
-      // Abort any leftover recognition before starting a new one
-      try { recognitionRef.current?.abort(); } catch { /* ignore */ }
-
-      let resolved = false;
-
-      const recognition = new SR();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = "en-NG";
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      recognition.onresult = (event: any) => {
-        if (!resolved) {
-          resolved = true;
-          const transcript = event.results[0][0].transcript;
-          resolve(transcript.trim());
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Get mic stream (reuse if already open)
+        if (!mediaStreamRef.current) {
+          mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: true, noiseSuppression: true },
+          });
         }
-      };
+        const stream = mediaStreamRef.current;
 
-      recognition.onerror = (event: { error: string }) => {
-        if (!resolved) {
-          resolved = true;
-          // Transient errors — treat as silence and retry
-          if (["no-speech", "aborted", "network", "audio-capture"].includes(event.error)) {
+        // Set up silence detection with AudioContext
+        const audioCtx = new AudioContext();
+        const source = audioCtx.createMediaStreamSource(stream);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 512;
+        source.connect(analyser);
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+        // Recording state
+        const chunks: Blob[] = [];
+        const recorder = new MediaRecorder(stream, {
+          mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+            ? "audio/webm;codecs=opus"
+            : "audio/webm",
+        });
+        recorderRef.current = recorder;
+
+        recorder.ondataavailable = (e) => {
+          if (e.data.size > 0) chunks.push(e.data);
+        };
+
+        recorder.onstop = async () => {
+          audioCtx.close();
+          if (!callActiveRef.current) { resolve(""); return; }
+          if (chunks.length === 0) { resolve(""); return; }
+
+          const blob = new Blob(chunks, { type: recorder.mimeType });
+          if (blob.size < 1000) { resolve(""); return; } // Too small = silence
+
+          // Send to Groq Whisper via our API
+          setCallState("processing");
+          try {
+            const formData = new FormData();
+            formData.append("audio", blob, "recording.webm");
+            const res = await fetch("/api/sabi/stt", {
+              method: "POST",
+              body: formData,
+            });
+            if (res.ok) {
+              const data = await res.json();
+              resolve(data.text?.trim() || "");
+            } else {
+              console.warn("STT API error:", res.status);
+              resolve("");
+            }
+          } catch (err) {
+            console.warn("STT failed:", err);
             resolve("");
-          } else {
-            reject(new Error(event.error));
           }
-        }
-      };
+        };
 
-      recognition.onend = () => {
-        if (!resolved) {
-          resolved = true;
-          resolve("");
-        }
-      };
+        recorder.start(250); // Collect data every 250ms
+        setCallState("listening");
 
-      recognitionRef.current = recognition;
-      recognition.start();
-      setCallState("listening");
+        // Silence detection loop
+        let speechDetected = false;
+        let silenceStart = 0;
+        const SILENCE_THRESHOLD = 15; // Volume level (0-255)
+        const SILENCE_DURATION = 1500; // ms of silence after speech to stop
+        const MAX_DURATION = 15000; // Max recording time
+        const startTime = Date.now();
+
+        const checkSilence = () => {
+          if (!callActiveRef.current || recorder.state !== "recording") return;
+
+          // Max duration safety
+          if (Date.now() - startTime > MAX_DURATION) {
+            recorder.stop();
+            return;
+          }
+
+          analyser.getByteFrequencyData(dataArray);
+          const volume = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+
+          if (volume > SILENCE_THRESHOLD) {
+            speechDetected = true;
+            silenceStart = 0;
+          } else if (speechDetected) {
+            if (!silenceStart) silenceStart = Date.now();
+            if (Date.now() - silenceStart > SILENCE_DURATION) {
+              recorder.stop();
+              return;
+            }
+          }
+
+          requestAnimationFrame(checkSilence);
+        };
+        requestAnimationFrame(checkSilence);
+      } catch (err) {
+        console.error("Mic error:", err);
+        reject(new Error("Microphone access denied"));
+      }
     });
   }, []);
 
@@ -368,8 +421,12 @@ export default function SabiVoice() {
     setCallActive(false);
     setCallState("idle");
 
-    recognitionRef.current?.abort();
-    recognitionRef.current = null;
+    // Stop recorder
+    try { recorderRef.current?.stop(); } catch { /* ignore */ }
+    recorderRef.current = null;
+    // Release mic
+    mediaStreamRef.current?.getTracks().forEach((t) => t.stop());
+    mediaStreamRef.current = null;
     window.speechSynthesis?.cancel();
 
     if (messagesRef.current.length >= 2 && studentRef.current?.id) {
@@ -670,12 +727,3 @@ export default function SabiVoice() {
   );
 }
 
-// Type declarations for Web Speech API
-/* eslint-disable @typescript-eslint/no-explicit-any */
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
-/* eslint-enable @typescript-eslint/no-explicit-any */
