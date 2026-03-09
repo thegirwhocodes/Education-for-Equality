@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
 
     // If no speech detected or very low confidence, ask to repeat
     if (!speechResult || confidence < 0.3) {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://curriculum-app-eta.vercel.app";
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://eduforequality.org";
       const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
       return new NextResponse(
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Continue the conversation — speak and gather next input
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://curriculum-app-eta.vercel.app";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://eduforequality.org";
     const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
     const twiml = createGatherResponse(sabiResponse, actionUrl, {

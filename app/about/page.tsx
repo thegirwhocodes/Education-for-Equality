@@ -132,7 +132,7 @@ export default function AboutPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <a
-              href="https://naomiivie04.wixsite.com/mysite/support-us"
+              href="https://eduforequality.org/donate"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary text-center"

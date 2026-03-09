@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     await addMessage(callSid, "assistant", greeting);
 
     // Build the action URL with the call SID for state tracking
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://curriculum-app-eta.vercel.app";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://eduforequality.org";
     const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
     const twiml = createGatherResponse(greeting, actionUrl, {

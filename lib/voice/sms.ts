@@ -16,7 +16,41 @@ function getSupabase() {
 }
 
 /**
- * Send an SMS via Twilio
+ * Detect which SMS provider to use based on available env vars.
+ * Africa's Talking is preferred for Nigerian numbers.
+ */
+function getSMSProvider(): "at" | "twilio" {
+  if (process.env.AT_API_KEY && process.env.AT_USERNAME) return "at";
+  return "twilio";
+}
+
+/**
+ * Send an SMS via Africa's Talking
+ */
+async function sendATSMS(to: string, message: string): Promise<void> {
+  const response = await fetch("https://api.africastalking.com/version1/messaging", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      apiKey: process.env.AT_API_KEY!,
+      Accept: "application/json",
+    },
+    body: new URLSearchParams({
+      username: process.env.AT_USERNAME!,
+      to,
+      message,
+      from: process.env.AT_SENDER_ID || "",
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`AT SMS failed: ${response.status} ${errorText}`);
+  }
+}
+
+/**
+ * Send an SMS via Twilio or Africa's Talking (auto-detected)
  */
 export async function sendSMS(
   to: string,
@@ -24,13 +58,18 @@ export async function sendSMS(
   smsType?: string
 ): Promise<void> {
   try {
-    const client = getTwilioClient();
+    const provider = getSMSProvider();
 
-    await client.messages.create({
-      body: message,
-      from: process.env.TWILIO_PHONE_NUMBER!,
-      to,
-    });
+    if (provider === "at") {
+      await sendATSMS(to, message);
+    } else {
+      const client = getTwilioClient();
+      await client.messages.create({
+        body: message,
+        from: process.env.TWILIO_PHONE_NUMBER!,
+        to,
+      });
+    }
 
     // Log the SMS
     const supabase = getSupabase();
@@ -39,6 +78,7 @@ export async function sendSMS(
       direction: "outbound",
       message,
       sms_type: smsType || "general",
+      channel: provider,
     });
   } catch (error) {
     console.error("SMS send error:", error);

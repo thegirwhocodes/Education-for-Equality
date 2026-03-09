@@ -54,7 +54,7 @@ export default function Footer() {
               </li>
               <li>+1 (860) 436-7048</li>
               <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><a href="https://naomiivie04.wixsite.com/mysite/support-us" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Donate</a></li>
+              <li><a href="https://eduforequality.org/donate" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Donate</a></li>
             </ul>
           </div>
         </div>

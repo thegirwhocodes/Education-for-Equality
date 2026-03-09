@@ -414,13 +414,13 @@ export default function SabiLanding() {
             </div>
             <div className="flex gap-6 text-sm opacity-70">
               <a
-                href="https://curriculum-app-eta.vercel.app"
+                href="https://eduforequality.org"
                 className="hover:opacity-100"
               >
                 Curriculum App
               </a>
               <a
-                href="https://naomiivie04.wixsite.com/mysite"
+                href="https://eduforequality.org"
                 className="hover:opacity-100"
               >
                 Website
