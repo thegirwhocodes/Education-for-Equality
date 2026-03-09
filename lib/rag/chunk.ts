@@ -24,7 +24,7 @@ export interface CurriculumChunk {
  */
 function stripHtml(html: string): string {
   return html
-    .replace(/<details>.*?<\/details>/gs, '') // Remove collapsed answers
+    .replace(/<details>[\s\S]*?<\/details>/g, '') // Remove collapsed answers
     .replace(/<[^>]+>/g, ' ')                 // Remove HTML tags
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
@@ -44,11 +44,11 @@ function extractSections(html: string): Record<string, string> {
 
   // Common heading patterns in the curriculum
   const patterns: Array<{ key: string; regex: RegExp }> = [
-    { key: 'story', regex: /(?:🏪\s*Market Story|🌟\s*Let'?s Start)(.*?)(?=<h3|$)/gis },
-    { key: 'concept', regex: /(?:📝\s*Let'?s Learn|📚\s*New Concept|Key Concepts?|Learning Objective)(.*?)(?=<h3|$)/gis },
-    { key: 'practice', regex: /(?:✏️\s*Practice|🎮\s*Let'?s Practice|Practice Questions?)(.*?)(?=<h3|<details|$)/gis },
-    { key: 'summary', regex: /(?:💡\s*Remember|Remember)(.*?)(?=<h3|$)/gis },
-    { key: 'example', regex: /(?:Example\s*\d*:)(.*?)(?=<\/p>|Example\s*\d|<h3|$)/gis },
+    { key: 'story', regex: /(?:🏪\s*Market Story|🌟\s*Let'?s Start)([\s\S]*?)(?=<h3|$)/gi },
+    { key: 'concept', regex: /(?:📝\s*Let'?s Learn|📚\s*New Concept|Key Concepts?|Learning Objective)([\s\S]*?)(?=<h3|$)/gi },
+    { key: 'practice', regex: /(?:✏️\s*Practice|🎮\s*Let'?s Practice|Practice Questions?)([\s\S]*?)(?=<h3|<details|$)/gi },
+    { key: 'summary', regex: /(?:💡\s*Remember|Remember)([\s\S]*?)(?=<h3|$)/gi },
+    { key: 'example', regex: /(?:Example\s*\d*:)([\s\S]*?)(?=<\/p>|Example\s*\d|<h3|$)/gi },
   ];
 
   for (const { key, regex } of patterns) {

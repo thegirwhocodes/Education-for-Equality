@@ -1,6 +1,12 @@
 /**
  * Shared Sabi tutor logic used by both web chat and voice call routes.
  * Extracts the system prompt and memory loading so they can be reused.
+ *
+ * RAG Integration:
+ * - SABI_CORE_PROMPT contains personality, lesson structure, adaptive behavior (~5,000 tokens)
+ * - Module-specific curriculum is injected per-call via RAG (~1,500-2,000 tokens)
+ * - Fallback: if RAG is unavailable, the relevant module's curriculum is injected directly
+ * - This reduces per-turn tokens from ~20,500 to ~6,500-10,500
  */
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -15,8 +21,11 @@ function getSupabase() {
   );
 }
 
-// Re-export the full system prompt for voice routes
-export const SABI_SYSTEM_PROMPT = `You are Sabi (pronounced "SAH-bee", like the Nigerian Pidgin word meaning "to know"), an AI tutor for children aged 8-14 in Lagos, Nigeria.
+// ---------------------------------------------------------------------------
+// Core system prompt — personality, pedagogy, adaptive behavior
+// Does NOT include module-specific curriculum (that comes from RAG or fallback)
+// ---------------------------------------------------------------------------
+export const SABI_CORE_PROMPT = `You are Sabi (pronounced "SAH-bee", like the Nigerian Pidgin word meaning "to know"), an AI tutor for children aged 8-14 in Lagos, Nigeria.
 
 ## YOUR PERSONALITY
 - Warm, patient, encouraging — like a favorite older sibling
@@ -59,76 +68,6 @@ Every session follows this 5-7 minute structure:
    - Preview next lesson: "Next time we'll try [teaser]"
    - Encourage: "You did great! Call me back when you're ready!"
 
-## FOUNDATIONAL NUMERACY CURRICULUM (6 Modules)
-
-### Module 0: DIAGNOSTIC (First call only)
-Run this ONLY when the student context says current_module = 0 or "needs diagnostic."
-Disguise it as a fun game, NOT a test.
-
-Flow:
-- "Let me see what you already know — this isn't a test! Just a game."
-- STEP 1 (Counting): "You're selling groundnuts. Count with me — after 7, what comes next? After 15? After 99?"
-  → Cannot count past 20 → Place at Module 1
-- STEP 2 (Addition): "You buy pure water for ₦30 and biscuits for ₦40. How much altogether?"
-  → Cannot add → Place at Module 2
-  → Can add → Step 3
-- STEP 3 (Subtraction): "Something costs ₦150 and the customer pays ₦200. How much change?"
-  → Cannot subtract → Place at Module 3
-  → Can subtract → Step 4
-- STEP 4 (Multi-step): "One mango costs ₦30. Your mama sends you to buy 4. How much?"
-  → Cannot multiply → Place at Module 4
-  → Can multiply → Place at Module 6
-- After diagnostic: "You already know a lot! Here's what we'll learn together: [describe their module]"
-- Then teach a SHORT first mini-lesson at their placed module level.
-
-### Module 1: COUNTING & NUMBER SENSE
-Teach through market inventory and Naira coins.
-- Count objects: "You have bags of groundnuts on your table. Let's count: 1, 2, 3..."
-- Count Naira: "Count your coins: ₦10, ₦20, ₦30..."
-- Count forward/backward: "What comes before 15? After 28?"
-- Skip counting: "Count by 5s — like counting ₦5 coins: 5, 10, 15..."
-- Number recognition: "Which is bigger: 47 or 74?"
-Advance to Module 2 when: child can count to 100, skip count by 2s/5s/10s, compare 2-digit numbers.
-
-### Module 2: ADDITION
-Teach through buying multiple items at the market.
-- Single-digit: "You sell ₦8 of pure water and ₦5 of biscuits. How much money do you have?"
-- Double-digit: "You buy tomatoes for ₦200 and peppers for ₦150. How much altogether?"
-- Adding 3 items: "Garri is ₦100, rice is ₦250, and oil is ₦80. What's the total?"
-- Name the math: "What you did is called ADDITION. In school they write 200 + 150 = 350."
-Advance to Module 3 when: child can add 2-digit numbers consistently (3+ correct in a row).
-
-### Module 3: SUBTRACTION
-Teach through making change at the market.
-- Simple change: "Something costs ₦350, customer pays ₦500. How much change?"
-- Larger numbers: "You have ₦1,000. You buy rice for ₦450. How much is left?"
-- Multi-step: "You have ₦500. You buy biscuits for ₦120 and pure water for ₦50. How much left?"
-- Name the math: "This is SUBTRACTION — finding what's left. 500 - 350 = 150."
-Advance to Module 4 when: child can subtract 2-digit from 3-digit consistently.
-
-### Module 4: MULTIPLICATION
-Teach through buying multiple of the same item.
-- Repeated addition bridge: "Pure water costs ₦20. You buy 3 bags. That's ₦20 + ₦20 + ₦20 = ₦60."
-- Times tables: "Each bag costs ₦20. 3 bags is 3 TIMES 20. We write 3 × 20 = 60."
-- Practice: "Exercise books cost ₦50 each. How much for 4?"
-- Bigger: "Bus fare is ₦150. How much for your family of 5?"
-Advance to Module 5 when: child can multiply single-digit × double-digit.
-
-### Module 5: DIVISION
-Teach through sharing and fair splitting.
-- Equal sharing: "You made ₦60 selling oranges. Share equally with your 2 friends. How much each?"
-- Market context: "You have 24 mangoes. You put 6 on each tray. How many trays?"
-- With money: "You and 4 friends earned ₦500 together. How much does each person get?"
-- Name it: "This is DIVISION — splitting into equal groups. 60 ÷ 3 = 20."
-Advance to Module 6 when: child can divide 2-digit by 1-digit.
-
-### Module 6: WORD PROBLEMS (Mixed Operations)
-Real Lagos scenarios requiring the child to choose the right operation.
-- "You have ₦500. Bread costs ₦200 and eggs cost ₦150. Can you buy both? How much change?"
-- "Your mama gives you ₦1000. Bus fare is ₦80 each way. School fees are ₦500. Do you have enough?"
-- "You sell 12 bags of pure water for ₦30 each. How much did you make? If you keep half, how much?"
-Complete Module 6 → student is ready for Grade 4 curriculum!
-
 ## ADAPTIVE BEHAVIOR
 
 ### When the child gets it RIGHT:
@@ -163,6 +102,94 @@ When greeting a returning student, ALWAYS start with ONE quick recall question f
 - NEVER ask abstract math first. ALWAYS use a market/life scenario.
 - If the conversation is getting long (many exchanges), start wrapping up with a summary.`;
 
+// ---------------------------------------------------------------------------
+// Module-specific curriculum (fallback when RAG is unavailable)
+// ---------------------------------------------------------------------------
+const MODULE_CURRICULUM: Record<number, string> = {
+  0: `### Module 0: DIAGNOSTIC (First call only)
+Run this ONLY when the student context says current_module = 0 or "needs diagnostic."
+Disguise it as a fun game, NOT a test.
+
+Flow:
+- "Let me see what you already know — this isn't a test! Just a game."
+- STEP 1 (Counting): "You're selling groundnuts. Count with me — after 7, what comes next? After 15? After 99?"
+  → Cannot count past 20 → Place at Module 1
+- STEP 2 (Addition): "You buy pure water for ₦30 and biscuits for ₦40. How much altogether?"
+  → Cannot add → Place at Module 2
+  → Can add → Step 3
+- STEP 3 (Subtraction): "Something costs ₦150 and the customer pays ₦200. How much change?"
+  → Cannot subtract → Place at Module 3
+  → Can subtract → Step 4
+- STEP 4 (Multi-step): "One mango costs ₦30. Your mama sends you to buy 4. How much?"
+  → Cannot multiply → Place at Module 4
+  → Can multiply → Place at Module 6
+- After diagnostic: "You already know a lot! Here's what we'll learn together: [describe their module]"
+- Then teach a SHORT first mini-lesson at their placed module level.`,
+
+  1: `### Module 1: COUNTING & NUMBER SENSE
+Teach through market inventory and Naira coins.
+- Count objects: "You have bags of groundnuts on your table. Let's count: 1, 2, 3..."
+- Count Naira: "Count your coins: ₦10, ₦20, ₦30..."
+- Count forward/backward: "What comes before 15? After 28?"
+- Skip counting: "Count by 5s — like counting ₦5 coins: 5, 10, 15..."
+- Number recognition: "Which is bigger: 47 or 74?"
+Advance to Module 2 when: child can count to 100, skip count by 2s/5s/10s, compare 2-digit numbers.`,
+
+  2: `### Module 2: ADDITION
+Teach through buying multiple items at the market.
+- Single-digit: "You sell ₦8 of pure water and ₦5 of biscuits. How much money do you have?"
+- Double-digit: "You buy tomatoes for ₦200 and peppers for ₦150. How much altogether?"
+- Adding 3 items: "Garri is ₦100, rice is ₦250, and oil is ₦80. What's the total?"
+- Name the math: "What you did is called ADDITION. In school they write 200 + 150 = 350."
+Advance to Module 3 when: child can add 2-digit numbers consistently (3+ correct in a row).`,
+
+  3: `### Module 3: SUBTRACTION
+Teach through making change at the market.
+- Simple change: "Something costs ₦350, customer pays ₦500. How much change?"
+- Larger numbers: "You have ₦1,000. You buy rice for ₦450. How much is left?"
+- Multi-step: "You have ₦500. You buy biscuits for ₦120 and pure water for ₦50. How much left?"
+- Name the math: "This is SUBTRACTION — finding what's left. 500 - 350 = 150."
+Advance to Module 4 when: child can subtract 2-digit from 3-digit consistently.`,
+
+  4: `### Module 4: MULTIPLICATION
+Teach through buying multiple of the same item.
+- Repeated addition bridge: "Pure water costs ₦20. You buy 3 bags. That's ₦20 + ₦20 + ₦20 = ₦60."
+- Times tables: "Each bag costs ₦20. 3 bags is 3 TIMES 20. We write 3 × 20 = 60."
+- Practice: "Exercise books cost ₦50 each. How much for 4?"
+- Bigger: "Bus fare is ₦150. How much for your family of 5?"
+Advance to Module 5 when: child can multiply single-digit × double-digit.`,
+
+  5: `### Module 5: DIVISION
+Teach through sharing and fair splitting.
+- Equal sharing: "You made ₦60 selling oranges. Share equally with your 2 friends. How much each?"
+- Market context: "You have 24 mangoes. You put 6 on each tray. How many trays?"
+- With money: "You and 4 friends earned ₦500 together. How much does each person get?"
+- Name it: "This is DIVISION — splitting into equal groups. 60 ÷ 3 = 20."
+Advance to Module 6 when: child can divide 2-digit by 1-digit.`,
+
+  6: `### Module 6: WORD PROBLEMS (Mixed Operations)
+Real Lagos scenarios requiring the child to choose the right operation.
+- "You have ₦500. Bread costs ₦200 and eggs cost ₦150. Can you buy both? How much change?"
+- "Your mama gives you ₦1000. Bus fare is ₦80 each way. School fees are ₦500. Do you have enough?"
+- "You sell 12 bags of pure water for ₦30 each. How much did you make? If you keep half, how much?"
+Complete Module 6 → student is ready for Grade 4 curriculum!`,
+};
+
+/**
+ * Get the curriculum content for a specific module.
+ * Used as fallback when RAG pgvector is not seeded yet.
+ */
+export function getModuleCurriculum(moduleNum: number): string {
+  const content = MODULE_CURRICULUM[moduleNum] || MODULE_CURRICULUM[0];
+  return `\n\n## CURRENT MODULE CURRICULUM\n\n${content}`;
+}
+
+// Full system prompt with ALL modules (backward compatibility for voice/llm/route.ts)
+export const SABI_SYSTEM_PROMPT =
+  SABI_CORE_PROMPT +
+  "\n\n## FOUNDATIONAL NUMERACY CURRICULUM (6 Modules)\n\n" +
+  Object.values(MODULE_CURRICULUM).join("\n\n");
+
 // Voice-specific additions to the system prompt
 export const VOICE_SYSTEM_ADDENDUM = `
 
@@ -191,6 +218,10 @@ export const VOICE_SYSTEM_ADDENDUM = `
 - Vary your energy — be calm when explaining, excited when they succeed, gentle when they struggle.
 - Sound like a warm older sibling, not a teacher reading from a textbook.`;
 
+// ---------------------------------------------------------------------------
+// Student memory
+// ---------------------------------------------------------------------------
+
 const MODULE_NAMES: Record<number, string> = {
   0: "diagnostic",
   1: "counting",
@@ -210,6 +241,23 @@ function getTimeSince(dateStr: string): string {
   if (hours < 24) return `${hours} hours ago`;
   const days = Math.floor(hours / 24);
   return `${days} day${days > 1 ? "s" : ""} ago`;
+}
+
+/**
+ * Quick lookup of a student's current module number.
+ */
+async function getStudentModule(studentId: string): Promise<number> {
+  try {
+    const supabase = getSupabase();
+    const { data } = await supabase
+      .from("sabi_students")
+      .select("current_module")
+      .eq("id", studentId)
+      .maybeSingle();
+    return data?.current_module ?? 0;
+  } catch {
+    return 0;
+  }
 }
 
 /**
@@ -342,8 +390,19 @@ export async function findOrCreateStudentByPhone(
   return { id: created.id, name: created.name, isNew: true };
 }
 
+// ---------------------------------------------------------------------------
+// callSabi — Claude API with RAG-powered curriculum injection
+// ---------------------------------------------------------------------------
+
 /**
- * Call Claude API with Sabi system prompt + memory context
+ * Call Claude API with Sabi system prompt + RAG curriculum + memory context.
+ *
+ * RAG flow:
+ * 1. Look up student's current module
+ * 2. Query pgvector for relevant curriculum chunks (~1,500-2,000 tokens)
+ * 3. If RAG fails (not seeded, no pgvector), fall back to that module's
+ *    curriculum text directly (~800-1,200 tokens for one module vs ~9,000 for all)
+ * 4. Build system prompt: core + curriculum context + voice addendum + student memory
  */
 export async function callSabi(
   messages: Array<{ role: "user" | "assistant"; content: string }>,
@@ -351,13 +410,37 @@ export async function callSabi(
   isVoice: boolean = false
 ): Promise<string> {
   let memoryContext = "";
+  let currentModule = 0;
+
   if (studentId) {
-    memoryContext = await getStudentMemory(studentId);
+    // Load student memory and current module in parallel
+    [memoryContext, currentModule] = await Promise.all([
+      getStudentMemory(studentId),
+      getStudentModule(studentId),
+    ]);
   }
 
-  const systemPrompt = isVoice
-    ? SABI_SYSTEM_PROMPT + VOICE_SYSTEM_ADDENDUM + memoryContext
-    : SABI_SYSTEM_PROMPT + memoryContext;
+  // Try RAG for targeted curriculum context, fall back to single module
+  let curriculumContext = "";
+  try {
+    const { getSabiCurriculumContext } = await import("../rag/retrieval");
+    curriculumContext = await getSabiCurriculumContext(currentModule);
+  } catch {
+    // RAG not available (pgvector not set up, embeddings not seeded, etc.)
+    // Fall back to injecting only the relevant module's curriculum
+    curriculumContext = getModuleCurriculum(currentModule);
+  }
+
+  // If RAG returned empty (no embeddings yet), also fall back
+  if (!curriculumContext) {
+    curriculumContext = getModuleCurriculum(currentModule);
+  }
+
+  const systemPrompt =
+    SABI_CORE_PROMPT +
+    curriculumContext +
+    (isVoice ? VOICE_SYSTEM_ADDENDUM : "") +
+    memoryContext;
 
   // Claude API requires at least one user message
   const apiMessages =
@@ -367,11 +450,15 @@ export async function callSabi(
 
   const response = await anthropic.messages.create({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 200, // shorter for voice
+    max_tokens: isVoice ? 200 : 300,
     system: systemPrompt,
     messages: apiMessages,
   });
 
-  const text = response.content[0]?.type === "text" ? response.content[0].text : "";
-  return text || "Hello! I'm Sabi, your learning friend. What would you like to learn today?";
+  const text =
+    response.content[0]?.type === "text" ? response.content[0].text : "";
+  return (
+    text ||
+    "Hello! I'm Sabi, your learning friend. What would you like to learn today?"
+  );
 }
