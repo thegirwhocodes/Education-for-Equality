@@ -4,6 +4,42 @@ import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
 import { getCambridgeSubjects, subjects as allSubjects } from '@/lib/curriculum';
 import { useProgress } from '@/lib/useProgress';
+import { useRef, useCallback, type MouseEvent, type ReactNode } from 'react';
+
+// Glow card — tracks mouse and renders a teal radial spotlight
+function GlowCard({ children, className = '', lift = true }: { children: ReactNode; className?: string; lift?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    el.style.setProperty('--glow-x', `${x}px`);
+    el.style.setProperty('--glow-y', `${y}px`);
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMove}
+      className={`group relative overflow-hidden rounded-xl bg-white shadow-sm border border-transparent
+        hover:border-[var(--primary-dark)] hover:shadow-md
+        ${lift ? 'hover:-translate-y-1' : ''}
+        transition-all duration-200 ${className}`}
+    >
+      {/* Glow overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: 'radial-gradient(300px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(15, 169, 146, 0.15), transparent 60%)',
+        }}
+      />
+      <div className="relative z-10 p-6">{children}</div>
+    </div>
+  );
+}
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -54,32 +90,32 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
+          <GlowCard className="cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">
               {loading ? '...' : completedCount}
             </div>
             <div className="text-gray-600 text-sm">Lessons Completed</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
+          </GlowCard>
+          <GlowCard className="cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">{totalLessons}</div>
             <div className="text-gray-600 text-sm">Total Lessons Available</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
+          </GlowCard>
+          <GlowCard className="cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">
               {loading ? '...' : `${overallPercent}%`}
             </div>
             <div className="text-gray-600 text-sm">Overall Progress</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-default">
+          </GlowCard>
+          <GlowCard className="cursor-default">
             <div className="text-3xl font-bold text-[var(--primary-dark)]">
               {loading ? '...' : `${Math.round(completedCount * 12 / 60)}h`}
             </div>
             <div className="text-gray-600 text-sm">Est. Time Learning</div>
-          </div>
+          </GlowCard>
         </div>
 
         {/* Continue Learning */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md transition-all duration-200 mb-8">
+        <GlowCard lift={false} className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Continue Learning</h2>
           {nextLesson ? (
             <div className="flex items-center justify-between">
@@ -103,7 +139,7 @@ export default function DashboardPage() {
               </Link>
             </div>
           )}
-        </div>
+        </GlowCard>
 
         {/* Subject Progress */}
         <h2 className="text-xl font-semibold mb-4">Progress by Subject</h2>
@@ -115,7 +151,7 @@ export default function DashboardPage() {
             const subjectPercent = subjectTotal > 0 ? Math.round((subjectCompleted / subjectTotal) * 100) : 0;
 
             return (
-              <div key={subject.slug} className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-[var(--primary-dark)] hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+              <GlowCard key={subject.slug}>
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl">{subject.icon}</span>
                   <div>
@@ -148,7 +184,7 @@ export default function DashboardPage() {
                 >
                   View lessons →
                 </Link>
-              </div>
+              </GlowCard>
             );
           })}
         </div>
