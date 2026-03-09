@@ -51,7 +51,7 @@ export default function SabiLanding() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
             <Link
-              href="/sabi-demo"
+              href="/sabi/demo"
               className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
             >
               Try the Demo
@@ -391,7 +391,7 @@ export default function SabiLanding() {
             dials after dinner, and hands to her child for five minutes.
           </p>
           <Link
-            href="/sabi-demo"
+            href="/sabi/demo"
             className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-10 py-5 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
           >
             Launch Demo

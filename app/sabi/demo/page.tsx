@@ -341,7 +341,8 @@ export default function SabiVoice() {
       runTurn();
     } catch (err) {
       console.error("Init error:", err);
-      setError("Failed to start. Check that API keys are configured.");
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(`Failed to start: ${msg}`);
       endCall();
     }
   };
