@@ -49,6 +49,46 @@ export function createPlayAndHangupResponse(audioUrl: string): string {
 }
 
 /**
+ * Say text (Google TTS via AT) and record — last-resort fallback when all TTS providers fail.
+ * AT's <Say> uses Google TTS for free, no API key needed.
+ */
+export function createSayAndRecordResponse(
+  text: string,
+  callbackUrl: string,
+  options?: { maxLength?: number; finishOnKey?: string; voice?: string }
+): string {
+  const maxLength = options?.maxLength ?? 10;
+  const finishOnKey = options?.finishOnKey ?? "#";
+  const voice = options?.voice ?? "en-US-Wavenet-F";
+
+  // Replace symbols for natural pronunciation
+  const spokenText = text.replace(/₦/g, "naira ");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Say voice="${escapeXml(voice)}">${escapeXml(spokenText)}</Say>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true"
+            callbackUrl="${escapeXml(callbackUrl)}" playBeep="false"/>
+</Response>`;
+}
+
+/**
+ * Say text (Google TTS via AT) and hang up — last-resort fallback for goodbye.
+ */
+export function createSayAndHangupResponse(
+  text: string,
+  options?: { voice?: string }
+): string {
+  const voice = options?.voice ?? "en-US-Wavenet-F";
+  const spokenText = text.replace(/₦/g, "naira ");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Say voice="${escapeXml(voice)}">${escapeXml(spokenText)}</Say>
+</Response>`;
+}
+
+/**
  * Reject/end a call immediately.
  */
 export function createRejectResponse(): string {

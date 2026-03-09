@@ -4,6 +4,8 @@ import {
   xmlHeaders,
   createPlayAndRecordResponse,
   createPlayAndHangupResponse,
+  createSayAndRecordResponse,
+  createSayAndHangupResponse,
 } from "@/lib/voice/at-xml";
 import { getCallState, addMessage } from "@/lib/voice/call-state";
 import { callSabi } from "@/lib/voice/sabi-shared";
@@ -56,17 +58,23 @@ export async function POST(req: NextRequest) {
 
     // No recording URL — ask child to repeat
     if (!recordingUrl) {
-      const audio = await synthesizeSpeech(
-        "I didn't quite hear that. Can you say it again?"
-      );
-      const audioUrl = await uploadAudio(
-        audio,
-        `repeat_${sessionId}_${Date.now()}.mp3`
-      );
-      return new NextResponse(
-        createPlayAndRecordResponse(audioUrl, callbackUrl),
-        { headers: xmlHeaders() }
-      );
+      const repeatText = "I didn't quite hear that. Can you say it again?";
+      try {
+        const audio = await synthesizeSpeech(repeatText);
+        const audioUrl = await uploadAudio(
+          audio,
+          `repeat_${sessionId}_${Date.now()}.mp3`
+        );
+        return new NextResponse(
+          createPlayAndRecordResponse(audioUrl, callbackUrl),
+          { headers: xmlHeaders() }
+        );
+      } catch {
+        return new NextResponse(
+          createSayAndRecordResponse(repeatText, callbackUrl),
+          { headers: xmlHeaders() }
+        );
+      }
     }
 
     // 1. Download recording from Africa's Talking
@@ -77,17 +85,23 @@ export async function POST(req: NextRequest) {
 
     // 3. Handle low confidence / empty speech
     if (!sttResult.text.trim() || sttResult.confidence < 0.3) {
-      const audio = await synthesizeSpeech(
-        "I didn't quite hear that. Can you say it again?"
-      );
-      const audioUrl = await uploadAudio(
-        audio,
-        `repeat_${sessionId}_${Date.now()}.mp3`
-      );
-      return new NextResponse(
-        createPlayAndRecordResponse(audioUrl, callbackUrl),
-        { headers: xmlHeaders() }
-      );
+      const repeatText = "I didn't quite hear that. Can you say it again?";
+      try {
+        const audio = await synthesizeSpeech(repeatText);
+        const audioUrl = await uploadAudio(
+          audio,
+          `repeat_${sessionId}_${Date.now()}.mp3`
+        );
+        return new NextResponse(
+          createPlayAndRecordResponse(audioUrl, callbackUrl),
+          { headers: xmlHeaders() }
+        );
+      } catch {
+        return new NextResponse(
+          createSayAndRecordResponse(repeatText, callbackUrl),
+          { headers: xmlHeaders() }
+        );
+      }
     }
 
     // 4. Get conversation history and add child's speech
@@ -125,35 +139,51 @@ export async function POST(req: NextRequest) {
     // 7. Save Sabi's response to call state
     await addMessage(sessionId, "assistant", sabiResponse);
 
-    // 8. TTS — convert response to audio
-    const responseAudio = await synthesizeSpeech(sabiResponse);
-    const responseUrl = await uploadAudio(
-      responseAudio,
-      `response_${sessionId}_${Date.now()}.mp3`
-    );
-
-    // 9. Check for wrap-up signals
+    // 8. Check for wrap-up signals
     const isWrappingUp =
       shouldWrapUp ||
       WRAP_UP_PATTERNS.some((pattern) => pattern.test(sabiResponse));
 
-    if (isWrappingUp) {
-      return new NextResponse(createPlayAndHangupResponse(responseUrl), {
-        headers: xmlHeaders(),
-      });
-    }
+    // 9. TTS — convert response to audio (YarnGPT → ElevenLabs → AT <Say>)
+    try {
+      const responseAudio = await synthesizeSpeech(sabiResponse);
+      const responseUrl = await uploadAudio(
+        responseAudio,
+        `response_${sessionId}_${Date.now()}.mp3`
+      );
 
-    // 10. Continue conversation — play response and record next input
-    return new NextResponse(
-      createPlayAndRecordResponse(responseUrl, callbackUrl),
-      { headers: xmlHeaders() }
-    );
+      if (isWrappingUp) {
+        return new NextResponse(createPlayAndHangupResponse(responseUrl), {
+          headers: xmlHeaders(),
+        });
+      }
+
+      // 10. Continue conversation — play response and record next input
+      return new NextResponse(
+        createPlayAndRecordResponse(responseUrl, callbackUrl),
+        { headers: xmlHeaders() }
+      );
+    } catch {
+      // TTS failed — fall back to AT's <Say> (Google TTS)
+      console.warn("All TTS providers failed, using AT <Say> fallback");
+      if (isWrappingUp) {
+        return new NextResponse(
+          createSayAndHangupResponse(sabiResponse),
+          { headers: xmlHeaders() }
+        );
+      }
+      return new NextResponse(
+        createSayAndRecordResponse(sabiResponse, callbackUrl),
+        { headers: xmlHeaders() }
+      );
+    }
   } catch (error) {
     console.error(
       "AT recording error:",
       error instanceof Error ? error.message : error
     );
 
+    // Try TTS error message, fall back to AT's <Say> (Google TTS)
     try {
       const audio = await synthesizeSpeech(
         "I'm sorry, something went wrong. Please call back and we can continue where we left off."
@@ -163,8 +193,11 @@ export async function POST(req: NextRequest) {
         headers: xmlHeaders(),
       });
     } catch {
+      // Last resort — AT's built-in <Say> (Google TTS, free)
       return new NextResponse(
-        `<?xml version="1.0" encoding="UTF-8"?><Response></Response>`,
+        createSayAndHangupResponse(
+          "I'm sorry, something went wrong. Please call back and we can continue where we left off."
+        ),
         { headers: xmlHeaders() }
       );
     }

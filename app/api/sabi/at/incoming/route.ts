@@ -4,6 +4,8 @@ import {
   xmlHeaders,
   createPlayAndRecordResponse,
   createRejectResponse,
+  createSayAndRecordResponse,
+  createSayAndHangupResponse,
 } from "@/lib/voice/at-xml";
 import { createCallState } from "@/lib/voice/call-state";
 import { addMessage } from "@/lib/voice/call-state";
@@ -68,31 +70,40 @@ export async function POST(req: NextRequest) {
     // Save greeting to call state
     await addMessage(sessionId, "assistant", greeting);
 
-    // TTS — convert greeting to audio
-    const audioBuffer = await synthesizeSpeech(greeting);
-    const audioUrl = await uploadAudio(
-      audioBuffer,
-      `greeting_${sessionId}.mp3`
-    );
-
     // Build callback URL for when the child finishes speaking
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
       "https://eduforequality.org";
     const callbackUrl = `${baseUrl}/api/sabi/at/recording?session=${encodeURIComponent(sessionId)}&student=${encodeURIComponent(student.id)}&module=${student.isNew ? 0 : "current"}`;
 
-    // Return XML: play greeting, then record child's response
-    return new NextResponse(
-      createPlayAndRecordResponse(audioUrl, callbackUrl),
-      { headers: xmlHeaders() }
-    );
+    // TTS — convert greeting to audio (YarnGPT → ElevenLabs → AT <Say>)
+    try {
+      const audioBuffer = await synthesizeSpeech(greeting);
+      const audioUrl = await uploadAudio(
+        audioBuffer,
+        `greeting_${sessionId}.mp3`
+      );
+
+      // Return XML: play greeting, then record child's response
+      return new NextResponse(
+        createPlayAndRecordResponse(audioUrl, callbackUrl),
+        { headers: xmlHeaders() }
+      );
+    } catch {
+      // TTS failed — fall back to AT's <Say> (Google TTS)
+      console.warn("All TTS providers failed, using AT <Say> fallback");
+      return new NextResponse(
+        createSayAndRecordResponse(greeting, callbackUrl),
+        { headers: xmlHeaders() }
+      );
+    }
   } catch (error) {
     console.error(
       "AT incoming error:",
       error instanceof Error ? error.message : error
     );
 
-    // Try to play an error message
+    // Try to play an error message via TTS
     try {
       const audio = await synthesizeSpeech(
         "I'm sorry, something went wrong. Please try calling again in a moment."
@@ -103,10 +114,13 @@ export async function POST(req: NextRequest) {
         { headers: xmlHeaders() }
       );
     } catch {
-      // Last resort — just reject
-      return new NextResponse(createRejectResponse(), {
-        headers: xmlHeaders(),
-      });
+      // Last resort — use AT's built-in <Say> (Google TTS, free)
+      return new NextResponse(
+        createSayAndHangupResponse(
+          "I'm sorry, something went wrong. Please try calling again in a moment."
+        ),
+        { headers: xmlHeaders() }
+      );
     }
   }
 }
