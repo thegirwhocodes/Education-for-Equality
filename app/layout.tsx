@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Education for Equality - Free Online Learning",
   description: "Free quality education for underprivileged children in Nigeria. Learn Math, English, Science, and Social Studies with video lessons and interactive content.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
