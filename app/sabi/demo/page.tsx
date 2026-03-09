@@ -36,9 +36,6 @@ export default function SabiVoice() {
   const callStartRef = useRef(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const audioSourceRef = useRef<AudioBufferSourceNode | null>(null);
-  const audioElementRef = useRef<HTMLAudioElement | null>(null);
 
   // Keep refs in sync
   useEffect(() => {
@@ -92,32 +89,6 @@ export default function SabiVoice() {
   const formatTime = (s: number) =>
     `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
 
-  // Stop all active audio immediately
-  const stopAllAudio = useCallback(() => {
-    try { audioSourceRef.current?.stop(); } catch { /* already stopped */ }
-    try { audioCtxRef.current?.close(); } catch { /* already closed */ }
-    audioSourceRef.current = null;
-    audioCtxRef.current = null;
-    if (audioElementRef.current) {
-      audioElementRef.current.pause();
-      audioElementRef.current.src = "";
-      audioElementRef.current = null;
-    }
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
-  }, []);
-
-  // Cleanup audio on unmount and page reload
-  useEffect(() => {
-    const handleBeforeUnload = () => stopAllAudio();
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      stopAllAudio();
-    };
-  }, [stopAllAudio]);
-
   // Play audio from TTS API and return a promise
   const speakText = useCallback((text: string): Promise<void> => {
     return new Promise(async (resolve) => {
@@ -131,12 +102,6 @@ export default function SabiVoice() {
           body: JSON.stringify({ text: spokenText }),
         });
 
-        if (!res.ok) {
-          // Log the actual error from the TTS API
-          const errData = await res.json().catch(() => ({}));
-          console.error("TTS API error:", res.status, errData.error || "unknown");
-        }
-
         if (res.ok) {
           const arrayBuffer = await res.arrayBuffer();
           const AudioCtx =
@@ -144,19 +109,13 @@ export default function SabiVoice() {
             (window as unknown as { webkitAudioContext: typeof AudioContext })
               .webkitAudioContext;
           if (AudioCtx) {
-            // Stop any previous audio first
-            stopAllAudio();
             const ctx = new AudioCtx();
-            audioCtxRef.current = ctx;
             const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
             const source = ctx.createBufferSource();
-            audioSourceRef.current = source;
             source.buffer = audioBuffer;
             source.connect(ctx.destination);
             source.onended = () => {
-              audioSourceRef.current = null;
-              audioCtxRef.current = null;
-              try { ctx.close(); } catch { /* ok */ }
+              ctx.close();
               resolve();
             };
             source.start(0);
@@ -164,18 +123,14 @@ export default function SabiVoice() {
           }
 
           // Fallback: Audio element
-          stopAllAudio();
           const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
           const url = URL.createObjectURL(blob);
           const audio = new Audio(url);
-          audioElementRef.current = audio;
           audio.onended = () => {
-            audioElementRef.current = null;
             URL.revokeObjectURL(url);
             resolve();
           };
           audio.onerror = () => {
-            audioElementRef.current = null;
             URL.revokeObjectURL(url);
             resolve();
           };
@@ -183,7 +138,7 @@ export default function SabiVoice() {
           return;
         }
       } catch (err) {
-        console.error("TTS fetch/decode failed:", err);
+        console.warn("TTS failed, falling back to browser voice:", err);
       }
 
       // Last fallback: browser speech synthesis
@@ -208,7 +163,7 @@ export default function SabiVoice() {
         resolve();
       }
     });
-  }, [stopAllAudio]);
+  }, []);
 
   // Get Sabi's response via Claude
   const getSabiResponse = useCallback(
@@ -398,8 +353,6 @@ export default function SabiVoice() {
     setCallActive(false);
     setCallState("idle");
 
-    // Stop all audio and speech recognition
-    stopAllAudio();
     recognitionRef.current?.abort();
     recognitionRef.current = null;
 
