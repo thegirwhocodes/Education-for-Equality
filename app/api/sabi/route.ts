@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callSabi } from "@/lib/voice/sabi-shared";
 
+export const maxDuration = 30;
+
 /**
  * POST /api/sabi
  *

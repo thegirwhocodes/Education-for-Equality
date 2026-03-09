@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
 
+export const maxDuration = 30;
+
 /**
  * POST /api/sabi/tts
  *

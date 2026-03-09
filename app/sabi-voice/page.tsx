@@ -57,6 +57,18 @@ export default function SabiVoice() {
     if (!SR) setVoiceSupported(false);
   }, []);
 
+  // Stop browser TTS on page unload/refresh (prevents audio playing after reload)
+  useEffect(() => {
+    const stopBrowserTTS = () => {
+      window.speechSynthesis?.cancel();
+    };
+    window.addEventListener("beforeunload", stopBrowserTTS);
+    return () => {
+      stopBrowserTTS();
+      window.removeEventListener("beforeunload", stopBrowserTTS);
+    };
+  }, []);
+
   // Load returning student
   useEffect(() => {
     const browserId = localStorage.getItem("sabi_browser_id");
@@ -354,6 +366,7 @@ export default function SabiVoice() {
 
     recognitionRef.current?.abort();
     recognitionRef.current = null;
+    window.speechSynthesis?.cancel();
 
     if (messagesRef.current.length >= 2 && studentRef.current?.id) {
       try {

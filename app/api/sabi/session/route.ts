@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
 
+export const maxDuration = 30;
+
 const anthropic = new Anthropic();
 
 function getSupabase() {
