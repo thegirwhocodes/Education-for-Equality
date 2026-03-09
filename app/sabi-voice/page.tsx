@@ -204,6 +204,9 @@ export default function SabiVoice() {
         return;
       }
 
+      // Abort any leftover recognition before starting a new one
+      try { recognitionRef.current?.abort(); } catch { /* ignore */ }
+
       let resolved = false;
 
       const recognition = new SR();
@@ -223,8 +226,9 @@ export default function SabiVoice() {
       recognition.onerror = (event: { error: string }) => {
         if (!resolved) {
           resolved = true;
-          if (event.error === "no-speech") {
-            resolve(""); // Silence — will retry
+          // Transient errors — treat as silence and retry
+          if (["no-speech", "aborted", "network", "audio-capture"].includes(event.error)) {
+            resolve("");
           } else {
             reject(new Error(event.error));
           }
@@ -254,10 +258,10 @@ export default function SabiVoice() {
 
       if (!callActiveRef.current) return;
 
-      // Handle silence or empty — auto-retry
+      // Handle silence or empty — auto-retry (setTimeout avoids stack buildup)
       if (!transcript) {
         if (callActiveRef.current) {
-          runTurn();
+          setTimeout(runTurn, 100);
         }
         return;
       }
@@ -285,8 +289,8 @@ export default function SabiVoice() {
 
       if (!callActiveRef.current) return;
 
-      // 6. Auto-start next turn — no tap needed
-      runTurn();
+      // 6. Auto-start next turn — no tap needed (setTimeout avoids stack buildup)
+      setTimeout(runTurn, 100);
     } catch (err) {
       console.error("Turn error:", err);
       if (callActiveRef.current) {
