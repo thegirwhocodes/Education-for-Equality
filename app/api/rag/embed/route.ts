@@ -15,7 +15,6 @@ let pipeline: unknown = null;
 
 async function getEmbeddingPipeline() {
   if (!pipeline) {
-    // @ts-expect-error - transformers.js types
     const { pipeline: createPipeline } = await import('@xenova/transformers');
     pipeline = await createPipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
   }

@@ -28,7 +28,6 @@ const BATCH_SIZE = 10;
 
 async function loadEmbeddingModel() {
   console.log('Loading embedding model (all-MiniLM-L6-v2)...');
-  // @ts-expect-error - transformers.js dynamic import
   const { pipeline } = await import('@xenova/transformers');
   const embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
   console.log('Model loaded.');
