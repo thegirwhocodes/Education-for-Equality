@@ -195,10 +195,8 @@ function EntryScreen({
         </div>
 
         <p className="text-center text-xs text-white/50 mt-6">
-          Sabi is a voice AI tutor created by{" "}
-          <a href="https://bakame.online" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/70">Bakame AI</a>.
-          This demo was built by Education for Equality to show how
-          Sabi&apos;s approach could reach Nigeria&apos;s 20 million out-of-school children.
+          Sabi is a voice AI tutor built by Education for Equality to reach
+          Nigeria&apos;s 20 million out-of-school children.
         </p>
       </div>
     </div>
@@ -957,7 +955,7 @@ export default function SabiDemo() {
       <div className="bg-[var(--primary-darker)] text-white py-4 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Sabi Demo <span className="text-sm font-normal opacity-60">by Bakame AI</span></h1>
+            <h1 className="text-2xl font-bold">Sabi Demo <span className="text-sm font-normal opacity-60">by Education for Equality</span></h1>
             <p className="text-sm opacity-80">
               {student?.name ? `Student: ${student.name}` : "New Student"} —
               Market Math Lesson
@@ -1036,11 +1034,8 @@ export default function SabiDemo() {
             real tutor. End this lesson and start another to see it in action.
           </p>
           <p className="text-sm text-white/60 leading-relaxed">
-            Sabi is created by{" "}
-            <a href="https://bakame.online" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80">Bakame AI</a>,
-            pioneers in toll-free voice AI tutoring across Africa. This demo
-            was built by Education for Equality to demonstrate how their approach
-            could transform education in Nigeria.
+            Sabi is built by Education for Equality to deliver free,
+            AI-powered voice tutoring to every child in Nigeria who needs it.
           </p>
         </div>
       </div>
