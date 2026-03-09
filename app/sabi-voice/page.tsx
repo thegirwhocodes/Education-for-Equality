@@ -384,10 +384,7 @@ export default function SabiVoice() {
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Sabi</h1>
           <p className="text-white/50 text-sm">
-            Voice AI Tutor — Full Pipeline Test
-          </p>
-          <p className="text-white/30 text-xs mt-1">
-            Groq STT → Claude Haiku → YarnGPT TTS
+            Voice AI Tutor
           </p>
         </div>
 
