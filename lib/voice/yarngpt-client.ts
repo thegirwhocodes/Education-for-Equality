@@ -9,11 +9,12 @@
  */
 
 // Best voices for a children's tutor (warm, engaging, Nigerian accent)
+// NOTE: Voice names must be capitalized (API requirement)
 export const YARNGPT_VOICES = {
-  chinenye: "chinenye", // Engaging, warm — primary
-  wura: "wura", // Young, sweet
-  adaora: "adaora", // Warm, engaging
-  idera: "idera", // Melodic, gentle
+  chinenye: "Chinenye", // Engaging, warm — primary
+  wura: "Wura", // Young, sweet
+  adaora: "Adaora", // Warm, engaging
+  idera: "Idera", // Melodic, gentle
 } as const;
 
 const DEFAULT_VOICE = YARNGPT_VOICES.chinenye;
@@ -47,7 +48,7 @@ export async function synthesizeWithYarnGPT(
     body: JSON.stringify({
       text: spokenText.slice(0, 2000),
       voice,
-      format: "mp3",
+      response_format: "mp3",
     }),
   });
 
