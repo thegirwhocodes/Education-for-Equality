@@ -116,38 +116,21 @@ export default function SabiVoice() {
 
         if (res.ok) {
           const arrayBuffer = await res.arrayBuffer();
-          const AudioCtx =
-            window.AudioContext ||
-            (window as unknown as { webkitAudioContext: typeof AudioContext })
-              .webkitAudioContext;
-          if (AudioCtx) {
-            const ctx = new AudioCtx();
-            const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-            const source = ctx.createBufferSource();
-            source.buffer = audioBuffer;
-            source.connect(ctx.destination);
-            source.onended = () => {
-              ctx.close();
+          if (arrayBuffer.byteLength > 0) {
+            const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            audio.onended = () => {
+              URL.revokeObjectURL(url);
               resolve();
             };
-            source.start(0);
+            audio.onerror = () => {
+              URL.revokeObjectURL(url);
+              resolve();
+            };
+            await audio.play();
             return;
           }
-
-          // Fallback: Audio element
-          const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
-          const url = URL.createObjectURL(blob);
-          const audio = new Audio(url);
-          audio.onended = () => {
-            URL.revokeObjectURL(url);
-            resolve();
-          };
-          audio.onerror = () => {
-            URL.revokeObjectURL(url);
-            resolve();
-          };
-          await audio.play();
-          return;
         }
       } catch (err) {
         console.warn("TTS failed, falling back to browser voice:", err);
