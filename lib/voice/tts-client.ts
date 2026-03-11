@@ -30,7 +30,7 @@ async function synthesizeWithAfroTTS(text: string): Promise<Buffer> {
     body: JSON.stringify({
       text: spokenText.slice(0, 2000),
       format: "mp3",
-      speaker_name: "default",
+      speaker_name: "bukola",
       temperature: 0.85,
       speed: 1.0,
     }),
