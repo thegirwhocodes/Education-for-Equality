@@ -10,8 +10,8 @@
 
 import { synthesizeWithYarnGPT } from "./yarngpt-client";
 
-// ElevenLabs — Olufunmilola (African Female, Nigerian Accent)
-const ELEVENLABS_VOICE_ID = "9Dbo4hEvXQ5l7MXGZFQA";
+// ElevenLabs — Bukola (African Female, Nigerian Accent)
+const ELEVENLABS_VOICE_ID = "oC2pCZZWEDRe6lmZpaaw";
 
 /**
  * Convert text to speech. Tries YarnGPT first, falls back to ElevenLabs.
