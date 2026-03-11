@@ -36,6 +36,7 @@ export default function SabiVoice() {
   const callStartRef = useRef(0);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
+  const silentRetriesRef = useRef(0);
 
   // Keep refs in sync
   useEffect(() => {
@@ -325,13 +326,25 @@ export default function SabiVoice() {
 
       if (!callActiveRef.current) return;
 
-      // Handle silence or empty — auto-retry (setTimeout avoids stack buildup)
+      // Handle silence or empty — prompt user after 2 silent retries
       if (!transcript) {
+        silentRetriesRef.current += 1;
         if (callActiveRef.current) {
-          setTimeout(runTurn, 100);
+          if (silentRetriesRef.current >= 2) {
+            // Nudge the user so it doesn't just sit silently
+            silentRetriesRef.current = 0;
+            const nudge = "I didn't quite hear that. Could you try again?";
+            const nudgeMsg: Message = { role: "assistant", content: nudge };
+            const updated = [...messagesRef.current, nudgeMsg];
+            setMessages(updated);
+            messagesRef.current = updated;
+            await speakText(nudge);
+          }
+          if (callActiveRef.current) setTimeout(runTurn, 100);
         }
         return;
       }
+      silentRetriesRef.current = 0;
 
       // 2. Add user message
       const userMsg: Message = { role: "user", content: transcript };

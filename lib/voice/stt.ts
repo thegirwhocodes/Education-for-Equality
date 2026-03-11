@@ -22,7 +22,9 @@ export async function transcribeAudio(
 
   const formData = new FormData();
   const blob = new Blob([new Uint8Array(audioBuffer)], { type: mimeType });
-  formData.append("file", blob, "audio.wav");
+  // Filename extension must match actual format or Groq may reject it
+  const ext = mimeType.includes("webm") ? "webm" : mimeType.includes("mp3") ? "mp3" : mimeType.includes("ogg") ? "ogg" : "wav";
+  formData.append("file", blob, `audio.${ext}`);
   formData.append("model", "whisper-large-v3");
   formData.append("language", "en");
   formData.append("response_format", "verbose_json");
