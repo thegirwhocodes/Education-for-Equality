@@ -17,7 +17,7 @@ export const YARNGPT_VOICES = {
   idera: "Idera", // Melodic, gentle
 } as const;
 
-const DEFAULT_VOICE = YARNGPT_VOICES.chinenye;
+const DEFAULT_VOICE = YARNGPT_VOICES.wura;
 
 /**
  * Convert text to speech using YarnGPT API.
