@@ -1,7 +1,7 @@
 /**
- * TTS client — routes to Afro-TTS (primary, self-hosted) → YarnGPT → ElevenLabs.
+ * TTS client — routes to Chatterbox Turbo (primary, self-hosted) → YarnGPT → ElevenLabs.
  *
- * Afro-TTS: Self-hosted on Hetzner GPU, African-accented English, no limits.
+ * Chatterbox Turbo: Self-hosted on Hetzner GPU, emotion-aware, voice-cloned Nigerian English.
  * YarnGPT: Free beta, 16 Nigerian voices.
  * ElevenLabs: Paid, Nigerian voice "Bukola".
  *
@@ -10,36 +10,57 @@
 
 import { synthesizeWithYarnGPT } from "./yarngpt-client";
 
-// Afro-TTS server (self-hosted on Hetzner, proxied via nginx)
-const AFRO_TTS_URL =
-  process.env.AFRO_TTS_URL || "https://sabi.eduforequality.org/afro-tts";
+// Chatterbox Turbo TTS (self-hosted on Hetzner, proxied via nginx)
+const CHATTERBOX_URL =
+  process.env.CHATTERBOX_URL || "https://sabi.eduforequality.org/afro-tts";
 
 // ElevenLabs — Bukola (African Female, Nigerian Accent)
 const ELEVENLABS_VOICE_ID = "oC2pCZZWEDRe6lmZpaaw";
 
 /**
- * Convert text to speech via Afro-TTS (self-hosted).
- * Returns audio buffer (audio/mpeg).
+ * Detect emotion from LLM response text and return appropriate exaggeration level.
+ * Higher exaggeration = more expressive voice.
  */
-async function synthesizeWithAfroTTS(text: string): Promise<Buffer> {
-  const spokenText = text.replace(/₦/g, "naira ");
+function detectExaggeration(text: string): number {
+  // Celebration / praise markers
+  if (/\[laugh\]|!\s*!|Well done|Correct|Yes!|Great|Excellent|Sharp sharp/i.test(text)) {
+    return 0.75;
+  }
+  // Gentle correction / empathy markers
+  if (/\[sigh\]|Almost|Good try|tricky|Let me help/i.test(text)) {
+    return 0.35;
+  }
+  // Warm encouragement
+  if (/\[chuckle\]|Oya|Let's try|ready/i.test(text)) {
+    return 0.6;
+  }
+  // Default neutral
+  return 0.5;
+}
 
-  const response = await fetch(`${AFRO_TTS_URL}/tts`, {
+/**
+ * Convert text to speech via Chatterbox Turbo (self-hosted).
+ * Auto-detects emotion from text to set exaggeration level.
+ * Returns audio buffer (audio/wav or audio/mpeg).
+ */
+async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
+  const spokenText = text.replace(/₦/g, "naira ");
+  const exaggeration = detectExaggeration(spokenText);
+
+  const response = await fetch(`${CHATTERBOX_URL}/tts`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       text: spokenText.slice(0, 2000),
       format: "mp3",
-      speaker_name: "bukola",
-      temperature: 0.85,
-      speed: 1.0,
+      exaggeration,
     }),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(20000),
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Afro-TTS failed: ${response.status} ${errorText}`);
+    throw new Error(`Chatterbox TTS failed: ${response.status} ${errorText}`);
   }
 
   const arrayBuffer = await response.arrayBuffer();
@@ -47,16 +68,16 @@ async function synthesizeWithAfroTTS(text: string): Promise<Buffer> {
 }
 
 /**
- * Convert text to speech. Tries Afro-TTS first, then YarnGPT, then ElevenLabs.
+ * Convert text to speech. Tries Chatterbox first, then YarnGPT, then ElevenLabs.
  * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
-  // Try Afro-TTS first (self-hosted, no limits, African-accented)
+  // Try Chatterbox Turbo first (self-hosted, emotion-aware, voice-cloned)
   try {
-    return await synthesizeWithAfroTTS(text);
+    return await synthesizeWithChatterbox(text);
   } catch (error) {
     console.warn(
-      "Afro-TTS failed, trying YarnGPT:",
+      "Chatterbox TTS failed, trying YarnGPT:",
       error instanceof Error ? error.message : error
     );
   }
