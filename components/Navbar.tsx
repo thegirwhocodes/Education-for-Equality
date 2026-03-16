@@ -40,6 +40,9 @@ export default function Navbar() {
                 My Progress
               </Link>
             </SignedIn>
+            <Link href="/sabi" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+              Sabi
+            </Link>
             <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
               About
             </Link>
@@ -97,6 +100,9 @@ export default function Navbar() {
                   My Progress
                 </Link>
               </SignedIn>
+              <Link href="/sabi" className="text-gray-600 hover:text-[var(--primary-dark)]">
+                Sabi
+              </Link>
               <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)]">
                 About
               </Link>
