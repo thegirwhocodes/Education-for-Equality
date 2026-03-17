@@ -602,8 +602,8 @@ export default function SabiDemo() {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recognitionRef = useRef<any>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   // Check for returning student on mount
   useEffect(() => {
@@ -615,10 +615,11 @@ export default function SabiDemo() {
     }
   }, []);
 
-  // Check voice support
+  // Check voice support (MediaRecorder for Groq Whisper pipeline)
   useEffect(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) setVoiceSupported(false);
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setVoiceSupported(false);
+    }
   }, []);
 
   const loadStudent = async (browserId: string) => {
@@ -784,113 +785,134 @@ export default function SabiDemo() {
     sendToSabi(updated, setTextMessages, setTextLoading);
   };
 
-  // Voice: speak text using ElevenLabs Nigerian voice (fallback to Web Speech API)
+  // Play base64 audio (from voice-chat pipeline)
+  const playAudioBase64 = (base64: string) => {
+    setIsSpeaking(true);
+    const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    const blob = new Blob([bytes], { type: "audio/mpeg" });
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.onended = () => {
+      setIsSpeaking(false);
+      URL.revokeObjectURL(url);
+    };
+    audio.onerror = () => {
+      setIsSpeaking(false);
+      URL.revokeObjectURL(url);
+    };
+    audio.play().catch(() => setIsSpeaking(false));
+  };
+
+  // Voice: speak text via TTS API (used by text chat panel)
   const speakText = async (text: string) => {
     setIsSpeaking(true);
-    const spokenText = text.replace(/₦/g, "naira ");
     try {
-      // Try ElevenLabs first (Nigerian accent)
       const res = await fetch("/api/sabi/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: spokenText }),
+        body: JSON.stringify({ text: text.replace(/₦/g, "naira ") }),
       });
-
       if (res.ok) {
         const arrayBuffer = await res.arrayBuffer();
-        // Use AudioContext for reliable playback on mobile (avoids autoplay restrictions)
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        if (AudioCtx) {
-          const ctx = new AudioCtx();
-          const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-          const source = ctx.createBufferSource();
-          source.buffer = audioBuffer;
-          source.connect(ctx.destination);
-          source.onended = () => {
-            setIsSpeaking(false);
-            ctx.close();
-          };
-          source.start(0);
-          return;
-        }
-        // Fallback for browsers without AudioContext: use Audio element
         const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
         const url = URL.createObjectURL(blob);
         const audio = new Audio(url);
-        audio.onended = () => {
-          setIsSpeaking(false);
-          URL.revokeObjectURL(url);
-        };
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          URL.revokeObjectURL(url);
-        };
+        audio.onended = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
+        audio.onerror = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
         await audio.play();
         return;
       }
-      console.warn("ElevenLabs TTS returned", res.status);
     } catch (err) {
-      console.warn("ElevenLabs TTS failed, falling back to browser voice:", err);
+      console.warn("TTS failed:", err);
     }
-
-    // Fallback: Web Speech API
-    if (window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(spokenText);
-      utterance.rate = 0.9;
-      utterance.pitch = 1.0;
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(
-        (v) =>
-          v.lang.startsWith("en") &&
-          (v.name.includes("Female") ||
-            v.name.includes("Samantha") ||
-            v.name.includes("Google"))
-      );
-      if (preferred) utterance.voice = preferred;
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setIsSpeaking(false);
-    }
+    setIsSpeaking(false);
   };
 
-  // Voice: start listening
-  const startListening = () => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
+  // Voice: record audio via MediaRecorder → send to Groq Whisper via /api/sabi/voice-chat
+  const startListening = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunksRef.current = [];
 
-    const recognition = new SR();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = "en-NG";
+      const recorder = new MediaRecorder(stream, {
+        mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+          ? "audio/webm;codecs=opus"
+          : "audio/webm",
+      });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      if (transcript.trim()) {
-        const newMsg: Message = { role: "user", content: transcript.trim() };
-        setVoiceMessages((prev) => {
-          const updated = [...prev, newMsg];
-          sendToSabi(updated, setVoiceMessages, setVoiceLoading, true);
-          return updated;
-        });
-      }
-      setIsListening(false);
-    };
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
 
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
+      recorder.onstop = async () => {
+        // Stop all mic tracks
+        stream.getTracks().forEach((t) => t.stop());
 
-    recognitionRef.current = recognition;
-    recognition.start();
-    setIsListening(true);
+        const audioBlob = new Blob(audioChunksRef.current, { type: recorder.mimeType });
+        if (audioBlob.size < 1000) {
+          // Too small — probably no speech
+          setIsListening(false);
+          return;
+        }
+
+        // Send to Groq Whisper pipeline
+        setVoiceLoading(true);
+        setIsListening(false);
+
+        try {
+          const formData = new FormData();
+          formData.append("audio", audioBlob, "recording.webm");
+          formData.append("messages", JSON.stringify(voiceMessages));
+          if (student?.id) formData.append("student_id", student.id);
+
+          const res = await fetch("/api/sabi/voice-chat", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await res.json();
+
+          if (data.error) {
+            console.error("Voice chat error:", data.error);
+            setVoiceMessages((prev) => [
+              ...prev,
+              { role: "assistant", content: "Sorry, I had a problem. Please try again!" },
+            ]);
+          } else {
+            const newMessages: Message[] = [];
+            if (data.transcript) {
+              newMessages.push({ role: "user", content: data.transcript });
+            }
+            if (data.response) {
+              newMessages.push({ role: "assistant", content: data.response });
+            }
+            setVoiceMessages((prev) => [...prev, ...newMessages]);
+
+            // Play the audio response
+            if (data.audio) {
+              playAudioBase64(data.audio);
+            }
+          }
+        } catch {
+          setVoiceMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: "Connection error. Please try again!" },
+          ]);
+        }
+        setVoiceLoading(false);
+      };
+
+      mediaRecorderRef.current = recorder;
+      recorder.start();
+      setIsListening(true);
+    } catch (err) {
+      console.error("Mic access denied:", err);
+      setVoiceSupported(false);
+    }
   };
 
   const stopListening = () => {
-    recognitionRef.current?.stop();
-    setIsListening(false);
+    mediaRecorderRef.current?.stop();
+    mediaRecorderRef.current = null;
   };
 
   const handleVoiceSend = (text: string) => {
@@ -1043,12 +1065,3 @@ export default function SabiDemo() {
   );
 }
 
-// Type declarations for Web Speech API
-/* eslint-disable @typescript-eslint/no-explicit-any */
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
-/* eslint-enable @typescript-eslint/no-explicit-any */

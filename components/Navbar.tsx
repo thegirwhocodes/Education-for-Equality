@@ -43,6 +43,9 @@ export default function Navbar() {
             <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
               About
             </Link>
+            <Link href="/sabi-demo" className="text-white bg-[var(--primary)] hover:bg-[var(--primary-dark)] px-4 py-1.5 rounded-full text-sm font-medium transition-colors">
+              Sabi
+            </Link>
           </div>
 
           {/* Auth Buttons */}
@@ -99,6 +102,9 @@ export default function Navbar() {
               </SignedIn>
               <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)]">
                 About
+              </Link>
+              <Link href="/sabi-demo" className="text-white bg-[var(--primary)] hover:bg-[var(--primary-dark)] px-4 py-1.5 rounded-full text-sm font-medium text-center transition-colors">
+                Sabi
               </Link>
               <hr className="border-gray-100" />
               <SignedOut>
