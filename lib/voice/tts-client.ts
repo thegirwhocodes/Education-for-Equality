@@ -72,26 +72,26 @@ async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
  * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
-  // Try Chatterbox Turbo first (self-hosted, emotion-aware, voice-cloned)
-  try {
-    return await synthesizeWithChatterbox(text);
-  } catch (error) {
-    console.warn(
-      "Chatterbox TTS failed, trying YarnGPT:",
-      error instanceof Error ? error.message : error
-    );
-  }
-
-  // Fallback 1: YarnGPT (free, Nigerian voices)
+  // Primary: YarnGPT (native Nigerian Wura voice)
   if (process.env.YARNGPT_API_KEY) {
     try {
       return await synthesizeWithYarnGPT(text);
     } catch (error) {
       console.warn(
-        "YarnGPT failed, falling back to ElevenLabs:",
+        "YarnGPT failed, trying Chatterbox:",
         error instanceof Error ? error.message : error
       );
     }
+  }
+
+  // Fallback 1: Chatterbox Turbo (self-hosted, emotion-aware)
+  try {
+    return await synthesizeWithChatterbox(text);
+  } catch (error) {
+    console.warn(
+      "Chatterbox TTS failed, falling back to ElevenLabs:",
+      error instanceof Error ? error.message : error
+    );
   }
 
   // Fallback 2: ElevenLabs
