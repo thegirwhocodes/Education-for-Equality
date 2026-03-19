@@ -12,7 +12,7 @@ import { synthesizeWithYarnGPT } from "./yarngpt-client";
 
 // Chatterbox Turbo TTS (self-hosted on Hetzner, proxied via nginx)
 const CHATTERBOX_URL =
-  process.env.CHATTERBOX_URL || "https://sabi.eduforequality.org/afro-tts";
+  process.env.CHATTERBOX_URL || "https://api.eduforequality.org/afro-tts";
 
 // ElevenLabs — Bukola (African Female, Nigerian Accent)
 const ELEVENLABS_VOICE_ID = "oC2pCZZWEDRe6lmZpaaw";
