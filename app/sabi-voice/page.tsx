@@ -480,9 +480,6 @@ export default function SabiVoice() {
   if (!callActive && callState === "idle") {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-center px-4 relative">
-        <a href="/sabi" className="absolute top-6 left-6 text-white/50 hover:text-white/80 transition-colors text-sm font-semibold tracking-wide">
-          Sabi
-        </a>
         <div className="text-center mb-10">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0f6b4f] to-[#1a8c6a] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#0f6b4f]/30">
             <svg
