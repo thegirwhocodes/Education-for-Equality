@@ -8,7 +8,7 @@ const isProtectedRoute = createRouteMatcher([
 
 // Demo pages locked behind a secret key (pre-release)
 // Match both direct paths (/sabi/demo) and subdomain paths (/demo on sabi.*)
-const DEMO_PATHS = ['/sabi/demo', '/sabi-demo', '/chat'];
+const DEMO_PATHS = ['/sabi/demo'];
 
 export default clerkMiddleware(async (auth, req) => {
   const host = req.headers.get('host') || '';
