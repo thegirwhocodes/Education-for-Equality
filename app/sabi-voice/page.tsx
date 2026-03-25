@@ -479,7 +479,11 @@ export default function SabiVoice() {
   // ─── Idle Screen ────────────────────────────────────────────────
   if (!callActive && callState === "idle") {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-center px-4 relative">
+        <a href="/sabi" className="absolute top-6 left-6 text-white/40 hover:text-white/70 transition-colors text-sm flex items-center gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          Back to Sabi
+        </a>
         <div className="text-center mb-10">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0f6b4f] to-[#1a8c6a] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#0f6b4f]/30">
             <svg

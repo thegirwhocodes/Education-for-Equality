@@ -8,12 +8,16 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // On sabi. subdomain, logo should go to main site
+  const isSabi = typeof window !== 'undefined' && window.location.hostname.startsWith('sabi.');
+  const logoHref = isSabi ? 'https://eduforequality.org' : '/';
+
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <a href={logoHref} className="flex items-center gap-2">
             <Image
               src="/tree-icon.png"
               alt="Education for Equality"
@@ -25,7 +29,7 @@ export default function Navbar() {
             <span className="font-semibold text-lg text-[var(--primary-darker)]">
               Education for Equality
             </span>
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
