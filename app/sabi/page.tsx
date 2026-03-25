@@ -51,14 +51,14 @@ export default function SabiLanding() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
             <Link
-              href="/sabi-voice"
+              href="/demo"
               className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
               Talk to Sabi
             </Link>
             <Link
-              href="/sabi-demo"
+              href="/chat"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -394,13 +394,13 @@ export default function SabiLanding() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/sabi-voice"
+              href="/demo"
               className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
             >
               Talk to Sabi
             </Link>
             <Link
-              href="/sabi-demo"
+              href="/chat"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
             >
               Chat with Sabi

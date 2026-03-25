@@ -8,7 +8,7 @@ const isProtectedRoute = createRouteMatcher([
 
 // Demo pages locked behind a secret key (pre-release)
 // Match both direct paths (/sabi/demo) and subdomain paths (/demo on sabi.*)
-const DEMO_PATHS = ['/sabi/demo', '/sabi-demo', '/demo'];
+const DEMO_PATHS = ['/sabi/demo', '/sabi-demo', '/chat'];
 
 export default clerkMiddleware(async (auth, req) => {
   const host = req.headers.get('host') || '';
@@ -72,14 +72,16 @@ export default clerkMiddleware(async (auth, req) => {
     }
   }
 
-  // Route sabi.eduforequality.org to /sabi landing page
-  // Only rewrite root and /demo — other paths (sign-in, dashboard, etc.) pass through normally
+  // Route sabi.eduforequality.org subdomain paths
   if (isSubdomain) {
     if (path === '/') {
       return NextResponse.rewrite(new URL('/sabi', req.url));
     }
-    if (path === '/demo' || path.startsWith('/demo/')) {
-      return NextResponse.rewrite(new URL(`/sabi${path}`, req.url));
+    if (path === '/demo') {
+      return NextResponse.rewrite(new URL('/sabi-voice', req.url));
+    }
+    if (path === '/chat') {
+      return NextResponse.rewrite(new URL('/sabi-demo', req.url));
     }
   }
 
