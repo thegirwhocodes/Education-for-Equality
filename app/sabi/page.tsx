@@ -26,9 +26,6 @@ function HeartIcon() {
 }
 
 export default function SabiLanding() {
-  const demoKey = process.env.SABI_DEMO_KEY;
-  const demoHref = demoKey ? `/sabi/demo?key=${demoKey}` : "/sabi/demo";
-
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* ─── Hero ──────────────────────────────────────────── */}
@@ -54,17 +51,19 @@ export default function SabiLanding() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
             <Link
-              href={demoHref}
+              href="/sabi-voice"
               className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
             >
-              Try the Demo
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              Talk to Sabi
             </Link>
-            <a
-              href="#how-it-works"
+            <Link
+              href="/sabi-demo"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
             >
-              Learn More
-            </a>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Chat with Sabi
+            </Link>
           </div>
         </div>
       </section>
@@ -393,12 +392,20 @@ export default function SabiLanding() {
             store. We&apos;re building something a mother hears about at church,
             dials after dinner, and hands to her child for five minutes.
           </p>
-          <Link
-            href={demoHref}
-            className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-10 py-5 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
-          >
-            Launch Demo
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/sabi-voice"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
+            >
+              Talk to Sabi
+            </Link>
+            <Link
+              href="/sabi-demo"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
+            >
+              Chat with Sabi
+            </Link>
+          </div>
           <p className="text-sm opacity-60 mt-6">
             Lagos pilot planned Q4 2026 — 100-500 students in high-burden LGAs
           </p>
