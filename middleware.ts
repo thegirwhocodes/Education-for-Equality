@@ -8,7 +8,7 @@ const isProtectedRoute = createRouteMatcher([
 
 // Demo pages locked behind a secret key (pre-release)
 // Match both direct paths (/sabi/demo) and subdomain paths (/demo on sabi.*)
-const DEMO_PATHS = ['/sabi/demo', '/demo'];
+const DEMO_PATHS = ['/sabi/demo', '/sabi-demo', '/demo'];
 
 export default clerkMiddleware(async (auth, req) => {
   const host = req.headers.get('host') || '';
@@ -54,9 +54,19 @@ export default clerkMiddleware(async (auth, req) => {
         return response;
       }
 
-      // No valid key — block access
+      // No valid key — show request access page
       return new NextResponse(
-        '<html><body style="background:#0a1a15;color:white;display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui"><div style="text-align:center"><h1>Sabi Demo</h1><p style="opacity:0.5">This demo is private. Contact naomi@eduforequality.org for access.</p></div></body></html>',
+        `<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sabi - Request Access</title></head>
+<body style="background:#0a1a15;color:white;display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;margin:0;padding:24px">
+<div style="text-align:center;max-width:420px">
+<div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0f6b4f,#1a8c6a);display:flex;align-items:center;justify-content:center;margin:0 auto 24px">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</div>
+<h1 style="font-size:28px;margin:0 0 8px">Sabi Chat Demo</h1>
+<p style="opacity:0.5;margin:0 0 32px;line-height:1.6">This demo is currently invite-only. To request access, send us an email and we'll get back to you.</p>
+<a href="mailto:info@eduforequality.org?subject=Sabi%20Chat%20Demo%20Access%20Request&body=Hi%2C%20I'd%20like%20to%20try%20the%20Sabi%20chat%20demo.%20Here's%20a%20bit%20about%20me%3A%0A%0A" style="display:inline-block;background:white;color:#0a1a15;padding:14px 32px;border-radius:12px;font-weight:bold;text-decoration:none;font-size:16px">Request Access</a>
+<p style="opacity:0.3;margin-top:24px;font-size:13px">Education for Equality</p>
+</div></body></html>`,
         { status: 403, headers: { 'Content-Type': 'text/html' } }
       );
     }
