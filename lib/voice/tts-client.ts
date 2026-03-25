@@ -68,12 +68,22 @@ async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
 }
 
 /**
- * Convert text to speech. Tries Chatterbox first (self-hosted, emotion-aware),
- * then YarnGPT, then ElevenLabs.
+ * Convert text to speech. Tries ElevenLabs first (Impact Program, 100K credits/mo),
+ * then Chatterbox, then YarnGPT.
  * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
-  // Primary: Chatterbox Turbo (self-hosted, emotion-aware, Naomi's voice)
+  // Primary: ElevenLabs Bukola (Impact Program — 100K credits/mo free)
+  try {
+    return await synthesizeWithElevenLabs(text);
+  } catch (error) {
+    console.warn(
+      "ElevenLabs failed, trying Chatterbox:",
+      error instanceof Error ? error.message : error
+    );
+  }
+
+  // Fallback 1: Chatterbox Turbo (self-hosted, emotion-aware)
   try {
     return await synthesizeWithChatterbox(text);
   } catch (error) {
@@ -83,20 +93,19 @@ export async function synthesizeSpeech(text: string): Promise<Buffer> {
     );
   }
 
-  // Fallback 1: YarnGPT (native Nigerian Wura voice)
+  // Fallback 2: YarnGPT (native Nigerian Wura voice)
   if (process.env.YARNGPT_API_KEY) {
     try {
       return await synthesizeWithYarnGPT(text);
     } catch (error) {
       console.warn(
-        "YarnGPT failed, falling back to ElevenLabs:",
+        "YarnGPT also failed:",
         error instanceof Error ? error.message : error
       );
     }
   }
 
-  // Fallback 2: ElevenLabs
-  return synthesizeWithElevenLabs(text);
+  throw new Error("All TTS providers failed");
 }
 
 /**
