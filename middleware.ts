@@ -15,9 +15,8 @@ export default clerkMiddleware(async (auth, req) => {
   const path = req.nextUrl.pathname;
   const isSubdomain = host.startsWith('sabi.');
 
-  // Check if this is a demo route (before rewrite)
-  const isDemoPath = DEMO_PATHS.some((p) => path.startsWith(p)) ||
-    (isSubdomain && path.startsWith('/demo'));
+  // Check if this is a gated demo route (chat is gated, voice demo is public)
+  const isDemoPath = DEMO_PATHS.some((p) => path.startsWith(p));
 
   // Demo routes: require ?key=SECRET or sabi_demo cookie (check BEFORE rewrite)
   if (isDemoPath) {
