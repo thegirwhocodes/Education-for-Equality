@@ -2,15 +2,19 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoHref, setLogoHref] = useState('/');
 
   // On sabi. subdomain, logo should go to main site
-  const isSabi = typeof window !== 'undefined' && window.location.hostname.startsWith('sabi.');
-  const logoHref = isSabi ? 'https://eduforequality.org' : '/';
+  useEffect(() => {
+    if (window.location.hostname.startsWith('sabi.')) {
+      setLogoHref('https://eduforequality.org');
+    }
+  }, []);
 
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">

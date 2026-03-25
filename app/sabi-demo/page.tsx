@@ -50,9 +50,8 @@ function EntryScreen({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center px-4 relative">
-      <a href="/sabi" className="absolute top-6 left-6 text-white/40 hover:text-white/70 transition-colors text-sm flex items-center gap-1.5">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-        Back to Sabi
+      <a href="/sabi" className="absolute top-6 left-6 text-white/50 hover:text-white/80 transition-colors text-sm font-semibold tracking-wide">
+        Sabi
       </a>
       <div className="max-w-lg w-full">
         <div className="text-center mb-8">
