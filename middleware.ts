@@ -121,6 +121,9 @@ export default clerkMiddleware(async (auth, req) => {
     if (path === '/chat') {
       return NextResponse.rewrite(new URL('/sabi-demo', req.url));
     }
+    if (path === '/pricing') {
+      return NextResponse.rewrite(new URL('/sabi/pricing', req.url));
+    }
     // Any other path on sabi subdomain → redirect to /demo
     if (!path.startsWith('/api/') && !path.startsWith('/_next') && !path.startsWith('/sign')) {
       return NextResponse.redirect(new URL('/demo', req.url));
