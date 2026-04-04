@@ -82,7 +82,7 @@ export default function Home() {
             <p className="text-gray-600">
               Lost every year in Nigeria from an under-educated workforce — roughly 8% of GDP
             </p>
-            <p className="text-xs text-gray-400 mt-3">SBM Intelligence</p>
+            <p className="text-xs text-gray-400 mt-3">CSEA/IDRC</p>
           </div>
         </div>
       </section>
@@ -211,7 +211,7 @@ export default function Home() {
               <p className="text-sm text-white/75 leading-relaxed">
                 Nigeria currently loses $40 billion annually — 8% of GDP — from an under-educated workforce. Foundational skills programs can recover a significant share of this, generating returns that dwarf the investment.
               </p>
-              <p className="text-xs text-white/50 mt-3">SBM Intelligence</p>
+              <p className="text-xs text-white/50 mt-3">CSEA/IDRC</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
               <p className="text-4xl font-bold text-[var(--primary)] mb-2">47M</p>
