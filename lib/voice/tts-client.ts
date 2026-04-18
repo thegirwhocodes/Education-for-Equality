@@ -1,9 +1,9 @@
 /**
- * TTS client — routes to Chatterbox Turbo (primary, self-hosted) → YarnGPT → ElevenLabs.
+ * TTS client — routes to ElevenLabs (primary, Impact Program) → Chatterbox → YarnGPT.
  *
+ * ElevenLabs: Impact Program credits (100K/month free), low-latency cloud API.
  * Chatterbox Turbo: Self-hosted on Hetzner GPU, emotion-aware, voice-cloned Nigerian English.
  * YarnGPT: Free beta, 16 Nigerian voices.
- * ElevenLabs: Paid, Nigerian voice "Bukola".
  *
  * All downstream code imports `synthesizeSpeech` from this file.
  */
@@ -68,12 +68,24 @@ async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
 }
 
 /**
- * Convert text to speech. Tries Chatterbox first (self-hosted, emotion-aware),
- * then YarnGPT Wura, then ElevenLabs.
+ * Convert text to speech. Tries ElevenLabs first (Impact Program, fast cloud API),
+ * then Chatterbox (self-hosted), then YarnGPT.
  * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
-  // Primary: Chatterbox Turbo (self-hosted, emotion-aware)
+  // Primary: ElevenLabs (Impact Program — 100K credits/mo free, low-latency)
+  if (process.env.ELEVENLABS_API_KEY) {
+    try {
+      return await synthesizeWithElevenLabs(text);
+    } catch (error) {
+      console.warn(
+        "ElevenLabs TTS failed, trying Chatterbox:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
+
+  // Fallback 1: Chatterbox Turbo (self-hosted, emotion-aware)
   try {
     return await synthesizeWithChatterbox(text);
   } catch (error) {
@@ -83,33 +95,23 @@ export async function synthesizeSpeech(text: string): Promise<Buffer> {
     );
   }
 
-  // Fallback 1: YarnGPT Wura (free, native Nigerian voice)
+  // Fallback 2: YarnGPT Wura (free, native Nigerian voice)
   if (process.env.YARNGPT_API_KEY) {
     try {
       return await synthesizeWithYarnGPT(text);
     } catch (error) {
       console.warn(
-        "YarnGPT failed, trying ElevenLabs:",
+        "YarnGPT also failed:",
         error instanceof Error ? error.message : error
       );
     }
-  }
-
-  // Fallback 2: ElevenLabs Bukola (Impact Program — 100K credits/mo free)
-  try {
-    return await synthesizeWithElevenLabs(text);
-  } catch (error) {
-    console.warn(
-      "ElevenLabs also failed:",
-      error instanceof Error ? error.message : error
-    );
   }
 
   throw new Error("All TTS providers failed");
 }
 
 /**
- * ElevenLabs TTS — last-resort fallback.
+ * ElevenLabs TTS — primary for website (Impact Program credits).
  */
 async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
   const apiKey = process.env.ELEVENLABS_API_KEY;
