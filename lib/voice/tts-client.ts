@@ -14,8 +14,8 @@ import { synthesizeWithYarnGPT } from "./yarngpt-client";
 const CHATTERBOX_URL =
   process.env.CHATTERBOX_URL || "https://api.eduforequality.org/afro-tts";
 
-// ElevenLabs — Bukola (African Female, Nigerian Accent)
-const ELEVENLABS_VOICE_ID = "oC2pCZZWEDRe6lmZpaaw";
+// ElevenLabs — Olufunmilola (African Female, Nigerian Accent, Yoruba) — original hackathon voice
+const ELEVENLABS_VOICE_ID = "9Dbo4hEvXQ5l7MXGZFQA";
 
 /**
  * Detect emotion from LLM response text and return appropriate exaggeration level.
@@ -134,9 +134,9 @@ async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
         text: spokenText,
         model_id: "eleven_multilingual_v2",
         voice_settings: {
-          stability: 0.3,
-          similarity_boost: 0.7,
-          style: 0.5,
+          stability: 0.5,
+          similarity_boost: 0.75,
+          style: 0.3,
           use_speaker_boost: true,
         },
       }),
