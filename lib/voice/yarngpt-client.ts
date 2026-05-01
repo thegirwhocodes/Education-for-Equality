@@ -8,6 +8,8 @@
  * Auth: Bearer token
  */
 
+import { normalizeMoneyForSpeech } from "./normalize-money-for-speech";
+
 // Best voices for a children's tutor (warm, engaging, Nigerian accent)
 // NOTE: Voice names must be capitalized (API requirement)
 export const YARNGPT_VOICES = {
@@ -30,8 +32,7 @@ export async function synthesizeWithYarnGPT(
   const apiKey = process.env.YARNGPT_API_KEY;
   if (!apiKey) throw new Error("YARNGPT_API_KEY not configured");
 
-  // Replace symbols with spoken words for natural pronunciation
-  const spokenText = text.replace(/₦/g, "naira ");
+  const spokenText = normalizeMoneyForSpeech(text);
 
   if (spokenText.length > 2000) {
     console.warn(

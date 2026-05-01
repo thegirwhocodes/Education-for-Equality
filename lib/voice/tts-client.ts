@@ -8,6 +8,7 @@
  */
 
 import { synthesizeWithYarnGPT } from "./yarngpt-client";
+import { normalizeMoneyForSpeech } from "./normalize-money-for-speech";
 
 // Chatterbox Turbo TTS (self-hosted on Hetzner, proxied via nginx)
 const CHATTERBOX_URL =
@@ -47,14 +48,13 @@ function detectExaggeration(text: string): number {
  * Returns audio buffer (audio/wav or audio/mpeg).
  */
 async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
-  const spokenText = text.replace(/₦/g, "naira ");
-  const exaggeration = detectExaggeration(spokenText);
+  const exaggeration = detectExaggeration(text);
 
   const response = await fetch(`${CHATTERBOX_URL}/tts`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      text: spokenText.slice(0, 2000),
+      text: text.slice(0, 2000),
       format: "mp3",
       exaggeration,
     }),
@@ -76,12 +76,13 @@ async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
  * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
+  const t = normalizeMoneyForSpeech(text);
   const elevenLabsOnly = process.env.SABI_ELEVENLABS_TTS_ONLY === "true";
 
   // Primary: ElevenLabs (Impact Program — 100K credits/mo free, low-latency)
   if (process.env.ELEVENLABS_API_KEY) {
     try {
-      return await synthesizeWithElevenLabs(text);
+      return await synthesizeWithElevenLabs(t);
     } catch (error) {
       if (elevenLabsOnly) {
         throw error instanceof Error
@@ -101,7 +102,7 @@ export async function synthesizeSpeech(text: string): Promise<Buffer> {
 
   // Fallback 1: Chatterbox Turbo (self-hosted, emotion-aware)
   try {
-    return await synthesizeWithChatterbox(text);
+    return await synthesizeWithChatterbox(t);
   } catch (error) {
     console.warn(
       "Chatterbox TTS failed, trying YarnGPT:",
@@ -112,7 +113,7 @@ export async function synthesizeSpeech(text: string): Promise<Buffer> {
   // Fallback 2: YarnGPT Wura (free, native Nigerian voice)
   if (process.env.YARNGPT_API_KEY) {
     try {
-      return await synthesizeWithYarnGPT(text);
+      return await synthesizeWithYarnGPT(t);
     } catch (error) {
       console.warn(
         "YarnGPT also failed:",
@@ -134,8 +135,6 @@ async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
       "No TTS provider available (Afro-TTS down, no YARNGPT_API_KEY or ELEVENLABS_API_KEY)"
     );
 
-  const spokenText = text.replace(/₦/g, "naira ");
-
   const response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`,
     {
@@ -145,7 +144,7 @@ async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
         "xi-api-key": apiKey,
       },
       body: JSON.stringify({
-        text: spokenText,
+        text,
         model_id: ELEVENLABS_MODEL_ID,
         voice_settings: {
           stability: 0.28,

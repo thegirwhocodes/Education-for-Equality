@@ -10,6 +10,8 @@
  * Mirrors the Twilio TwiML helpers in twiml.ts but for AT's format.
  */
 
+import { normalizeMoneyForSpeech } from "./normalize-money-for-speech";
+
 /**
  * XML content-type headers for AT voice responses.
  */
@@ -61,8 +63,7 @@ export function createSayAndRecordResponse(
   const finishOnKey = options?.finishOnKey ?? "#";
   const voice = options?.voice ?? "en-US-Wavenet-F";
 
-  // Replace symbols for natural pronunciation
-  const spokenText = text.replace(/₦/g, "naira ");
+  const spokenText = normalizeMoneyForSpeech(text);
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
@@ -80,7 +81,7 @@ export function createSayAndHangupResponse(
   options?: { voice?: string }
 ): string {
   const voice = options?.voice ?? "en-US-Wavenet-F";
-  const spokenText = text.replace(/₦/g, "naira ");
+  const spokenText = normalizeMoneyForSpeech(text);
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
