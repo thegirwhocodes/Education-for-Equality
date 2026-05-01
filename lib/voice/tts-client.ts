@@ -13,8 +13,10 @@ import { synthesizeWithYarnGPT } from "./yarngpt-client";
 const CHATTERBOX_URL =
   process.env.CHATTERBOX_URL || "https://api.eduforequality.org/afro-tts";
 
-// ElevenLabs — Olufunmilola (African Female, Nigerian Accent, Yoruba) — original hackathon voice
-const ELEVENLABS_VOICE_ID = "9Dbo4hEvXQ5l7MXGZFQA";
+// ElevenLabs — Bukola (custom Nigerian voice; see scripts/generate-bukola-audio.py)
+// Override in env if ElevenLabs dashboard voice id changes.
+const ELEVENLABS_VOICE_ID =
+  process.env.ELEVENLABS_VOICE_ID || "oC2pCZZWEDRe6lmZpaaw";
 
 /**
  * Detect emotion from LLM response text and return appropriate exaggeration level.

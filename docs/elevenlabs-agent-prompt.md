@@ -142,7 +142,7 @@ IMPORTANT RULES
 ## VOICE SETTINGS
 
 - TTS Model: V3 Conversational (enables expressive mode)
-- Voice: Olufunmilola
+- Voice: **Bukola** (voice id `oC2pCZZWEDRe6lmZpaaw`; same as training script `scripts/generate-bukola-audio.py`)
 - Stability: 0.30
 - Similarity: 0.70
 - Style Exaggeration: 0.50
