@@ -30,9 +30,16 @@ export default clerkMiddleware(async (auth, req) => {
   const path = req.nextUrl.pathname;
   const isSubdomain = host.startsWith('sabi.');
 
+  /** Local / preview testing: skips demo cookie, ?key=, and Sabi API gate (never enable in prod). */
+  const openDemoTesting = process.env.SABI_OPEN_DEMO === 'true';
+
   // Protect expensive Sabi API routes from unauthorized access
   // Allow if: valid demo cookie, valid API key header, or AT webhook
-  if (path.startsWith('/api/sabi') && !isATWebhook(path)) {
+  if (
+    !openDemoTesting &&
+    path.startsWith('/api/sabi') &&
+    !isATWebhook(path)
+  ) {
     const isExactSabiRoot = path === '/api/sabi';
     const isProtectedApi = isExactSabiRoot || PROTECTED_API_PATHS.some((p) => path.startsWith(p));
 
@@ -59,6 +66,14 @@ export default clerkMiddleware(async (auth, req) => {
 
   // Demo routes: require ?key=SECRET or sabi_demo cookie (check BEFORE rewrite)
   if (isDemoPath) {
+    if (openDemoTesting) {
+      const response =
+        isSubdomain && (path === '/demo' || path.startsWith('/demo/'))
+          ? NextResponse.rewrite(new URL(`/sabi${path}`, req.url))
+          : NextResponse.next();
+      response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      return response;
+    }
     const secret = process.env.SABI_DEMO_KEY;
     if (secret) {
       const urlKey = req.nextUrl.searchParams.get('key');

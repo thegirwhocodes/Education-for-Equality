@@ -1,7 +1,6 @@
 /**
  * TTS client — routes to ElevenLabs (primary, Impact Program) → Chatterbox → YarnGPT.
- *
- * ElevenLabs: Impact Program credits (100K/month free), low-latency cloud API.
+ * Set SABI_ELEVENLABS_TTS_ONLY=true to use only ElevenLabs (fail fast — for testing).
  * Chatterbox Turbo: Self-hosted on Hetzner GPU, emotion-aware, voice-cloned Nigerian English.
  * YarnGPT: Free beta, 16 Nigerian voices.
  *
@@ -73,16 +72,27 @@ async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
  * Returns audio buffer (audio/mpeg).
  */
 export async function synthesizeSpeech(text: string): Promise<Buffer> {
+  const elevenLabsOnly = process.env.SABI_ELEVENLABS_TTS_ONLY === "true";
+
   // Primary: ElevenLabs (Impact Program — 100K credits/mo free, low-latency)
   if (process.env.ELEVENLABS_API_KEY) {
     try {
       return await synthesizeWithElevenLabs(text);
     } catch (error) {
+      if (elevenLabsOnly) {
+        throw error instanceof Error
+          ? error
+          : new Error("ElevenLabs TTS failed (SABI_ELEVENLABS_TTS_ONLY=true)");
+      }
       console.warn(
         "ElevenLabs TTS failed, trying Chatterbox:",
         error instanceof Error ? error.message : error
       );
     }
+  } else if (elevenLabsOnly) {
+    throw new Error(
+      "SABI_ELEVENLABS_TTS_ONLY=true but ELEVENLABS_API_KEY is not set"
+    );
   }
 
   // Fallback 1: Chatterbox Turbo (self-hosted, emotion-aware)

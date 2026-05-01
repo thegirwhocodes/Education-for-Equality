@@ -46,6 +46,72 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Partners & Backers — builds credibility before stats */}
+      <section className="bg-white border-y border-gray-100">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <p className="text-center text-sm text-gray-500 uppercase tracking-widest mb-8">
+            Built with and backed by
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center">
+            <a
+              href="https://elevenlabs.io/impact-program"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all"
+              aria-label="ElevenLabs Impact Program"
+            >
+              <Image src="/partners/elevenlabs.svg" alt="ElevenLabs" width={140} height={40} />
+            </a>
+            <a
+              href="https://www.wesleyan.edu/patricelli/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all"
+              aria-label="Wesleyan Patricelli Center for Social Entrepreneurship"
+            >
+              <Image src="/partners/wesleyan-pce.webp" alt="Wesleyan Patricelli Center" width={120} height={50} />
+            </a>
+            <a
+              href="https://www.unicef.org/generationunlimited/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all"
+              aria-label="UNICEF Generation Unlimited"
+            >
+              <Image src="/partners/unicef-genu.png" alt="UNICEF Generation Unlimited" width={140} height={50} />
+            </a>
+            <a
+              href="https://technovationchallenge.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all"
+              aria-label="Technovation AI Ventures Accelerator"
+            >
+              <Image src="/partners/technovation.png" alt="Technovation" width={140} height={50} />
+            </a>
+            <a
+              href="https://mit-africa.com/hackathon/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all"
+              aria-label="MIT Sloan Africa Business Club"
+            >
+              <Image src="/partners/mit-sloan-abc.png" alt="MIT Sloan Africa Business Club" width={140} height={50} />
+            </a>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-4">
+            AI Ventures Accelerator 2026 — UNICEF Generation Unlimited × Technovation
+          </p>
+          <p className="text-center text-xs text-gray-500 mt-8 max-w-3xl mx-auto leading-relaxed">
+            Our advisors include <strong>Hon. Folasade Adefisayo</strong> (Former Lagos Commissioner
+            of Education, 2019–2023, who launched EKOEXCEL across 1,016 schools), <strong>Dr. Sonia
+            Ivie</strong> (Director of Schools, EKOEXCEL), <strong>Rhoda Odigboh</strong> (CEO, Kizazi;
+            former NewGlobe Regional Director), and four more across law, governance, and technology —
+            100+ combined years of experience.
+          </p>
+        </div>
+      </section>
+
       {/* The Crisis Section — white cards with shadows */}
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
