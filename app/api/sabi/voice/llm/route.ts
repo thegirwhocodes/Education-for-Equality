@@ -19,7 +19,8 @@ const anthropic = new Anthropic();
  * ElevenLabs sends requests in OpenAI format; we translate to Claude,
  * inject student memory, and stream back in OpenAI format.
  *
- * This gives us: ElevenLabs voice (Bukola) + our Sabi curriculum + persistent memory.
+ * This gives us: ElevenLabs voice (dashboard TTS voice) + our Sabi curriculum + persistent memory.
+ * ConvAI agent id (Education for Equality): see docs/elevenlabs-agent-prompt.md § PROJECT REFERENCE.
  */
 export async function POST(req: NextRequest) {
   try {

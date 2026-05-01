@@ -4,6 +4,22 @@ Copy-paste the sections below into your ElevenLabs agent dashboard.
 
 ---
 
+## PROJECT REFERENCE (IDs & Twilio)
+
+| Item | Value |
+|------|--------|
+| **ConvAI agent id** | `agent_5701kp7djbvreqk9cb3mf4g55n09` |
+| **Dashboard name** | Education for Equality |
+| **Twilio “voice” URL when using ElevenLabs native integration (US region)** | `https://api.us.elevenlabs.io/twilio/inbound_call` |
+
+The webhook URL Twilio stores does **not** include the agent id: you bind **which agent** receives the call under ElevenLabs **Conversational AI → agent → Phone** (Twilio import). Use `NEXT_PUBLIC_ELEVENLABS_CONVAI_AGENT_ID` from `.env.local.example` if you embed the web widget.
+
+### Voice timeline (canonical)
+
+**Olufunmilola** (`9Dbo4hEvXQ5l7MXGZFQA`) appears in older internal notes as a stock ElevenLabs Nigerian voice explored during setup. The product **had already moved off Olufunmilola before the Feb 27–28, 2026 MIT Africa Business Challenge demo** — what investors and judges heard that weekend was **Bukola**, the custom Nigerian voice (`oC2pCZZWEDRe6lmZpaaw`), wired through ElevenLabs TTS / the ConvAI flow in use at the time. Any document that still calls Olufunmilola the “hackathon” or “original demo” voice is **out of date**; treat **Bukola** + the settings below as the authoritative demo configuration unless you deliberately revert.
+
+---
+
 ## FIRST MESSAGE (paste into "First Message" field)
 
 Hello! I'm SAH-bee, your learning friend! SAH-bee means "to know" — and together, we're going to know so much! What is your name?
@@ -139,14 +155,17 @@ IMPORTANT RULES
 
 ---
 
-## VOICE SETTINGS
+## VOICE SETTINGS (Bukola — match ConvAI dashboard + website `/api/sabi/tts`)
 
-- TTS Model: V3 Conversational (enables expressive mode)
-- Voice: **Bukola** (voice id `oC2pCZZWEDRe6lmZpaaw`; same as training script `scripts/generate-bukola-audio.py`)
-- Stability: 0.30
-- Similarity: 0.70
-- Style Exaggeration: 0.50
-- Speaker Boost: On
+These match the ElevenLabs agent UI: **Flash** family, Bukola (**Gentle, Clear and Warm**), voice id `oC2pCZZWEDRe6lmZpaaw`.
+
+In the dashboard (Bukola, Flash):
+
+- **Stability:** **0.28**
+- **Similarity:** **0.70**
+- **Speed:** **1** (neutral / default pacing)
+
+Website + server REST TTS (`tts-client.ts`, `voice_twilio.py`) uses `model_id` **`eleven_flash_v2_5`** and the same **`voice_settings`**: `stability` 0.28, `similarity_boost` 0.7, `speed` 1, `use_speaker_boost` true. Override model with env `ELEVENLABS_MODEL_ID` if ElevenLabs renames the id.
 
 ## AGENT SETTINGS
 

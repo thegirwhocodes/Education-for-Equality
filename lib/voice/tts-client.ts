@@ -13,10 +13,12 @@ import { synthesizeWithYarnGPT } from "./yarngpt-client";
 const CHATTERBOX_URL =
   process.env.CHATTERBOX_URL || "https://api.eduforequality.org/afro-tts";
 
-// ElevenLabs — Bukola (custom Nigerian voice; see scripts/generate-bukola-audio.py)
-// Override in env if ElevenLabs dashboard voice id changes.
+// ElevenLabs — Bukola (`oC2pCZZWEDRe6lmZpaaw`); overrides via env match ElevenLabs agent dashboard / website demo.
 const ELEVENLABS_VOICE_ID =
   process.env.ELEVENLABS_VOICE_ID || "oC2pCZZWEDRe6lmZpaaw";
+/** Flash family — aligns with ConvAI dashboard "Flash / Fastest" (see elevenlabs-agent-prompt.md). */
+const ELEVENLABS_MODEL_ID =
+  process.env.ELEVENLABS_MODEL_ID?.trim() || "eleven_flash_v2_5";
 
 /**
  * Detect emotion from LLM response text and return appropriate exaggeration level.
@@ -144,11 +146,11 @@ async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
       },
       body: JSON.stringify({
         text: spokenText,
-        model_id: "eleven_multilingual_v2",
+        model_id: ELEVENLABS_MODEL_ID,
         voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.75,
-          style: 0.3,
+          stability: 0.28,
+          similarity_boost: 0.7,
+          speed: 1,
           use_speaker_boost: true,
         },
       }),
