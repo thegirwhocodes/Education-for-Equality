@@ -1,6 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { normalizeMoneyForSpeech } from "@/lib/voice/normalize-money-for-speech";
+import {
+  looksLikeLessonWrapUpAssistantMessage,
+  transcriptEligibleForLessonCheckpoint,
+} from "@/lib/sabi/is-lesson-wrap-up-message";
 
 interface Message {
   role: "user" | "assistant";
@@ -37,6 +42,49 @@ export default function SabiVoice() {
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const silentRetriesRef = useRef(0);
+  const sessionPersistedRef = useRef(false);
+  const elapsedRef = useRef(0);
+
+  type TtsPlayback = { kind: "html"; audio: HTMLAudioElement; url: string };
+
+  const activeTtsPlaybackRef = useRef<TtsPlayback | null>(null);
+  const ongoingSpeakFinishRef = useRef<(() => void) | null>(null);
+  const ttsFetchAbortRef = useRef<AbortController | null>(null);
+  const speechSynthTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  function interruptSpeakOutput() {
+    ttsFetchAbortRef.current?.abort();
+    ttsFetchAbortRef.current = null;
+
+    window.speechSynthesis?.cancel();
+    if (speechSynthTimeoutRef.current) {
+      clearTimeout(speechSynthTimeoutRef.current);
+      speechSynthTimeoutRef.current = null;
+    }
+
+    const h = activeTtsPlaybackRef.current;
+    activeTtsPlaybackRef.current = null;
+    if (h) {
+      try {
+        h.audio.pause();
+        h.audio.removeAttribute("src");
+        h.audio.load();
+      } catch {
+        /* ignore */
+      }
+      try {
+        URL.revokeObjectURL(h.url);
+      } catch {
+        /* ignore */
+      }
+    }
+
+    const fin = ongoingSpeakFinishRef.current;
+    ongoingSpeakFinishRef.current = null;
+    fin?.();
+  }
 
   // Keep refs in sync
   useEffect(() => {
@@ -57,15 +105,12 @@ export default function SabiVoice() {
     }
   }, []);
 
-  // Stop browser TTS on page unload/refresh (prevents audio playing after reload)
   useEffect(() => {
-    const stopBrowserTTS = () => {
-      window.speechSynthesis?.cancel();
-    };
-    window.addEventListener("beforeunload", stopBrowserTTS);
+    const onUnload = () => interruptSpeakOutput();
+    window.addEventListener("beforeunload", onUnload);
     return () => {
-      stopBrowserTTS();
-      window.removeEventListener("beforeunload", stopBrowserTTS);
+      interruptSpeakOutput();
+      window.removeEventListener("beforeunload", onUnload);
     };
   }, []);
 
@@ -81,6 +126,10 @@ export default function SabiVoice() {
         .catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    elapsedRef.current = elapsed;
+  }, [elapsed]);
 
   // Timer
   useEffect(() => {
@@ -103,64 +152,134 @@ export default function SabiVoice() {
 
   // Play audio from TTS API and return a promise
   const speakText = useCallback((text: string): Promise<void> => {
-    return new Promise(async (resolve) => {
-      setCallState("speaking");
-      const spokenText = text.replace(/₦/g, "naira ");
+    return new Promise((resolve) => {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        ongoingSpeakFinishRef.current = null;
+        ttsFetchAbortRef.current = null;
+        activeTtsPlaybackRef.current = null;
+        if (speechSynthTimeoutRef.current) {
+          clearTimeout(speechSynthTimeoutRef.current);
+          speechSynthTimeoutRef.current = null;
+        }
+        resolve();
+      };
 
-      try {
-        const res = await fetch("/api/sabi/tts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: spokenText }),
-        });
+      ongoingSpeakFinishRef.current = finish;
 
-        if (res.ok) {
-          const arrayBuffer = await res.arrayBuffer();
-          if (arrayBuffer.byteLength > 0) {
-            const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
-            const url = URL.createObjectURL(blob);
-            const audio = new Audio(url);
-            audio.onended = () => {
-              URL.revokeObjectURL(url);
-              resolve();
-            };
-            audio.onerror = () => {
-              URL.revokeObjectURL(url);
-              resolve();
-            };
-            await audio.play();
+      void (async () => {
+        if (!callActiveRef.current) {
+          finish();
+          return;
+        }
+
+        setCallState("speaking");
+        const spokenText = normalizeMoneyForSpeech(text);
+        const ac = new AbortController();
+        ttsFetchAbortRef.current = ac;
+
+        try {
+          const res = await fetch("/api/sabi/tts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: spokenText }),
+            signal: ac.signal,
+          });
+
+          if (!callActiveRef.current) {
+            finish();
             return;
           }
-        }
-      } catch (err) {
-        console.warn("TTS failed, falling back to browser voice:", err);
-      }
 
-      // Last fallback: browser speech synthesis
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(spokenText);
-        utterance.rate = 0.9;
-        utterance.pitch = 1.0;
-        const voices = window.speechSynthesis.getVoices();
-        const preferred = voices.find(
-          (v) =>
-            v.lang.startsWith("en") &&
-            (v.name.includes("Female") ||
-              v.name.includes("Samantha") ||
-              v.name.includes("Google"))
-        );
-        if (preferred) utterance.voice = preferred;
-        // Safety timeout: Chrome's onend sometimes never fires
-        let resolved = false;
-        const safeResolve = () => { if (!resolved) { resolved = true; resolve(); } };
-        const timeout = setTimeout(safeResolve, Math.max(5000, spokenText.length * 80));
-        utterance.onend = () => { clearTimeout(timeout); safeResolve(); };
-        utterance.onerror = () => { clearTimeout(timeout); safeResolve(); };
-        window.speechSynthesis.speak(utterance);
-      } else {
-        resolve();
-      }
+          if (res.ok) {
+            const arrayBuffer = await res.arrayBuffer();
+            if (arrayBuffer.byteLength > 0) {
+              if (!callActiveRef.current) {
+                finish();
+                return;
+              }
+
+              const blob = new Blob([arrayBuffer], { type: "audio/mpeg" });
+              const url = URL.createObjectURL(blob);
+              const audio = new Audio(url);
+              activeTtsPlaybackRef.current = { kind: "html", audio, url };
+              audio.onended = () => {
+                activeTtsPlaybackRef.current = null;
+                try {
+                  URL.revokeObjectURL(url);
+                } catch {
+                  /* ignore */
+                }
+                finish();
+              };
+              audio.onerror = () => {
+                activeTtsPlaybackRef.current = null;
+                try {
+                  URL.revokeObjectURL(url);
+                } catch {
+                  /* ignore */
+                }
+                finish();
+              };
+              await audio.play();
+              return;
+            }
+          }
+        } catch (err) {
+          if ((err as Error)?.name === "AbortError") {
+            finish();
+            return;
+          }
+          console.warn("TTS failed, falling back to browser voice:", err);
+        }
+
+        if (!callActiveRef.current) {
+          finish();
+          return;
+        }
+
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(spokenText);
+          utterance.rate = 0.9;
+          utterance.pitch = 1.0;
+          const voices = window.speechSynthesis.getVoices();
+          const preferred = voices.find(
+            (v) =>
+              v.lang.startsWith("en") &&
+              (v.name.includes("Female") ||
+                v.name.includes("Samantha") ||
+                v.name.includes("Google"))
+          );
+          if (preferred) utterance.voice = preferred;
+
+          let synResolved = false;
+          const safeResolveSynth = () => {
+            if (synResolved) return;
+            synResolved = true;
+            if (speechSynthTimeoutRef.current) {
+              clearTimeout(speechSynthTimeoutRef.current);
+              speechSynthTimeoutRef.current = null;
+            }
+            finish();
+          };
+          speechSynthTimeoutRef.current = setTimeout(
+            safeResolveSynth,
+            Math.max(5000, spokenText.length * 80)
+          );
+          utterance.onend = () => {
+            safeResolveSynth();
+          };
+          utterance.onerror = () => {
+            safeResolveSynth();
+          };
+          window.speechSynthesis.speak(utterance);
+        } else {
+          finish();
+        }
+      })();
     });
   }, []);
 
@@ -347,6 +466,39 @@ export default function SabiVoice() {
       setMessages(finalMessages);
       messagesRef.current = finalMessages;
 
+      if (
+        looksLikeLessonWrapUpAssistantMessage(response) &&
+        transcriptEligibleForLessonCheckpoint(finalMessages) &&
+        !sessionPersistedRef.current &&
+        studentRef.current?.id
+      ) {
+        void (async () => {
+          try {
+            const res = await fetch("/api/sabi/session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                student_id: studentRef.current!.id,
+                messages: [...finalMessages],
+                duration_seconds: elapsedRef.current,
+              }),
+            });
+            if (!res.ok) return;
+            sessionPersistedRef.current = true;
+            const browserId = localStorage.getItem("sabi_browser_id");
+            if (browserId) {
+              const sr = await fetch(
+                `/api/sabi/student?browser_id=${encodeURIComponent(browserId)}`
+              );
+              const jd = await sr.json();
+              if (jd.student) setStudent(jd.student);
+            }
+          } catch {
+            /* retry on hang-up */
+          }
+        })();
+      }
+
       // 5. Speak the response (TTS)
       await speakText(response);
 
@@ -366,6 +518,7 @@ export default function SabiVoice() {
   // Start call
   const startCall = async () => {
     setError("");
+    sessionPersistedRef.current = false;
     setMessages([]);
     setCallState("connecting");
 
@@ -427,6 +580,7 @@ export default function SabiVoice() {
 
   // End call
   const endCall = async () => {
+    interruptSpeakOutput();
     callActiveRef.current = false;
     setCallActive(false);
     setCallState("idle");
@@ -437,19 +591,31 @@ export default function SabiVoice() {
     // Release mic
     mediaStreamRef.current?.getTracks().forEach((t) => t.stop());
     mediaStreamRef.current = null;
-    window.speechSynthesis?.cancel();
 
-    if (messagesRef.current.length >= 2 && studentRef.current?.id) {
+    if (
+      messagesRef.current.length >= 2 &&
+      studentRef.current?.id &&
+      !sessionPersistedRef.current
+    ) {
       try {
-        await fetch("/api/sabi/session", {
+        const res = await fetch("/api/sabi/session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             student_id: studentRef.current.id,
             messages: messagesRef.current,
-            duration_seconds: elapsed,
+            duration_seconds: elapsedRef.current,
           }),
         });
+        const browserId = localStorage.getItem("sabi_browser_id");
+        if (res.ok && browserId) {
+          sessionPersistedRef.current = true;
+          const sr = await fetch(
+            `/api/sabi/student?browser_id=${encodeURIComponent(browserId)}`
+          );
+          const data = await sr.json();
+          if (data.student) setStudent(data.student);
+        }
       } catch {
         // Best-effort
       }
@@ -526,8 +692,8 @@ export default function SabiVoice() {
               <span className="text-white font-semibold">{student.name}</span>
             </p>
             <p className="text-white/40 text-xs mt-1">
-              {student.total_sessions} session
-              {student.total_sessions !== 1 ? "s" : ""} completed
+              {student.total_sessions} lesson
+              {student.total_sessions !== 1 ? "s" : ""} saved on this device
             </p>
           </div>
         )}

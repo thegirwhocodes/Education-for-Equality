@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
+
+import { normalizeMoneyForSpeech } from "@/lib/voice/normalize-money-for-speech";
+import {
+  looksLikeLessonWrapUpAssistantMessage,
+  transcriptEligibleForLessonCheckpoint,
+} from "@/lib/sabi/is-lesson-wrap-up-message";
 
 interface Message {
   role: "user" | "assistant";
@@ -46,7 +52,10 @@ function EntryScreen({
   isLoading: boolean;
   sessions: { summary: string; created_at: string }[];
 }) {
-  const isReturning = student && student.total_sessions > 0;
+  // Any row from the API = returning learner (browser_id match). total_sessions can be 0
+  // if they never tapped "End Lesson" or session save failed — still show welcome + stats.
+  const isReturning = !!student;
+  const hasCompletedSessions = !!student && student.total_sessions > 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center px-4 relative">
@@ -71,8 +80,18 @@ function EntryScreen({
                   Welcome back, {student.name}!
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  You&apos;ve completed {student.total_sessions} lesson
-                  {student.total_sessions !== 1 ? "s" : ""} so far
+                  {hasCompletedSessions ? (
+                    <>
+                      You&apos;ve completed {student.total_sessions} saved lesson
+                      {student.total_sessions !== 1 ? "s" : ""} so far
+                    </>
+                  ) : (
+                    <>
+                      No saved lessons yet — when you&apos;re done, tap{" "}
+                      <strong className="text-[var(--primary-darker)]">End Lesson</strong>{" "}
+                      so your progress shows here next time.
+                    </>
+                  )}
                 </p>
               </div>
 
@@ -94,7 +113,7 @@ function EntryScreen({
                   <p className="text-2xl font-bold text-[var(--primary-darker)]">
                     {student.total_sessions}
                   </p>
-                  <p className="text-xs text-gray-500">Sessions</p>
+                  <p className="text-xs text-gray-500">Lessons saved</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3 text-center">
                   <p className="text-2xl font-bold text-green-600">
@@ -171,7 +190,9 @@ function EntryScreen({
 
           <button
             onClick={onStart}
-            disabled={isLoading || (!isReturning && !nameInput.trim())}
+            disabled={
+              isLoading || (!student && !nameInput.trim())
+            }
             className="w-full btn-primary rounded-xl px-6 py-4 text-lg font-semibold disabled:opacity-50"
           >
             {isLoading
@@ -590,6 +611,16 @@ export default function SabiDemo() {
   const [endingSession, setEndingSession] = useState(false);
   const sessionStartTime = useRef<number>(0);
 
+  /** Prevents duplicate /api/sabi/session POSTs within one demo sitting. */
+  const sessionPersistedRef = useRef(false);
+  /** Last JSON from session API — used when "End Lesson" runs after checkpoint. */
+  const lastPersistedSessionPayloadRef = useRef<Partial<SessionSummary> | null>(null);
+
+  /** Refs synced for merge + synchronous checkpoint saves (avoid stale closures). */
+  const textMessagesRef = useRef<Message[]>([]);
+  const voiceMessagesRef = useRef<Message[]>([]);
+  const studentIdRef = useRef<string | undefined>(undefined);
+
   // Text chat state
   const [textMessages, setTextMessages] = useState<Message[]>([]);
   const [textInput, setTextInput] = useState("");
@@ -622,6 +653,16 @@ export default function SabiDemo() {
     }
   }, []);
 
+  useEffect(() => {
+    studentIdRef.current = student?.id;
+  }, [student?.id]);
+  useEffect(() => {
+    textMessagesRef.current = textMessages;
+  }, [textMessages]);
+  useEffect(() => {
+    voiceMessagesRef.current = voiceMessages;
+  }, [voiceMessages]);
+
   const loadStudent = async (browserId: string) => {
     try {
       const res = await fetch(
@@ -638,55 +679,139 @@ export default function SabiDemo() {
     setStudentLoading(false);
   };
 
-  // Send message to Sabi API
-  const sendToSabi = useCallback(
-    async (
-      messages: Message[],
-      setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
-      setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-      speak?: boolean,
-      studentId?: string
-    ) => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/sabi", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            messages,
-            student_id: studentId || student?.id,
-          }),
-        });
-        const data = await res.json();
-        if (data.error) {
-          console.error(data.error);
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: "assistant",
-              content: "Sorry, I had a problem. Please try again!",
-            },
-          ]);
-        } else {
-          setMessages((prev) => [
-            ...prev,
-            { role: "assistant", content: data.response },
-          ]);
-          if (speak) speakText(data.response);
-        }
-      } catch {
+  async function persistLessonSession(
+    showEndScreen: boolean,
+    messagesOverride?: Message[]
+  ) {
+    const sid = studentIdRef.current;
+    const text = textMessagesRef.current;
+    const voice = voiceMessagesRef.current;
+    const merged =
+      messagesOverride ??
+      (text.length >= voice.length ? [...text] : [...voice]);
+
+    if (!sid || merged.length < 2) {
+      if (
+        showEndScreen &&
+        sessionPersistedRef.current &&
+        lastPersistedSessionPayloadRef.current
+      ) {
+        setSessionSummary(lastPersistedSessionPayloadRef.current as SessionSummary);
+        setSessionEnded(true);
+      }
+      return;
+    }
+
+    if (sessionPersistedRef.current) {
+      if (showEndScreen && lastPersistedSessionPayloadRef.current) {
+        setSessionSummary(lastPersistedSessionPayloadRef.current as SessionSummary);
+        setSessionEnded(true);
+      }
+      return;
+    }
+
+    if (showEndScreen) setEndingSession(true);
+    try {
+      const duration = Math.floor((Date.now() - sessionStartTime.current) / 1000);
+      const res = await fetch("/api/sabi/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: sid,
+          messages: merged,
+          duration_seconds: duration,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "session save failed");
+      }
+      sessionPersistedRef.current = true;
+      lastPersistedSessionPayloadRef.current = data as Partial<SessionSummary>;
+
+      const browserId = localStorage.getItem("sabi_browser_id");
+      if (browserId) loadStudent(browserId);
+
+      if (showEndScreen) {
+        setSessionSummary(data as SessionSummary);
+        setSessionEnded(true);
+      }
+    } catch (e) {
+      console.error("Failed to save session:", e);
+      sessionPersistedRef.current = false;
+    } finally {
+      if (showEndScreen) setEndingSession(false);
+    }
+  }
+
+  async function sendToSabi(
+    messages: Message[],
+    setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    speak: boolean | undefined,
+    studentId: string | undefined,
+    channel: "text" | "voice"
+  ) {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/sabi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages,
+          student_id: studentId ?? studentIdRef.current,
+        }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        console.error(data.error);
         setMessages((prev) => [
           ...prev,
           {
             role: "assistant",
-            content: "Connection error. Please try again!",
+            content: "Sorry, I had a problem. Please try again!",
           },
         ]);
+      } else {
+        const thread = [
+          ...messages,
+          { role: "assistant" as const, content: data.response as string },
+        ];
+        if (channel === "text") {
+          textMessagesRef.current = thread;
+        } else {
+          voiceMessagesRef.current = thread;
+        }
+
+        const textLen = textMessagesRef.current.length;
+        const voiceLen = voiceMessagesRef.current.length;
+        const mergedSave =
+          textLen >= voiceLen
+            ? textMessagesRef.current
+            : voiceMessagesRef.current;
+
+        setMessages(thread);
+
+        if (speak) void speakText(data.response as string);
+
+        if (
+          looksLikeLessonWrapUpAssistantMessage(String(data.response)) &&
+          transcriptEligibleForLessonCheckpoint(mergedSave)
+        ) {
+          void persistLessonSession(false, [...mergedSave]);
+        }
       }
-      setLoading(false);
-    },
-    [student]
-  );
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Connection error. Please try again!",
+        },
+      ]);
+    }
+    setLoading(false);
+  }
 
   // Start session
   const startSession = async () => {
@@ -720,6 +845,9 @@ export default function SabiDemo() {
       }
     }
 
+    sessionPersistedRef.current = false;
+    lastPersistedSessionPayloadRef.current = null;
+
     setStudentLoading(false);
     setSessionStarted(true);
     sessionStartTime.current = Date.now();
@@ -730,59 +858,35 @@ export default function SabiDemo() {
       setTextMessages,
       setTextLoading,
       false,
-      currentStudent?.id
+      currentStudent?.id,
+      "text"
     );
     sendToSabi(
       [],
       setVoiceMessages,
       setVoiceLoading,
       true,
-      currentStudent?.id
+      currentStudent?.id,
+      "voice"
     );
   };
 
   // End session
   const endSession = async () => {
-    setEndingSession(true);
-
-    // Use whichever conversation has more messages
-    const messages =
-      textMessages.length >= voiceMessages.length
-        ? textMessages
-        : voiceMessages;
-
-    const duration = Math.floor(
-      (Date.now() - sessionStartTime.current) / 1000
-    );
-
-    try {
-      const res = await fetch("/api/sabi/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          student_id: student?.id,
-          messages,
-          duration_seconds: duration,
-        }),
-      });
-      const data = await res.json();
-      setSessionSummary(data);
-      setSessionEnded(true);
-    } catch (e) {
-      console.error("Failed to save session:", e);
-    }
-
-    setEndingSession(false);
+    textMessagesRef.current = textMessages;
+    voiceMessagesRef.current = voiceMessages;
+    await persistLessonSession(true);
   };
 
   // Text chat send
   const handleTextSend = () => {
     if (!textInput.trim() || textLoading) return;
-    const newMsg: Message = { role: "user", content: textInput.trim() };
+    const newMsg = { role: "user" as const, content: textInput.trim() };
     const updated = [...textMessages, newMsg];
+    textMessagesRef.current = updated;
     setTextMessages(updated);
     setTextInput("");
-    sendToSabi(updated, setTextMessages, setTextLoading);
+    sendToSabi(updated, setTextMessages, setTextLoading, false, undefined, "text");
   };
 
   // Play base64 audio (from voice-chat pipeline)
@@ -810,7 +914,7 @@ export default function SabiDemo() {
       const res = await fetch("/api/sabi/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text.replace(/₦/g, "naira ") }),
+        body: JSON.stringify({ text: normalizeMoneyForSpeech(text) }),
       });
       if (res.ok) {
         const arrayBuffer = await res.arrayBuffer();
@@ -862,7 +966,7 @@ export default function SabiDemo() {
         try {
           const formData = new FormData();
           formData.append("audio", audioBlob, "recording.webm");
-          formData.append("messages", JSON.stringify(voiceMessages));
+          formData.append("messages", JSON.stringify(voiceMessagesRef.current));
           if (student?.id) formData.append("student_id", student.id);
 
           const res = await fetch("/api/sabi/voice-chat", {
@@ -885,7 +989,23 @@ export default function SabiDemo() {
             if (data.response) {
               newMessages.push({ role: "assistant", content: data.response });
             }
-            setVoiceMessages((prev) => [...prev, ...newMessages]);
+            const mergedVoice = [...voiceMessagesRef.current, ...newMessages];
+            voiceMessagesRef.current = mergedVoice;
+            setVoiceMessages(mergedVoice);
+
+            const textT = textMessagesRef.current;
+            const mergedForSave =
+              mergedVoice.length >= textT.length ? mergedVoice : textT;
+
+            const reply =
+              typeof data.response === "string" ? data.response : "";
+            if (
+              reply &&
+              looksLikeLessonWrapUpAssistantMessage(reply) &&
+              transcriptEligibleForLessonCheckpoint(mergedForSave)
+            ) {
+              void persistLessonSession(false, [...mergedForSave]);
+            }
 
             // Play the audio response
             if (data.audio) {
@@ -917,10 +1037,11 @@ export default function SabiDemo() {
 
   const handleVoiceSend = (text: string) => {
     if (!text.trim() || voiceLoading) return;
-    const newMsg: Message = { role: "user", content: text.trim() };
+    const newMsg = { role: "user" as const, content: text.trim() };
     const updated = [...voiceMessages, newMsg];
+    voiceMessagesRef.current = updated;
     setVoiceMessages(updated);
-    sendToSabi(updated, setVoiceMessages, setVoiceLoading, true);
+    sendToSabi(updated, setVoiceMessages, setVoiceLoading, true, undefined, "voice");
   };
 
   // ─── Render ───────────────────────────────────────────────────
@@ -944,6 +1065,8 @@ export default function SabiDemo() {
         onRestart={() => {
           setSessionStarted(false);
           setSessionEnded(false);
+          sessionPersistedRef.current = false;
+          lastPersistedSessionPayloadRef.current = null;
           setSessionSummary(null);
           setTextMessages([]);
           setVoiceMessages([]);
@@ -1004,7 +1127,12 @@ export default function SabiDemo() {
           <strong>Two channels, same AI:</strong> Text chat (left) simulates a{" "}
           <strong>smartphone app</strong>. Voice chat (right) simulates a{" "}
           <strong>phone call</strong> — tap the mic to talk. Both channels
-          remember this student across sessions.
+          remember this student across sessions.{" "}
+          <span className="text-white/80">
+            When Sabi wraps up naturally (for example saying what you&apos;ll
+            learn next time), progress saves automatically—you can still tap
+            End Lesson.
+          </span>
         </div>
       </div>
 
