@@ -8,8 +8,8 @@
 /** Avoid saving on greetings or very short stubs. */
 export function transcriptEligibleForLessonCheckpoint(messages: unknown[]): boolean {
   if (!Array.isArray(messages) || messages.length < 4) return false;
-  const userTurns = messages.filter(
-    (m: { role?: string }) => m && m.role === "user"
+  const userTurns = (messages as Array<{ role?: string }>).filter(
+    (m) => m && m.role === "user"
   ).length;
   return userTurns >= 2;
 }
