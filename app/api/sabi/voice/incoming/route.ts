@@ -8,7 +8,7 @@ import {
 import { createCallState } from "@/lib/voice/call-state";
 import {
   findOrCreateStudentByPhone,
-  callSabi,
+  callSabiVoiceFast,
 } from "@/lib/voice/sabi-shared";
 
 // Allow up to 30 seconds for Claude API + Supabase calls
@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
     // Initialize call state in DB
     await createCallState(callSid, phoneNumber, student.id);
 
-    // Generate greeting via Claude
-    const greeting = await callSabi([], student.id, true);
+    // Generate greeting via fast LLM (Cerebras/Groq → Claude fallback)
+    const greeting = await callSabiVoiceFast([], student.id);
 
     // Store the assistant's greeting in call state
     const { addMessage } = await import("@/lib/voice/call-state");

@@ -165,3 +165,39 @@ async function synthesizeWithElevenLabs(text: string): Promise<Buffer> {
   const arrayBuffer = await response.arrayBuffer();
   return Buffer.from(arrayBuffer);
 }
+
+/**
+ * ElevenLabs streaming TTS — returns a ReadableStream of audio bytes.
+ * Use for browser-based voice where you can pipe audio directly to MediaSource.
+ * TTFA drops from ~300ms (full buffer) to ~80ms (first chunk).
+ */
+export async function synthesizeSpeechStream(text: string): Promise<ReadableStream<Uint8Array> | null> {
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) return null;
+
+  const t = normalizeMoneyForSpeech(text);
+
+  const response = await fetch(
+    `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}/stream`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "xi-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        text: t,
+        model_id: ELEVENLABS_MODEL_ID,
+        voice_settings: {
+          stability: 0.28,
+          similarity_boost: 0.7,
+          speed: 1,
+          use_speaker_boost: true,
+        },
+      }),
+    }
+  );
+
+  if (!response.ok || !response.body) return null;
+  return response.body;
+}

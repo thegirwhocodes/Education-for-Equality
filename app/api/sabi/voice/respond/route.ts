@@ -7,7 +7,7 @@ import {
   isTwilioRequest,
 } from "@/lib/voice/twiml";
 import { getCallState, addMessage } from "@/lib/voice/call-state";
-import { callSabi } from "@/lib/voice/sabi-shared";
+import { callSabiVoiceFast } from "@/lib/voice/sabi-shared";
 
 // Allow up to 30 seconds for Claude API + Supabase calls
 export const maxDuration = 30;
@@ -95,9 +95,9 @@ export async function POST(req: NextRequest) {
         },
       ];
       // Remove the system message from the actual messages, just use it for this call
-      sabiResponse = await callSabi(wrapUpMessages, state.studentId, true);
+      sabiResponse = await callSabiVoiceFast(wrapUpMessages, state.studentId);
     } else {
-      sabiResponse = await callSabi(messages, state.studentId, true);
+      sabiResponse = await callSabiVoiceFast(messages, state.studentId);
     }
 
     // Store Sabi's response in call state

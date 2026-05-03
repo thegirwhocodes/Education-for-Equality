@@ -14,6 +14,49 @@ import { createClient } from "@supabase/supabase-js";
 
 const anthropic = new Anthropic();
 
+// ── Fast LLM providers for voice (low-latency inference) ──
+// Cerebras: ~2100 tok/s → 200-token response in ~0.1s
+// Groq: ~330 tok/s → 200-token response in ~0.6s
+// Both are OpenAI-compatible JSON APIs.
+
+async function callOpenAICompat(
+  systemPrompt: string,
+  messages: Array<{ role: "user" | "assistant"; content: string }>,
+  options: {
+    baseUrl: string;
+    apiKey: string;
+    model: string;
+    maxTokens?: number;
+    provider?: string;
+  }
+): Promise<string> {
+  const { baseUrl, apiKey, model, maxTokens = 200, provider = "API" } = options;
+  const response = await fetch(`${baseUrl}/chat/completions`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: maxTokens,
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...messages,
+      ],
+    }),
+    signal: AbortSignal.timeout(10000),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`${provider} error ${response.status}: ${err}`);
+  }
+
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content ?? "";
+}
+
 function getSupabase() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -463,4 +506,86 @@ export async function callSabi(
     text ||
     "Hello! I'm Sabi, your learning friend. What would you like to learn today?"
   );
+}
+
+/**
+ * Fast voice LLM call using Cerebras (primary) or Groq (fallback) → Claude (last resort).
+ *
+ * Use this for all voice call routes — these models run at 2100+ tok/s vs Claude's ~200 tok/s,
+ * cutting LLM latency from ~1s to ~0.1s per turn.
+ *
+ * Falls back to `callSabi()` if neither fast provider is configured.
+ */
+export async function callSabiVoiceFast(
+  messages: Array<{ role: "user" | "assistant"; content: string }>,
+  studentId: string | null
+): Promise<string> {
+  let memoryContext = "";
+  let currentModule = 0;
+
+  if (studentId) {
+    [memoryContext, currentModule] = await Promise.all([
+      getStudentMemory(studentId),
+      getStudentModule(studentId),
+    ]);
+  }
+
+  let curriculumContext = "";
+  try {
+    const { getSabiCurriculumContext } = await import("../rag/retrieval");
+    curriculumContext = await getSabiCurriculumContext(currentModule);
+  } catch {
+    curriculumContext = getModuleCurriculum(currentModule);
+  }
+  if (!curriculumContext) {
+    curriculumContext = getModuleCurriculum(currentModule);
+  }
+
+  const systemPrompt =
+    SABI_CORE_PROMPT +
+    curriculumContext +
+    VOICE_SYSTEM_ADDENDUM +
+    memoryContext;
+
+  const apiMessages =
+    messages.length === 0
+      ? [{ role: "user" as const, content: "Hi, I want to learn!" }]
+      : messages;
+
+  // Try Cerebras first (~0.1s for 200 tokens)
+  const cerebrasKey = process.env.CEREBRAS_API_KEY;
+  if (cerebrasKey) {
+    try {
+      const text = await callOpenAICompat(systemPrompt, apiMessages, {
+        baseUrl: "https://api.cerebras.ai/v1",
+        apiKey: cerebrasKey,
+        model: "llama-3.3-70b",
+        maxTokens: 200,
+        provider: "Cerebras",
+      });
+      if (text) return text;
+    } catch (e) {
+      console.warn("Cerebras failed, trying Groq:", e instanceof Error ? e.message : e);
+    }
+  }
+
+  // Try Groq LLM (~0.6s for 200 tokens)
+  const groqKey = process.env.GROQ_API_KEY;
+  if (groqKey) {
+    try {
+      const text = await callOpenAICompat(systemPrompt, apiMessages, {
+        baseUrl: "https://api.groq.com/openai/v1",
+        apiKey: groqKey,
+        model: "llama-3.3-70b-versatile",
+        maxTokens: 200,
+        provider: "Groq",
+      });
+      if (text) return text;
+    } catch (e) {
+      console.warn("Groq LLM failed, falling back to Claude:", e instanceof Error ? e.message : e);
+    }
+  }
+
+  // Last resort: Claude Haiku (~1s but always reliable)
+  return callSabi(messages, studentId, true);
 }
