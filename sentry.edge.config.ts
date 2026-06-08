@@ -2,7 +2,9 @@
  * Sentry — Edge runtime init.
  * Loaded by instrumentation.ts when NEXT_RUNTIME === "edge".
  *
- * Same PII scrub policy as server config.
+ * Note: AI Monitoring integration NOT auto-enabled on Edge — Anthropic SDK
+ * calls happen in Node runtime (API routes) so we don't need it here.
+ * This config is for middleware + edge-rendered pages.
  */
 import * as Sentry from "@sentry/nextjs";
 
@@ -13,15 +15,23 @@ Sentry.init({
   enableLogs: true,
   environment: process.env.VERCEL_ENV || "development",
 
+  integrations: [
+    Sentry.consoleLoggingIntegration({ levels: ["log", "info", "warn", "error"] }),
+  ],
+
   beforeSend(event) {
     return scrubPII(event);
   },
+
+  beforeSendLog(log) {
+    return scrubLog(log);
+  },
 });
 
-function scrubPII(event: Sentry.ErrorEvent): Sentry.ErrorEvent {
-  const PHONE_RE = /\+?\d{10,15}/g;
-  const REDACTED = "[PHONE_REDACTED]";
+const PHONE_RE = /\+?\d{10,15}/g;
+const REDACTED = "[PHONE_REDACTED]";
 
+function scrubPII(event: Sentry.ErrorEvent): Sentry.ErrorEvent {
   if (event.request?.data) {
     const dataStr =
       typeof event.request.data === "string"
@@ -40,4 +50,24 @@ function scrubPII(event: Sentry.ErrorEvent): Sentry.ErrorEvent {
     delete event.request.headers["x-api-key"];
   }
   return event;
+}
+
+// Type matches Sentry's Log shape. Loose-typed to avoid importing internals.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function scrubLog(log: any): any {
+  if (process.env.NODE_ENV === "production" && log.level === "trace") {
+    return null;
+  }
+  if (typeof log.body === "string") {
+    log.body = log.body.replace(PHONE_RE, REDACTED);
+  }
+  if (log.attributes) {
+    for (const k of Object.keys(log.attributes)) {
+      const v = log.attributes[k];
+      if (typeof v === "string" && PHONE_RE.test(v)) {
+        log.attributes[k] = v.replace(PHONE_RE, REDACTED);
+      }
+    }
+  }
+  return log;
 }
