@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import {
   parseATBody,
   xmlHeaders,
@@ -7,7 +8,7 @@ import {
   createSayAndRecordResponse,
   createSayAndHangupResponse,
 } from "@/lib/voice/at-xml";
-import { createCallState } from "@/lib/voice/call-state";
+import { createCallState, getCallState } from "@/lib/voice/call-state";
 import { addMessage } from "@/lib/voice/call-state";
 import { findOrCreateStudentByPhone, callSabi } from "@/lib/voice/sabi-shared";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
@@ -35,6 +36,52 @@ export async function POST(req: NextRequest) {
     const callerNumber = body.callerNumber || "";
     const sessionId = body.sessionId || "";
     const isActive = body.isActive || "1";
+    const recordingUrl = body.recordingUrl || "";
+    const durationInSeconds = body.durationInSeconds || "";
+
+    // Log every incoming hit so we can see what AT actually sends.
+    console.log(
+      `[AT incoming] session=${sessionId} caller=${callerNumber} isActive=${isActive} ` +
+        `recordingUrl=${recordingUrl ? "present" : "absent"} duration=${durationInSeconds}s ` +
+        `bodyKeys=${Object.keys(body).join(",")}`
+    );
+
+    // Tag the trace so every call is searchable in Sentry by sessionId.
+    // We hash the phone number for privacy — never store the raw number on the span.
+    Sentry.setTags({
+      "at.session_id": sessionId,
+      "at.is_active": isActive,
+      "at.has_recording": recordingUrl ? "yes" : "no",
+      "at.route": "incoming",
+    });
+    Sentry.setContext("at_body_keys", { keys: Object.keys(body) });
+
+    // AT POSTs back to the voice URL after <Record> completes. The
+    // recordingUrl field is the signal that this is a recording callback,
+    // not a new call — forward to /at/recording handler logic instead of
+    // re-greeting. Look up student_id from the call state we saved on the
+    // first POST of this session.
+    if (recordingUrl) {
+      const state = await getCallState(sessionId);
+      const studentId = state?.studentId || "";
+      if (!studentId) {
+        console.error(
+          `[AT incoming] recording POST but no call state for session=${sessionId}`
+        );
+      }
+      const recordingForwardUrl = new URL(
+        `/api/sabi/at/recording?session=${encodeURIComponent(sessionId)}&student=${encodeURIComponent(studentId)}`,
+        req.url
+      ).toString();
+      const forwardBody = new URLSearchParams(body as Record<string, string>);
+      const fwd = await fetch(recordingForwardUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: forwardBody.toString(),
+      });
+      const text = await fwd.text();
+      return new NextResponse(text, { headers: xmlHeaders() });
+    }
 
     // Call ended — reject and let the events route handle cleanup
     if (isActive === "0") {

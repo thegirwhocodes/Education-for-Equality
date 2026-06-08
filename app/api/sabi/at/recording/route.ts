@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import {
   parseATBody,
   xmlHeaders,
@@ -46,6 +47,12 @@ const WRAP_UP_PATTERNS = [
 export async function POST(req: NextRequest) {
   const sessionId = req.nextUrl.searchParams.get("session") || "";
   const studentId = req.nextUrl.searchParams.get("student") || "";
+
+  Sentry.setTags({
+    "at.session_id": sessionId,
+    "at.student_id": studentId,
+    "at.route": "recording",
+  });
 
   try {
     const body = parseATBody(await req.text());

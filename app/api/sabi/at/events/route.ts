@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 import { parseATBody } from "@/lib/voice/at-xml";
@@ -44,6 +45,13 @@ export async function POST(req: NextRequest) {
     const callState = body.callSessionState || "";
     const duration = parseInt(body.durationInSeconds || "0", 10);
     const callerNumber = body.callerNumber || "";
+
+    Sentry.setTags({
+      "at.session_id": sessionId,
+      "at.call_state": callState,
+      "at.route": "events",
+    });
+    Sentry.setContext("at_event", { duration });
 
     console.log(
       `AT call event: session=${sessionId} state=${callState} duration=${duration}s`

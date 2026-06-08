@@ -34,8 +34,7 @@ export function createPlayAndRecordResponse(
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Play url="${escapeXml(audioUrl)}"/>
-    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true"
-            callbackUrl="${escapeXml(callbackUrl)}" playBeep="false"/>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true" playBeep="false"/>
 </Response>`;
 }
 
@@ -68,8 +67,7 @@ export function createSayAndRecordResponse(
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Say voice="${escapeXml(voice)}">${escapeXml(spokenText)}</Say>
-    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true"
-            callbackUrl="${escapeXml(callbackUrl)}" playBeep="false"/>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true" playBeep="false"/>
 </Response>`;
 }
 
