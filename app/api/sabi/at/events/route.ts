@@ -3,8 +3,11 @@ import * as Sentry from "@sentry/nextjs";
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 import { parseATBody } from "@/lib/voice/at-xml";
-import { clearCallState } from "@/lib/voice/call-state";
+import { clearCallState, addMessage } from "@/lib/voice/call-state";
 import { sendSessionSummary, sendPracticeQuestion } from "@/lib/voice/sms";
+import { downloadAudio } from "@/lib/voice/audio-storage";
+import { transcribeAudio } from "@/lib/voice/stt";
+import { callSabi } from "@/lib/voice/sabi-shared";
 
 export const maxDuration = 30;
 
@@ -52,10 +55,22 @@ export async function POST(req: NextRequest) {
       "at.route": "events",
     });
     Sentry.setContext("at_event", { duration });
+    Sentry.setContext("at_body_keys", { keys: Object.keys(body) });
 
+    // Log EVERY field AT sends so we can debug what they actually deliver
     console.log(
-      `AT call event: session=${sessionId} state=${callState} duration=${duration}s`
+      `[AT events] session=${sessionId} state=${callState} duration=${duration}s ` +
+        `caller=${callerNumber} bodyKeys=${Object.keys(body).join(",")}`
     );
+
+    // If AT delivered a recording URL via the events callback rather than the
+    // voice callback, capture it as a Sentry breadcrumb so we can see it.
+    if (body.recordingUrl) {
+      Sentry.captureMessage(
+        `AT events delivered recordingUrl=${body.recordingUrl}`,
+        "info"
+      );
+    }
 
     // Only process completed calls
     if (callState !== "Completed") {
@@ -64,6 +79,52 @@ export async function POST(req: NextRequest) {
         await clearCallState(sessionId);
       }
       return NextResponse.json({ ok: true });
+    }
+
+    // AT delivers the recording URL via the events callback (NOT in-call to
+    // /recording). If we have a URL, run STT + LLM + append a final exchange
+    // to the call state before clearing it for analysis.
+    if (body.recordingUrl) {
+      try {
+        const audioBuffer = await downloadAudio(body.recordingUrl);
+        const sttResult = await transcribeAudio(audioBuffer);
+
+        // Whisper's confidence score on compressed VoIP audio (Yolla, Skype,
+        // AT PSTN compression) is almost always low even when the transcript
+        // is usable. Trust the text if there are any words at all — Claude
+        // is robust to dropped phonemes and noisy input.
+        if (sttResult.text && sttResult.text.trim().length > 0) {
+          await addMessage(sessionId, "user", sttResult.text);
+
+          // Build messages array from current call state for the LLM
+          const { getCallState } = await import("@/lib/voice/call-state");
+          const currentState = await getCallState(sessionId);
+          const messages = (currentState?.messages || []).map((m) => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+          }));
+
+          const sabiReply = await callSabi(
+            messages,
+            currentState?.studentId || "",
+            true
+          );
+          await addMessage(sessionId, "assistant", sabiReply);
+
+          Sentry.captureMessage(
+            `AT events: processed recording (${sttResult.text.length} chars)`,
+            "info"
+          );
+        } else {
+          Sentry.captureMessage(
+            `AT events: STT returned low-confidence text=${sttResult.text} conf=${sttResult.confidence}`,
+            "warning"
+          );
+        }
+      } catch (err) {
+        Sentry.captureException(err);
+        console.error("AT events: recording processing failed", err);
+      }
     }
 
     // Retrieve and clear call state

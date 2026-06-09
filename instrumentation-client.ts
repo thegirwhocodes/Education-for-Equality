@@ -14,7 +14,7 @@ Sentry.init({
   sendDefaultPii: false,
 
   // 100% in dev, 20% in production — enough signal, low cost
-  tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.2,
+  tracesSampleRate: 1.0,
 
   // Session Replay: 0% baseline (off until needed for pre-pilot debugging),
   // 100% of error sessions get replayed so we can see what the user did when it broke

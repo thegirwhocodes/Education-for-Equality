@@ -99,7 +99,11 @@ async function fetchWithAtAuth(url: string): Promise<Response> {
 }
 
 function isAfricasTalkingUrl(url: string): boolean {
-  return /africastalking|recordings\.(africastalking)/i.test(url);
+  // AT recording URLs live on internal storage hosts like
+  // `gigantic.keller-shockley.at-internal.com/<hash>.mp3` — and on
+  // africastalking.com subdomains. Match both patterns plus any AT-suffixed
+  // hostname to be safe.
+  return /africastalking|at-internal\.|\.at\./i.test(url);
 }
 
 /**

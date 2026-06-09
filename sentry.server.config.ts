@@ -15,7 +15,8 @@ Sentry.init({
   dsn: "https://6547e4a617f6e78f4b9d9bff83cd0575@o4511531743444992.ingest.us.sentry.io/4511531746852864",
 
   // Tracing — 100% in dev, 20% in prod
-  tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.2,
+  // 100% — capture every request while we're debugging pre-pilot. Drop to 0.2 after launch.
+  tracesSampleRate: 1.0,
 
   // Privacy posture for child voice data — DO NOT enable
   sendDefaultPii: false,

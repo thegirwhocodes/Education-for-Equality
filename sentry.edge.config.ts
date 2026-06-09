@@ -10,7 +10,7 @@ import * as Sentry from "@sentry/nextjs";
 Sentry.init({
   dsn: "https://6547e4a617f6e78f4b9d9bff83cd0575@o4511531743444992.ingest.us.sentry.io/4511531746852864",
 
-  tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.2,
+  tracesSampleRate: 1.0,
 
   // Privacy posture — do not regress
   sendDefaultPii: false,

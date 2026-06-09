@@ -91,8 +91,11 @@ export async function POST(req: NextRequest) {
     // 2. STT via Groq Whisper
     const sttResult = await transcribeAudio(audioBuffer);
 
-    // 3. Handle low confidence / empty speech
-    if (!sttResult.text.trim() || sttResult.confidence < 0.3) {
+    // 3. Handle empty speech. We DO NOT gate on confidence here — Whisper's
+    // confidence on compressed VoIP audio (Yolla, Skype, AT PSTN) is almost
+    // always low even when the transcript is usable. Trust the text and let
+    // Claude handle noisy input — it's robust to dropped phonemes.
+    if (!sttResult.text.trim()) {
       const repeatText = "I didn't quite hear that. Can you say it again?";
       try {
         const audio = await synthesizeSpeech(repeatText);
