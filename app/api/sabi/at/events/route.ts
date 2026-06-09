@@ -232,6 +232,8 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
 
     return NextResponse.json({ ok: true });
   } catch (error) {
+    Sentry.captureException(error);
+    await Sentry.flush(2000);
     console.error(
       "AT events error:",
       error instanceof Error ? error.message : error

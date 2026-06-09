@@ -46,21 +46,53 @@ export async function transcribeAudio(
 
   const result = await response.json();
 
-  // Derive confidence from Whisper's avg_logprob in segments
-  let confidence = 0.0;
-  if (result.text && result.text.trim()) {
-    if (result.segments && result.segments.length > 0) {
-      const avgLogProb =
-        result.segments.reduce(
-          (sum: number, s: { avg_logprob: number }) => sum + s.avg_logprob,
-          0
-        ) / result.segments.length;
-      // Map log prob to 0-1 range: -1.0 → 0.0, 0.0 → 1.0
-      confidence = Math.max(0, Math.min(1, 1 + avgLogProb));
-    } else {
-      confidence = 0.8; // Default when segments aren't returned
-    }
+  const text = (result.text || "").trim();
+
+  // No text at all → definitely nothing intelligible.
+  if (!text) {
+    return { text: "", confidence: 0 };
   }
 
-  return { text: result.text || "", confidence };
+  // Derive a MEANINGFUL confidence from Whisper's per-segment diagnostics.
+  // avg_logprob alone is nearly constant (~0.7-0.9) and never catches the
+  // cases we care about (silence, hallucinated garbage), so combine three:
+  //   avg_logprob       — avg log-prob of chosen tokens (≈ -0.1 good … -1.0+ poor)
+  //   no_speech_prob    — P(segment is non-speech / silence)
+  //   compression_ratio — high (>2.4) signals repetitive hallucinated garbage
+  type Segment = {
+    avg_logprob?: number;
+    no_speech_prob?: number;
+    compression_ratio?: number;
+  };
+  const segments: Segment[] = Array.isArray(result.segments)
+    ? result.segments
+    : [];
+
+  if (segments.length === 0) {
+    return { text, confidence: 0.6 };
+  }
+
+  const n = segments.length;
+  const avgLogProb =
+    segments.reduce((sum, s) => sum + (s.avg_logprob ?? -0.5), 0) / n;
+  const avgNoSpeech =
+    segments.reduce((sum, s) => sum + (s.no_speech_prob ?? 0), 0) / n;
+  const maxCompression = segments.reduce(
+    (max, s) => Math.max(max, s.compression_ratio ?? 0),
+    0
+  );
+
+  // -1.2 → 0.0, -0.1 → 1.0 (matches Whisper's real-world usable range)
+  const logProbScore = Math.max(0, Math.min(1, (avgLogProb + 1.2) / 1.1));
+  let confidence = logProbScore;
+
+  // Penalize probable silence / breathing / background noise.
+  if (avgNoSpeech > 0.6) confidence *= 0.2;
+  else if (avgNoSpeech > 0.4) confidence *= 0.6;
+
+  // Penalize hallucinated repetition (Whisper invents loops on noise).
+  if (maxCompression > 2.4) confidence *= 0.3;
+
+  confidence = Math.max(0, Math.min(1, confidence));
+  return { text, confidence };
 }

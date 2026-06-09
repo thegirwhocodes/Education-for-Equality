@@ -45,15 +45,61 @@ export async function uploadAudio(
 }
 
 /**
- * Download audio from an external URL (e.g., Africa's Talking recording URL).
+ * Download audio from an external URL.
+ *
+ * Africa's Talking recording URLs require HTTP Basic auth using
+ * AT_USERNAME + AT_API_KEY. We attempt unauthenticated first; on 401/403
+ * (or pre-emptively if the URL looks like an AT recording host), we retry
+ * with Basic auth.
+ *
+ * Twilio recordings are downloaded in their own route handler with TWILIO
+ * creds — this function is the AT path.
  */
 export async function downloadAudio(url: string): Promise<Buffer> {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Failed to download audio: ${response.status}`);
+  // Pre-emptively send Basic auth on AT URLs to skip a wasted unauthed roundtrip.
+  if (isAfricasTalkingUrl(url)) {
+    const authed = await fetchWithAtAuth(url);
+    if (authed.ok) {
+      return Buffer.from(await authed.arrayBuffer());
+    }
+    // fall through to a final no-auth attempt for debugging visibility
+    if (authed.status !== 401 && authed.status !== 403) {
+      throw new Error(
+        `Failed to download audio (AT auth, ${authed.status}): ${url}`
+      );
+    }
   }
-  const arrayBuffer = await response.arrayBuffer();
-  return Buffer.from(arrayBuffer);
+
+  // Generic path: unauth, retry with AT auth on rejection
+  let response = await fetch(url);
+  if (
+    (response.status === 401 || response.status === 403) &&
+    isAfricasTalkingUrl(url)
+  ) {
+    response = await fetchWithAtAuth(url);
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to download audio: ${response.status} ${url}`);
+  }
+  return Buffer.from(await response.arrayBuffer());
+}
+
+async function fetchWithAtAuth(url: string): Promise<Response> {
+  const username = process.env.AT_USERNAME;
+  const apiKey = process.env.AT_API_KEY;
+  if (!username || !apiKey) {
+    // No creds configured — return a fake response so caller falls back
+    return new Response(null, { status: 401 });
+  }
+  const basic = Buffer.from(`${username}:${apiKey}`).toString("base64");
+  return fetch(url, {
+    headers: { Authorization: `Basic ${basic}` },
+  });
+}
+
+function isAfricasTalkingUrl(url: string): boolean {
+  return /africastalking|recordings\.(africastalking)/i.test(url);
 }
 
 /**

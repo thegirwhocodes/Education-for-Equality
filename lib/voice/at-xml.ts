@@ -26,15 +26,16 @@ export function xmlHeaders(): HeadersInit {
 export function createPlayAndRecordResponse(
   audioUrl: string,
   callbackUrl: string,
-  options?: { maxLength?: number; finishOnKey?: string }
+  options?: { maxLength?: number; finishOnKey?: string; timeout?: number }
 ): string {
-  const maxLength = options?.maxLength ?? 10;
+  const maxLength = options?.maxLength ?? 6;
   const finishOnKey = options?.finishOnKey ?? "#";
+  const timeout = options?.timeout ?? 4;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Play url="${escapeXml(audioUrl)}"/>
-    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true" callBackUrl="${escapeXml(callbackUrl)}" playBeep="false"/>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" timeout="${timeout}" trimSilence="true" callBackUrl="${escapeXml(callbackUrl)}" playBeep="true"/>
 </Response>`;
 }
 
@@ -56,10 +57,11 @@ export function createPlayAndHangupResponse(audioUrl: string): string {
 export function createSayAndRecordResponse(
   text: string,
   callbackUrl: string,
-  options?: { maxLength?: number; finishOnKey?: string; voice?: string }
+  options?: { maxLength?: number; finishOnKey?: string; timeout?: number; voice?: string }
 ): string {
-  const maxLength = options?.maxLength ?? 10;
+  const maxLength = options?.maxLength ?? 6;
   const finishOnKey = options?.finishOnKey ?? "#";
+  const timeout = options?.timeout ?? 4;
   const voice = options?.voice ?? "en-US-Wavenet-F";
 
   const spokenText = normalizeMoneyForSpeech(text);
@@ -67,7 +69,7 @@ export function createSayAndRecordResponse(
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Say voice="${escapeXml(voice)}">${escapeXml(spokenText)}</Say>
-    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" trimSilence="true" callBackUrl="${escapeXml(callbackUrl)}" playBeep="false"/>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" timeout="${timeout}" trimSilence="true" callBackUrl="${escapeXml(callbackUrl)}" playBeep="true"/>
 </Response>`;
 }
 

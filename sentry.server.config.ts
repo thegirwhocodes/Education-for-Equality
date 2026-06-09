@@ -1,48 +1,44 @@
-/**
- * Sentry — Node.js server-side init.
- * Loaded by instrumentation.ts when NEXT_RUNTIME === "nodejs".
- *
- * Features enabled:
- *   - Error monitoring (auto via @sentry/nextjs)
- *   - Tracing — sampled at 20% in prod, 100% in dev
- *   - AI Monitoring — Anthropic token usage + cost estimates per LLM call
- *     (NOT prompts/completions — those are PII for Sabi's child data)
- *   - Logs — auto-forwards console.log/warn/error from API routes
- *     with PII scrubbing in beforeSendLog
- *
- * Privacy posture for Sabi (children's voice tutor):
- *   - sendDefaultPii: false  → no IP addresses, no request headers captured
- *   - recordInputs: false    → Claude prompts NOT sent to Sentry
- *   - recordOutputs: false   → Claude completions NOT sent to Sentry
- *   - beforeSend + beforeSendLog → phone numbers redacted from any leakage
- *
- * NDPA + COPPA compliant. Token counts + cost + latency still tracked
- * (no PII in those metrics).
- */
+// This file configures the initialization of Sentry on the server.
+// The config you add here will be used whenever the server handles a request.
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/
+//
+// Custom config preserves the wizard's defaults but layers on:
+//   - PII scrubbing (NDPA + COPPA — kids' data must NOT leave our servers)
+//   - Anthropic AI Monitoring with prompts/outputs DISABLED
+//   - Console logging integration with phone-number redaction
+//
+// Do not regress sendDefaultPii to true without re-evaluating compliance.
+
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN,
-  sendDefaultPii: false,
+  dsn: "https://6547e4a617f6e78f4b9d9bff83cd0575@o4511531743444992.ingest.us.sentry.io/4511531746852864",
+
+  // Tracing — 100% in dev, 20% in prod
   tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.2,
-  includeLocalVariables: true,
+
+  // Privacy posture for child voice data — DO NOT enable
+  sendDefaultPii: false,
+
+  // Logs flow to Sentry's log explorer
   enableLogs: true,
+
+  // Capture local variables in stack traces
+  includeLocalVariables: true,
+
+  // Stream gen-ai spans during the LLM call (latency visibility)
   streamGenAiSpans: true,
-  environment: process.env.VERCEL_ENV || "development",
 
   integrations: [
-    // Anthropic auto-instrumentation: captures gen_ai.* span attributes
-    // (model, token counts, cost estimate, latency) — but NO prompt/completion
-    // text because recordInputs/recordOutputs are explicitly off below.
+    // Anthropic auto-instrumentation: tokens + latency + cost, NEVER prompts
     Sentry.anthropicAIIntegration({
       recordInputs: false,
       recordOutputs: false,
     }),
-
-    // Forward console.log / .warn / .error → Sentry log explorer.
-    // We already have console.log lines in the AT routes; this turns them
-    // into structured, searchable logs.
-    Sentry.consoleLoggingIntegration({ levels: ["log", "info", "warn", "error"] }),
+    // Forward console.log/.info/.warn/.error to Sentry's log explorer
+    Sentry.consoleLoggingIntegration({
+      levels: ["log", "info", "warn", "error"],
+    }),
   ],
 
   beforeSend(event) {
@@ -84,18 +80,14 @@ function scrubPII(event: Sentry.ErrorEvent): Sentry.ErrorEvent {
   return event;
 }
 
-// Type matches Sentry's Log shape. Loose-typed to avoid importing internals.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function scrubLog(log: any): any {
-  // Drop trace-level logs in production (too noisy)
   if (process.env.NODE_ENV === "production" && log.level === "trace") {
     return null;
   }
-  // Mask phone numbers in the message body
   if (typeof log.body === "string") {
     log.body = log.body.replace(PHONE_RE, REDACTED);
   }
-  // Mask phone numbers in attributes — but keep token counts, durations, etc.
   if (log.attributes) {
     for (const k of Object.keys(log.attributes)) {
       const v = log.attributes[k];

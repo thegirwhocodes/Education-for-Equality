@@ -10,7 +10,7 @@ import {
 } from "@/lib/voice/at-xml";
 import { createCallState, getCallState } from "@/lib/voice/call-state";
 import { addMessage } from "@/lib/voice/call-state";
-import { findOrCreateStudentByPhone, callSabi } from "@/lib/voice/sabi-shared";
+import { findOrCreateStudentByPhone, callSabiVoiceFast } from "@/lib/voice/sabi-shared";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
 import { uploadAudio } from "@/lib/voice/audio-storage";
 
@@ -111,8 +111,8 @@ export async function POST(req: NextRequest) {
     // Initialize call state (using AT sessionId as the call identifier)
     await createCallState(sessionId, callerNumber, student.id);
 
-    // Generate greeting via Claude
-    const greeting = await callSabi([], student.id, true);
+    // Generate greeting via fast voice LLM (Cerebras → Groq → Claude fallback)
+    const greeting = await callSabiVoiceFast([], student.id);
 
     // Save greeting to call state
     await addMessage(sessionId, "assistant", greeting);
@@ -145,6 +145,8 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error) {
+    Sentry.captureException(error);
+    await Sentry.flush(2000);
     console.error(
       "AT incoming error:",
       error instanceof Error ? error.message : error

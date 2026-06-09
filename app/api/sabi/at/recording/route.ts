@@ -9,8 +9,9 @@ import {
   createSayAndHangupResponse,
 } from "@/lib/voice/at-xml";
 import { getCallState, addMessage } from "@/lib/voice/call-state";
-import { callSabi } from "@/lib/voice/sabi-shared";
+import { callSabiVoiceFast } from "@/lib/voice/sabi-shared";
 import { transcribeAudio } from "@/lib/voice/stt";
+import { normalizeNumberMishears } from "@/lib/voice/answer-matcher";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
 import { uploadAudio, downloadAudio } from "@/lib/voice/audio-storage";
 
@@ -111,13 +112,23 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // 3b. Normalize Nigerian-English numeral mishears before the LLM sees it
+    const cleaned = normalizeNumberMishears(sttResult.text);
+    if (cleaned.changed) {
+      console.log(
+        `[answer-matcher] "${sttResult.text}" -> "${cleaned.text}"`,
+        cleaned.substitutions
+      );
+    }
+    const childText = cleaned.text;
+
     // 4. Get conversation history and add child's speech
     const state = await getCallState(sessionId);
-    const updatedState = await addMessage(sessionId, "user", sttResult.text);
+    const updatedState = await addMessage(sessionId, "user", childText);
 
     const messages = (
       updatedState?.messages ||
-      state?.messages || [{ role: "user" as const, content: sttResult.text }]
+      state?.messages || [{ role: "user" as const, content: childText }]
     ).map((m) => ({
       role: m.role as "user" | "assistant",
       content: m.content,
@@ -138,9 +149,9 @@ export async function POST(req: NextRequest) {
             "[SYSTEM: This call has been going for a while. Please wrap up the lesson now with a summary and encouragement to call back tomorrow.]",
         },
       ];
-      sabiResponse = await callSabi(wrapUpMessages, studentId, true);
+      sabiResponse = await callSabiVoiceFast(wrapUpMessages, studentId);
     } else {
-      sabiResponse = await callSabi(messages, studentId, true);
+      sabiResponse = await callSabiVoiceFast(messages, studentId);
     }
 
     // 7. Save Sabi's response to call state
@@ -185,26 +196,32 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error) {
+    Sentry.captureException(error);
+    await Sentry.flush(2000);
     console.error(
       "AT recording error:",
       error instanceof Error ? error.message : error
     );
 
-    // Try TTS error message, fall back to AT's <Say> (Google TTS)
+    // Soft degrade: let the child try again in-call instead of hanging up.
+    const retryText =
+      "Hmm, I didn't catch that — my fault. Let's try once more. Go ahead.";
+    const retryCallback = `${
+      process.env.NEXT_PUBLIC_APP_URL || "https://eduforequality.org"
+    }/api/sabi/at/recording?session=${encodeURIComponent(
+      sessionId
+    )}&student=${encodeURIComponent(studentId)}`;
     try {
-      const audio = await synthesizeSpeech(
-        "I'm sorry, something went wrong. Please call back and we can continue where we left off."
-      );
+      const audio = await synthesizeSpeech(retryText);
       const audioUrl = await uploadAudio(audio, `error_${Date.now()}.mp3`);
-      return new NextResponse(createPlayAndHangupResponse(audioUrl), {
-        headers: xmlHeaders(),
-      });
-    } catch {
-      // Last resort — AT's built-in <Say> (Google TTS, free)
       return new NextResponse(
-        createSayAndHangupResponse(
-          "I'm sorry, something went wrong. Please call back and we can continue where we left off."
-        ),
+        createPlayAndRecordResponse(audioUrl, retryCallback),
+        { headers: xmlHeaders() }
+      );
+    } catch {
+      // Last resort — AT's built-in <Say> (Google TTS, free), still re-recording
+      return new NextResponse(
+        createSayAndRecordResponse(retryText, retryCallback),
         { headers: xmlHeaders() }
       );
     }
