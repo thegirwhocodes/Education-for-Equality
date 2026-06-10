@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx --env-file=.env.local scripts/seed-grade4.ts"
+    "seed": "tsx --env-file=.env.local scripts/seed-grade4.ts",
+    "stress:at": "tsx scripts/sabi-at-stress-test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
