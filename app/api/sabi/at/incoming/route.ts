@@ -73,7 +73,8 @@ export async function POST(req: NextRequest) {
         `/api/sabi/at/recording?session=${encodeURIComponent(sessionId)}&student=${encodeURIComponent(studentId)}`,
         req.url
       ).toString();
-      const forwardBody = new URLSearchParams(body as Record<string, string>);
+      const forwardBody = new URLSearchParams();
+      Object.entries(body).forEach(([k, v]) => forwardBody.append(k, v));
       const fwd = await fetch(recordingForwardUrl, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },

@@ -48,6 +48,7 @@ const WRAP_UP_PATTERNS = [
 export async function POST(req: NextRequest) {
   const sessionId = req.nextUrl.searchParams.get("session") || "";
   const studentId = req.nextUrl.searchParams.get("student") || "";
+  const startedAt = Date.now();
 
   Sentry.setTags({
     "at.session_id": sessionId,
@@ -58,6 +59,13 @@ export async function POST(req: NextRequest) {
   try {
     const body = parseATBody(await req.text());
     const recordingUrl = body.recordingUrl || "";
+
+    console.log(
+      `[AT recording] start session=${sessionId} student=${studentId} ` +
+        `recordingUrl=${recordingUrl ? "present" : "absent"} ` +
+        `bodyKeys=${Object.keys(body).join(",")}`
+    );
+    Sentry.setContext("at_recording_body_keys", { keys: Object.keys(body) });
 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
@@ -87,9 +95,16 @@ export async function POST(req: NextRequest) {
 
     // 1. Download recording from Africa's Talking
     const audioBuffer = await downloadAudio(recordingUrl);
+    console.log(
+      `[AT recording] downloaded session=${sessionId} bytes=${audioBuffer.length} elapsed=${Date.now() - startedAt}ms`
+    );
 
     // 2. STT via Groq Whisper
     const sttResult = await transcribeAudio(audioBuffer);
+    console.log(
+      `[AT recording] stt session=${sessionId} text="${sttResult.text.slice(0, 80)}" ` +
+        `confidence=${sttResult.confidence.toFixed(2)} elapsed=${Date.now() - startedAt}ms`
+    );
 
     // 3. Handle empty speech. We DO NOT gate on confidence here — Whisper's
     // confidence on compressed VoIP audio (Yolla, Skype, AT PSTN) is almost
@@ -156,6 +171,9 @@ export async function POST(req: NextRequest) {
     } else {
       sabiResponse = await callSabiVoiceFast(messages, studentId);
     }
+    console.log(
+      `[AT recording] llm session=${sessionId} chars=${sabiResponse.length} elapsed=${Date.now() - startedAt}ms`
+    );
 
     // 7. Save Sabi's response to call state
     await addMessage(sessionId, "assistant", sabiResponse);
@@ -165,39 +183,19 @@ export async function POST(req: NextRequest) {
       shouldWrapUp ||
       WRAP_UP_PATTERNS.some((pattern) => pattern.test(sabiResponse));
 
-    // 9. TTS — convert response to audio (YarnGPT → ElevenLabs → AT <Say>)
-    try {
-      const responseAudio = await synthesizeSpeech(sabiResponse);
-      const responseUrl = await uploadAudio(
-        responseAudio,
-        `response_${sessionId}_${Date.now()}.mp3`
-      );
-
-      if (isWrappingUp) {
-        return new NextResponse(createPlayAndHangupResponse(responseUrl), {
-          headers: xmlHeaders(),
-        });
-      }
-
-      // 10. Continue conversation — play response and record next input
-      return new NextResponse(
-        createPlayAndRecordResponse(responseUrl, callbackUrl),
-        { headers: xmlHeaders() }
-      );
-    } catch {
-      // TTS failed — fall back to AT's <Say> (Google TTS)
-      console.warn("All TTS providers failed, using AT <Say> fallback");
-      if (isWrappingUp) {
-        return new NextResponse(
-          createSayAndHangupResponse(sabiResponse),
-          { headers: xmlHeaders() }
-        );
-      }
-      return new NextResponse(
-        createSayAndRecordResponse(sabiResponse, callbackUrl),
-        { headers: xmlHeaders() }
-      );
+    // 9. Reliability-first phone loop: use AT <Say> for post-recording turns.
+    // Generating/uploading custom MP3 on every turn adds another external
+    // network hop after STT + LLM; on real calls that feels like dead air.
+    // Keep the first greeting polished, then prioritize a sustained loop.
+    if (isWrappingUp) {
+      return new NextResponse(createSayAndHangupResponse(sabiResponse), {
+        headers: xmlHeaders(),
+      });
     }
+    return new NextResponse(
+      createSayAndRecordResponse(sabiResponse, callbackUrl),
+      { headers: xmlHeaders() }
+    );
   } catch (error) {
     Sentry.captureException(error);
     await Sentry.flush(2000);

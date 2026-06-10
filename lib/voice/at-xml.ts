@@ -28,20 +28,21 @@ export function createPlayAndRecordResponse(
   callbackUrl: string,
   options?: { maxLength?: number; finishOnKey?: string; timeout?: number }
 ): string {
-  // Defaults tuned for international VoIP callers (Yolla, Skype etc.):
-  //   maxLength 15s — enough for full sentence + thinking time
-  //   timeout 5s — silence-end forgiving enough for slow speakers
+  // Defaults tuned for short tutoring turns over PSTN/VoIP:
+  //   maxLength 8s — avoids the child hearing a long dead-air gap after
+  //     saying a short answer like their name or a number
+  //   timeout 3s — forgiving enough for children, but keeps the loop moving
   //   trimSilence=false — VoIP compression often classifies low-volume speech
   //     as silence; turning trim off preserves the recording so STT gets audio
   //   playBeep=true — caller hears when to start speaking
-  const maxLength = options?.maxLength ?? 15;
+  const maxLength = options?.maxLength ?? 8;
   const finishOnKey = options?.finishOnKey ?? "#";
-  const timeout = options?.timeout ?? 5;
+  const timeout = options?.timeout ?? 3;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Play url="${escapeXml(audioUrl)}"/>
-    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" timeout="${timeout}" trimSilence="false" callbackUrl="${escapeXml(callbackUrl)}" playBeep="true"/>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" timeout="${timeout}" trimSilence="false" callbackUrl="${escapeXml(callbackUrl)}" callBackUrl="${escapeXml(callbackUrl)}" playBeep="true"/>
 </Response>`;
 }
 
@@ -65,9 +66,9 @@ export function createSayAndRecordResponse(
   callbackUrl: string,
   options?: { maxLength?: number; finishOnKey?: string; timeout?: number; voice?: string }
 ): string {
-  const maxLength = options?.maxLength ?? 15;
+  const maxLength = options?.maxLength ?? 8;
   const finishOnKey = options?.finishOnKey ?? "#";
-  const timeout = options?.timeout ?? 5;
+  const timeout = options?.timeout ?? 3;
   const voice = options?.voice ?? "en-US-Wavenet-F";
 
   const spokenText = normalizeMoneyForSpeech(text);
@@ -75,7 +76,7 @@ export function createSayAndRecordResponse(
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Say voice="${escapeXml(voice)}">${escapeXml(spokenText)}</Say>
-    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" timeout="${timeout}" trimSilence="false" callbackUrl="${escapeXml(callbackUrl)}" playBeep="true"/>
+    <Record finishOnKey="${escapeXml(finishOnKey)}" maxLength="${maxLength}" timeout="${timeout}" trimSilence="false" callbackUrl="${escapeXml(callbackUrl)}" callBackUrl="${escapeXml(callbackUrl)}" playBeep="true"/>
 </Response>`;
 }
 
