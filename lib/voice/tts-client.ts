@@ -55,6 +55,7 @@ async function synthesizeWithChatterbox(text: string): Promise<Buffer> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       text: text.slice(0, 2000),
+      speaker_name: "naomi",
       format: "mp3",
       exaggeration,
     }),
