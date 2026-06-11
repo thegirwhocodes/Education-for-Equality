@@ -1,44 +1,58 @@
 # Education for Equality
 
-A free Khan Academy-style online learning platform for underprivileged children in Nigeria, using Cambridge Primary curriculum framework with OER content.
+Private source for the Education for Equality web platform and Sabi voice-tutoring product.
 
-## Features
+Sabi is the flagship build: a phone-accessible AI tutor for foundational literacy and numeracy in Nigeria. A learner can call from a shared feature phone without a smartphone, data plan, or reliable internet.
 
-- Cambridge-aligned curriculum (Grade 4 available)
-- Mathematics, English, Science, Social Studies
-- Video lessons from Khan Academy
-- User authentication with Clerk
-- Progress tracking dashboard
-- Mobile-friendly design
+## Public surfaces
 
-## Tech Stack
+- Main site: https://eduforequality.org
+- Sabi site/demo: https://sabi.eduforequality.org
+- Portfolio case study: https://naomiivie.vercel.app/sabi
 
-- **Framework:** Next.js 16 with TypeScript
-- **Database:** Supabase
-- **Authentication:** Clerk
-- **Styling:** Tailwind CSS
-- **Deployment:** Vercel
+## What is in this repo
 
-## Getting Started
+- Next.js web platform for curriculum, Sabi landing/demo pages, and learner flows.
+- Foundational literacy and numeracy lesson content.
+- Cambridge-aligned Grade 4 curriculum scaffolding.
+- Clerk authentication and Supabase progress tracking.
+- Sabi web voice demo routes.
+- Africa's Talking, Twilio, and ElevenLabs voice integration routes.
+- RAG utilities for curriculum retrieval.
+- Sentry instrumentation for production debugging.
+
+## Sabi voice loop
+
+```mermaid
+flowchart LR
+  A["Phone call"] --> B["Telephony webhook"]
+  B --> C["Recording / audio"]
+  C --> D["Speech-to-text"]
+  D --> E["Curriculum-aware tutor"]
+  E --> F["Student memory"]
+  E --> G["Text-to-speech"]
+  G --> H["Audio response"]
+  H --> A
+```
+
+## Key files
+
+- `app/sabi/page.tsx` - Sabi product page
+- `app/sabi-demo/page.tsx` and `app/sabi/demo/page.tsx` - demo surfaces
+- `lib/voice/sabi-shared.ts` - core Sabi teaching prompt, curriculum, and memory helpers
+- `app/api/sabi/at/*` - Africa's Talking phone webhook routes
+- `app/api/sabi/voice/*` - voice/LLM routes
+- `docs/elevenlabs-agent-prompt.md` - canonical ElevenLabs ConvAI configuration
+
+## Privacy
+
+This repository should remain private. It contains company/IP-sensitive implementation detail, production integration patterns, and live deployment architecture for Sabi.
+
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the app.
-
-## Environment Variables
-
-Create a `.env.local` file with:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
-```
-
-## License
-
-MIT
+Create `.env.local` from `.env.local.example` and use development credentials only.
