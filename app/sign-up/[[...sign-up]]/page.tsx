@@ -10,6 +10,11 @@ export default function SignUpPage() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
+  function goToSignIn(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    window.location.assign(`/sign-in${window.location.search}`);
+  }
+
   async function sendMagicLink(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus('sending');
@@ -89,7 +94,11 @@ export default function SignUpPage() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href="/sign-in" className="font-semibold text-[var(--primary-dark)] hover:underline">
+          <Link
+            href="/sign-in"
+            onClick={goToSignIn}
+            className="font-semibold text-[var(--primary-dark)] hover:underline"
+          >
             Sign in
           </Link>
         </p>
