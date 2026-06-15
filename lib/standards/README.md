@@ -17,12 +17,14 @@ Use `verified_official` only after we have checked the exact wording/code agains
 ## Current Coverage
 
 - `math-frameworks.ts`: first NERDC/Cambridge/TaRL math references for foundational numeracy.
-- `foundational-numeracy-crosswalk.ts`: first Sabi foundational numeracy skill map, module crosswalk, and representative lesson crosswalk.
+- `foundational-numeracy-crosswalk.ts`: Sabi foundational numeracy skill map, module crosswalk, all 64 existing lesson crosswalk entries, plus planned Module 5/6 skill/module placeholders.
+- `literacy-frameworks.ts`: first NERDC/Cambridge/GPF literacy references for voice-first foundational literacy.
+- `foundational-literacy-crosswalk.ts`: Phase 1 foundational literacy skill map, module crosswalk, and external-review sample lessons.
 
 ## Next Work
 
-1. Expand lesson-level crosswalk from representative lessons to all 64 existing numeracy voice lessons.
-2. Add planned Module 5 Division and Module 6 Word Problems once scripts are finalized.
-3. Add foundational literacy standards and crosswalk.
+1. Replace working-crosswalk references with verified exact NERDC/Cambridge codes after official-document review.
+2. Write full Module 5 Division and Module 6 Word Problems voice scripts from the structured plans.
+3. Expand literacy lesson-level crosswalk beyond review samples if Phase 1 becomes part of the first external review packet.
 4. Add Grade 4 Cambridge app lesson code audit, replacing older/looser codes with verified framework references.
 5. Add assessment item banks as structured data, not prose inside lesson scripts.
