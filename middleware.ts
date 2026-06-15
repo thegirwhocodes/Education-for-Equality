@@ -1,15 +1,49 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-const protectedRoutes = ['/dashboard', '/advisor-board'];
-const protectedApiRoutes = ['/api/advisor-board'];
+const protectedRoutes = ['/dashboard'];
+const advisorBoardRoutes = ['/advisor-board'];
+const advisorBoardApiRoutes = ['/api/advisor-board'];
 
 function isProtectedPath(path: string) {
   return protectedRoutes.some((route) => path === route || path.startsWith(`${route}/`));
 }
 
-function isProtectedApiPath(path: string) {
-  return protectedApiRoutes.some((route) => path === route || path.startsWith(`${route}/`));
+function isAdvisorBoardPath(path: string) {
+  return advisorBoardRoutes.some((route) => path === route || path.startsWith(`${route}/`));
+}
+
+function isAdvisorBoardApiPath(path: string) {
+  return advisorBoardApiRoutes.some((route) => path === route || path.startsWith(`${route}/`));
+}
+
+function normalizeIp(ip: string) {
+  const trimmed = ip.trim();
+  if (trimmed.startsWith('::ffff:')) return trimmed.slice('::ffff:'.length);
+  if (/^\d+\.\d+\.\d+\.\d+:\d+$/.test(trimmed)) return trimmed.slice(0, trimmed.lastIndexOf(':'));
+  return trimmed.replace(/^\[|\]$/g, '');
+}
+
+function getClientIp(request: NextRequest) {
+  const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0];
+  const ip =
+    forwarded ||
+    request.headers.get('x-real-ip') ||
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-vercel-forwarded-for');
+  return ip ? normalizeIp(ip) : '';
+}
+
+function isAdvisorBoardIpAllowed(request: NextRequest) {
+  const allowedIps = (process.env.ADVISOR_BOARD_ALLOWED_IPS || '')
+    .split(',')
+    .map((ip) => normalizeIp(ip))
+    .filter(Boolean);
+
+  if (allowedIps.length === 0) return false;
+
+  const clientIp = getClientIp(request);
+  return Boolean(clientIp && allowedIps.includes(clientIp));
 }
 
 async function getSupabaseSession(request: NextRequest, response: NextResponse) {
@@ -67,9 +101,16 @@ export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next({ request });
   const user = await getSupabaseSession(request, response);
+  const isAdvisorBoardAllowed = Boolean(user) || isAdvisorBoardIpAllowed(request);
 
-  if (!user && isProtectedApiPath(path)) {
+  if (!isAdvisorBoardAllowed && isAdvisorBoardApiPath(path)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!isAdvisorBoardAllowed && isAdvisorBoardPath(path)) {
+    const url = new URL('/sign-in', request.url);
+    url.searchParams.set('redirectTo', `${request.nextUrl.pathname}${request.nextUrl.search}`);
+    return NextResponse.redirect(url);
   }
 
   if (!user && isProtectedPath(path)) {
