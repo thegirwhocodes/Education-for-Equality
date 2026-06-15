@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { createBrowserSupabaseClient, hasSupabaseBrowserConfig } from '@/lib/auth/browser';
+import { authErrorMessage } from '@/lib/auth/messages';
 
 export default function SignInPage() {
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
@@ -40,7 +41,7 @@ export default function SignInPage() {
 
     if (error) {
       setStatus('error');
-      setMessage(error.message);
+      setMessage(authErrorMessage(error.message));
       return;
     }
 
@@ -72,10 +73,10 @@ export default function SignInPage() {
 
           <button
             type="submit"
-            disabled={status === 'sending'}
+            disabled={status === 'sending' || status === 'sent'}
             className="btn-primary w-full justify-center py-3 text-base disabled:opacity-60"
           >
-            {status === 'sending' ? 'Sending...' : 'Send magic link'}
+            {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Magic link sent' : 'Send magic link'}
           </button>
         </form>
 
