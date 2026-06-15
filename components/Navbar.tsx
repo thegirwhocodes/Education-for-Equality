@@ -2,26 +2,26 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import type { MouseEvent } from 'react';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [logoHref, setLogoHref] = useState('/');
 
-  // On sabi. subdomain, logo should go to main site
-  useEffect(() => {
+  function handleLogoClick(event: MouseEvent<HTMLAnchorElement>) {
     if (window.location.hostname.startsWith('sabi.')) {
-      setLogoHref('https://eduforequality.org');
+      event.preventDefault();
+      window.location.href = 'https://eduforequality.org';
     }
-  }, []);
+  }
 
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a href={logoHref} className="flex items-center gap-2">
+          <Link href="/" onClick={handleLogoClick} className="flex items-center gap-2">
             <Image
               src="/tree-icon.png"
               alt="Education for Equality"
@@ -33,7 +33,7 @@ export default function Navbar() {
             <span className="font-semibold text-lg text-[var(--primary-darker)]">
               Education for Equality
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
@@ -46,6 +46,9 @@ export default function Navbar() {
             <SignedIn>
               <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 My Progress
+              </Link>
+              <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+                Board
               </Link>
             </SignedIn>
             <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
@@ -106,6 +109,9 @@ export default function Navbar() {
               <SignedIn>
                 <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   My Progress
+                </Link>
+                <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)]">
+                  Board
                 </Link>
               </SignedIn>
               <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)]">
