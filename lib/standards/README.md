@@ -20,11 +20,14 @@ Use `verified_official` only after we have checked the exact wording/code agains
 - `foundational-numeracy-crosswalk.ts`: Sabi foundational numeracy skill map, module crosswalk, all 64 existing markdown voice lessons, and the restored app Module 5/6 lessons for Division and Word Problems.
 - `literacy-frameworks.ts`: NERDC/Cambridge/GPF literacy references for voice-first foundational literacy, including exact verified Cambridge Primary English 0058 Stage 4 objective refs where source text has been checked.
 - `foundational-literacy-crosswalk.ts`: Phase 1 foundational literacy skill map, module crosswalk, all 80 Phase 1 lesson entries, and a filtered external-review sample.
+- `assessment-blueprints.ts`: Structured diagnostic blueprints for foundational numeracy and literacy placement, including item domains, scoring signals, common misconceptions, placement rules, and claim boundaries.
+- `review-queue.ts`: Machine-readable cleanup queue for exact NERDC row verification, Grade 4 Cambridge audit, GPF descriptor selection, source-of-truth decisions, assessment work, and voice-performance migration.
 
 ## Next Work
 
 1. Replace broad NERDC working refs with exact NERDC curriculum rows after official-document review.
 2. Mirror app Module 5 Division and Module 6 Word Problems into standalone markdown voice scripts, or formally choose app-only/app-first as the source of truth.
 3. Add Grade 4 Cambridge app lesson code audit, replacing older/looser codes with verified framework references.
-4. Add assessment item banks as structured data, not prose inside lesson scripts.
-5. Move performance direction such as laughs/sighs out of curriculum scripts and into the voice-performance layer.
+4. Expand the diagnostic blueprints into assessment item banks and monthly mastery probes.
+5. Work through `review-queue.ts` before upgrading any claim language.
+6. Move performance direction such as laughs/sighs out of curriculum scripts and into the voice-performance layer.
