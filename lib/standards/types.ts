@@ -6,6 +6,7 @@ export type VoiceSuitability = 'voice_only' | 'voice_supported' | 'requires_visu
 
 export interface ExternalStandardRef {
   id: string;
+  code?: string;
   framework: string;
   subject: string;
   stageOrBand?: string;
@@ -15,6 +16,8 @@ export interface ExternalStandardRef {
   description: string;
   relation: AlignmentRelation;
   verificationStatus: 'verified_official' | 'working_crosswalk' | 'needs_official_review';
+  sourceUrl?: string;
+  reviewNotes?: string;
 }
 
 export interface MasteryCriterion {

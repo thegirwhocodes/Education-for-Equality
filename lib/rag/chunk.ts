@@ -93,7 +93,7 @@ function chunkLesson(
   unitOrder: number
 ): CurriculumChunk[] {
   const chunks: CurriculumChunk[] = [];
-  const module = getModuleId(subjectId, unitId, unitOrder);
+  const moduleId = getModuleId(subjectId, unitId, unitOrder);
   const subject = getSubjectKey(subjectId);
   const metadata = {
     lessonTitle: lesson.title,
@@ -112,7 +112,7 @@ function chunkLesson(
           lessonId: lesson.id,
           chunkType: chunkType as CurriculumChunk['chunkType'],
           chunkText: `${lesson.title}: ${text}`,
-          module,
+          module: moduleId,
           subject,
           metadata,
         });
@@ -127,7 +127,7 @@ function chunkLesson(
       lessonId: lesson.id,
       chunkType: 'concept',
       chunkText: `${lesson.title} — ${lesson.description}. ${fullText.slice(0, 1500)}`,
-      module,
+      module: moduleId,
       subject,
       metadata,
     });
@@ -139,7 +139,7 @@ function chunkLesson(
       lessonId: lesson.id,
       chunkType: 'concept',
       chunkText: `${lesson.title} — ${lesson.description}. ${fullText}`,
-      module,
+      module: moduleId,
       subject,
       metadata,
     });
@@ -203,7 +203,7 @@ export function generateSabiModuleChunks(): CurriculumChunk[] {
       id: 'sabi-module-0',
       module: 'sabi-diagnostic',
       title: 'Diagnostic Assessment',
-      text: `Module 0: DIAGNOSTIC. Run only when student needs diagnostic. Disguise as a fun game, NOT a test. Flow: "Let me see what you already know." Step 1 Counting: "Count with me — after 7? After 15? After 99?" Cannot count past 20 → Module 1. Step 2 Addition: "Buy pure water for 30 naira and biscuits for 40 naira. How much altogether?" Cannot add → Module 2. Step 3 Subtraction: "Something costs 150 naira, customer pays 200. How much change?" Cannot subtract → Module 3. Step 4 Multi-step: "One mango costs 30 naira. Buy 4. How much?" Cannot multiply → Module 4, Can multiply → Module 6.`,
+      text: `Module 0: DIAGNOSTIC. Run only when student needs diagnostic. Disguise as a fun game, NOT a test. Flow: "Let me see what you already know." Step 1 Counting: "Count with me — after 7? After 15? After 99?" Cannot count past 20 → Module 1. Step 2 Addition: "Buy pure water for 30 naira and biscuits for 40 naira. How much altogether?" Cannot add → Module 2. Step 3 Subtraction: "Something costs 150 naira, customer pays 200. How much change?" Cannot subtract → Module 3. Step 4 Multiplication: "One mango costs 30 naira. Buy 4. How much?" Cannot multiply → Module 4. Step 5 Division: "Share 12 oranges equally among 3 children. How many each?" Cannot divide → Module 5. Step 6 Mixed word problem: "Buy 4 mangoes at 30 naira each, pay with 200. How much change?" Cannot solve → Module 6; can solve → Grade 4 bridge.`,
     },
     {
       id: 'sabi-module-1',

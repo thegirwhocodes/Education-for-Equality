@@ -3,6 +3,10 @@ import type { ExternalStandardRef } from './types';
 const CAMBRIDGE_ENGLISH = 'Cambridge Primary English 0058 / English as a Second Language 0057';
 const NERDC_BASIC_ENGLISH = 'NERDC Basic Education Curriculum - English Studies';
 const GPF_READING = 'Global Proficiency Framework - Reading';
+const CAMBRIDGE_ENGLISH_FRAMEWORK_URL =
+  'https://static1.squarespace.com/static/59edc421bff200ece07aaea0/t/60dad8440bfa8e5dd66dbdec/1624954952253/English+Curriculum+Framework+0058.pdf';
+const GPF_READING_MATH_URL =
+  'https://uis.unesco.org/sites/default/files/medias/fichiers/2025/08/Global-Proficiency-Framework-18Oct2019_KD%20%281%29.pdf';
 
 export const cambridgePrimaryEnglishFoundations = {
   phonologicalAwareness: {
@@ -52,6 +56,116 @@ export const cambridgePrimaryEnglishFoundations = {
       'Learners produce complete sentences, use tense and descriptive language, ask and answer questions, and organize spoken ideas.',
     relation: 'supports',
     verificationStatus: 'working_crosswalk',
+  },
+} satisfies Record<string, ExternalStandardRef>;
+
+export const cambridgePrimaryEnglishStage4Objectives = {
+  readUnfamiliarWords: {
+    id: 'cambridge-english-0058-4Rw.01',
+    code: '4Rw.01',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Reading',
+    topic: 'Word reading',
+    description:
+      'Use effective strategies to read unfamiliar words accurately and confidently, including using phonic, morphological and grammatical knowledge, segmenting and contextual information.',
+    relation: 'supports',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+    reviewNotes:
+      'Phase 1 voice lessons support the phonological/oral foundation for this objective; full reading mastery requires Phase 2 print/app support.',
+  },
+  useContextForSynonyms: {
+    id: 'cambridge-english-0058-4Rv.01',
+    code: '4Rv.01',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Reading',
+    topic: 'Vocabulary and language',
+    description: 'Use context to suggest synonyms for unfamiliar words.',
+    relation: 'supports',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+  },
+  commonRootsMeanings: {
+    id: 'cambridge-english-0058-4Rv.02',
+    code: '4Rv.02',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Reading',
+    topic: 'Vocabulary and language',
+    description: 'Explore words with common roots and compare their meanings.',
+    relation: 'supports',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+  },
+  specialisedVocabulary: {
+    id: 'cambridge-english-0058-4Wv.01',
+    code: '4Wv.01',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Writing',
+    topic: 'Vocabulary and language',
+    description: 'Use specialised vocabulary accurately to match a familiar topic.',
+    relation: 'teaches',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+  },
+  speakAccuratelyAtLength: {
+    id: 'cambridge-english-0058-4SLm.01',
+    code: '4SLm.01',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Speaking and Listening',
+    topic: 'Making yourself understood',
+    description: 'Speak with accuracy and sometimes at length in a range of familiar contexts.',
+    relation: 'teaches',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+  },
+  sequenceForListener: {
+    id: 'cambridge-english-0058-4SLm.02',
+    code: '4SLm.02',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Speaking and Listening',
+    topic: 'Making yourself understood',
+    description: "Sequence relevant information to aid the listener's understanding.",
+    relation: 'teaches',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+  },
+  preciseVocabularyInSpeech: {
+    id: 'cambridge-english-0058-4SLm.03',
+    code: '4SLm.03',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Speaking and Listening',
+    topic: 'Making yourself understood',
+    description: 'Use vocabulary precisely to make the meaning clear.',
+    relation: 'teaches',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
+  },
+  listenAndRespond: {
+    id: 'cambridge-english-0058-4SLs.01',
+    code: '4SLs.01',
+    framework: CAMBRIDGE_ENGLISH,
+    subject: 'English',
+    stageOrBand: 'Stage 4',
+    strand: 'Speaking and Listening',
+    topic: 'Showing understanding',
+    description: 'Listen and respond appropriately, including asking and answering questions to develop ideas.',
+    relation: 'teaches',
+    verificationStatus: 'verified_official',
+    sourceUrl: CAMBRIDGE_ENGLISH_FRAMEWORK_URL,
   },
 } satisfies Record<string, ExternalStandardRef>;
 
@@ -117,6 +231,9 @@ export const gpfReadingFoundations = {
       'Learner demonstrates oral-language and sound-awareness foundations that prepare for decoding and reading comprehension.',
     relation: 'supports',
     verificationStatus: 'working_crosswalk',
+    sourceUrl: GPF_READING_MATH_URL,
+    reviewNotes:
+      'GPF is a measurement/proficiency reference. Sabi Phase 1 maps to oral precursor skills, not a certification or full print-reading claim.',
   },
   comprehensionOral: {
     id: 'gpf-reading-listening-comprehension-foundational',
@@ -128,11 +245,15 @@ export const gpfReadingFoundations = {
       'Learner listens to short texts, recalls facts, makes simple inferences, and identifies main ideas before print reading is secure.',
     relation: 'assesses',
     verificationStatus: 'working_crosswalk',
+    sourceUrl: GPF_READING_MATH_URL,
+    reviewNotes:
+      'Listening comprehension is useful as a pre-reading signal; reading comprehension must be tested with print/app once available.',
   },
 } satisfies Record<string, ExternalStandardRef>;
 
 export const foundationalLiteracyStandardRefs = {
   cambridge: cambridgePrimaryEnglishFoundations,
+  cambridgeStage4: cambridgePrimaryEnglishStage4Objectives,
   nerdc: nerdcEnglishFoundations,
   gpf: gpfReadingFoundations,
 };

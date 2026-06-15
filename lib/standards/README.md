@@ -16,15 +16,15 @@ Use `verified_official` only after we have checked the exact wording/code agains
 
 ## Current Coverage
 
-- `math-frameworks.ts`: first NERDC/Cambridge/TaRL math references for foundational numeracy.
-- `foundational-numeracy-crosswalk.ts`: Sabi foundational numeracy skill map, module crosswalk, all 64 existing lesson crosswalk entries, plus planned Module 5/6 skill/module placeholders.
-- `literacy-frameworks.ts`: first NERDC/Cambridge/GPF literacy references for voice-first foundational literacy.
-- `foundational-literacy-crosswalk.ts`: Phase 1 foundational literacy skill map, module crosswalk, and external-review sample lessons.
+- `math-frameworks.ts`: NERDC/Cambridge/TaRL math references for foundational numeracy, including exact verified Cambridge Primary Mathematics 0096 Stage 4 objective refs where source text has been checked.
+- `foundational-numeracy-crosswalk.ts`: Sabi foundational numeracy skill map, module crosswalk, all 64 existing markdown voice lessons, and the restored app Module 5/6 lessons for Division and Word Problems.
+- `literacy-frameworks.ts`: NERDC/Cambridge/GPF literacy references for voice-first foundational literacy, including exact verified Cambridge Primary English 0058 Stage 4 objective refs where source text has been checked.
+- `foundational-literacy-crosswalk.ts`: Phase 1 foundational literacy skill map, module crosswalk, all 80 Phase 1 lesson entries, and a filtered external-review sample.
 
 ## Next Work
 
-1. Replace working-crosswalk references with verified exact NERDC/Cambridge codes after official-document review.
-2. Write full Module 5 Division and Module 6 Word Problems voice scripts from the structured plans.
-3. Expand literacy lesson-level crosswalk beyond review samples if Phase 1 becomes part of the first external review packet.
-4. Add Grade 4 Cambridge app lesson code audit, replacing older/looser codes with verified framework references.
-5. Add assessment item banks as structured data, not prose inside lesson scripts.
+1. Replace broad NERDC working refs with exact NERDC curriculum rows after official-document review.
+2. Mirror app Module 5 Division and Module 6 Word Problems into standalone markdown voice scripts, or formally choose app-only/app-first as the source of truth.
+3. Add Grade 4 Cambridge app lesson code audit, replacing older/looser codes with verified framework references.
+4. Add assessment item banks as structured data, not prose inside lesson scripts.
+5. Move performance direction such as laughs/sighs out of curriculum scripts and into the voice-performance layer.

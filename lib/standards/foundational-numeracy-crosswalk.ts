@@ -1,6 +1,7 @@
 import type { SabiLessonAlignment, SabiModuleAlignment, SabiSkill } from './types';
 import {
   cambridgePrimaryMathFoundations as cambridge,
+  cambridgePrimaryMathStage4Objectives as cambridgeStage4,
   nerdcBasicMathFoundations as nerdc,
   tarlNumeracyLevels as tarl,
 } from './math-frameworks';
@@ -20,7 +21,7 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['oral_counting', 'before_after_prompts', 'module_1_lesson_4_check'],
       },
     ],
-    standardRefs: [cambridge.countingSequences, nerdc.wholeNumbersCounting, tarl.beginner],
+    standardRefs: [cambridge.countingSequences, cambridgeStage4.countConstantSteps, nerdc.wholeNumbersCounting, tarl.beginner],
   },
   {
     id: 'fn-count-to-100',
@@ -36,7 +37,7 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['oral_counting_to_100', 'tens_transition_prompts', 'skip_counting_prompts'],
       },
     ],
-    standardRefs: [cambridge.countingSequences, nerdc.wholeNumbersCounting, nerdc.quantitativeReasoning, tarl.twoDigit],
+    standardRefs: [cambridge.countingSequences, cambridgeStage4.countConstantSteps, nerdc.wholeNumbersCounting, nerdc.quantitativeReasoning, tarl.twoDigit],
   },
   {
     id: 'fn-quantity-comparison-ordering',
@@ -52,7 +53,7 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['quantity_questions', 'bigger_smaller_questions', 'ordering_questions'],
       },
     ],
-    standardRefs: [cambridge.placeValue, nerdc.quantitativeReasoning, tarl.twoDigit],
+    standardRefs: [cambridge.placeValue, cambridgeStage4.digitValueByPosition, cambridgeStage4.compareOrderPositiveNegativeNumbers, nerdc.quantitativeReasoning, tarl.twoDigit],
   },
   {
     id: 'fn-addition-foundations',
@@ -68,7 +69,7 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['facts_to_10', 'friends_of_10', 'bridging_through_10', 'week_5_mini_check'],
       },
     ],
-    standardRefs: [cambridge.additionSubtraction, nerdc.basicOperations, tarl.twoDigit],
+    standardRefs: [cambridge.additionSubtraction, cambridgeStage4.estimateAddSubtractWholeNumbers, nerdc.basicOperations, tarl.twoDigit],
   },
   {
     id: 'fn-two-digit-addition',
@@ -84,7 +85,14 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['two_digit_no_carry', 'two_digit_with_carry', 'addition_word_problems', 'module_2_assessment'],
       },
     ],
-    standardRefs: [cambridge.additionSubtraction, cambridge.placeValue, nerdc.basicOperations, nerdc.moneyApplications],
+    standardRefs: [
+      cambridge.additionSubtraction,
+      cambridge.placeValue,
+      cambridgeStage4.estimateAddSubtractWholeNumbers,
+      cambridgeStage4.composeDecomposeRegroupWholeNumbers,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+    ],
   },
   {
     id: 'fn-subtraction-foundations',
@@ -100,7 +108,7 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['facts_to_10', 'subtraction_from_teens', 'think_addition_prompts', 'mixed_operations_check'],
       },
     ],
-    standardRefs: [cambridge.additionSubtraction, nerdc.basicOperations, tarl.subtraction],
+    standardRefs: [cambridge.additionSubtraction, cambridgeStage4.estimateAddSubtractWholeNumbers, nerdc.basicOperations, tarl.subtraction],
   },
   {
     id: 'fn-two-digit-subtraction',
@@ -116,7 +124,15 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['no_borrowing_prompts', 'borrowing_prompts', 'naira_change_problems', 'module_3_assessment'],
       },
     ],
-    standardRefs: [cambridge.additionSubtraction, cambridge.moneyAndWordProblems, nerdc.basicOperations, nerdc.moneyApplications, tarl.subtraction],
+    standardRefs: [
+      cambridge.additionSubtraction,
+      cambridge.moneyAndWordProblems,
+      cambridgeStage4.estimateAddSubtractWholeNumbers,
+      cambridgeStage4.composeDecomposeRegroupWholeNumbers,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+      tarl.subtraction,
+    ],
   },
   {
     id: 'fn-multiplication-equal-groups',
@@ -132,7 +148,7 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['groups_of_questions', 'repeated_addition_questions', 'market_pack_questions'],
       },
     ],
-    standardRefs: [cambridge.multiplicationDivision, nerdc.basicOperations],
+    standardRefs: [cambridge.multiplicationDivision, cambridgeStage4.knowTimesTablesToTen, nerdc.basicOperations],
   },
   {
     id: 'fn-multiplication-fluency',
@@ -148,7 +164,13 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['times_table_drills', 'hard_facts_practice', 'two_digit_times_one_digit', 'module_4_assessment'],
       },
     ],
-    standardRefs: [cambridge.multiplicationDivision, nerdc.basicOperations, cambridge.moneyAndWordProblems],
+    standardRefs: [
+      cambridge.multiplicationDivision,
+      cambridgeStage4.knowTimesTablesToTen,
+      cambridgeStage4.multiplyWholeNumbersByOneDigit,
+      nerdc.basicOperations,
+      cambridge.moneyAndWordProblems,
+    ],
   },
   {
     id: 'fn-division-foundations',
@@ -166,7 +188,13 @@ export const foundationalNumeracySkills: SabiSkill[] = [
         evidence: ['sharing_questions', 'grouping_questions', 'inverse_fact_prompts', 'module_5_assessment'],
       },
     ],
-    standardRefs: [cambridge.multiplicationDivision, nerdc.basicOperations, nerdc.moneyApplications],
+    standardRefs: [
+      cambridge.multiplicationDivision,
+      cambridgeStage4.divideWholeNumbersByOneDigit,
+      cambridgeStage4.fractionsAsDivision,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+    ],
   },
   {
     id: 'fn-word-problem-reasoning',
@@ -193,6 +221,9 @@ export const foundationalNumeracySkills: SabiSkill[] = [
       cambridge.additionSubtraction,
       cambridge.multiplicationDivision,
       cambridge.moneyAndWordProblems,
+      cambridgeStage4.estimateAddSubtractWholeNumbers,
+      cambridgeStage4.multiplyWholeNumbersByOneDigit,
+      cambridgeStage4.divideWholeNumbersByOneDigit,
       nerdc.basicOperations,
       nerdc.moneyApplications,
     ],
@@ -208,7 +239,16 @@ export const foundationalNumeracyModuleCrosswalk: SabiModuleAlignment[] = [
     lessonRange: 'Lessons 1-12',
     deliveryModes: ['voice', 'app'],
     skillIds: ['fn-count-1-to-20', 'fn-count-to-100', 'fn-quantity-comparison-ordering'],
-    standardRefs: [cambridge.countingSequences, cambridge.placeValue, nerdc.wholeNumbersCounting, nerdc.quantitativeReasoning, tarl.beginner, tarl.twoDigit],
+    standardRefs: [
+      cambridge.countingSequences,
+      cambridge.placeValue,
+      cambridgeStage4.countConstantSteps,
+      cambridgeStage4.digitValueByPosition,
+      nerdc.wholeNumbersCounting,
+      nerdc.quantitativeReasoning,
+      tarl.beginner,
+      tarl.twoDigit,
+    ],
     exitCriteria: [
       {
         id: 'fn-module-1-exit',
@@ -226,7 +266,14 @@ export const foundationalNumeracyModuleCrosswalk: SabiModuleAlignment[] = [
     lessonRange: 'Lessons 13-28',
     deliveryModes: ['voice', 'app'],
     skillIds: ['fn-addition-foundations', 'fn-two-digit-addition'],
-    standardRefs: [cambridge.additionSubtraction, cambridge.placeValue, nerdc.basicOperations, nerdc.moneyApplications],
+    standardRefs: [
+      cambridge.additionSubtraction,
+      cambridge.placeValue,
+      cambridgeStage4.estimateAddSubtractWholeNumbers,
+      cambridgeStage4.composeDecomposeRegroupWholeNumbers,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+    ],
     exitCriteria: [
       {
         id: 'fn-module-2-exit',
@@ -244,7 +291,14 @@ export const foundationalNumeracyModuleCrosswalk: SabiModuleAlignment[] = [
     lessonRange: 'Lessons 29-44',
     deliveryModes: ['voice', 'app'],
     skillIds: ['fn-subtraction-foundations', 'fn-two-digit-subtraction'],
-    standardRefs: [cambridge.additionSubtraction, cambridge.moneyAndWordProblems, nerdc.basicOperations, nerdc.moneyApplications, tarl.subtraction],
+    standardRefs: [
+      cambridge.additionSubtraction,
+      cambridge.moneyAndWordProblems,
+      cambridgeStage4.estimateAddSubtractWholeNumbers,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+      tarl.subtraction,
+    ],
     exitCriteria: [
       {
         id: 'fn-module-3-exit',
@@ -262,7 +316,14 @@ export const foundationalNumeracyModuleCrosswalk: SabiModuleAlignment[] = [
     lessonRange: 'Lessons 45-64',
     deliveryModes: ['voice', 'app'],
     skillIds: ['fn-multiplication-equal-groups', 'fn-multiplication-fluency'],
-    standardRefs: [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, nerdc.basicOperations, nerdc.moneyApplications],
+    standardRefs: [
+      cambridge.multiplicationDivision,
+      cambridge.moneyAndWordProblems,
+      cambridgeStage4.knowTimesTablesToTen,
+      cambridgeStage4.multiplyWholeNumbersByOneDigit,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+    ],
     exitCriteria: [
       {
         id: 'fn-module-4-exit',
@@ -277,32 +338,42 @@ export const foundationalNumeracyModuleCrosswalk: SabiModuleAlignment[] = [
     title: 'Division',
     pathway: 'foundational',
     levelBand: 'Bridge from multiplication fluency to division and fractions readiness',
-    lessonRange: 'Planned Lessons 65-80',
+    lessonRange: 'App lessons fn-5-1 to fn-5-15',
     deliveryModes: ['voice', 'app'],
     skillIds: ['fn-division-foundations'],
-    standardRefs: [cambridge.multiplicationDivision, nerdc.basicOperations, nerdc.moneyApplications],
+    standardRefs: [
+      cambridge.multiplicationDivision,
+      cambridgeStage4.divideWholeNumbersByOneDigit,
+      cambridgeStage4.fractionsAsDivision,
+      nerdc.basicOperations,
+      nerdc.moneyApplications,
+    ],
     exitCriteria: [
       {
         id: 'fn-module-5-exit',
         description:
           'Learner solves fair-sharing, grouping, multiplication-inverse, and simple money-sharing division problems.',
-        evidence: ['lesson_80_assessment', 'division_fact_score', 'sharing_grouping_word_problem_score'],
+        evidence: ['fn_5_15_assessment', 'division_fact_score', 'sharing_grouping_word_problem_score'],
       },
     ],
-    notes: 'Planned module. Week 1 validation artifact defines structure before full voice scripts are written.',
+    notes:
+      'Exists in curriculum-app as app lessons. Standalone markdown voice scripts are not yet mirrored in 2. The Solution/lesson-scripts/numeracy.',
   },
   {
     moduleId: 'fn-module-6',
     title: 'Word Problems and Everyday Reasoning',
     pathway: 'foundational',
     levelBand: 'Pilot-ready FLN numeracy consolidation and Grade 4 bridge',
-    lessonRange: 'Planned Lessons 81-96',
+    lessonRange: 'App lessons fn-6-1 to fn-6-16',
     deliveryModes: ['voice', 'app', 'print_bridge'],
     skillIds: ['fn-word-problem-reasoning'],
     standardRefs: [
       cambridge.additionSubtraction,
       cambridge.multiplicationDivision,
       cambridge.moneyAndWordProblems,
+      cambridgeStage4.estimateAddSubtractWholeNumbers,
+      cambridgeStage4.multiplyWholeNumbersByOneDigit,
+      cambridgeStage4.divideWholeNumbersByOneDigit,
       nerdc.basicOperations,
       nerdc.moneyApplications,
     ],
@@ -311,10 +382,11 @@ export const foundationalNumeracyModuleCrosswalk: SabiModuleAlignment[] = [
         id: 'fn-module-6-exit',
         description:
           'Learner chooses operations, solves mixed one-step and two-step word problems, explains strategy, and checks reasonableness.',
-        evidence: ['lesson_96_assessment', 'operation_choice_score', 'two_step_problem_score', 'explanation_quality'],
+        evidence: ['fn_6_16_assessment', 'operation_choice_score', 'two_step_problem_score', 'explanation_quality'],
       },
     ],
-    notes: 'Planned module. Some problems are voice-only; complex two-step work benefits from app/print bridge.',
+    notes:
+      'Exists in curriculum-app as app lessons. Some problems are voice-only; complex two-step work benefits from app/print bridge.',
   },
 ];
 
@@ -335,6 +407,26 @@ const lesson = (
   voiceSuitability,
   diagnosticSignals: [`lesson_${lessonNumber}_readiness`, `${skillIds[0]}_gap`],
   masteryEvidence: [`lesson_${lessonNumber}_independent_check`, `${skillIds[0]}_mastery_signal`],
+  notes,
+});
+
+const moduleLesson = (
+  lessonId: string,
+  title: string,
+  skillIds: string[],
+  standardRefs: SabiLessonAlignment['standardRefs'],
+  voiceSuitability: SabiLessonAlignment['voiceSuitability'] = 'voice_supported',
+  notes?: string,
+): SabiLessonAlignment => ({
+  lessonId,
+  title,
+  pathway: 'foundational',
+  deliveryModes: voiceSuitability === 'voice_only' ? ['voice', 'app'] : ['voice', 'app', 'print_bridge'],
+  skillIds,
+  standardRefs,
+  voiceSuitability,
+  diagnosticSignals: [`${lessonId}_readiness`, `${skillIds[0]}_gap`],
+  masteryEvidence: [`${lessonId}_independent_check`, `${skillIds[0]}_mastery_signal`],
   notes,
 });
 
@@ -406,4 +498,37 @@ export const foundationalNumeracyLessonCrosswalk: SabiLessonAlignment[] = [
   lesson(62, 'Multiplication Word Problems: Nigerian Context', ['fn-multiplication-fluency'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, nerdc.moneyApplications], 'voice_supported'),
   lesson(63, 'Multiplication and Division: Inverse Relationship', ['fn-multiplication-fluency', 'fn-division-foundations'], [cambridge.multiplicationDivision, nerdc.basicOperations]),
   lesson(64, 'Module 4 Comprehensive Assessment', ['fn-multiplication-equal-groups', 'fn-multiplication-fluency'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, nerdc.basicOperations, nerdc.moneyApplications], 'voice_supported', 'Module assessment; readiness gate for planned Division module.'),
+
+  moduleLesson('fn-5-1', 'Sharing Equally', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications], 'voice_only'),
+  moduleLesson('fn-5-2', 'What Division Means', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations]),
+  moduleLesson('fn-5-3', 'Dividing by 2: Halving', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, cambridgeStage4.fractionsAsDivision, nerdc.basicOperations]),
+  moduleLesson('fn-5-4', 'Dividing by 3', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations]),
+  moduleLesson('fn-5-5', 'Dividing by 5', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations]),
+  moduleLesson('fn-5-6', 'Dividing by 10', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, cambridgeStage4.placeValueMultiplyDivideBy10And100, nerdc.basicOperations]),
+  moduleLesson('fn-5-7', 'Division and Multiplication are Related', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, cambridgeStage4.knowTimesTablesToTen, nerdc.basicOperations]),
+  moduleLesson('fn-5-8', 'Dividing Naira Among Friends', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications]),
+  moduleLesson('fn-5-9', 'Division with Remainders', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations], 'voice_supported', 'Remainders are teachable orally but benefit from written representations.'),
+  moduleLesson('fn-5-10', 'Dividing Larger Numbers', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations]),
+  moduleLesson('fn-5-11', 'Fair Sharing Word Problems', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-5-12', 'Market Division: Price Per Item', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-5-13', 'Division Word Problems: Grouping', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-5-14', 'Division Practice: Sharing Money', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-5-15', 'Division Review and Challenge', ['fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications], 'voice_supported', 'Module assessment/review for app Module 5.'),
+
+  moduleLesson('fn-6-1', 'Choosing the Right Operation', ['fn-word-problem-reasoning'], [cambridge.moneyAndWordProblems, cambridgeStage4.estimateAddSubtractWholeNumbers, cambridgeStage4.multiplyWholeNumbersByOneDigit, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications]),
+  moduleLesson('fn-6-2', 'Key Words in Word Problems', ['fn-word-problem-reasoning'], [cambridge.moneyAndWordProblems, nerdc.basicOperations, nerdc.moneyApplications], 'voice_supported', 'Keyword heuristics must be taught as clues, not as a substitute for understanding the situation.'),
+  moduleLesson('fn-6-3', 'Addition or Subtraction?', ['fn-word-problem-reasoning', 'fn-two-digit-addition', 'fn-two-digit-subtraction'], [cambridge.additionSubtraction, cambridge.moneyAndWordProblems, cambridgeStage4.estimateAddSubtractWholeNumbers, nerdc.basicOperations, nerdc.moneyApplications]),
+  moduleLesson('fn-6-4', 'Multiplication or Division?', ['fn-word-problem-reasoning', 'fn-multiplication-fluency', 'fn-division-foundations'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.multiplyWholeNumbersByOneDigit, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications]),
+  moduleLesson('fn-6-5', 'Two-Step Problems: Buy and Get Change', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.moneyAndWordProblems, cambridgeStage4.estimateAddSubtractWholeNumbers, nerdc.moneyApplications]),
+  moduleLesson('fn-6-6', 'Two-Step Problems: Earn and Share', ['fn-word-problem-reasoning'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.multiplyWholeNumbersByOneDigit, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-6-7', 'Market Day: Shopping with a Budget', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.moneyAndWordProblems, cambridgeStage4.estimateAddSubtractWholeNumbers, nerdc.moneyApplications]),
+  moduleLesson('fn-6-8', 'Market Day: Running a Stall', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.multiplyWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-6-9', 'Money Problems: Saving and Spending', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-6-10', 'Money Problems: Comparing Prices', ['fn-word-problem-reasoning'], [cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-6-11', 'Real Life: Bus Fare and Transport', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.multiplyWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-6-12', 'Real Life: School Supplies Shopping', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.multiplyWholeNumbersByOneDigit, nerdc.moneyApplications]),
+  moduleLesson('fn-6-13', 'Multi-Step Challenge Problems', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.multiplyWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications]),
+  moduleLesson('fn-6-14', 'Problem-Solving Strategies', ['fn-word-problem-reasoning'], [cambridge.moneyAndWordProblems, nerdc.basicOperations, nerdc.moneyApplications], 'voice_supported', 'Maps to reasoning/process goals rather than a single Cambridge content code.'),
+  moduleLesson('fn-6-15', 'Final Review: All Operations', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.estimateAddSubtractWholeNumbers, cambridgeStage4.multiplyWholeNumbersByOneDigit, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications], 'voice_supported', 'Module review.'),
+  moduleLesson('fn-6-16', 'Final Challenge: Lagos Market Master', ['fn-word-problem-reasoning'], [cambridge.additionSubtraction, cambridge.multiplicationDivision, cambridge.moneyAndWordProblems, cambridgeStage4.estimateAddSubtractWholeNumbers, cambridgeStage4.multiplyWholeNumbersByOneDigit, cambridgeStage4.divideWholeNumbersByOneDigit, nerdc.basicOperations, nerdc.moneyApplications], 'voice_supported', 'Cumulative Module 6 assessment/bridge signal.'),
 ];

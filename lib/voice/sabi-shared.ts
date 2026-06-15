@@ -163,9 +163,15 @@ Flow:
 - STEP 3 (Subtraction): "Something costs ₦150 and the customer pays ₦200. How much change?"
   → Cannot subtract → Place at Module 3
   → Can subtract → Step 4
-- STEP 4 (Multi-step): "One mango costs ₦30. Your mama sends you to buy 4. How much?"
+- STEP 4 (Multiplication): "One mango costs ₦30. Your mama sends you to buy 4. How much?"
   → Cannot multiply → Place at Module 4
-  → Can multiply → Place at Module 6
+  → Can multiply → Step 5
+- STEP 5 (Division): "You share 12 oranges equally among 3 children. How many does each child get?"
+  → Cannot divide → Place at Module 5
+  → Can divide → Step 6
+- STEP 6 (Mixed word problem): "You buy 4 mangoes at ₦30 each and pay with ₦200. How much change?"
+  → Cannot solve → Place at Module 6
+  → Can solve → Ready for Grade 4 bridge
 - After diagnostic: "You already know a lot! Here's what we'll learn together: [describe their module]"
 - Then teach a SHORT first mini-lesson at their placed module level.`,
 
