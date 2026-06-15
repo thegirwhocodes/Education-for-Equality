@@ -56,15 +56,43 @@ function buildRawEmail(to: string, subject: string, body: string) {
 }
 
 async function readToken(): Promise<GmailToken | null> {
+  if (process.env.GMAIL_REFRESH_TOKEN || process.env.GMAIL_ACCESS_TOKEN) {
+    return {
+      access_token: process.env.GMAIL_ACCESS_TOKEN,
+      refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+    };
+  }
+
+  if (process.env.GMAIL_TOKEN_JSON) {
+    return JSON.parse(process.env.GMAIL_TOKEN_JSON) as GmailToken;
+  }
+
   if (!existsSync(TOKEN_PATH)) return null;
   return JSON.parse(await readFile(TOKEN_PATH, 'utf8')) as GmailToken;
+}
+
+async function readClientSecret(): Promise<ClientSecret> {
+  if (process.env.GMAIL_OAUTH_CLIENT_ID && process.env.GMAIL_OAUTH_CLIENT_SECRET) {
+    return {
+      installed: {
+        client_id: process.env.GMAIL_OAUTH_CLIENT_ID,
+        client_secret: process.env.GMAIL_OAUTH_CLIENT_SECRET,
+      },
+    };
+  }
+
+  if (process.env.GMAIL_CLIENT_SECRET_JSON) {
+    return JSON.parse(process.env.GMAIL_CLIENT_SECRET_JSON) as ClientSecret;
+  }
+
+  return JSON.parse(await readFile(CLIENT_SECRET_PATH, 'utf8')) as ClientSecret;
 }
 
 async function refreshToken(token: GmailToken): Promise<GmailToken> {
   if (!token.refresh_token) return token;
   if (token.expiry_date && token.expiry_date > Date.now() + 60_000 && token.access_token) return token;
 
-  const secret = JSON.parse(await readFile(CLIENT_SECRET_PATH, 'utf8')) as ClientSecret;
+  const secret = await readClientSecret();
   const client = secret.installed || secret.web;
   if (!client?.client_id || !client.client_secret) return token;
 
@@ -86,7 +114,9 @@ async function refreshToken(token: GmailToken): Promise<GmailToken> {
     ...refreshed,
     expiry_date: refreshed.expires_in ? Date.now() + refreshed.expires_in * 1000 : token.expiry_date,
   };
-  await writeFile(TOKEN_PATH, JSON.stringify(nextToken, null, 2));
+  if (!process.env.GMAIL_REFRESH_TOKEN && !process.env.GMAIL_ACCESS_TOKEN && !process.env.GMAIL_TOKEN_JSON) {
+    await writeFile(TOKEN_PATH, JSON.stringify(nextToken, null, 2));
+  }
   return nextToken;
 }
 
