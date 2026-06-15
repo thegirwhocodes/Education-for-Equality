@@ -43,8 +43,9 @@ function cleanHeader(value: string) {
   return value.replace(/[\r\n]/g, ' ').trim();
 }
 
-function buildRawEmail(to: string, subject: string, body: string) {
+function buildRawEmail(to: string, subject: string, body: string, from?: string) {
   const lines = [
+    ...(from ? [`From: ${cleanHeader(from)}`] : []),
     `To: ${cleanHeader(to)}`,
     `Subject: ${cleanHeader(subject)}`,
     'MIME-Version: 1.0',
@@ -210,6 +211,7 @@ export async function POST(request: Request) {
   const body = (await request.json()) as {
     action?: 'sync' | 'draft' | 'send';
     advisorId?: string;
+    from?: string;
     to?: string;
     subject?: string;
     messageBody?: string;
@@ -238,7 +240,8 @@ export async function POST(request: Request) {
     return jsonResponse({ connected: true, error: 'Missing subject or message body.' }, 400);
   }
 
-  const raw = buildRawEmail(advisorResult.recipient, body.subject, body.messageBody);
+  const from = body.from || process.env.GMAIL_FROM_EMAIL;
+  const raw = buildRawEmail(advisorResult.recipient, body.subject, body.messageBody, from);
   const endpoint = body.action === 'send' ? 'messages/send' : 'drafts';
   const payload =
     body.action === 'send' ? { raw } : { message: { raw } };
@@ -260,6 +263,7 @@ export async function POST(request: Request) {
     connected: true,
     action: body.action,
     advisorId: body.advisorId,
+    from,
     to: advisorResult.recipient,
     gmail: await response.json(),
   });

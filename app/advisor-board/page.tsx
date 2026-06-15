@@ -34,6 +34,7 @@ type GmailSyncResult = {
 };
 
 const STORAGE_KEY = 'e4e-advisor-board-v1';
+const DEFAULT_FROM_EMAIL = 'naomi.ivie04@gmail.com';
 
 const statusLabels: Record<AdvisorStatus, string> = {
   not_contacted: 'Not contacted',
@@ -94,6 +95,7 @@ export default function AdvisorBoardPage() {
   const [states, setStates] = useState<AdvisorStateMap>(() => initialState());
   const [selectedId, setSelectedId] = useState(advisorProfiles[0].id);
   const [composeMode, setComposeMode] = useState<'first-meeting' | 'follow-up' | 'custom'>('first-meeting');
+  const [fromEmail, setFromEmail] = useState(DEFAULT_FROM_EMAIL);
   const [subject, setSubject] = useState('');
   const [messageBody, setMessageBody] = useState('');
   const [instruction, setInstruction] = useState('');
@@ -158,6 +160,7 @@ export default function AdvisorBoardPage() {
         body: JSON.stringify({
           action,
           advisorId: profile.id,
+          from: fromEmail,
           to: state.emailOverride || profile.email,
           subject,
           messageBody,
@@ -207,7 +210,7 @@ export default function AdvisorBoardPage() {
   }
 
   function copyEmail() {
-    navigator.clipboard.writeText(`Subject: ${subject}\n\n${messageBody}`);
+    navigator.clipboard.writeText(`From: ${fromEmail}\nSubject: ${subject}\n\n${messageBody}`);
     setNotice('Copied email text.');
   }
 
@@ -388,6 +391,15 @@ export default function AdvisorBoardPage() {
           </div>
 
           <label className="mt-4 block text-sm font-semibold text-gray-700">
+            From
+            <input
+              value={fromEmail}
+              onChange={(event) => setFromEmail(event.target.value)}
+              className="mt-1 w-full border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[var(--primary-dark)]"
+            />
+          </label>
+
+          <label className="mt-3 block text-sm font-semibold text-gray-700">
             Email address
             <input
               value={selectedEmail}
@@ -454,8 +466,8 @@ export default function AdvisorBoardPage() {
           </div>
 
           <p className="mt-3 text-xs leading-5 text-gray-500">
-            Gmail send only works for known advisor cards with an email address and a local email-agent OAuth token.
-            Otherwise this console still keeps your board status organized.
+            Gmail send only works when the From address is the authenticated Gmail account or a verified Gmail send-as
+            alias. Right now Naomi wants this set to naomi.ivie04@gmail.com.
           </p>
         </aside>
       </div>
