@@ -46,6 +46,29 @@ const partnerLogos = [
   },
 ];
 
+const recognitionItems = [
+  {
+    label: 'MIT Sloan Africa Business Club',
+    title: '2nd Place',
+    detail: 'MIT Africa Business Challenge 2026, $3,000 prize',
+  },
+  {
+    label: 'Wesleyan Patricelli Center',
+    title: 'Campus-backed',
+    detail: '$1,200 Wesleyan grant plus PCE-sponsored MIT trip',
+  },
+  {
+    label: 'Technovation + Generation Unlimited',
+    title: 'Accelerator cohort',
+    detail: 'Selected for the 2026 AI Ventures Accelerator',
+  },
+  {
+    label: 'ElevenLabs',
+    title: 'Impact Program',
+    detail: 'Voice AI credits supporting Sabi demos and testing',
+  },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -95,7 +118,7 @@ export default function Home() {
       <section className="bg-white border-y border-gray-100">
         <div className="mx-auto max-w-7xl px-0 py-12 sm:px-6">
           <p className="text-center text-sm text-gray-500 uppercase tracking-widest mb-8">
-            Built with and backed by
+            Built with, backed by, and recognized by
           </p>
           <div className="partner-marquee group">
             <div className="partner-marquee-track">
@@ -127,8 +150,19 @@ export default function Home() {
             </div>
           </div>
           <p className="text-center text-xs text-gray-400 mt-4">
-            AI Ventures Accelerator 2026 — UNICEF Generation Unlimited × Technovation
+            MIT Sloan Africa Business Club · Wesleyan Patricelli Center · AI Ventures Accelerator 2026
           </p>
+          <div className="mx-auto mt-8 grid max-w-5xl grid-cols-1 gap-3 px-6 sm:grid-cols-2 lg:grid-cols-4 sm:px-0">
+            {recognitionItems.map((item) => (
+              <div key={item.label} className="border border-emerald-100 bg-emerald-50/50 px-4 py-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--primary-dark)]">
+                  {item.label}
+                </p>
+                <p className="mt-2 text-lg font-bold text-[var(--primary-darker)]">{item.title}</p>
+                <p className="mt-1 text-sm leading-5 text-gray-600">{item.detail}</p>
+              </div>
+            ))}
+          </div>
           <p className="text-center text-xs text-gray-500 mt-8 max-w-3xl mx-auto leading-relaxed">
             Our advisors include <strong>Hon. Folasade Adefisayo</strong> (Former Lagos Commissioner
             of Education, 2019–2023, who launched EKOEXCEL across 1,016 schools), <strong>Dr. Sonia
