@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "auth:brand-emails": "tsx --env-file=.env.local scripts/apply-supabase-auth-branding.ts",
+    "auth:brand-emails:dry-run": "tsx --env-file=.env.local scripts/apply-supabase-auth-branding.ts --dry-run",
     "lint": "eslint",
     "seed": "tsx --env-file=.env.local scripts/seed-grade4.ts",
     "stress:at": "tsx scripts/sabi-at-stress-test.ts"
