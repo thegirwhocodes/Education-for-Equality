@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="title desc">
+  <title id="title">Technovation</title>
+  <desc id="desc">Technovation wordmark</desc>
+  <rect width="520" height="140" rx="20" fill="#ffffff"/>
+  <path d="M47 43h72v18H92v58H74V61H47V43Z" fill="#111827"/>
+  <path d="M126 43h21l23 49 23-49h21l-36 76h-16l-36-76Z" fill="#0f766e"/>
+  <text x="232" y="86" fill="#111827" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="850">Technovation</text>
+  <path d="M450 43a30 30 0 1 1 0 60 30 30 0 0 1 0-60Zm0 16a14 14 0 1 0 0 28 14 14 0 0 0 0-28Z" fill="#16fddb"/>
+</svg>

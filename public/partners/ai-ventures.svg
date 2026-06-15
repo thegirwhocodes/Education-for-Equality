@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="title desc">
+  <title id="title">AI Ventures Accelerator</title>
+  <desc id="desc">Wordmark for AI Ventures Accelerator 2026</desc>
+  <rect width="520" height="140" rx="20" fill="#ffffff"/>
+  <text x="34" y="78" fill="#111827" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="900">AI</text>
+  <text x="112" y="78" fill="#0f766e" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="850">Ventures</text>
+  <text x="34" y="108" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="800" letter-spacing="2.4">ACCELERATOR 2026</text>
+  <circle cx="403" cy="45" r="9" fill="#16fddb"/>
+  <circle cx="430" cy="45" r="9" fill="#0fa992"/>
+  <circle cx="457" cy="45" r="9" fill="#075449"/>
+  <path d="M386 82h88" stroke="#0fa992" stroke-width="12" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 140" role="img" aria-labelledby="title desc">
+  <title id="title">UNICEF Generation Unlimited</title>
+  <desc id="desc">UNICEF and Generation Unlimited partner wordmark</desc>
+  <rect width="500" height="140" rx="20" fill="#ffffff"/>
+  <text x="38" y="59" fill="#009edb" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800">UNICEF</text>
+  <text x="38" y="98" fill="#111827" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Generation Unlimited</text>
+  <path d="M360 35h28v28h-28z" fill="#16fddb"/>
+  <path d="M392 35h28v28h-28z" fill="#0fa992"/>
+  <path d="M424 35h28v28h-28z" fill="#075449"/>
+  <path d="M360 67h28v28h-28z" fill="#075449"/>
+  <path d="M392 67h28v28h-28z" fill="#16fddb"/>
+  <path d="M424 67h28v28h-28z" fill="#0fa992"/>
+</svg>
