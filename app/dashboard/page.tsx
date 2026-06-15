@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useUser } from '@clerk/nextjs';
 import { getCambridgeSubjects, subjects as allSubjects } from '@/lib/curriculum';
 import { useProgress } from '@/lib/useProgress';
+import { useCurrentUser } from '@/lib/auth/useCurrentUser';
 import { useRef, useCallback, type MouseEvent, type ReactNode } from 'react';
 
 // Glow card — tracks mouse and renders a teal radial spotlight
@@ -42,7 +42,7 @@ function GlowCard({ children, className = '', lift = true }: { children: ReactNo
 }
 
 export default function DashboardPage() {
-  const { user } = useUser();
+  const { user } = useCurrentUser();
   // Include foundational courses + Cambridge subjects
   const cambridgeSubjects = getCambridgeSubjects();
   const subjects = [...allSubjects, ...cambridgeSubjects];
@@ -79,7 +79,7 @@ export default function DashboardPage() {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user?.firstName || 'Learner'}!
+            Welcome back, {user?.email?.split('@')[0] || 'Learner'}!
           </h1>
           <p className="mt-2 text-gray-600">
             Track your learning progress and continue where you left off.

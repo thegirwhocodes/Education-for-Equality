@@ -1,29 +1,97 @@
-import { SignIn } from '@clerk/nextjs';
+'use client';
+
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { createBrowserSupabaseClient, hasSupabaseBrowserConfig } from '@/lib/auth/browser';
 
 export default function SignInPage() {
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  async function sendMagicLink(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus('sending');
+    setMessage('');
+
+    if (!hasSupabaseBrowserConfig()) {
+      setStatus('error');
+      setMessage('Magic-link auth is not configured in this environment yet.');
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const redirectTo = params.get('redirectTo') || '/dashboard';
+    const callback = new URL('/auth/callback', window.location.origin);
+    callback.searchParams.set('next', redirectTo);
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: callback.toString(),
+      },
+    });
+
+    if (error) {
+      setStatus('error');
+      setMessage(error.message);
+      return;
+    }
+
+    setStatus('sent');
+    setMessage('Check your email for a secure sign-in link.');
+  }
+
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4">
-      <div className="max-w-lg w-full">
-        <div className="text-center mb-8">
+    <div className="min-h-[80vh] bg-gray-50 px-4 py-12">
+      <div className="mx-auto w-full max-w-md rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+        <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-          <p className="mt-2 text-gray-600">
-            Sign in to continue your learning journey
-          </p>
+          <p className="mt-2 text-gray-600">Enter your email and we will send you a secure magic link.</p>
         </div>
-        <SignIn
-          appearance={{
-            elements: {
-              rootBox: "mx-auto w-full",
-              card: "shadow-lg w-full max-w-none",
-              headerTitle: "hidden",
-              headerSubtitle: "hidden",
-              socialButtonsBlockButton: "border-gray-300 py-3 text-base",
-              formButtonPrimary: "bg-[var(--primary-darker)] hover:bg-[#0d2818] py-3 text-base",
-              formFieldInput: "py-3 text-base",
-              footerAction: "text-base",
-            }
-          }}
-        />
+
+        <form onSubmit={sendMagicLink} className="mt-8 space-y-4">
+          <label className="block text-sm font-semibold text-gray-700">
+            Email address
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+              autoComplete="email"
+              placeholder="you@example.com"
+              className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-base outline-none focus:border-[var(--primary-dark)] focus:ring-2 focus:ring-emerald-100"
+            />
+          </label>
+
+          <button
+            type="submit"
+            disabled={status === 'sending'}
+            className="btn-primary w-full justify-center py-3 text-base disabled:opacity-60"
+          >
+            {status === 'sending' ? 'Sending...' : 'Send magic link'}
+          </button>
+        </form>
+
+        {message && (
+          <div
+            className={`mt-5 rounded-lg border p-3 text-sm leading-6 ${
+              status === 'error'
+                ? 'border-red-200 bg-red-50 text-red-800'
+                : 'border-emerald-200 bg-emerald-50 text-emerald-900'
+            }`}
+          >
+            {message}
+          </div>
+        )}
+
+        <p className="mt-6 text-center text-sm text-gray-500">
+          New here?{' '}
+          <Link href="/sign-up" className="font-semibold text-[var(--primary-dark)] hover:underline">
+            Start learning free
+          </Link>
+        </p>
       </div>
     </div>
   );

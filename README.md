@@ -15,7 +15,7 @@ Sabi is the flagship build: a phone-accessible AI tutor for foundational literac
 - Next.js web platform for curriculum, Sabi landing/demo pages, and learner flows.
 - Foundational literacy and numeracy lesson content.
 - Cambridge-aligned Grade 4 curriculum scaffolding.
-- Clerk authentication and Supabase progress tracking.
+- Supabase magic-link authentication and Supabase progress tracking.
 - Sabi web voice demo routes.
 - Africa's Talking, Twilio, and ElevenLabs voice integration routes.
 - RAG utilities for curriculum retrieval.

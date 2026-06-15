@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useCurrentUser } from '@/lib/auth/useCurrentUser';
 
 interface Completion {
   lesson_id: string;
@@ -9,11 +9,12 @@ interface Completion {
 }
 
 export function useProgress() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, loading: authLoading } = useCurrentUser();
   const [completions, setCompletions] = useState<Completion[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchProgress = useCallback(async () => {
+    if (authLoading) return;
     if (!isSignedIn) {
       setCompletions([]);
       setLoading(false);
@@ -30,7 +31,7 @@ export function useProgress() {
     } finally {
       setLoading(false);
     }
-  }, [isSignedIn]);
+  }, [authLoading, isSignedIn]);
 
   useEffect(() => {
     fetchProgress();
@@ -89,7 +90,7 @@ export function useProgress() {
 
   return {
     completions,
-    loading,
+    loading: loading || authLoading,
     isCompleted,
     toggleComplete,
     completedCount,

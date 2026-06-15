@@ -4,16 +4,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { useCurrentUser } from '@/lib/auth/useCurrentUser';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isSignedIn, user, supabase } = useCurrentUser();
 
   function handleLogoClick(event: MouseEvent<HTMLAnchorElement>) {
     if (window.location.hostname.startsWith('sabi.')) {
       event.preventDefault();
       window.location.href = 'https://eduforequality.org';
     }
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut();
+    window.location.href = '/';
   }
 
   return (
@@ -43,14 +49,16 @@ export default function Navbar() {
             <Link href="/subjects" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
               Subjects
             </Link>
-            <SignedIn>
+            {isSignedIn && (
+              <>
               <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 My Progress
               </Link>
               <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 Board
               </Link>
-            </SignedIn>
+              </>
+            )}
             <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
               About
             </Link>
@@ -61,24 +69,26 @@ export default function Navbar() {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <SignedOut>
+            {!isSignedIn ? (
+              <>
               <Link href="/sign-in" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 Log In
               </Link>
               <Link href="/sign-up" className="btn-primary text-sm">
                 Sign Up Free
               </Link>
-            </SignedOut>
-            <SignedIn>
-              <UserButton
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    avatarBox: "w-9 h-9"
-                  }
-                }}
-              />
-            </SignedIn>
+              </>
+            ) : (
+              <>
+                <span className="max-w-40 truncate text-sm text-gray-600">{user?.email}</span>
+                <button
+                  onClick={signOut}
+                  className="text-sm font-semibold text-gray-600 transition-colors hover:text-[var(--primary-dark)]"
+                >
+                  Sign Out
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -106,14 +116,16 @@ export default function Navbar() {
               <Link href="/subjects" className="text-gray-600 hover:text-[var(--primary-dark)]">
                 Subjects
               </Link>
-              <SignedIn>
+              {isSignedIn && (
+                <>
                 <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   My Progress
                 </Link>
                 <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   Board
                 </Link>
-              </SignedIn>
+                </>
+              )}
               <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)]">
                 About
               </Link>
@@ -121,27 +133,23 @@ export default function Navbar() {
                 Sabi
               </a>
               <hr className="border-gray-100" />
-              <SignedOut>
+              {!isSignedIn ? (
+                <>
                 <Link href="/sign-in" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   Log In
                 </Link>
                 <Link href="/sign-up" className="btn-primary text-center text-sm">
                   Sign Up Free
                 </Link>
-              </SignedOut>
-              <SignedIn>
+                </>
+              ) : (
                 <div className="flex items-center gap-3">
-                  <UserButton
-                    afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-9 h-9"
-                      }
-                    }}
-                  />
-                  <span className="text-gray-600">My Account</span>
+                  <span className="truncate text-gray-600">{user?.email}</span>
+                  <button onClick={signOut} className="font-semibold text-[var(--primary-dark)]">
+                    Sign Out
+                  </button>
                 </div>
-              </SignedIn>
+              )}
             </div>
           </div>
         )}

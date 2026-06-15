@@ -1,6 +1,6 @@
-import { auth } from '@clerk/nextjs/server';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { getCurrentUser } from '@/lib/auth/server';
 
 // Use an untyped client since lesson_completions isn't in the auto-generated types yet
 function getSupabase() {
@@ -12,8 +12,8 @@ function getSupabase() {
 
 // GET /api/progress - get user's completed lessons
 export async function GET() {
-  const { userId } = await auth();
-  if (!userId) {
+  const user = await getCurrentUser();
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -21,7 +21,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from('lesson_completions')
     .select('lesson_id, completed_at')
-    .eq('user_id', userId);
+    .eq('user_id', user.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -32,8 +32,8 @@ export async function GET() {
 
 // POST /api/progress - mark a lesson as complete
 export async function POST(request: NextRequest) {
-  const { userId } = await auth();
-  if (!userId) {
+  const user = await getCurrentUser();
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     .from('lesson_completions')
     .upsert(
       {
-        user_id: userId,
+        user_id: user.id,
         lesson_id: lessonId,
         completed_at: new Date().toISOString(),
       },
@@ -65,8 +65,8 @@ export async function POST(request: NextRequest) {
 
 // DELETE /api/progress - unmark a lesson
 export async function DELETE(request: NextRequest) {
-  const { userId } = await auth();
-  if (!userId) {
+  const user = await getCurrentUser();
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -79,7 +79,7 @@ export async function DELETE(request: NextRequest) {
   const { error } = await supabase
     .from('lesson_completions')
     .delete()
-    .eq('user_id', userId)
+    .eq('user_id', user.id)
     .eq('lesson_id', lessonId);
 
   if (error) {
