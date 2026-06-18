@@ -57,6 +57,9 @@ export default function Navbar() {
               <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 Board
               </Link>
+              <Link href="/sabi/prepilot" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+                Pilot
+              </Link>
               </>
             )}
             <Link href="/about" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
@@ -123,6 +126,9 @@ export default function Navbar() {
                 </Link>
                 <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   Board
+                </Link>
+                <Link href="/sabi/prepilot" className="text-gray-600 hover:text-[var(--primary-dark)]">
+                  Pilot
                 </Link>
                 </>
               )}

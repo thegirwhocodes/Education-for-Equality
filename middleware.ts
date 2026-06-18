@@ -4,6 +4,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 const protectedRoutes = ['/dashboard'];
 const advisorBoardRoutes = ['/advisor-board'];
 const advisorBoardApiRoutes = ['/api/advisor-board'];
+const prepilotRoutes = ['/sabi/prepilot'];
+const prepilotApiRoutes = ['/api/sabi/prepilot'];
 
 function isProtectedPath(path: string) {
   return protectedRoutes.some((route) => path === route || path.startsWith(`${route}/`));
@@ -15,6 +17,14 @@ function isAdvisorBoardPath(path: string) {
 
 function isAdvisorBoardApiPath(path: string) {
   return advisorBoardApiRoutes.some((route) => path === route || path.startsWith(`${route}/`));
+}
+
+function isPrepilotPath(path: string) {
+  return prepilotRoutes.some((route) => path === route || path.startsWith(`${route}/`));
+}
+
+function isPrepilotApiPath(path: string) {
+  return prepilotApiRoutes.some((route) => path === route || path.startsWith(`${route}/`));
 }
 
 function normalizeIp(ip: string) {
@@ -107,7 +117,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  if (!isAdvisorBoardAllowed && isPrepilotApiPath(path)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   if (!isAdvisorBoardAllowed && isAdvisorBoardPath(path)) {
+    const url = new URL('/sign-in', request.url);
+    url.searchParams.set('redirectTo', `${request.nextUrl.pathname}${request.nextUrl.search}`);
+    return NextResponse.redirect(url);
+  }
+
+  if (!isAdvisorBoardAllowed && isPrepilotPath(path)) {
     const url = new URL('/sign-in', request.url);
     url.searchParams.set('redirectTo', `${request.nextUrl.pathname}${request.nextUrl.search}`);
     return NextResponse.redirect(url);
