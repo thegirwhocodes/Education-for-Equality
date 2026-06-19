@@ -41,6 +41,7 @@ export default function SabiVoice() {
   const callStartRef = useRef(0);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
+  const runTurnRef = useRef<(() => void) | null>(null);
   const sessionPersistedRef = useRef(false);
   /** Latest call timer for POST /api/sabi/session (state can lag inside async). */
   const elapsedRef = useRef(0);
@@ -359,9 +360,9 @@ export default function SabiVoice() {
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaStreamSource(stream);
         const analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 512;
+        analyser.fftSize = 1024;
         source.connect(analyser);
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        const dataArray = new Uint8Array(analyser.fftSize);
 
         // Recording state
         const chunks: Blob[] = [];
@@ -399,8 +400,8 @@ export default function SabiVoice() {
             });
             if (res.ok) {
               const data = await res.json();
-              // Reject low-confidence transcriptions (noise/hallucination)
-              if (data.confidence !== undefined && data.confidence < 0.4) {
+              // Keep short child utterances: names and number answers often score low on phone/laptop mics.
+              if (data.confidence !== undefined && data.confidence < 0.18) {
                 resolve("");
                 return;
               }
@@ -421,9 +422,9 @@ export default function SabiVoice() {
         // Silence detection loop
         let speechDetected = false;
         let silenceStart = 0;
-        const SILENCE_THRESHOLD = 15; // Volume level (0-255)
-        const SILENCE_DURATION = 1500; // ms of silence after speech to stop
-        const MAX_DURATION = 15000; // Max recording time
+        const SILENCE_THRESHOLD = 6; // RMS over centered waveform
+        const SILENCE_DURATION = 900; // ms of silence after speech to stop
+        const MAX_DURATION = 12000; // Max recording time
         const startTime = Date.now();
 
         const checkSilence = () => {
@@ -435,8 +436,13 @@ export default function SabiVoice() {
             return;
           }
 
-          analyser.getByteFrequencyData(dataArray);
-          const volume = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+          analyser.getByteTimeDomainData(dataArray);
+          const volume = Math.sqrt(
+            dataArray.reduce((sum, value) => {
+              const centered = value - 128;
+              return sum + centered * centered;
+            }, 0) / dataArray.length
+          );
 
           if (volume > SILENCE_THRESHOLD) {
             speechDetected = true;
@@ -473,7 +479,7 @@ export default function SabiVoice() {
       // Handle silence or empty — auto-retry (setTimeout avoids stack buildup)
       if (!transcript) {
         if (callActiveRef.current) {
-          setTimeout(runTurn, 100);
+          setTimeout(() => runTurnRef.current?.(), 100);
         }
         return;
       }
@@ -535,7 +541,7 @@ export default function SabiVoice() {
       if (!callActiveRef.current) return;
 
       // 6. Auto-start next turn — no tap needed (setTimeout avoids stack buildup)
-      setTimeout(runTurn, 100);
+      setTimeout(() => runTurnRef.current?.(), 100);
     } catch (err) {
       console.error("Turn error:", err);
       if (callActiveRef.current) {
@@ -544,6 +550,10 @@ export default function SabiVoice() {
       }
     }
   }, [startListening, getSabiResponse, speakText]);
+
+  useEffect(() => {
+    runTurnRef.current = runTurn;
+  }, [runTurn]);
 
   // Start call
   const startCall = async () => {
@@ -932,4 +942,3 @@ export default function SabiVoice() {
     </div>
   );
 }
-
