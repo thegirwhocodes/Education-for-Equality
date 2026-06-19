@@ -77,13 +77,13 @@ function validateSkill(skill: SabiSkill) {
   validateStandards("skill-standard", skill.id, skill.standardRefs);
 }
 
-function validateModule(module: SabiModuleAlignment) {
-  assertGate("module", module.moduleId, Boolean(module.title && module.levelBand), "module has title and level band");
-  assertGate("module", `${module.moduleId}:exit`, module.exitCriteria.length > 0, "module has exit criteria");
-  for (const skillId of module.skillIds) {
-    assertGate("module", `${module.moduleId}:skill:${skillId}`, skillIds.has(skillId), "module skill exists");
+function validateModule(moduleAlignment: SabiModuleAlignment) {
+  assertGate("module", moduleAlignment.moduleId, Boolean(moduleAlignment.title && moduleAlignment.levelBand), "module has title and level band");
+  assertGate("module", `${moduleAlignment.moduleId}:exit`, moduleAlignment.exitCriteria.length > 0, "module has exit criteria");
+  for (const skillId of moduleAlignment.skillIds) {
+    assertGate("module", `${moduleAlignment.moduleId}:skill:${skillId}`, skillIds.has(skillId), "module skill exists");
   }
-  validateStandards("module-standard", module.moduleId, module.standardRefs);
+  validateStandards("module-standard", moduleAlignment.moduleId, moduleAlignment.standardRefs);
 }
 
 function validateLesson(lesson: SabiLessonAlignment) {
@@ -102,7 +102,7 @@ function validateLesson(lesson: SabiLessonAlignment) {
 }
 
 for (const skill of allSkills) validateSkill(skill);
-for (const module of allModules) validateModule(module);
+for (const moduleAlignment of allModules) validateModule(moduleAlignment);
 for (const lesson of allLessons) validateLesson(lesson);
 
 assertGate("coverage", "foundational-numeracy-lessons", foundationalNumeracyLessonCrosswalk.length === 95, "95 foundational numeracy lessons are registered: 64 markdown lessons plus app Module 5/6");
@@ -158,11 +158,19 @@ const YELLOW = "\x1b[33m";
 const GREEN = "\x1b[32m";
 const DIM = "\x1b[2m";
 const RESET = "\x1b[0m";
+const verbose = process.argv.includes("--verbose");
 
 console.log("\nSabi Curriculum Quality Gate");
 console.log("=".repeat(72));
+if (!verbose) {
+  console.log(`${DIM}Showing warnings and failures only. Use --verbose for every pass row.${RESET}`);
+}
 let lastGroup = "";
-for (const row of rows) {
+const reportRows = verbose ? rows : rows.filter((row) => row.level !== "pass");
+if (reportRows.length === 0) {
+  console.log(`\n${GREEN}No warnings or failures.${RESET}`);
+}
+for (const row of reportRows) {
   if (row.group !== lastGroup) {
     console.log(`\n${DIM}-- ${row.group} --${RESET}`);
     lastGroup = row.group;

@@ -12,8 +12,36 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 import { buildNumericGradingHint } from "./numeric-grading";
+import { SABI_SAFETY_PREAMBLE, guardInput, guardOutput } from "./guardrails";
+import { raiseSafeguardingIncident } from "./safeguarding";
 
 const anthropic = new Anthropic();
+
+/**
+ * Run the input guardrail on the latest child utterance. On a crisis or hard
+ * refusal it returns a safe spoken response to short-circuit with (skipping the
+ * model entirely) and fires the async safeguarding flag. Returns null to proceed.
+ * Runs on EVERY backend path (Claude + Cerebras/Groq/Ollama have no shared safety).
+ */
+function guardLatestTurn(
+  messages: Array<{ role: "user" | "assistant"; content: string }>,
+  studentId: string | null
+): string | null {
+  const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+  if (!lastUser) return null;
+  const ig = guardInput(lastUser);
+  if (ig.flagForSafeguarding) {
+    void raiseSafeguardingIncident({
+      studentId,
+      category: ig.category,
+      riskLevel: ig.riskLevel,
+      reason: ig.reason,
+      utterance: lastUser,
+    }).catch((e) => console.error("[safeguarding] flag failed", e));
+  }
+  if (ig.shortCircuit && ig.safeResponse) return ig.safeResponse;
+  return null;
+}
 
 // ── Fast LLM providers for voice (low-latency inference) ──
 // Cerebras: ~2100 tok/s → 200-token response in ~0.1s
@@ -244,6 +272,7 @@ export function getModuleCurriculum(moduleNum: number): string {
 // Full system prompt with ALL modules (backward compatibility for voice/llm/route.ts)
 export const SABI_SYSTEM_PROMPT =
   SABI_CORE_PROMPT +
+  SABI_SAFETY_PREAMBLE +
   "\n\n## FOUNDATIONAL NUMERACY CURRICULUM (6 Modules)\n\n" +
   Object.values(MODULE_CURRICULUM).join("\n\n");
 
@@ -468,6 +497,10 @@ export async function callSabi(
   studentId: string | null,
   isVoice: boolean = false
 ): Promise<string> {
+  // Guard the child's latest utterance BEFORE any work (crisis short-circuits fast).
+  const guarded = guardLatestTurn(messages, studentId);
+  if (guarded !== null) return guarded;
+
   let memoryContext = "";
   let currentModule = 0;
 
@@ -497,6 +530,7 @@ export async function callSabi(
 
   const systemPrompt =
     SABI_CORE_PROMPT +
+    SABI_SAFETY_PREAMBLE +
     curriculumContext +
     (isVoice ? VOICE_SYSTEM_ADDENDUM : "") +
     memoryContext +
@@ -517,10 +551,11 @@ export async function callSabi(
 
   const text =
     response.content[0]?.type === "text" ? response.content[0].text : "";
-  return (
+  // Output guard before TTS — the only safety constant across all backends.
+  return guardOutput(
     text ||
-    "Hello! I'm Sabi, your learning friend. What would you like to learn today?"
-  );
+      "Hello! I'm Sabi, your learning friend. What would you like to learn today?"
+  ).text;
 }
 
 /**
@@ -535,6 +570,10 @@ export async function callSabiVoiceFast(
   messages: Array<{ role: "user" | "assistant"; content: string }>,
   studentId: string | null
 ): Promise<string> {
+  // Guard the child's latest utterance BEFORE any work (crisis short-circuits fast).
+  const guarded = guardLatestTurn(messages, studentId);
+  if (guarded !== null) return guarded;
+
   let memoryContext = "";
   let currentModule = 0;
 
@@ -558,6 +597,7 @@ export async function callSabiVoiceFast(
 
   const systemPrompt =
     SABI_CORE_PROMPT +
+    SABI_SAFETY_PREAMBLE +
     curriculumContext +
     VOICE_SYSTEM_ADDENDUM +
     memoryContext +
@@ -579,7 +619,7 @@ export async function callSabiVoiceFast(
         maxTokens: 200,
         provider: "Cerebras",
       });
-      if (text) return text;
+      if (text) return guardOutput(text).text;
     } catch (e) {
       console.warn("Cerebras failed, trying Groq:", e instanceof Error ? e.message : e);
     }
@@ -596,7 +636,7 @@ export async function callSabiVoiceFast(
         maxTokens: 200,
         provider: "Groq",
       });
-      if (text) return text;
+      if (text) return guardOutput(text).text;
     } catch (e) {
       console.warn("Groq LLM failed, falling back to Claude:", e instanceof Error ? e.message : e);
     }

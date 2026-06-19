@@ -2,7 +2,6 @@ type Message = { role: string; content: string };
 
 const SMALL_NUMBERS: Record<string, number> = {
   zero: 0,
-  oh: 0,
   one: 1,
   wan: 1,
   two: 2,
