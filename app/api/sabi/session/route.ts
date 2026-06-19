@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
+import {
+  insertSabiSession,
+  updateSabiStudentProgress,
+} from "@/lib/voice/session-persistence";
 
 export const maxDuration = 30;
 
@@ -38,7 +42,7 @@ export async function POST(req: NextRequest) {
     // Get current student data for context
     const { data: studentBefore } = await supabase
       .from("sabi_students")
-      .select("current_module, current_level, skills")
+      .select("*")
       .eq("id", student_id)
       .single();
 
@@ -96,9 +100,8 @@ Only include skills that were actually tested in the conversation. Use 0.0-1.0 s
     }
 
     // Save session
-    const { error: sessionError } = await supabase
-      .from("sabi_sessions")
-      .insert({
+    try {
+      await insertSabiSession(supabase, {
         student_id,
         messages,
         summary: stats.summary,
@@ -108,8 +111,7 @@ Only include skills that were actually tested in the conversation. Use 0.0-1.0 s
         topics_covered: stats.topics_covered || [],
         recommended_module: stats.recommended_module,
       });
-
-    if (sessionError) {
+    } catch (sessionError) {
       console.error("Save session error:", sessionError);
     }
 
@@ -146,9 +148,7 @@ Only include skills that were actually tested in the conversation. Use 0.0-1.0 s
         7: "completed",
       };
 
-      await supabase
-        .from("sabi_students")
-        .update({
+      await updateSabiStudentProgress(supabase, student_id, {
           total_sessions: (student.total_sessions || 0) + 1,
           total_correct:
             (student.total_correct || 0) + (stats.correct_count || 0),
@@ -159,8 +159,7 @@ Only include skills that were actually tested in the conversation. Use 0.0-1.0 s
           skills: mergedSkills,
           last_session_summary: stats.summary,
           updated_at: new Date().toISOString(),
-        })
-        .eq("id", student_id);
+        });
     }
 
     return NextResponse.json({

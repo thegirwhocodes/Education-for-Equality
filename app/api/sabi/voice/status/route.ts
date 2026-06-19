@@ -4,6 +4,10 @@ import { createClient } from "@supabase/supabase-js";
 import { parseTwilioBody, isTwilioRequest } from "@/lib/voice/twiml";
 import { clearCallState } from "@/lib/voice/call-state";
 import { sendSessionSummary, sendPracticeQuestion } from "@/lib/voice/sms";
+import {
+  insertSabiSession,
+  updateSabiStudentProgress,
+} from "@/lib/voice/session-persistence";
 
 // Allow up to 30 seconds for Claude analysis + SMS sends
 export const maxDuration = 30;
@@ -138,7 +142,7 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
     }
 
     // Save session to sabi_sessions
-    await supabase.from("sabi_sessions").insert({
+    await insertSabiSession(supabase, {
       student_id: state.studentId,
       messages: state.messages,
       summary: stats.summary,
@@ -176,9 +180,7 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
       // Update name if discovered during call
       const updatedName = stats.child_name || student.name;
 
-      await supabase
-        .from("sabi_students")
-        .update({
+      await updateSabiStudentProgress(supabase, state.studentId, {
           name: updatedName,
           total_sessions: (student.total_sessions || 0) + 1,
           total_correct: (student.total_correct || 0) + (stats.correct_count || 0),
@@ -189,8 +191,7 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
           skills: mergedSkills,
           last_session_summary: stats.summary,
           updated_at: new Date().toISOString(),
-        })
-        .eq("id", state.studentId);
+        });
 
       // Send SMS summary
       const callbackNumber = process.env.TWILIO_PHONE_NUMBER || "the same number";

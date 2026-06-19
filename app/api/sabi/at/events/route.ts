@@ -8,6 +8,11 @@ import { sendSessionSummary, sendPracticeQuestion } from "@/lib/voice/sms";
 import { downloadAudio } from "@/lib/voice/audio-storage";
 import { transcribeAudio } from "@/lib/voice/stt";
 import { callSabi } from "@/lib/voice/sabi-shared";
+import { normalizeNumberMishears } from "@/lib/voice/answer-matcher";
+import {
+  insertSabiSession,
+  updateSabiStudentProgress,
+} from "@/lib/voice/session-persistence";
 
 export const maxDuration = 30;
 
@@ -94,7 +99,8 @@ export async function POST(req: NextRequest) {
         // is usable. Trust the text if there are any words at all — Claude
         // is robust to dropped phonemes and noisy input.
         if (sttResult.text && sttResult.text.trim().length > 0) {
-          await addMessage(sessionId, "user", sttResult.text);
+          const cleaned = normalizeNumberMishears(sttResult.text);
+          await addMessage(sessionId, "user", cleaned.text);
 
           // Build messages array from current call state for the LLM
           const { getCallState } = await import("@/lib/voice/call-state");
@@ -207,7 +213,7 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
     }
 
     // Save session to sabi_sessions
-    await supabase.from("sabi_sessions").insert({
+    await insertSabiSession(supabase, {
       student_id: state.studentId,
       messages: state.messages,
       summary: stats.summary,
@@ -245,9 +251,7 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
       // Update name if discovered during call
       const updatedName = stats.child_name || student.name;
 
-      await supabase
-        .from("sabi_students")
-        .update({
+      await updateSabiStudentProgress(supabase, state.studentId, {
           name: updatedName,
           total_sessions: (student.total_sessions || 0) + 1,
           total_correct:
@@ -259,8 +263,7 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
           skills: mergedSkills,
           last_session_summary: stats.summary,
           updated_at: new Date().toISOString(),
-        })
-        .eq("id", state.studentId);
+        });
 
       // Send SMS summary via AT
       const callbackNumber =

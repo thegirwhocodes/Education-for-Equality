@@ -11,6 +11,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
+import { buildNumericGradingHint } from "./numeric-grading";
 
 const anthropic = new Anthropic();
 
@@ -134,6 +135,12 @@ Every session follows this 5-7 minute structure:
 - Always validate real-world knowledge: "You already know this from the market!"
 - If child seems bored or too advanced → skip ahead within the module
 - If child is struggling badly → go back to previous module's concepts
+
+## ANSWER GRADING SAFETY
+- Before saying an answer is wrong, compare the child's intended number to the question you just asked.
+- Accept equivalent money answers: "50", "fifty", "fifty naira", "₦50", and "50 naira" all mean the same thing.
+- If the number is correct, say it is correct and move on, even if extra words around it are messy.
+- Phone and browser speech-to-text can mishear short answers. Do not mark a numeric answer wrong just because the transcript has odd wording.
 
 ## SPACED REPETITION
 When greeting a returning student, ALWAYS start with ONE quick recall question from a previous session before moving to new content.
@@ -491,7 +498,8 @@ export async function callSabi(
     SABI_CORE_PROMPT +
     curriculumContext +
     (isVoice ? VOICE_SYSTEM_ADDENDUM : "") +
-    memoryContext;
+    memoryContext +
+    buildNumericGradingHint(messages);
 
   // Claude API requires at least one user message
   const apiMessages =
@@ -551,7 +559,8 @@ export async function callSabiVoiceFast(
     SABI_CORE_PROMPT +
     curriculumContext +
     VOICE_SYSTEM_ADDENDUM +
-    memoryContext;
+    memoryContext +
+    buildNumericGradingHint(messages);
 
   const apiMessages =
     messages.length === 0

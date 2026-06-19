@@ -32,7 +32,10 @@ export default function SabiVoice() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [elapsed, setElapsed] = useState(0);
   const [error, setError] = useState("");
-  const [voiceSupported, setVoiceSupported] = useState(true);
+  const voiceSupported =
+    typeof window === "undefined" ||
+    (typeof navigator.mediaDevices?.getUserMedia === "function" &&
+      typeof window.MediaRecorder !== "undefined");
 
   const callActiveRef = useRef(false);
   const messagesRef = useRef<Message[]>([]);
@@ -98,14 +101,6 @@ export default function SabiVoice() {
     callActiveRef.current = callActive;
   }, [callActive]);
 
-  // Check voice support (need MediaRecorder + getUserMedia)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
-      setVoiceSupported(false);
-    }
-  }, []);
-
   useEffect(() => {
     const onUnload = () => interruptSpeakOutput();
     window.addEventListener("beforeunload", onUnload);
@@ -134,17 +129,24 @@ export default function SabiVoice() {
 
   // Timer
   useEffect(() => {
-    if (callActive) {
-      callStartRef.current = Date.now();
-      timerRef.current = setInterval(() => {
-        setElapsed(Math.floor((Date.now() - callStartRef.current) / 1000));
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-      setElapsed(0);
+    if (!callActive) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      return;
     }
+
+    callStartRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - callStartRef.current) / 1000));
+    }, 1000);
+
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [callActive]);
 
@@ -530,6 +532,8 @@ export default function SabiVoice() {
     setError("");
     sessionPersistedRef.current = false;
     setMessages([]);
+    elapsedRef.current = 0;
+    setElapsed(0);
     setCallState("connecting");
 
     let currentStudent = student;
@@ -630,6 +634,9 @@ export default function SabiVoice() {
         // Best-effort
       }
     }
+
+    elapsedRef.current = 0;
+    setElapsed(0);
   };
 
   const handleOrbTap = () => {

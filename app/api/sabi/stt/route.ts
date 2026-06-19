@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { transcribeAudio } from "@/lib/voice/stt";
+import { normalizeNumberMishears } from "@/lib/voice/answer-matcher";
 
 export const maxDuration = 30;
 
@@ -32,9 +33,13 @@ export async function POST(req: NextRequest) {
       audioFile.type || "audio/webm"
     );
 
+    const cleaned = normalizeNumberMishears(result.text);
+
     return NextResponse.json({
-      text: result.text.trim(),
+      text: cleaned.text.trim(),
+      raw_text: result.text.trim(),
       confidence: result.confidence,
+      substitutions: cleaned.substitutions,
     });
   } catch (error) {
     console.error("STT error:", error);

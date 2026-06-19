@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { callSabi } from "@/lib/voice/sabi-shared";
 import { transcribeAudio } from "@/lib/voice/stt";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
+import { normalizeNumberMishears } from "@/lib/voice/answer-matcher";
 
 /**
  * POST /api/sabi/voice-chat
@@ -64,10 +65,13 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    const cleaned = normalizeNumberMishears(sttResult.text);
+    const childText = cleaned.text;
+
     // 2. Add user message to history
     const updatedMessages = [
       ...messages,
-      { role: "user" as const, content: sttResult.text },
+      { role: "user" as const, content: childText },
     ];
 
     // 3. LLM — get Sabi's response from Claude
@@ -78,7 +82,9 @@ export async function POST(req: NextRequest) {
     const audioBase64 = audioBuffer.toString("base64");
 
     return NextResponse.json({
-      transcript: sttResult.text,
+      transcript: childText,
+      raw_transcript: sttResult.text,
+      substitutions: cleaned.substitutions,
       response,
       audio: audioBase64,
     });
