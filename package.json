@@ -11,6 +11,7 @@
     "lint": "eslint",
     "seed": "tsx --env-file=.env.local scripts/seed-grade4.ts",
     "stress:at": "tsx scripts/sabi-at-stress-test.ts",
+    "stress:curriculum": "tsx scripts/curriculum-quality-gate.ts",
     "stress:guardrails": "tsx scripts/guardrails-stress.ts"
   },
   "dependencies": {

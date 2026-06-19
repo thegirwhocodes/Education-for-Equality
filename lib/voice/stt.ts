@@ -9,6 +9,17 @@ export interface STTResult {
   confidence: number;
 }
 
+// Keep this aligned with sabi-server/stt.py. Groq/Whisper can use prompt
+// text as decoder bias, which materially helps short Nigerian-English phone
+// answers like "eighty naira" and local nouns like "groundnuts".
+const NIGERIAN_ENGLISH_PROMPT = [
+  "Sabi is an AI tutor for children in Lagos, Nigeria.",
+  "The child is learning about naira, kobo, groundnuts, pure water, garri, suya, biscuits, exercise books, bus fare, okada, danfo, keke.",
+  "Common words: oya, wahala, sharp sharp, well done, correct, how much, change, market, mama, papa, auntie, uncle.",
+  "Numbers: zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety, hundred, thousand.",
+  "Math: plus, minus, times, divided by, equals, remainder, total, altogether.",
+].join(" ");
+
 /**
  * Transcribe audio using Groq's Whisper API.
  * Accepts audio buffer (WAV, MP3, etc.) and returns text + confidence.
@@ -27,6 +38,7 @@ export async function transcribeAudio(
   formData.append("file", blob, `audio.${ext}`);
   formData.append("model", "whisper-large-v3");
   formData.append("language", "en");
+  formData.append("prompt", NIGERIAN_ENGLISH_PROMPT);
   formData.append("response_format", "verbose_json");
 
   const response = await fetch(
