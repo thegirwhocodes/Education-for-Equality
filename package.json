@@ -10,7 +10,8 @@
     "auth:brand-emails:dry-run": "tsx --env-file=.env.local scripts/apply-supabase-auth-branding.ts --dry-run",
     "lint": "eslint",
     "seed": "tsx --env-file=.env.local scripts/seed-grade4.ts",
-    "stress:at": "tsx scripts/sabi-at-stress-test.ts"
+    "stress:at": "tsx scripts/sabi-at-stress-test.ts",
+    "stress:guardrails": "tsx scripts/guardrails-stress.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

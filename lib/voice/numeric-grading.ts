@@ -127,12 +127,11 @@ function inferExpectedNumber(question: string): number | null {
   }
 
   if (/\b(change|left|remain|remaining)\b/.test(lower)) {
-    if (/\b(have|has|gave|gives|pay|paid|with)\b/.test(lower) && numbers.length >= 2) {
-      return numbers[0] - numbers.slice(1).reduce((sum, value) => sum + value, 0);
-    }
     if (numbers.length === 2) return Math.abs(numbers[1] - numbers[0]);
     const max = Math.max(...numbers);
-    return max - numbers.filter((value) => value !== max).reduce((sum, value) => sum + value, 0);
+    const others = [...numbers];
+    others.splice(others.indexOf(max), 1);
+    return max - others.reduce((sum, value) => sum + value, 0);
   }
 
   if (/\b(altogether|total|together|plus|add|more|in all)\b/.test(lower)) {
@@ -146,7 +145,9 @@ function inferExpectedNumber(question: string): number | null {
 
   if (
     /\b(times|multiply|each|every)\b/.test(lower) ||
-    (/\bcosts?\b/.test(lower) && /\bbuy\b/.test(lower))
+    /\bbuy\b/.test(lower) ||
+    /\bbought\b/.test(lower) ||
+    /\bpurchase\b/.test(lower)
   ) {
     if (numbers.length >= 2) {
       const factors = numbers.slice(-2);
