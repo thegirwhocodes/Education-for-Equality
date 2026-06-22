@@ -1,72 +1,12 @@
 #!/usr/bin/env python3
-"""
-Auto-deploy Education for Equality to GitHub.
-Runs before Claude Code context compaction to save all work.
-"""
+"""Compatibility entrypoint for the workspace safe snapshot hook."""
 
-import subprocess
-import sys
-from datetime import datetime
+from pathlib import Path
+import runpy
 
 
-REPO_DIR = "/Users/naomiivie/Education for Equality/curriculum-app"
-
-
-def run(cmd, check=True):
-    """Run a shell command and return output."""
-    result = subprocess.run(
-        cmd, shell=True, cwd=REPO_DIR,
-        capture_output=True, text=True
-    )
-    if check and result.returncode != 0:
-        print(f"Error: {result.stderr.strip()}", file=sys.stderr)
-        return None
-    return result.stdout.strip()
-
-
-def main():
-    # Check if there are any changes to commit
-    status = run("git status --porcelain")
-    if not status:
-        print("No changes to deploy.", file=sys.stderr)
-        return
-
-    # Stage all tracked + new files (respects .gitignore)
-    run("git add -A")
-
-    # Build commit message with timestamp
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-    changed_files = run("git diff --cached --name-only")
-    file_count = len(changed_files.splitlines()) if changed_files else 0
-
-    message = (
-        f"Auto-save: {timestamp} ({file_count} files)\n\n"
-        f"Session snapshot before context compaction."
-    )
-
-    # Commit
-    result = subprocess.run(
-        ["git", "commit", "-m", message],
-        cwd=REPO_DIR, capture_output=True, text=True
-    )
-    if result.returncode != 0:
-        print(f"Commit failed: {result.stderr.strip()}", file=sys.stderr)
-        return
-
-    # Push to origin
-    push_result = run("git push origin main")
-    if push_result is not None:
-        print(f"Pushed {file_count} files to GitHub at {timestamp}", file=sys.stderr)
-    else:
-        print("Push failed - will retry next session.", file=sys.stderr)
-
-    # Deploy to Vercel production
-    vercel_result = run("npx vercel --prod --yes")
-    if vercel_result is not None:
-        print(f"Deployed to Vercel at {timestamp}", file=sys.stderr)
-    else:
-        print("Vercel deploy failed - deploy manually with: npx vercel --prod", file=sys.stderr)
+SNAPSHOT_SCRIPT = Path("/Users/naomiivie/Education for Equality/scripts/safe_auto_snapshot.py")
 
 
 if __name__ == "__main__":
-    main()
+    runpy.run_path(str(SNAPSHOT_SCRIPT), run_name="__main__")
