@@ -14,7 +14,7 @@
     "stress:curriculum": "tsx scripts/curriculum-quality-gate.ts",
     "stress:guardrails": "tsx scripts/guardrails-stress.ts",
     "red-team": "tsx scripts/red-team.ts",
-    "red-team:live": "tsx scripts/red-team-live.ts"
+    "red-team:live": "tsx --env-file=.env.local scripts/red-team-live.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
