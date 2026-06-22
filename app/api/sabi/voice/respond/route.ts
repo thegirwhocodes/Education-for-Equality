@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  createGatherResponse,
-  createEndCallResponse,
   parseTwilioBody,
   twimlHeaders,
   isTwilioRequest,
 } from "@/lib/voice/twiml";
+import {
+  createTwilioAudioEndResponse,
+  createTwilioAudioGatherResponse,
+} from "@/lib/voice/twilio-audio";
 import { getCallState, addMessage } from "@/lib/voice/call-state";
 import { callSabiVoiceFast } from "@/lib/voice/sabi-shared";
 
@@ -49,8 +51,9 @@ export async function POST(req: NextRequest) {
     const state = await getCallState(callSid);
     if (!state) {
       return new NextResponse(
-        createEndCallResponse(
-          "I'm sorry, I lost track of our conversation. Please call back and we can start again."
+        await createTwilioAudioEndResponse(
+          "I'm sorry, I lost track of our conversation. Please call back and we can start again.",
+          { callSid, prefix: "lost_state" }
         ),
         { headers: twimlHeaders() }
       );
@@ -62,10 +65,10 @@ export async function POST(req: NextRequest) {
       const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
       return new NextResponse(
-        createGatherResponse(
+        await createTwilioAudioGatherResponse(
           "I didn't quite hear that. Can you say it again?",
           actionUrl,
-          { timeout: 5 }
+          { callSid, prefix: "repeat", timeout: 5 }
         ),
         { headers: twimlHeaders() }
       );
@@ -110,7 +113,10 @@ export async function POST(req: NextRequest) {
 
     if (isWrappingUp) {
       // End the call after the goodbye
-      return new NextResponse(createEndCallResponse(sabiResponse), {
+      return new NextResponse(await createTwilioAudioEndResponse(sabiResponse, {
+        callSid,
+        prefix: "goodbye",
+      }), {
         headers: twimlHeaders(),
       });
     }
@@ -119,7 +125,9 @@ export async function POST(req: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://eduforequality.org";
     const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
-    const twiml = createGatherResponse(sabiResponse, actionUrl, {
+    const twiml = await createTwilioAudioGatherResponse(sabiResponse, actionUrl, {
+      callSid,
+      prefix: "response",
       timeout: 8,
     });
 
@@ -129,8 +137,9 @@ export async function POST(req: NextRequest) {
     console.error("Voice respond stack:", error instanceof Error ? error.stack : "no stack");
 
     return new NextResponse(
-      createEndCallResponse(
-        "I'm sorry, something went wrong. Please call back and we can continue where we left off."
+      await createTwilioAudioEndResponse(
+        "I'm sorry, something went wrong. Please call back and we can continue where we left off.",
+        { prefix: "error" }
       ),
       { headers: twimlHeaders() }
     );

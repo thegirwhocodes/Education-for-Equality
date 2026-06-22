@@ -57,11 +57,55 @@ export function createGatherResponse(
 }
 
 /**
+ * Create a TwiML response that plays pre-generated audio and gathers speech.
+ * This keeps the phone path on Sabi's TTS stack instead of Twilio Polly.
+ */
+export function createGatherPlayResponse(
+  audioUrl: string,
+  actionUrl: string,
+  options?: {
+    timeout?: number;
+  }
+): string {
+  const response = new VoiceResponse();
+
+  const gatherOpts: Record<string, string | number> = {
+    ...SPEECH_CONFIG,
+    action: actionUrl,
+    method: "POST",
+    actionOnEmptyResult: "true",
+  };
+
+  if (options?.timeout) {
+    gatherOpts.timeout = options.timeout;
+  }
+
+  const gather = response.gather(gatherOpts);
+  gather.play(audioUrl);
+
+  // If Twilio ever falls through instead of POSTing an empty result, loop back
+  // to the action route so the retry still uses generated Sabi audio.
+  response.redirect({ method: "POST" }, actionUrl);
+
+  return response.toString();
+}
+
+/**
  * Create a TwiML response that speaks text and ends the call
  */
 export function createEndCallResponse(sayText: string): string {
   const response = new VoiceResponse();
   response.say(VOICE_CONFIG, sayText);
+  response.hangup();
+  return response.toString();
+}
+
+/**
+ * Play pre-generated audio and then end the call.
+ */
+export function createPlayEndCallResponse(audioUrl: string): string {
+  const response = new VoiceResponse();
+  response.play(audioUrl);
   response.hangup();
   return response.toString();
 }

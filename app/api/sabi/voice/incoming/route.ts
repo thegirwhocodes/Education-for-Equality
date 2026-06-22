@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  createGatherResponse,
   parseTwilioBody,
   twimlHeaders,
   isTwilioRequest,
 } from "@/lib/voice/twiml";
+import {
+  createTwilioAudioEndResponse,
+  createTwilioAudioGatherResponse,
+} from "@/lib/voice/twilio-audio";
 import { createCallState } from "@/lib/voice/call-state";
 import {
   findOrCreateStudentByPhone,
@@ -20,7 +23,7 @@ export const maxDuration = 30;
  * Twilio webhook — called when an inbound voice call arrives.
  * Looks up (or creates) the student by phone number,
  * generates a greeting via Claude, and returns TwiML to
- * speak + gather the child's first response.
+ * play Sabi TTS audio + gather the child's first response.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -35,9 +38,10 @@ export async function POST(req: NextRequest) {
 
     if (!phoneNumber) {
       return new NextResponse(
-        createGatherResponse(
+        await createTwilioAudioGatherResponse(
           "Hello! Welcome to Sabi. I could not identify your phone number. Please try again.",
-          "/api/sabi/voice/incoming"
+          "/api/sabi/voice/incoming",
+          { prefix: "missing_phone" }
         ),
         { headers: twimlHeaders() }
       );
@@ -60,7 +64,9 @@ export async function POST(req: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://eduforequality.org";
     const actionUrl = `${baseUrl}/api/sabi/voice/respond?callSid=${encodeURIComponent(callSid)}`;
 
-    const twiml = createGatherResponse(greeting, actionUrl, {
+    const twiml = await createTwilioAudioGatherResponse(greeting, actionUrl, {
+      callSid,
+      prefix: "greeting",
       timeout: 5,
     });
 
@@ -70,10 +76,10 @@ export async function POST(req: NextRequest) {
     console.error("Voice incoming stack:", error instanceof Error ? error.stack : "no stack");
 
     // Return a friendly error message via TwiML
-    const { createEndCallResponse } = await import("@/lib/voice/twiml");
     return new NextResponse(
-      createEndCallResponse(
-        "I'm sorry, something went wrong. Please try calling again in a moment."
+      await createTwilioAudioEndResponse(
+        "I'm sorry, something went wrong. Please try calling again in a moment.",
+        { prefix: "error" }
       ),
       { headers: twimlHeaders() }
     );
