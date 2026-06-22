@@ -19,7 +19,7 @@ ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS phone_number TEXT;
 -- phone-only insert is valid (otherwise NOT NULL violation on a fresh project).
 ALTER TABLE sabi_students ALTER COLUMN browser_id DROP NOT NULL;
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_sabi_students_phone_number
+CREATE INDEX IF NOT EXISTS idx_sabi_students_phone_number
   ON sabi_students(phone_number)
   WHERE phone_number IS NOT NULL;
 

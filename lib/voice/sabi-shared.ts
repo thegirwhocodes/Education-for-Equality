@@ -468,6 +468,19 @@ ${sessions.length > 1 ? `- Previous sessions: ${sessions.slice(1, 4).map((s: { s
 /**
  * Find or create a student by phone number
  */
+function chooseCanonicalStudentRow<T extends { id: string; name?: string | null; total_sessions?: unknown; created_at?: unknown }>(
+  rows: T[] | null | undefined
+): T | undefined {
+  if (!rows || rows.length === 0) return undefined;
+  return [...rows].sort((a, b) => {
+    const aSessions = Number(a.total_sessions || 0);
+    const bSessions = Number(b.total_sessions || 0);
+    if (aSessions !== bSessions) return bSessions - aSessions;
+    if (Boolean(a.name) !== Boolean(b.name)) return Number(Boolean(b.name)) - Number(Boolean(a.name));
+    return String(b.created_at || "").localeCompare(String(a.created_at || ""));
+  })[0];
+}
+
 export async function findOrCreateStudentByPhone(
   phoneNumber: string
 ): Promise<{ id: string; name: string | null; isNew: boolean }> {
@@ -478,12 +491,15 @@ export async function findOrCreateStudentByPhone(
   try {
     const { data: existingByNormalized } = await supabase
       .from("sabi_students")
-      .select("id, name")
+      .select("id, name, total_sessions, created_at")
       .eq("phone_number_normalized", normalizedPhone)
-      .maybeSingle();
+      .order("total_sessions", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(10);
 
-    if (existingByNormalized) {
-      return { id: existingByNormalized.id, name: existingByNormalized.name, isNew: false };
+    const normalizedRow = chooseCanonicalStudentRow(existingByNormalized);
+    if (normalizedRow) {
+      return { id: normalizedRow.id, name: normalizedRow.name, isNew: false };
     }
   } catch {
     // Older Supabase schemas may not have phone_number_normalized yet.
@@ -497,15 +513,7 @@ export async function findOrCreateStudentByPhone(
 
   if (lookupError) console.error("Student lookup error:", lookupError.message);
   if (existing) {
-    const row = Array.isArray(existing)
-      ? [...existing].sort((a, b) => {
-          const aSessions = Number(a.total_sessions || 0);
-          const bSessions = Number(b.total_sessions || 0);
-          if (aSessions !== bSessions) return bSessions - aSessions;
-          if (Boolean(a.name) !== Boolean(b.name)) return Number(Boolean(b.name)) - Number(Boolean(a.name));
-          return String(b.created_at || "").localeCompare(String(a.created_at || ""));
-        })[0]
-      : existing;
+    const row = chooseCanonicalStudentRow(Array.isArray(existing) ? existing : [existing]);
     if (row) {
       const updateWithNormalized = await supabase
           .from("sabi_students")
@@ -529,6 +537,9 @@ export async function findOrCreateStudentByPhone(
   const insertPayload = {
     phone_number: normalizedPhone,
     phone_number_normalized: normalizedPhone,
+    phone_household_key: normalizedPhone,
+    child_name_normalized: null,
+    learner_key: null,
     current_module: 0,
     current_topic: "diagnostic",
     current_level: "beginner",

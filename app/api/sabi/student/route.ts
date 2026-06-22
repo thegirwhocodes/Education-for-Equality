@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { normalizePhoneNumber, phoneLookupVariants } from "@/lib/voice/phone-normalization";
+import { learnerKeyFor, normalizeChildNameForIdentity, normalizePhoneNumber, phoneLookupVariants } from "@/lib/voice/phone-normalization";
 
 function getSupabase() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
+}
+
+function chooseCanonicalStudent<T extends { id: string; name?: unknown; total_sessions?: unknown; created_at?: unknown }>(
+  rows: T[] | null | undefined
+): T | undefined {
+  if (!rows || rows.length === 0) return undefined;
+  return [...rows].sort((a, b) => {
+    const aSessions = Number(a.total_sessions || 0);
+    const bSessions = Number(b.total_sessions || 0);
+    if (aSessions !== bSessions) return bSessions - aSessions;
+    if (Boolean(a.name) !== Boolean(b.name)) return Number(Boolean(b.name)) - Number(Boolean(a.name));
+    return String(b.created_at || "").localeCompare(String(a.created_at || ""));
+  })[0];
 }
 
 // GET /api/sabi/student?browser_id=xxx OR ?phone=+234... — Find student + recent sessions
@@ -27,15 +40,18 @@ export async function GET(req: NextRequest) {
       .from("sabi_students")
       .select("*")
       .eq("phone_number_normalized", normalizedPhone)
-      .maybeSingle();
-    if (byNormalized.data) {
+      .order("total_sessions", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(10);
+    const normalizedStudent = chooseCanonicalStudent(byNormalized.data);
+    if (normalizedStudent) {
       const { data: sessions } = await supabase
         .from("sabi_sessions")
         .select("*")
-        .eq("student_id", byNormalized.data.id)
+        .eq("student_id", normalizedStudent.id)
         .order("created_at", { ascending: false })
         .limit(5);
-      return NextResponse.json({ student: byNormalized.data, sessions: sessions || [] });
+      return NextResponse.json({ student: normalizedStudent, sessions: sessions || [] });
     }
     query = query
       .in("phone_number", phoneLookupVariants(phone))
@@ -79,13 +95,27 @@ export async function POST(req: NextRequest) {
   let existingQuery = supabase.from("sabi_students").select("*");
   const normalizedPhone = phone_number ? normalizePhoneNumber(phone_number) : null;
   if (phone_number) {
+    const learnerKey = learnerKeyFor(normalizedPhone!, name || null);
+    if (learnerKey) {
+      const byLearnerKey = await supabase
+        .from("sabi_students")
+        .select("*")
+        .eq("learner_key", learnerKey)
+        .maybeSingle();
+      if (byLearnerKey.data) {
+        return NextResponse.json({ student: byLearnerKey.data });
+      }
+    }
     const byNormalized = await supabase
       .from("sabi_students")
       .select("*")
       .eq("phone_number_normalized", normalizedPhone)
-      .maybeSingle();
-    if (byNormalized.data) {
-      return NextResponse.json({ student: byNormalized.data });
+      .order("total_sessions", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(10);
+    const normalizedStudent = chooseCanonicalStudent(byNormalized.data);
+    if (normalizedStudent) {
+      return NextResponse.json({ student: normalizedStudent });
     }
     existingQuery = existingQuery
       .in("phone_number", phoneLookupVariants(phone_number))
@@ -123,6 +153,9 @@ export async function POST(req: NextRequest) {
   if (phone_number) {
     insertData.phone_number = normalizedPhone;
     insertData.phone_number_normalized = normalizedPhone;
+    insertData.phone_household_key = normalizedPhone;
+    insertData.child_name_normalized = normalizeChildNameForIdentity(name || null);
+    insertData.learner_key = learnerKeyFor(normalizedPhone!, name || null);
   } else {
     insertData.browser_id = browser_id;
   }

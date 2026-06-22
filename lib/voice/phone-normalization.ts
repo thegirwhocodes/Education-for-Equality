@@ -36,3 +36,24 @@ export function phoneLookupVariants(raw: string | null | undefined): string[] {
 
   return [...new Set(variants)];
 }
+
+export function normalizeChildNameForIdentity(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const cleaned = String(raw)
+    .toLowerCase()
+    .replace(/[^a-z0-9' ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^'+|'+$/g, "");
+  if (!cleaned) return null;
+  if (["yes", "no", "okay", "ok", "hello", "hi", "thanks", "thank you", "i don't know", "i dont know"].includes(cleaned)) {
+    return null;
+  }
+  return cleaned;
+}
+
+export function learnerKeyFor(normalizedPhone: string, childName: string | null | undefined): string | null {
+  const nameKey = normalizeChildNameForIdentity(childName);
+  if (!normalizedPhone || normalizedPhone === "unknown" || !nameKey) return null;
+  return `${normalizedPhone}::${nameKey}`;
+}

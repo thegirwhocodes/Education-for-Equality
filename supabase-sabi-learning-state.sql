@@ -3,7 +3,8 @@
 -- supabase-sabi-telephony.sql.
 --
 -- Purpose:
---   - ensure one learner row per phone number/browser identity
+--   - ensure stable phone lookup while allowing one learner row per child name
+--     per phone number
 --   - store baseline diagnostic and TaRL-style placement state
 --   - persist scaffold depth / correct-wrong streaks so Sabi continues from
 --     the exact pedagogical state on the next call
@@ -11,6 +12,9 @@
 -- Stable phone identity. Existing rows may have +234..., 234..., or 080...
 -- in phone_number; app/server code normalizes new writes into this column.
 ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS phone_number_normalized TEXT;
+ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS phone_household_key TEXT;
+ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS child_name_normalized TEXT;
+ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS learner_key TEXT;
 
 UPDATE sabi_students
 SET phone_number_normalized = CASE
@@ -23,9 +27,31 @@ END
 WHERE phone_number IS NOT NULL
   AND (phone_number_normalized IS NULL OR phone_number_normalized = '');
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_sabi_students_phone_number_normalized
+UPDATE sabi_students
+SET
+  phone_household_key = phone_number_normalized,
+  child_name_normalized = NULLIF(
+    regexp_replace(lower(coalesce(name, '')), '[^a-z0-9'' ]', ' ', 'g'),
+    ''
+  )
+WHERE phone_number_normalized IS NOT NULL
+  AND (phone_household_key IS NULL OR child_name_normalized IS NULL);
+
+UPDATE sabi_students
+SET learner_key = phone_number_normalized || '::' || regexp_replace(child_name_normalized, '\s+', ' ', 'g')
+WHERE phone_number_normalized IS NOT NULL
+  AND child_name_normalized IS NOT NULL
+  AND learner_key IS NULL;
+
+DROP INDEX IF EXISTS idx_sabi_students_phone_number_normalized;
+
+CREATE INDEX IF NOT EXISTS idx_sabi_students_phone_number_normalized
   ON sabi_students(phone_number_normalized)
   WHERE phone_number_normalized IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sabi_students_learner_key
+  ON sabi_students(learner_key)
+  WHERE learner_key IS NOT NULL;
 
 -- Core adaptive placement fields.
 ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS current_week INTEGER DEFAULT 1;

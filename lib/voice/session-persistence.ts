@@ -19,6 +19,9 @@ const OPTIONAL_STUDENT_COLUMNS = new Set([
   "current_week",
   "current_lesson",
   "tarl_level",
+  "phone_household_key",
+  "child_name_normalized",
+  "learner_key",
 ]);
 
 function errorText(error: unknown) {
