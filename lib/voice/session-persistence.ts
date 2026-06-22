@@ -12,6 +12,13 @@ const OPTIONAL_STUDENT_COLUMNS = new Set([
   "current_module",
   "current_topic",
   "skills",
+  "phone_number_normalized",
+  "learning_state",
+  "baseline_status",
+  "diagnostic_results",
+  "current_week",
+  "current_lesson",
+  "tarl_level",
 ]);
 
 function errorText(error: unknown) {

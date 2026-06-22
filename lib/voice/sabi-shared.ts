@@ -14,6 +14,7 @@ import { createClient } from "@supabase/supabase-js";
 import { buildNumericGradingHint } from "./numeric-grading";
 import { SABI_SAFETY_PREAMBLE, guardInput, guardOutput } from "./guardrails";
 import { raiseSafeguardingIncident } from "./safeguarding";
+import { normalizePhoneNumber, phoneLookupVariants } from "./phone-normalization";
 
 const anthropic = new Anthropic();
 
@@ -448,28 +449,98 @@ export async function findOrCreateStudentByPhone(
   phoneNumber: string
 ): Promise<{ id: string; name: string | null; isNew: boolean }> {
   const supabase = getSupabase();
+  const normalizedPhone = normalizePhoneNumber(phoneNumber);
+  const variants = phoneLookupVariants(phoneNumber);
 
-  // Look up by phone number (use maybeSingle to avoid error when no rows found)
-  const { data: existing, error: lookupError } = await supabase
-    .from("sabi_students")
-    .select("id, name")
-    .eq("phone_number", phoneNumber)
-    .maybeSingle();
+  try {
+    const { data: existingByNormalized } = await supabase
+      .from("sabi_students")
+      .select("id, name")
+      .eq("phone_number_normalized", normalizedPhone)
+      .maybeSingle();
 
-  if (lookupError) {
-    console.error("Student lookup error:", lookupError.message);
+    if (existingByNormalized) {
+      return { id: existingByNormalized.id, name: existingByNormalized.name, isNew: false };
+    }
+  } catch {
+    // Older Supabase schemas may not have phone_number_normalized yet.
   }
 
+  // Look up by historic raw variants.
+  const { data: existing, error: lookupError } = await supabase
+    .from("sabi_students")
+    .select("id, name, total_sessions, created_at")
+    .in("phone_number", variants);
+
+  if (lookupError) console.error("Student lookup error:", lookupError.message);
   if (existing) {
-    return { id: existing.id, name: existing.name, isNew: false };
+    const row = Array.isArray(existing)
+      ? [...existing].sort((a, b) => {
+          const aSessions = Number(a.total_sessions || 0);
+          const bSessions = Number(b.total_sessions || 0);
+          if (aSessions !== bSessions) return bSessions - aSessions;
+          if (Boolean(a.name) !== Boolean(b.name)) return Number(Boolean(b.name)) - Number(Boolean(a.name));
+          return String(b.created_at || "").localeCompare(String(a.created_at || ""));
+        })[0]
+      : existing;
+    if (row) {
+      const updateWithNormalized = await supabase
+          .from("sabi_students")
+          .update({
+            phone_number: normalizedPhone,
+            phone_number_normalized: normalizedPhone,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", row.id);
+      if (updateWithNormalized.error) {
+        await supabase
+          .from("sabi_students")
+          .update({ phone_number: normalizedPhone, updated_at: new Date().toISOString() })
+          .eq("id", row.id);
+      }
+      return { id: row.id, name: row.name, isNew: false };
+    }
   }
 
   // Create new student with phone number
-  const { data: created, error } = await supabase
+  const insertPayload = {
+    phone_number: normalizedPhone,
+    phone_number_normalized: normalizedPhone,
+    current_module: 0,
+    current_topic: "diagnostic",
+    current_level: "beginner",
+    skills: {},
+    learning_state: {
+      course: "numeracy",
+      phase: "onboarding",
+      diagnostic_status: "not_started",
+      current_module: 0,
+      active_skill: "diagnostic",
+      correct_streak: 0,
+      wrong_streak: 0,
+      scaffold_depth: 0,
+    },
+    baseline_status: "not_started",
+  };
+
+  let created;
+  let error;
+  const result = await supabase
     .from("sabi_students")
-    .insert({ phone_number: phoneNumber })
+    .insert(insertPayload)
     .select("id, name")
     .single();
+  created = result.data;
+  error = result.error;
+  if (error) {
+    const result = await supabase
+      .from("sabi_students")
+      .insert({ phone_number: normalizedPhone })
+      .select("id, name")
+      .single();
+    created = result.data;
+    error = result.error;
+  }
 
   if (error || !created) {
     throw new Error(`Failed to create student: ${error?.message}`);
