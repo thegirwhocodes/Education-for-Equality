@@ -5,7 +5,7 @@
  * grooming signal, the child-facing response is immediate (handled in guardrails.ts);
  * THIS module writes the incident to a restricted, audit-logged queue that a named
  * human safeguarding focal point reviews on a defined SLA (see the Child Protection
- * Policy in `7. Legal & IP/`). The model call never blocks on this write.
+ * Policy in `pilot/safeguarding-and-legal/`). The model call never blocks on this write.
  *
  * Table: `safeguarding_incidents` (migration: supabase-safeguarding.sql). RLS denies
  * all anon/authenticated access; only the service role (this server) and the focal
@@ -14,6 +14,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { redactPII } from "./pii";
+import { dispatchEmergencyAlert } from "./emergency-alert";
 
 export interface SafeguardingIncident {
   studentId: string | null;
@@ -52,6 +53,21 @@ export async function raiseSafeguardingIncident(
       `category=${incident.category} reason=${incident.reason} ` +
       `student=${incident.studentId ?? "unknown"} channel=${incident.channel ?? "?"}`,
   );
+
+  // CRITICAL (abuse / self-harm / emergency): push a can't-fail multi-channel
+  // alert to the Focal Point (calendar + SMS + webhook). Fire-and-forget; the
+  // durable record (this log + the Supabase row below) stands regardless.
+  if (incident.riskLevel === 3) {
+    void dispatchEmergencyAlert({
+      category: incident.category,
+      riskLevel: incident.riskLevel,
+      reason: incident.reason,
+      studentId: incident.studentId,
+      utteranceRedacted: safeUtterance,
+      channel: incident.channel,
+      callId: incident.callId,
+    }).catch((e) => console.error("[SAFEGUARDING] emergency alert threw", e));
+  }
 
   const client = serviceClient();
   if (!client) {

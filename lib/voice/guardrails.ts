@@ -180,9 +180,9 @@ You are speaking with a CHILD, aged 8 to 14, in Nigeria. Always keep this in min
 
 const P = {
   self_harm:
-    /\b(kill (myself|me)|want(?:ing)? to die|end (my|it) (life|all)|don'?t want to (live|be (here|alive))|hurt(?:ing)? myself|cut(?:ting)? myself|harm myself|no reason to live|better off dead|i (hate|wanna end) (my life|myself)|wish i (was|were) dead)\b/i,
+    /\b(kill (myself|me)|want(?:ing)? to die|end (my|it) (life|all)|don'?t want to (live|be (here|alive))|hurt(?:ing)? myself|cut(?:ting)? myself|harm myself|no reason to live|better off dead|i (hate|wanna end) (my life|myself)|wish i (was|were) dead|i no wan live|i wan die|make i (just )?die|i don tire (for|to) live|i wan commot for this world)\b/i,
   abuse_disclosure:
-    /\b((hurts?|touch(?:es|ed)?|beats?|hits?|hit|slaps?|burns?) me|hurting me|touched me (down|there)|is (abusing|molesting|raping) me|raped? me|nobody (feeds|cares for) me|no ?one feeds me|tells? me not to tell|don'?t tell (anyone|mum|dad|my)|it'?s our secret|makes? me do (things|bad things)|(my|the) (uncle|man|teacher|daddy|father) (hurts?|touch)|(daddy|father|dad|mummy|mum|mother|he|she|husband) (hits?|beats?|hurts?|hit|beat|slaps?) (my |the )?(mummy|mum|mother|daddy|dad|father|sister|brother))\b/i,
+    /\b((hurts?|touch(?:es|ed)?|beats?|hits?|hit|slaps?|burns?|flogs?|canes?|whips?|knacks?) me|hurting me|touched me (down|there)|is (abusing|molesting|raping) me|raped? me|nobody (dey )?(feeds?|cares for|give(s)?( me)? food)|no ?one (dey )?(feeds?|give(s)?( me)? food)|dem no (dey )?(feed me|give me food)|tells? me not to tell|don'?t tell (anyone|mum|dad|my)|it'?s our secret|makes? me do (things|bad things)|(my|the) (uncle|man|teacher|daddy|father|papa) (hurts?|touch|dey (beat|flog|touch))|(daddy|father|dad|papa|mummy|mum|mother|mama|he|she|husband) (dey )?(hits?|beats?|hurts?|hit|beat|slaps?|flogs?|burns?) (my |the )?(mummy|mum|mother|mama|daddy|dad|father|papa|sister|brother))\b/i,
   // emergency: a danger word; "right now"/"help" amplify but several stand alone.
   emergency:
     /\b(there'?s a fire|i can'?t breathe|i'?m bleeding|drowning|someone is (hurting|chasing|attacking|grabbing) me( right now)?|help me now|being attacked|he'?s (coming|here) (right )?now and|i'?m in danger)\b/i,
@@ -195,7 +195,7 @@ const P = {
   profanity:
     /\b(fuck|shit|bitch|bastard|asshole|stupid idiot|shut up you|(say|teach|tell|use)( me)?.{0,20}(bad|swear|curse|rude|dirty) words?)\b/i,
   grooming_meetup:
-    /\b(meet (you|up|me)( in person| somewhere)?|see you in person|come (to|over to) my (house|home|school|place)|can i (come|visit)|let'?s meet|where do you (live|stay)|i'?ll (come|find) you|send (you|me) (a )?(pic|picture|photo|selfie)|can i send (you )?(a )?(pic|picture|photo)|what do you look like)\b/i,
+    /\b(meet (you|up|me)( in person| somewhere)?|see you in person|come (to|over to) my (house|home|school|place)|can i (come|visit)|let'?s meet|make we meet|meet (for|at) (your )?(house|home|place|school)|where do you (live|stay)|i'?ll (come|find) you|send (you|me) (a )?(pic|picture|photo|selfie)|can i send (you )?(a )?(pic|picture|photo)|what do you look like)\b/i,
   off_platform:
     /\b(whats ?app|telegram|snapchat|instagram|tiktok|facebook|your (phone )?number|call me (on|at)|text me|add me on|let'?s (talk|chat) on|dm me|my number is)\b/i,
   pii:
@@ -203,9 +203,9 @@ const P = {
   jailbreak:
     /\b(ignore (your|the|all|previous|those) (rules|instructions|prompt)|forget (your|the) (rules|instructions|lesson)|no (more )?rules|without (any )?(rules|filters|restrictions)|developer mode|dan mode|jail ?break|do anything now|pretend (you('?re| are)? not|to be|there are no)|act as if you|you are now|turn off your (rules|filters)|magic word .* (turn|switch) off|enable adult mode|system:? (enable|turn))\b/i,
   prompt_extraction:
-    /\b(system prompt|your (initial|original|exact|first) (instructions|rules|prompt)|repeat (everything|the text|your (rules|instructions)|the (exact )?instructions)|(instructions|rules) you (were|was) (given|told)|print (everything|your (rules|prompt|instructions))|what (are|were) your (rules|instructions)|reveal your (prompt|rules|instructions)|what (model|ai) are you|your api key|the text above|finish this sentence:? .?you are sabi)\b/i,
+    /\b(system prompt|your (initial|original|exact|first) (instructions|rules|prompt)|repeat (everything|the text|your (rules|instructions)|the (exact )?instructions)|(instructions|rules) you (were|was) (given|told)|everything (i|you) (were|was) told|repeat .{0,12}everything you (were|was) told|rules (wey )?dem (give|tell)|wetin dem (tell|give) you|print (everything|your (rules|prompt|instructions))|what (are|were) your (rules|instructions)|reveal your (prompt|rules|instructions)|what (model|ai) are you|your api key|the text above|finish this sentence:? .?you are sabi)\b/i,
   companion_roleswap:
-    /\b(be my (girl|boy)friend|will you (marry|date|love) me|be my (big )?(sister|brother|mummy|best friend)|tell me (a )?secret|let'?s (just )?(chat|talk|gist) (for|all)|stop (teaching|the lesson)|forget the lesson|no learning today|i love you sabi)\b/i,
+    /\b(be my (girl|boy)friend|will you (marry|date|love) me|be my (big )?(sister|brother|mummy|best friend)|be my friend forever|i'?m (so )?lonely|forget say you be (my )?teacher|you be (my )?teacher|gist with me|just talk to me not|tell me (a )?secret|let'?s (just )?(chat|talk|gist) (for|all)|stop (teaching|the lesson)|forget the lesson|no learning today|i love you sabi)\b/i,
   dangerous_advice:
     /\b(how (do|to|can) i (light|start) a fire|how to (make|use) (a )?(knife|matches|petrol|kerosene)|drink (bleach|petrol)|mix (chemicals|drugs)|how to run away|how to (skip|avoid) school without)\b/i,
   medical_legal:

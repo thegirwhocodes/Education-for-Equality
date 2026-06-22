@@ -12,7 +12,9 @@
     "seed": "tsx --env-file=.env.local scripts/seed-grade4.ts",
     "stress:at": "tsx scripts/sabi-at-stress-test.ts",
     "stress:curriculum": "tsx scripts/curriculum-quality-gate.ts",
-    "stress:guardrails": "tsx scripts/guardrails-stress.ts"
+    "stress:guardrails": "tsx scripts/guardrails-stress.ts",
+    "red-team": "tsx scripts/red-team.ts",
+    "red-team:live": "tsx scripts/red-team-live.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
