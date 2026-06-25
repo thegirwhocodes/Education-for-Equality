@@ -274,11 +274,11 @@ export default function SabiLanding() {
                 Market math vs. abstract math
               </p>
               <p className="text-sm text-gray-600">
-                Children solve the exact same arithmetic 9x more often when
-                framed as a market transaction (48.5% vs 5.4%).
+                Children solved comparable subtraction tasks 9x more often in
+                market framing than in formal school format (48.5% vs 5.4%).
               </p>
               <p className="text-xs text-gray-400 mt-2">
-                Nature 2025, Sokoto Nigeria 2024
+                Weber, Bogler & Vollmer 2024, North-West Nigeria
               </p>
             </div>
 

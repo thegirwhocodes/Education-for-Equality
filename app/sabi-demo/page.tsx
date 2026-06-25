@@ -1171,12 +1171,12 @@ export default function SabiDemo() {
             Why Market Math?
           </h3>
           <p className="text-sm text-white/80 leading-relaxed mb-3">
-            Research from <strong>Nature (2025)</strong> and a study of{" "}
-            <strong>5,997 children in Sokoto, Nigeria (2024)</strong> found that
-            children who sell at markets solve the{" "}
-            <em>exact same arithmetic</em>{" "}
-            <strong>9x more often</strong> when framed as a market transaction
-            vs. abstract math (48.5% vs 5.4%).
+            Weber, Bogler & Vollmer&apos;s study of{" "}
+            <strong>5,997 children in North-West Nigeria (2024)</strong> found
+            that children solved comparable subtraction tasks{" "}
+            <strong>9x more often</strong> in market framing than in formal
+            school format (48.5% vs 5.4%). A separate Nature (2025) study found
+            the same kind of transfer gap among working children in India.
           </p>
           <p className="text-sm text-white/80 leading-relaxed mb-3">
             <strong>Persistent memory</strong> means Sabi remembers each
@@ -1192,4 +1192,3 @@ export default function SabiDemo() {
     </div>
   );
 }
-
