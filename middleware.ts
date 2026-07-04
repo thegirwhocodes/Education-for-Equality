@@ -4,8 +4,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 const protectedRoutes = ['/dashboard'];
 const advisorBoardRoutes = ['/advisor-board'];
 const advisorBoardApiRoutes = ['/api/advisor-board'];
-const prepilotRoutes = ['/sabi/prepilot'];
-const prepilotApiRoutes = ['/api/sabi/prepilot'];
+const prepilotRoutes = ['/sabi/prepilot', '/sabi/parents'];
+const prepilotApiRoutes = ['/api/sabi/prepilot', '/api/sabi/parents'];
 
 function isProtectedPath(path: string) {
   return protectedRoutes.some((route) => path === route || path.startsWith(`${route}/`));

@@ -85,6 +85,95 @@ export async function sendSMS(
   }
 }
 
+export type SmsProviderStatus = {
+  provider: "at" | "twilio" | "none";
+  ready: boolean;
+  live: boolean;
+  detail: string;
+};
+
+/**
+ * Report whether an SMS provider is configured and safe to send LIVE.
+ * Africa's Talking with AT_USERNAME="sandbox" is NOT live (test only).
+ */
+export function smsProviderStatus(): SmsProviderStatus {
+  if (process.env.AT_API_KEY && process.env.AT_USERNAME) {
+    const sandbox = process.env.AT_USERNAME.trim().toLowerCase() === "sandbox";
+    return {
+      provider: "at",
+      ready: true,
+      live: !sandbox,
+      detail: sandbox
+        ? "Africa's Talking is in SANDBOX mode — messages will not reach real phones. Set a production AT_USERNAME + prod API key to go live."
+        : "Africa's Talking is configured for live delivery.",
+    };
+  }
+  if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
+    return { provider: "twilio", ready: true, live: true, detail: "Twilio is configured for live delivery." };
+  }
+  return {
+    provider: "none",
+    ready: false,
+    live: false,
+    detail: "No SMS provider configured. Add Africa's Talking (AT_API_KEY + AT_USERNAME) or Twilio credentials.",
+  };
+}
+
+export type SmsSendResult = {
+  ok: boolean;
+  provider: "at" | "twilio" | "none";
+  live: boolean;
+  error?: string;
+};
+
+/**
+ * Send an SMS and return the outcome (unlike sendSMS which swallows errors).
+ * Logs to sabi_sms_log with the caregiver's student_id when known.
+ */
+export async function sendSMSResult(
+  to: string,
+  message: string,
+  options?: { smsType?: string; studentId?: string | null },
+): Promise<SmsSendResult> {
+  const status = smsProviderStatus();
+  if (!status.ready) {
+    return { ok: false, provider: "none", live: false, error: status.detail };
+  }
+  try {
+    if (status.provider === "at") {
+      await sendATSMS(to, message);
+    } else {
+      const client = getTwilioClient();
+      await client.messages.create({
+        body: message,
+        from: process.env.TWILIO_PHONE_NUMBER!,
+        to,
+      });
+    }
+    try {
+      const supabase = getSupabase();
+      await supabase.from("sabi_sms_log").insert({
+        student_id: options?.studentId || null,
+        phone_number: to,
+        direction: "outbound",
+        message,
+        sms_type: options?.smsType || "caregiver_custom",
+        channel: status.provider,
+      });
+    } catch (logError) {
+      console.error("SMS log error (send succeeded):", logError);
+    }
+    return { ok: true, provider: status.provider, live: status.live };
+  } catch (error) {
+    return {
+      ok: false,
+      provider: status.provider,
+      live: status.live,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
 /**
  * Send a post-call session summary SMS
  */
