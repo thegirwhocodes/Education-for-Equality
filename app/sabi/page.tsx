@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 function PhoneIcon() {
@@ -25,42 +26,39 @@ function HeartIcon() {
   );
 }
 
+function ArrowIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
 export default function SabiLanding() {
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]" />
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-[var(--primary)] rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-20 w-96 h-96 bg-[var(--accent)] rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative max-w-5xl mx-auto px-6 py-24 md:py-32 text-center text-white">
-          <p className="text-sm uppercase tracking-widest opacity-70 mb-4">
+    <div className="flex-1">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b sabi-hero">
+        <div className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center">
+          <Image src="/sabi-spark.svg" alt="" width={48} height={51} className="sabi-spark-mark mx-auto mb-6" />
+          <p className="sabi-byline mb-4">
             Education for Equality
           </p>
-          <h1 className="text-5xl md:text-7xl font-bold mb-4">Sabi</h1>
-          <p className="text-xl md:text-2xl opacity-90 mb-2 italic">
+          <h1 className="sabi-display text-6xl md:text-8xl mb-4">Sabi</h1>
+          <p className="text-lg md:text-xl text-[var(--sabi-text-secondary)] mb-2 italic">
             /sah-bee/ — &quot;to know&quot; in Nigerian Pidgin
           </p>
-          <p className="text-lg md:text-xl opacity-80 max-w-2xl mx-auto mt-6 leading-relaxed">
-            An AI tutor any child can reach by calling a phone number. No
-            smartphone. No internet. No cost.
+          <p className="text-lg md:text-xl text-[var(--sabi-muted)] max-w-2xl mx-auto mt-6 leading-relaxed">
+            An AI tutor any child can reach by calling a phone number. No smartphone. No internet. No cost.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-            <Link
-              href="/demo"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
-            >
+            <Link href="/demo" className="sabi-btn-gold inline-flex items-center justify-center gap-2 px-8 py-4 text-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
               Talk to Sabi
             </Link>
-            <Link
-              href="/chat"
-              className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
-            >
+            <Link href="/chat" className="sabi-btn-secondary inline-flex items-center justify-center gap-2 px-8 py-4 text-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               Chat with Sabi
             </Link>
@@ -68,162 +66,92 @@ export default function SabiLanding() {
         </div>
       </section>
 
-      {/* ─── The Problem ───────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
+      {/* Problem */}
+      <section className="sabi-section-crisis">
+        <div className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
-            The Learning Crisis
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="sabi-display text-3xl md:text-4xl mb-4">The Learning Crisis</h2>
+          <p className="text-lg text-[var(--sabi-muted)] max-w-2xl mx-auto">
             Children go to school for a decade and come out unable to read.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 text-center">
-            <p className="text-5xl font-bold text-[var(--primary-darker)] mb-2">
-              98M
-            </p>
-            <p className="text-gray-600">
-              Children out of school in Sub-Saharan Africa
-            </p>
-            <p className="text-xs text-gray-400 mt-2">UNESCO 2024</p>
-          </div>
-          <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 text-center">
-            <p className="text-5xl font-bold text-[var(--primary-darker)] mb-2">
-              7 in 10
-            </p>
-            <p className="text-gray-600">
-              Nigerian 10-year-olds who cannot read a single sentence
-            </p>
-            <p className="text-xs text-gray-400 mt-2">World Bank 2022</p>
-          </div>
-          <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 text-center">
-            <p className="text-5xl font-bold text-[var(--primary-darker)] mb-2">
-              16%
-            </p>
-            <p className="text-gray-600">
-              Of planned learning that actually happens in schools
-            </p>
-            <p className="text-xs text-gray-400 mt-2">
-              Attendance × lesson completion × teacher presence
-            </p>
-          </div>
+          {[
+            { stat: "98M", label: "Children out of school in Sub-Saharan Africa", cite: "UNESCO 2024" },
+            { stat: "7 in 10", label: "Nigerian 10-year-olds who cannot read a single sentence", cite: "World Bank 2022" },
+            { stat: "16%", label: "Of planned learning that actually happens in schools", cite: "Attendance × lesson completion × teacher presence" },
+          ].map((item) => (
+            <div key={item.stat} className="sabi-card p-8 text-center">
+              <p className="sabi-stat-value text-5xl mb-2">{item.stat}</p>
+              <p className="text-[var(--sabi-text-secondary)]">{item.label}</p>
+              <p className="text-xs text-[var(--sabi-meta)] mt-2">{item.cite}</p>
+            </div>
+          ))}
+        </div>
         </div>
       </section>
 
-      {/* ─── The Insight ───────────────────────────────────── */}
-      <section className="bg-[var(--secondary)]">
+      {/* Insight */}
+      <section className="sabi-section-answer border-y" style={{ borderColor: "var(--sabi-border)" }}>
         <div className="max-w-5xl mx-auto px-6 py-20">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-6">
-              The Answer Is Already in Their Pocket
-            </h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-8">
-              600 million people in Africa have no internet. But{" "}
-              <strong>70% have a mobile phone</strong>. In Lagos, 95% of
-              households have one. 2G coverage is 99%.
+            <h2 className="sabi-display text-3xl md:text-4xl mb-6">The Answer Is Already in Their Pocket</h2>
+            <p className="text-lg text-[var(--sabi-text-secondary)] leading-relaxed mb-8">
+              600 million people in Africa have no internet. But <strong className="text-[var(--sabi-text)]">70% have a mobile phone</strong>.
+              In Lagos, 95% of households have one. 2G coverage is 99%.
             </p>
-            <p className="text-xl font-semibold text-[var(--primary-darker)]">
+            <p className="text-xl font-semibold text-[var(--sabi-gold-deep)]">
               What if we used the infrastructure that already exists?
             </p>
           </div>
         </div>
       </section>
 
-      {/* ─── How It Works ──────────────────────────────────── */}
-      <section id="how-it-works" className="max-w-5xl mx-auto px-6 py-20">
+      {/* How it works */}
+      <section id="how-it-works" className="sabi-section-how">
+        <div className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
-            How Sabi Works
-          </h2>
-          <p className="text-lg text-gray-600">
-            A child dials a phone number. Sabi does the rest.
-          </p>
+          <h2 className="sabi-display text-3xl md:text-4xl mb-4">How Sabi Works</h2>
+          <p className="text-lg text-[var(--sabi-muted)]">A child dials a phone number. Sabi does the rest.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Flow */}
           <div className="space-y-6">
             {[
-              {
-                step: "1",
-                title: "Child calls the number",
-                desc: "Works on any phone — even a $5 feature phone. No app, no data, no account needed.",
-              },
-              {
-                step: "2",
-                title: "Sabi greets them by name",
-                desc: "New callers introduce themselves once. Returning callers are recognized instantly.",
-              },
-              {
-                step: "3",
-                title: "A lesson begins",
-                desc: "Sabi teaches at the child's actual level using scenarios they know — market transactions, Naira, everyday Lagos life.",
-              },
-              {
-                step: "4",
-                title: "5-7 minutes, one concept",
-                desc: "Short, focused calls. Gets harder when the child is ready. Slows down when they struggle.",
-              },
-              {
-                step: "5",
-                title: "Child calls back tomorrow",
-                desc: "Sabi remembers everything — their name, their level, their mistakes. Picks up exactly where they left off.",
-              },
+              { step: "1", title: "Child calls the number", desc: "Works on any phone — even a $5 feature phone. No app, no data, no account needed." },
+              { step: "2", title: "Sabi greets them by name", desc: "New callers introduce themselves once. Returning callers are recognized instantly." },
+              { step: "3", title: "A lesson begins", desc: "Sabi teaches at the child's actual level using scenarios they know — market transactions, Naira, everyday Lagos life." },
+              { step: "4", title: "5-7 minutes, one concept", desc: "Short, focused calls. Gets harder when the child is ready. Slows down when they struggle." },
+              { step: "5", title: "Child calls back tomorrow", desc: "Sabi remembers everything — their name, their level, their mistakes. Picks up exactly where they left off." },
             ].map((item) => (
               <div key={item.step} className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--primary-darker)] text-white flex items-center justify-center font-bold text-sm">
+                <div className="sabi-step-num flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm">
                   {item.step}
                 </div>
                 <div>
-                  <h3 className="font-bold text-[var(--primary-darker)]">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
+                  <h3 className="font-semibold text-[var(--sabi-ink)]">{item.title}</h3>
+                  <p className="text-sm text-[var(--sabi-muted)] mt-1">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Sample conversation */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-            <h3 className="font-bold text-[var(--primary-darker)] mb-4">
-              A Real Sabi Conversation
-            </h3>
+          <div className="sabi-card p-6">
+            <h3 className="font-semibold text-[var(--sabi-ink)] mb-4">A Real Sabi Conversation</h3>
             <div className="space-y-3 text-sm">
               {[
                 { who: "Sabi", text: "Hello! My name is Sabi. What is your name?" },
                 { who: "Child", text: "Chidi." },
-                {
-                  who: "Sabi",
-                  text: "Hi Chidi! Do you ever help your family at the market?",
-                },
+                { who: "Sabi", text: "Hi Chidi! Do you ever help your family at the market?" },
                 { who: "Child", text: "Yes, I sell groundnuts." },
-                {
-                  who: "Sabi",
-                  text: "Ah, you know business! If a customer gives you ₦500, and groundnuts cost ₦350, how much change do you give back?",
-                },
+                { who: "Sabi", text: "Ah, you know business! If a customer gives you ₦500, and groundnuts cost ₦350, how much change do you give back?" },
                 { who: "Child", text: "150." },
-                {
-                  who: "Sabi",
-                  text: "You got it! You already know maths, Chidi — you just don't know you know it. Now let me teach you how they write that in school...",
-                },
+                { who: "Sabi", text: "You got it! You already know maths, Chidi — you just don't know you know it. Now let me teach you how they write that in school..." },
               ].map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex ${msg.who === "Child" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl ${
-                      msg.who === "Child"
-                        ? "bg-[var(--primary-dark)] text-white rounded-br-md"
-                        : "bg-gray-100 text-gray-800 rounded-bl-md"
-                    }`}
-                  >
-                    <span
-                      className={`font-semibold block mb-0.5 text-xs ${msg.who === "Child" ? "opacity-70" : "text-[var(--primary-darker)]"}`}
-                    >
+                <div key={i} className={`flex ${msg.who === "Child" ? "justify-end" : "justify-start"}`}>
+                  <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm ${msg.who === "Child" ? "sabi-chat-child rounded-br-md" : "sabi-chat-sabi rounded-bl-md"}`}>
+                    <span className={`font-semibold block mb-0.5 text-xs ${msg.who === "Child" ? "text-[var(--sabi-muted)]" : "text-[var(--sabi-gold-deep)]"}`}>
                       {msg.who}
                     </span>
                     {msg.text}
@@ -232,216 +160,111 @@ export default function SabiLanding() {
               ))}
             </div>
 
-            {/* Next day */}
-            <div className="border-t border-dashed border-gray-300 my-4 relative">
-              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs text-gray-400">
+            <div className="border-t border-dashed my-4 relative" style={{ borderColor: "var(--sabi-border)" }}>
+              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--sabi-surface)] px-3 text-xs text-[var(--sabi-meta)]">
                 Next day
               </span>
             </div>
             <div className="flex justify-start">
-              <div className="max-w-[85%] px-4 py-2.5 rounded-2xl bg-gray-100 text-gray-800 rounded-bl-md text-sm">
-                <span className="font-semibold block mb-0.5 text-xs text-[var(--primary-darker)]">
-                  Sabi
-                </span>
-                Welcome back, Chidi! Yesterday you learned about subtraction
-                using market change. You got 4 out of 5 right. Today,
-                let&apos;s try adding things together...
+              <div className="max-w-[85%] px-4 py-2.5 rounded-2xl sabi-chat-sabi rounded-bl-md text-sm">
+                <span className="font-semibold block mb-0.5 text-xs text-[var(--sabi-gold-deep)]">Sabi</span>
+                Welcome back, Chidi! Yesterday you learned about subtraction using market change. You got 4 out of 5 right. Today, let&apos;s try adding things together...
               </div>
             </div>
           </div>
         </div>
+        </div>
       </section>
 
-      {/* ─── Why It Works (Research) ───────────────────────── */}
-      <section className="bg-white border-y border-gray-100">
+      {/* Research */}
+      <section className="sabi-section-alt border-y" style={{ borderColor: "var(--sabi-border)" }}>
         <div className="max-w-5xl mx-auto px-6 py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
-              The Science Behind Sabi
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Every design choice is backed by research from Nigeria, Ghana,
-              Tanzania, Madagascar, and global RCTs.
+            <h2 className="sabi-display text-3xl md:text-4xl mb-4">The Science Behind Sabi</h2>
+            <p className="text-lg text-[var(--sabi-muted)] max-w-2xl mx-auto">
+              Every design choice is backed by research from Nigeria, Ghana, Tanzania, Madagascar, and global RCTs.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="border border-gray-200 rounded-2xl p-6">
-              <p className="text-3xl font-bold text-[var(--primary-darker)] mb-1">
-                9x
-              </p>
-              <p className="font-semibold text-gray-800 mb-2">
-                Market math vs. abstract math
-              </p>
-              <p className="text-sm text-gray-600">
-                Children solved comparable subtraction tasks 9x more often in
-                market framing than in formal school format (48.5% vs 5.4%).
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                Weber, Bogler & Vollmer 2024, North-West Nigeria
-              </p>
-            </div>
-
-            <div className="border border-gray-200 rounded-2xl p-6">
-              <p className="text-3xl font-bold text-[var(--primary-darker)] mb-1">
-                1.5-2 years
-              </p>
-              <p className="font-semibold text-gray-800 mb-2">
-                Learning gains in 6 weeks
-              </p>
-              <p className="text-sm text-gray-600">
-                World Bank RCT in Nigeria: AI tutoring delivered 1.5-2 years of
-                learning gains in just 6 weeks.
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                World Bank 2024, benefit-cost ratio: 161-260
-              </p>
-            </div>
-
-            <div className="border border-gray-200 rounded-2xl p-6">
-              <p className="text-3xl font-bold text-[var(--primary-darker)] mb-1">
-                7% → 45%
-              </p>
-              <p className="font-semibold text-gray-800 mb-2">
-                Reading with no teachers
-              </p>
-              <p className="text-sm text-gray-600">
-                In Tanzania, children given only tablets went from 7% to 45%
-                reading ability in 15 months — without any teachers.
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                Global Learning XPRIZE
-              </p>
-            </div>
-
-            <div className="border border-gray-200 rounded-2xl p-6">
-              <p className="text-3xl font-bold text-[var(--primary-darker)] mb-1">
-                $0.50-5
-              </p>
-              <p className="font-semibold text-gray-800 mb-2">
-                Per student per year
-              </p>
-              <p className="text-sm text-gray-600">
-                10-100x cheaper than any alternative. At $2/student, reaching
-                100,000 children costs $200,000/year.
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                Self-hosted open-source stack
-              </p>
-            </div>
+            {[
+              { stat: "9x", title: "Market math vs. abstract math", desc: "Children solved comparable subtraction tasks 9x more often in market framing than in formal school format (48.5% vs 5.4%).", cite: "Weber, Bogler & Vollmer 2024, North-West Nigeria" },
+              { stat: "1.5-2 years", title: "Learning gains in 6 weeks", desc: "World Bank RCT in Nigeria: AI tutoring delivered 1.5-2 years of learning gains in just 6 weeks.", cite: "World Bank 2024, benefit-cost ratio: 161-260" },
+              { stat: "7% → 45%", title: "Reading with no teachers", desc: "In Tanzania, children given only tablets went from 7% to 45% reading ability in 15 months — without any teachers.", cite: "Global Learning XPRIZE" },
+              { stat: "$0.50-5", title: "Per student per year", desc: "10-100x cheaper than any alternative. At $2/student, reaching 100,000 children costs $200,000/year.", cite: "Self-hosted open-source stack" },
+            ].map((item) => (
+              <div key={item.stat} className="sabi-card p-6">
+                <p className="sabi-stat-value text-3xl mb-1">{item.stat}</p>
+                <p className="font-semibold text-[var(--sabi-text)] mb-2">{item.title}</p>
+                <p className="text-sm text-[var(--sabi-muted)]">{item.desc}</p>
+                <p className="text-xs text-[var(--sabi-meta)] mt-2">{item.cite}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Key Features ──────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
-            Built for the Last Mile
-          </h2>
-        </div>
+      {/* Features */}
+      <section className="sabi-section-last-mile">
+        <div className="max-w-5xl mx-auto px-6 py-20">
+          <div className="text-center mb-12">
+            <h2 className="sabi-display text-3xl md:text-4xl mb-4">Built for the Last Mile</h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-14 h-14 bg-[var(--secondary)] rounded-2xl flex items-center justify-center mx-auto mb-4 text-[var(--primary-darker)]">
-              <PhoneIcon />
-            </div>
-            <h3 className="font-bold text-lg text-[var(--primary-darker)] mb-2">
-              Any Phone
-            </h3>
-            <p className="text-sm text-gray-600">
-              Works on a $5 feature phone. No smartphone, no internet, no app
-              download. Just a phone call.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: <PhoneIcon />, title: "Any Phone", desc: "Works on a $5 feature phone. No smartphone, no internet, no app download. Just a phone call." },
+              { icon: <BrainIcon />, title: "Persistent Memory", desc: "Sabi remembers every child — their name, their level, their mistakes. Picks up where they left off." },
+              { icon: <HeartIcon />, title: "Completely Free", desc: "Toll-free calls. No subscription. No paywall. Sponsored by Education for Equality, a 501(c)(3) nonprofit." },
+            ].map((item) => (
+              <div key={item.title} className="text-center">
+                <div className="sabi-icon-box w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  {item.icon}
+                </div>
+                <h3 className="font-semibold mb-2">{item.title}</h3>
+                <p className="text-sm">{item.desc}</p>
+              </div>
+            ))}
           </div>
-          <div className="text-center">
-            <div className="w-14 h-14 bg-[var(--secondary)] rounded-2xl flex items-center justify-center mx-auto mb-4 text-[var(--primary-darker)]">
-              <BrainIcon />
+
+          <Link
+            href="/sabi/pricing"
+            className="group sabi-card p-8 md:p-10 mt-14 flex flex-col md:flex-row md:items-center gap-6 justify-between sabi-pricing-org-callout"
+          >
+            <div>
+              <p className="text-xs uppercase tracking-widest sabi-accent-label mb-2">For developers &amp; organizations</p>
+              <h3 className="sabi-display text-2xl mb-2">Build on the Sabi voice API — or fund a cohort</h3>
+              <p className="text-sm text-[var(--sabi-muted)] max-w-xl">
+                The same African-accent voice pipeline behind Sabi, rentable per minute. Speech-to-text, LLM, and Nigerian voice in one call — from $0.06/min, 1,000 minutes free every month.
+              </p>
             </div>
-            <h3 className="font-bold text-lg text-[var(--primary-darker)] mb-2">
-              Persistent Memory
-            </h3>
-            <p className="text-sm text-gray-600">
-              Sabi remembers every child — their name, their level, their
-              mistakes. Picks up where they left off.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="w-14 h-14 bg-[var(--secondary)] rounded-2xl flex items-center justify-center mx-auto mb-4 text-[var(--primary-darker)]">
-              <HeartIcon />
-            </div>
-            <h3 className="font-bold text-lg text-[var(--primary-darker)] mb-2">
-              Completely Free
-            </h3>
-            <p className="text-sm text-gray-600">
-              Toll-free calls. No subscription. No paywall. Sponsored by
-              Education for Equality, a 501(c)(3) nonprofit.
-            </p>
-          </div>
+            <span className="inline-flex items-center gap-2 flex-shrink-0 font-medium text-[var(--sabi-ink)] group-hover:gap-3 transition-all">
+              See pricing <ArrowIcon />
+            </span>
+          </Link>
         </div>
       </section>
 
-      {/* ─── CTA ───────────────────────────────────────────── */}
-      <section className="bg-gradient-to-br from-[var(--primary-darker)] to-[#1a5c3a]">
-        <div className="max-w-3xl mx-auto px-6 py-20 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Try Sabi Right Now
-          </h2>
-          <p className="text-lg opacity-90 mb-8 leading-relaxed">
-            We&apos;re not building another education app that sits in an app
-            store. We&apos;re building something a mother hears about at church,
-            dials after dinner, and hands to her child for five minutes.
+      {/* CTA */}
+      <section className="border-t sabi-pricing-cta">
+        <div className="max-w-3xl mx-auto px-6 py-20 text-center">
+          <h2 className="sabi-display text-3xl md:text-4xl mb-4">Try Sabi Right Now</h2>
+          <p className="text-lg text-[var(--sabi-text-secondary)] mb-8 leading-relaxed">
+            We&apos;re not building another education app that sits in an app store. We&apos;re building something a mother hears about at church, dials after dinner, and hands to her child for five minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/demo"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[var(--primary-darker)] px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
-            >
+            <Link href="/demo" className="sabi-btn-gold inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-lg font-bold">
               Talk to Sabi
             </Link>
-            <Link
-              href="/chat"
-              className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-colors"
-            >
+            <Link href="/chat" className="sabi-cta-secondary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold border-2">
               Chat with Sabi
             </Link>
           </div>
-          <p className="text-sm opacity-60 mt-6">
+          <p className="text-sm text-[var(--sabi-meta)] mt-6">
             Lagos pilot planned Q4 2026 — 100-500 students in high-burden LGAs
           </p>
         </div>
       </section>
-
-      {/* ─── Footer ────────────────────────────────────────── */}
-      <footer className="bg-[var(--footer-bg)] text-white">
-        <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-center md:text-left">
-              <p className="font-bold text-lg">Education for Equality</p>
-              <p className="text-sm opacity-60 mt-1">
-                Free, world-class education for every child.
-              </p>
-            </div>
-            <div className="flex gap-6 text-sm opacity-70">
-              <a
-                href="https://eduforequality.org"
-                className="hover:opacity-100"
-              >
-                Curriculum App
-              </a>
-              <a
-                href="https://eduforequality.org"
-                className="hover:opacity-100"
-              >
-                Website
-              </a>
-              <a href="mailto:nivie@wesleyan.edu" className="hover:opacity-100">
-                Contact
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

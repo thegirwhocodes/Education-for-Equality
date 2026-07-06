@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
+const MAIL = "mailto:api@eduforequality.org";
+
 function CheckIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -20,18 +22,24 @@ function ArrowIcon() {
   );
 }
 
-/* ── Animated sound wave bars ─────────────────────────────── */
-function SoundWave({ color = "#10b981", bars = 40 }: { color?: string; bars?: number }) {
+function DashIcon() {
   return (
-    <div className="flex items-center gap-[2px] h-12 opacity-60">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+      <line x1="6" y1="12" x2="18" y2="12" />
+    </svg>
+  );
+}
+
+function SoundWave({ bars = 36 }: { bars?: number }) {
+  return (
+    <div className="flex items-center justify-center gap-[2px] h-10 opacity-80">
       {Array.from({ length: bars }).map((_, i) => (
         <div
           key={i}
-          className="w-[3px] rounded-full"
+          className="w-[3px] rounded-full sabi-wave-bar"
           style={{
-            background: color,
-            animation: `wave 1.2s ease-in-out ${i * 0.05}s infinite alternate`,
-            height: `${12 + Math.sin(i * 0.7) * 20 + Math.random() * 10}px`,
+            animation: `sabi-wave 1.2s ease-in-out ${i * 0.05}s infinite alternate`,
+            height: `${10 + Math.abs(Math.sin(i * 0.7)) * 18 + Math.abs(Math.sin(i * 2.3)) * 8}px`,
           }}
         />
       ))}
@@ -39,22 +47,6 @@ function SoundWave({ color = "#10b981", bars = 40 }: { color?: string; bars?: nu
   );
 }
 
-/* ── Floating orb component ───────────────────────────────── */
-function FloatingOrb({ className, color, size, delay = "0s" }: { className?: string; color: string; size: string; delay?: string }) {
-  return (
-    <div
-      className={`absolute rounded-full blur-[100px] ${className}`}
-      style={{
-        background: color,
-        width: size,
-        height: size,
-        animation: `float 8s ease-in-out ${delay} infinite alternate`,
-      }}
-    />
-  );
-}
-
-/* ── Scroll-reveal wrapper ────────────────────────────────── */
 function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -68,551 +60,432 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
           observer.unobserve(el);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [delay]);
 
   return (
-    <div ref={ref} className={`reveal-element ${className}`}>
+    <div ref={ref} className={`sabi-reveal ${className}`}>
       {children}
     </div>
   );
 }
 
-/* ── Data ─────────────────────────────────────────────────── */
-const devTiers = [
+const plans = [
   {
-    name: "Starter",
-    price: "$0.04",
-    unit: "/min",
-    description: "For builders getting started with voice AI in Africa.",
-    cta: "Start Building",
-    href: "mailto:api@eduforequality.org?subject=Sabi API — Starter",
+    name: "Free",
+    price: "$0",
+    unit: "",
+    tagline: "1,000 minutes/month, free forever.",
+    description: "Build a whole prototype before you pay a cent. No card required.",
+    cta: "Start free",
+    href: `${MAIL}?subject=Sabi%20API%20—%20Free%20tier`,
     highlighted: false,
     features: [
-      "Speech-to-Text (Nigerian English)",
-      "LLM processing",
-      "Text-to-Speech (default voice)",
-      "English language",
-      "99.5% uptime SLA",
+      "1,000 conversation minutes / month",
+      "Nigerian English STT + LLM + TTS",
+      "Default Nigerian voice",
+      "Interactive sandbox + full docs",
       "Community support",
     ],
   },
   {
-    name: "Pro",
-    price: "$0.07",
+    name: "Pay as you go",
+    price: "$0.06",
     unit: "/min",
-    description: "For teams scaling voice products across Africa.",
-    cta: "Get Started",
-    href: "mailto:api@eduforequality.org?subject=Sabi API — Pro",
+    tagline: "Everything, self-serve. Volume discounts apply automatically.",
+    description: "The full pipeline in one call. Instant API key, no sales call.",
+    cta: "Get API key",
+    href: `${MAIL}?subject=Sabi%20API%20—%20Pay%20as%20you%20go`,
     highlighted: true,
     features: [
-      "Everything in Starter",
-      "Custom voice cloning",
-      "Accent & language selection",
-      "Yoruba, Hausa, Igbo, Pidgin TTS",
-      "Adaptive memory per user",
-      "Emotion-aware synthesis",
-      "99.9% uptime SLA",
-      "Priority support",
+      "Full STT → LLM → TTS pipeline",
+      "Yoruba, Hausa, Igbo & Pidgin voices",
+      "Custom voice cloning + accent select",
+      "Adaptive per-caller memory",
+      "À la carte primitives (transcribe / speak)",
+      "Automatic volume pricing (see below)",
+      "99.9% uptime SLA · email support",
     ],
   },
   {
     name: "Enterprise",
     price: "Custom",
     unit: "",
-    description: "For governments, telcos, and national deployments.",
-    cta: "Contact Sales",
-    href: "mailto:api@eduforequality.org?subject=Sabi API — Enterprise",
+    tagline: "From $0.015/min on committed volume.",
+    description: "For telcos, ministries, banks, and national deployments.",
+    cta: "Talk to us",
+    href: `${MAIL}?subject=Sabi%20API%20—%20Enterprise`,
     highlighted: false,
     features: [
-      "Everything in Pro",
-      "Custom content loading",
+      "Committed-volume rates from $0.015/min",
       "White-label deployment",
-      "Dedicated GPU capacity",
-      "Analytics dashboard",
-      "On-premise option",
-      "100% uptime SLA",
+      "On-premise option ($3,000–5,000/mo)",
+      "Dedicated inference capacity",
+      "Custom curriculum / content loading",
+      "Data processing agreement + 100% SLA",
       "Dedicated account manager",
     ],
   },
 ];
 
-const orgTiers = [
+const volumeTiers = [
+  { band: "First 1,000 min / month", rate: "Free", note: "Every account, every month" },
+  { band: "Up to 100k min / month", rate: "$0.06", note: "Pay as you go" },
+  { band: "100k – 1M min / month", rate: "$0.04", note: "Applied automatically" },
+  { band: "1M – 5M min / month", rate: "$0.02", note: "Growth" },
+  { band: "5M+ min / month", rate: "from $0.015", note: "Enterprise commit" },
+];
+
+const primitives = [
   {
-    name: "Pilot",
-    students: "100–500",
-    price: "$10–15",
-    unit: "/student",
-    description: "Prove it works. Pre/post assessments included.",
-    features: ["Full literacy & numeracy course", "Toll-free calling", "Student progress tracking", "Impact report"],
+    verb: "transcribe",
+    title: "African-accent speech-to-text",
+    price: "$0.012",
+    unit: "/min",
+    desc: "Nigerian English, Pidgin, names, money, numerals — accurate on noisy 2G phone audio.",
   },
   {
-    name: "Scale",
-    students: "1K–50K",
-    price: "$5–8",
-    unit: "/student",
-    description: "Deploy across schools, districts, or regions.",
-    features: ["Everything in Pilot", "Government-ready reporting", "Impact assessment framework", "Dedicated support"],
+    verb: "speak",
+    title: "Nigerian text-to-speech",
+    price: "$0.12",
+    unit: "/1k chars",
+    desc: "Warm, local voices in English, Yoruba, Hausa, Igbo & Pidgin.",
   },
   {
-    name: "National",
-    students: "100K+",
-    price: "$2–5",
-    unit: "/student",
-    description: "State or federal level. We handle everything.",
-    features: ["Everything in Scale", "Zero-rated telephony via MNO partnerships", "Policy integration support", "On-the-ground team"],
+    verb: "tutor",
+    title: "Curriculum LLM turn",
+    price: "Metered",
+    unit: "in pipeline",
+    desc: "Adaptive, safety-first tutoring turns grounded in literacy & numeracy.",
+  },
+  {
+    verb: "identify",
+    title: "Per-child identity on a shared phone",
+    price: "Included",
+    unit: "",
+    desc: "Recognise and remember individual learners across calls on one household number.",
   },
 ];
 
-/* ── Page ─────────────────────────────────────────────────── */
+const comparison = [
+  { feature: "Starting price / min", sabi: "$0.06", vapi: "~$0.14*", eleven: "$0.10–0.12", retell: "$0.07+" },
+  { feature: "Nigerian English & Pidgin", sabi: true, vapi: false, eleven: false, retell: false },
+  { feature: "Tuned for 2G / noisy phone audio", sabi: true, vapi: false, eleven: false, retell: false },
+  { feature: "Yoruba / Hausa / Igbo voices", sabi: true, vapi: false, eleven: false, retell: false },
+  { feature: "Per-child identity on shared phone", sabi: true, vapi: false, eleven: false, retell: false },
+  { feature: "Telephony billed at cost", sabi: true, vapi: false, eleven: false, retell: false },
+  { feature: "Self-host / on-premise", sabi: true, vapi: false, eleven: false, retell: false },
+];
+
+const faqs = [
+  {
+    q: "What exactly am I paying for?",
+    a: "The inference we run — speech-to-text, the language model, and text-to-speech. Telephony minutes are passed through at cost as a separate line item. We never mark them up.",
+  },
+  {
+    q: "How does a minute get counted?",
+    a: "You're billed per minute of active conversation through the pipeline, rounded to the second. The first 1,000 minutes every month are free.",
+  },
+  {
+    q: "Do volume discounts need a contract?",
+    a: "No. Lower rates apply automatically as usage crosses each threshold. Enterprise commits (from $0.015/min) are the only ones that need a conversation.",
+  },
+  {
+    q: "Can I use just transcription or just the voice?",
+    a: "Yes. Each primitive is available on its own — fintech IVR and health hotlines don't need to pay for the tutoring layer.",
+  },
+  {
+    q: "Why are you cheaper than Vapi and ElevenLabs?",
+    a: "We own the hard part — African-accent models — and refuse to make margin on telco minutes. Same pipeline that teaches kids on a phone call.",
+  },
+];
+
 export default function SabiPricingPage() {
   return (
-    <>
-      <style>{`
-        body > div > nav, body > div > header,
-        body > div > footer, body header, body footer,
-        [class*="Navbar"], [class*="Footer"],
-        body > main ~ footer, body > div > main ~ footer {
-          display: none !important;
-        }
-        body, main { background: #09090b !important; }
+    <div className="flex-1">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b sabi-pricing-hero" style={{ borderColor: "var(--sabi-border)" }}>
+        <div className="max-w-3xl mx-auto px-6 pt-16 pb-14 text-center">
+          <Reveal>
+            <p
+              className="inline-flex items-center gap-2 text-xs font-normal tracking-[0.02em] px-3.5 py-1.5 rounded-full mb-6"
+              style={{ background: "var(--sabi-card)", color: "var(--sabi-muted)", border: "1px solid var(--sabi-border)" }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--sabi-gold)]" />
+              Usage-based · no minimums · pay only for what you use
+            </p>
+          </Reveal>
+          <Reveal delay={80}>
+            <h1 className="sabi-display text-4xl md:text-6xl tracking-tight mb-5">
+              Pricing that scales with your voice app
+            </h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="text-lg md:text-xl text-[var(--sabi-muted)] max-w-2xl mx-auto leading-relaxed">
+              One per-minute price for the full African voice pipeline. Telephony billed at cost, never marked up.
+            </p>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="mt-8 mb-4">
+              <SoundWave />
+            </div>
+            <div className="overflow-hidden max-w-md mx-auto" style={{ maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)" }}>
+              <div className="flex gap-6 whitespace-nowrap text-sm font-mono text-[var(--sabi-muted)]" style={{ animation: "sabi-marquee 28s linear infinite" }}>
+                {["Nigerian English", "Yoruba", "Hausa", "Igbo", "Pidgin", "Nigerian English", "Yoruba", "Hausa", "Igbo", "Pidgin"].map((lang, i) => (
+                  <span key={i} className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full bg-[var(--sabi-gold)]" />
+                    {lang}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-        @keyframes wave {
-          0% { transform: scaleY(0.3); }
-          100% { transform: scaleY(1); }
-        }
-        @keyframes float {
-          0% { transform: translate(0, 0) scale(1); }
-          100% { transform: translate(30px, -20px) scale(1.1); }
-        }
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: 0.3; }
-        }
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes fade-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes gradient-shift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
+      {/* Plans */}
+      <section id="pricing" className="max-w-6xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          {plans.map((plan, i) => (
+            <Reveal key={plan.name} delay={i * 80}>
+              <div className={`sabi-card p-8 flex flex-col h-full relative ${plan.highlighted ? "sabi-card-highlight" : ""}`}>
+                {plan.highlighted && (
+                  <div
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold px-4 py-1 rounded-full sabi-popular-badge"
+                    style={{ background: "var(--sabi-gold)", color: "var(--sabi-ink)" }}
+                  >
+                    Most popular
+                  </div>
+                )}
+                <div className="mb-6">
+                  <h3 className="sabi-display text-2xl text-[var(--sabi-ink)] mb-2">{plan.name}</h3>
+                  <div className="flex items-baseline gap-1">
+                    <span className="sabi-display text-5xl text-[var(--sabi-ink)]">{plan.price}</span>
+                    <span className="text-sm text-[var(--sabi-muted)]">{plan.unit}</span>
+                  </div>
+                  <p className="text-sm mt-3 font-medium text-[var(--sabi-gold-deep)]">{plan.tagline}</p>
+                  <p className="text-sm mt-2 text-[var(--sabi-muted)]">{plan.description}</p>
+                </div>
+                <ul className="space-y-3 mb-8 flex-1">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-3 text-sm text-[var(--sabi-muted)]">
+                      <span className="mt-0.5 flex-shrink-0 text-[var(--sabi-green)]"><CheckIcon /></span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={plan.href}
+                  className={`inline-flex items-center justify-center gap-2 w-full py-3 text-sm ${plan.highlighted ? "sabi-btn-primary" : "sabi-btn-secondary"}`}
+                >
+                  {plan.cta} <ArrowIcon />
+                </Link>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
-        .reveal-element {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal-element.revealed {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      {/* Volume */}
+      <section id="volume" className="border-t border-b sabi-pricing-section-alt" style={{ borderColor: "var(--sabi-border)", background: "var(--sabi-white)" }}>
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <Reveal>
+            <p className="text-xs uppercase tracking-widest sabi-accent-label mb-2">Volume</p>
+            <h2 className="sabi-display text-3xl md:text-4xl mb-3">Grow into a lower rate — automatically</h2>
+            <p className="text-[var(--sabi-muted)] mb-8 max-w-2xl">
+              Discounts apply on their own as monthly usage climbs — like cloud infrastructure. No renegotiation.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="sabi-card overflow-hidden">
+              {volumeTiers.map((t, i) => (
+                <div
+                  key={t.band}
+                  className={`flex items-center justify-between px-6 py-5 hover:bg-[var(--sabi-gold-wash)] transition-colors ${i > 0 ? "border-t" : ""}`}
+                  style={{ borderColor: "var(--sabi-border)" }}
+                >
+                  <div>
+                    <div className="text-sm font-semibold text-[var(--sabi-ink)]">{t.band}</div>
+                    <div className="text-xs text-[var(--sabi-muted)] mt-0.5">{t.note}</div>
+                  </div>
+                  <div className="sabi-display text-2xl md:text-3xl text-[var(--sabi-ink)]">
+                    {t.rate}
+                    {t.rate !== "Free" && <span className="text-sm text-[var(--sabi-muted)]"> /min</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-[var(--sabi-muted)] mt-4">
+              Telephony is pass-through at provider cost. Margin is on inference we run — never on carrier minutes.
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
-        .card-hover {
-          transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card-hover:hover {
-          border-color: rgba(16,185,129,0.2) !important;
-          transform: translateY(-2px);
-          box-shadow: 0 0 40px rgba(16,185,129,0.06);
-        }
+      {/* Primitives */}
+      <section id="primitives" className="max-w-6xl mx-auto px-6 py-16">
+        <Reveal>
+          <p className="text-xs uppercase tracking-widest sabi-accent-label mb-2">À la carte</p>
+          <h2 className="sabi-display text-3xl md:text-4xl mb-3">Four primitives. Compose your own.</h2>
+          <p className="text-[var(--sabi-muted)] mb-10 max-w-2xl">
+            A fintech IVR or health hotline doesn&apos;t need the tutor — use African-accent STT or Nigerian voice on their own.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {primitives.map((p, i) => (
+            <Reveal key={p.verb} delay={i * 60}>
+              <div className="sabi-card p-6 h-full">
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <code className="text-sm font-mono px-2 py-1 rounded bg-[var(--sabi-gold-soft)] text-[var(--sabi-gold-deep)]">{p.verb}</code>
+                  <div className="text-right">
+                    <span className="sabi-display text-2xl text-[var(--sabi-ink)]">{p.price}</span>
+                    <span className="text-xs text-[var(--sabi-muted)] ml-1">{p.unit}</span>
+                  </div>
+                </div>
+                <h4 className="font-bold text-sm text-[var(--sabi-ink)] mb-2">{p.title}</h4>
+                <p className="text-sm text-[var(--sabi-muted)] leading-relaxed">{p.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
-        .btn-glow:hover {
-          box-shadow: 0 0 30px rgba(16,185,129,0.3);
-        }
+      {/* Code */}
+      <section className="border-t sabi-pricing-code-band" style={{ borderColor: "var(--sabi-border)" }}>
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <Reveal>
+            <h2 className="sabi-display text-2xl md:text-3xl mb-3">One call. The whole pipeline.</h2>
+            <p className="text-[var(--sabi-muted)] mb-8">Send audio in, get audio back — tuned for Nigerian voices and noisy 2G lines.</p>
+          </Reveal>
+          <Reveal delay={80}>
+            <div className="rounded-2xl overflow-hidden border shadow-lg sabi-code-terminal">
+              <div className="flex items-center gap-2 px-5 py-3 border-b border-white/10">
+                <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
+                <div className="w-3 h-3 rounded-full bg-[var(--sabi-gold)]" />
+                <div className="w-3 h-3 rounded-full bg-[var(--sabi-green)]" />
+                <span className="ml-3 text-xs font-mono text-white/40">api.eduforequality.org</span>
+              </div>
+              <pre className="p-6 text-sm font-mono overflow-x-auto leading-relaxed text-white/90">
+                <code>{`$ curl https://api.eduforequality.org/v1/voice/process \\
+  -H "Authorization: Bearer sk_sabi_..." \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "audio": "base64_encoded_audio",
+    "voice": "bukola",
+    "language": "en-NG"
+  }'`}</code>
+              </pre>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-        .grid-bg {
-          background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-          background-size: 24px 24px;
-        }
+      {/* Compare */}
+      <section id="compare" className="max-w-5xl mx-auto px-6 py-16">
+        <Reveal>
+          <h2 className="sabi-display text-3xl md:text-4xl mb-3">Cheaper — and the only one built for Africa</h2>
+          <p className="text-[var(--sabi-muted)] mb-8 max-w-2xl">
+            Vapi and ElevenLabs are excellent for American English. None of them understand a child speaking Pidgin on a 2G line.
+          </p>
+        </Reveal>
+        <Reveal delay={80}>
+          <div className="sabi-card overflow-x-auto">
+            <table className="w-full text-sm min-w-[640px]">
+              <thead>
+                <tr className="border-b" style={{ borderColor: "var(--sabi-border)" }}>
+                  <th className="text-left font-medium px-5 py-4 text-[var(--sabi-muted)]">&nbsp;</th>
+                  <th className="text-center font-bold px-4 py-4 text-[var(--sabi-ink)]">Sabi</th>
+                  <th className="text-center font-medium px-4 py-4 text-[var(--sabi-muted)]">Vapi</th>
+                  <th className="text-center font-medium px-4 py-4 text-[var(--sabi-muted)]">ElevenLabs</th>
+                  <th className="text-center font-medium px-4 py-4 text-[var(--sabi-muted)]">Retell</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparison.map((row, i) => (
+                  <tr key={row.feature} className={i > 0 ? "border-t" : ""} style={{ borderColor: "var(--sabi-border)" }}>
+                    <td className="px-5 py-4 text-[var(--sabi-muted)]">{row.feature}</td>
+                    {(["sabi", "vapi", "eleven", "retell"] as const).map((k) => {
+                      const v = row[k];
+                      return (
+                        <td key={k} className="text-center px-4 py-4">
+                          {typeof v === "string" ? (
+                            <span className={`font-mono font-semibold ${k === "sabi" ? "text-[var(--sabi-ink)]" : "text-[var(--sabi-muted)]"}`}>{v}</span>
+                          ) : v ? (
+                            <span className="inline-flex text-[var(--sabi-green)]"><CheckIcon /></span>
+                          ) : (
+                            <span className="inline-flex text-gray-300"><DashIcon /></span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-[var(--sabi-muted)] mt-3">* Vapi real-world all-in ~$0.14/min. Competitor rates as published, July 2026.</p>
+        </Reveal>
+      </section>
 
-        .lang-marquee {
-          animation: marquee 30s linear infinite;
-        }
-      `}</style>
+      {/* FAQ */}
+      <section id="faq" className="border-t sabi-pricing-section-alt" style={{ borderColor: "var(--sabi-border)", background: "var(--sabi-white)" }}>
+        <div className="max-w-3xl mx-auto px-6 py-16">
+          <Reveal>
+            <h2 className="sabi-display text-3xl mb-8 text-center">Questions, answered</h2>
+          </Reveal>
+          <div className="space-y-4">
+            {faqs.map((f, i) => (
+              <Reveal key={f.q} delay={i * 50}>
+                <div className="sabi-card p-6">
+                  <h4 className="font-bold text-[var(--sabi-ink)] mb-2">{f.q}</h4>
+                  <p className="text-sm text-[var(--sabi-muted)] leading-relaxed">{f.a}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <div className="min-h-screen grid-bg" style={{ background: "#09090b", color: "#fafafa" }}>
-
-        {/* ─── Nav ──────────────────────────────────────────── */}
-        <nav className="fixed top-0 w-full z-50" style={{ background: "rgba(9,9,11,0.8)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-          <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <Link href="/sabi" className="flex items-center gap-3">
-              <span className="text-xl font-bold tracking-tight" style={{ color: "#10b981" }}>sabi</span>
-            </Link>
-            <div className="flex items-center gap-8 text-sm" style={{ color: "#71717a" }}>
-              <a href="#developers" className="hover:text-white transition-colors">For Developers</a>
-              <a href="#organizations" className="hover:text-white transition-colors">For Organizations</a>
-              <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-              <Link href="mailto:info@eduforequality.org?subject=Sabi" className="px-5 py-2 rounded-lg text-sm font-medium btn-glow transition-all" style={{ background: "#10b981", color: "#000" }}>
-                Get Started
+      {/* Managed callout */}
+      <section className="sabi-pricing-section-alt" style={{ background: "var(--sabi-white)" }}>
+        <div className="max-w-4xl mx-auto px-6 pb-8">
+          <Reveal>
+            <div className="sabi-card p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 justify-between sabi-pricing-org-callout">
+              <div>
+                <p className="text-xs uppercase tracking-widest sabi-accent-label mb-2">Not a developer?</p>
+                <h3 className="sabi-display text-xl mb-2">Sabi for Organizations</h3>
+                <p className="text-sm text-[var(--sabi-muted)] max-w-xl">
+                  Governments and NGOs: fund a cohort, kids learn by phone call. We handle telephony, curriculum, AI, and impact measurement.
+                </p>
+              </div>
+              <Link href="mailto:info@eduforequality.org?subject=Sabi%20for%20Organizations" className="sabi-btn-secondary px-6 py-3 text-sm inline-flex items-center gap-2 flex-shrink-0">
+                Talk to us <ArrowIcon />
               </Link>
             </div>
-          </div>
-        </nav>
+          </Reveal>
+        </div>
+      </section>
 
-        {/* ─── Hero ─────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-32 pb-24">
-          <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full blur-[100px]" style={{ background: "#10b981", animation: "pulse-glow 6s ease-in-out infinite" }} />
-          <FloatingOrb color="#06b6d4" size="400px" className="top-20 right-[-100px] opacity-10" delay="2s" />
-          <FloatingOrb color="#8b5cf6" size="300px" className="bottom-0 left-[-50px] opacity-[0.07]" delay="4s" />
-
-          <div className="relative max-w-5xl mx-auto px-6 text-center">
-            <Reveal>
-              <div className="inline-flex items-center gap-2 text-xs font-mono px-4 py-2 rounded-full mb-8" style={{ border: "1px solid rgba(16,185,129,0.15)", color: "#10b981", background: "rgba(16,185,129,0.05)" }}>
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#10b981" }} />
-                Now accepting early access partners
-              </div>
-            </Reveal>
-
-            <Reveal delay={100}>
-              <h1 className="text-6xl md:text-8xl font-bold tracking-tight mb-6" style={{ background: "linear-gradient(135deg, #fafafa 0%, #10b981 50%, #06b6d4 100%)", backgroundSize: "200% 200%", animation: "gradient-shift 8s ease infinite", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                Voice AI<br />for Africa
-              </h1>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-6 leading-relaxed" style={{ color: "#a1a1aa" }}>
-                The only voice AI platform built for African accents, languages, and infrastructure.
-              </p>
-            </Reveal>
-
-            <Reveal delay={300}>
-              <div className="flex justify-center mb-10">
-                <SoundWave />
-              </div>
-            </Reveal>
-
-            <Reveal delay={400}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Link href="#developers" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold btn-glow transition-all" style={{ background: "#10b981", color: "#000" }}>
-                  For Developers <ArrowIcon />
-                </Link>
-                <Link href="#organizations" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all hover:bg-white/5" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "#fafafa" }}>
-                  For Organizations <ArrowIcon />
-                </Link>
-              </div>
-            </Reveal>
-
-            {/* Language ticker */}
-            <Reveal delay={500}>
-              <div className="overflow-hidden max-w-lg mx-auto" style={{ maskImage: "linear-gradient(to right, transparent, black 20%, black 80%, transparent)" }}>
-                <div className="flex gap-8 lang-marquee whitespace-nowrap text-sm font-mono" style={{ color: "#52525b" }}>
-                  {["Nigerian English", "Yoruba", "Hausa", "Igbo", "Pidgin", "Swahili", "Amharic", "Wolof", "Zulu", "Nigerian English", "Yoruba", "Hausa", "Igbo", "Pidgin", "Swahili", "Amharic", "Wolof", "Zulu"].map((lang, i) => (
-                    <span key={i} className="flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full" style={{ background: "#10b981" }} />
-                      {lang}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ─── Two Products ─────────────────────────────────── */}
-        <section className="max-w-6xl mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Reveal>
-              <a href="#developers" className="block rounded-2xl p-10 card-hover relative overflow-hidden group" style={{ background: "#0f0f11", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-500" style={{ background: "#10b981" }} />
-                <span className="text-xs font-mono px-3 py-1 rounded-full mb-6 inline-block" style={{ border: "1px solid rgba(16,185,129,0.2)", color: "#10b981", background: "rgba(16,185,129,0.05)" }}>
-                  API Platform
-                </span>
-                <h2 className="text-2xl font-bold mb-3">Sabi for Developers</h2>
-                <p className="leading-relaxed mb-4" style={{ color: "#71717a" }}>
-                  Hosted voice AI pipeline — STT, LLM, and TTS in one API call. Build voice apps for African markets in minutes.
-                </p>
-                <span className="text-sm font-semibold inline-flex items-center gap-2" style={{ color: "#10b981" }}>
-                  View API pricing <ArrowIcon />
-                </span>
-              </a>
-            </Reveal>
-
-            <Reveal delay={150}>
-              <a href="#organizations" className="block rounded-2xl p-10 card-hover relative overflow-hidden group" style={{ background: "#0f0f11", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-500" style={{ background: "#06b6d4" }} />
-                <span className="text-xs font-mono px-3 py-1 rounded-full mb-6 inline-block" style={{ border: "1px solid rgba(6,182,212,0.2)", color: "#06b6d4", background: "rgba(6,182,212,0.05)" }}>
-                  Managed Delivery
-                </span>
-                <h2 className="text-2xl font-bold mb-3">Sabi for Organizations</h2>
-                <p className="leading-relaxed mb-4" style={{ color: "#71717a" }}>
-                  Turn-key education delivery. You fund it, kids learn. We handle telephony, curriculum, AI, and impact measurement.
-                </p>
-                <span className="text-sm font-semibold inline-flex items-center gap-2" style={{ color: "#06b6d4" }}>
-                  View managed pricing <ArrowIcon />
-                </span>
-              </a>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ─── Sabi for Developers ──────────────────────────── */}
-        <section id="developers" className="relative" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <FloatingOrb color="#10b981" size="500px" className="top-20 left-[-200px] opacity-[0.06]" delay="1s" />
-
-          <div className="max-w-6xl mx-auto px-6 py-24">
-            <Reveal>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-xs font-mono px-3 py-1 rounded-full" style={{ border: "1px solid rgba(16,185,129,0.2)", color: "#10b981", background: "rgba(16,185,129,0.05)" }}>01</span>
-                <span className="text-sm font-medium uppercase tracking-widest" style={{ color: "#10b981" }}>For Developers</span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={100}>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                One API call. Full voice pipeline.
-              </h2>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <p className="text-lg max-w-2xl mb-16" style={{ color: "#71717a" }}>
-                Send audio in, get audio back. Speech recognition, language model, and voice synthesis — optimized for African accents, tuned for noisy environments, fast on 2G.
-              </p>
-            </Reveal>
-
-            {/* Code snippet */}
-            <Reveal delay={300}>
-              <div className="rounded-2xl overflow-hidden mb-20" style={{ background: "#0a0a0c", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="flex items-center gap-2 px-5 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                  <div className="w-3 h-3 rounded-full" style={{ background: "#ef4444" }} />
-                  <div className="w-3 h-3 rounded-full" style={{ background: "#eab308" }} />
-                  <div className="w-3 h-3 rounded-full" style={{ background: "#22c55e" }} />
-                  <span className="ml-3 text-xs font-mono" style={{ color: "#3f3f46" }}>api.eduforequality.org</span>
-                </div>
-                <pre className="p-6 text-sm font-mono overflow-x-auto leading-relaxed">
-                  <code>
-                    <span style={{ color: "#10b981" }}>$</span>{" "}
-                    <span style={{ color: "#a1a1aa" }}>curl</span>{" "}
-                    <span style={{ color: "#fafafa" }}>https://api.eduforequality.org/v1/voice/process</span> \{"\n"}
-                    {"  "}-H <span style={{ color: "#fbbf24" }}>&quot;Authorization: Bearer sk_sabi_...&quot;</span> \{"\n"}
-                    {"  "}-H <span style={{ color: "#fbbf24" }}>&quot;Content-Type: application/json&quot;</span> \{"\n"}
-                    {"  "}-d <span style={{ color: "#fbbf24" }}>&apos;{"{"}</span>{"\n"}
-                    {"    "}<span style={{ color: "#60a5fa" }}>&quot;audio&quot;</span><span style={{ color: "#52525b" }}>:</span> <span style={{ color: "#fbbf24" }}>&quot;base64_encoded_audio&quot;</span>,{"\n"}
-                    {"    "}<span style={{ color: "#60a5fa" }}>&quot;voice&quot;</span><span style={{ color: "#52525b" }}>:</span> <span style={{ color: "#fbbf24" }}>&quot;naomi&quot;</span>,{"\n"}
-                    {"    "}<span style={{ color: "#60a5fa" }}>&quot;language&quot;</span><span style={{ color: "#52525b" }}>:</span> <span style={{ color: "#fbbf24" }}>&quot;en-NG&quot;</span>,{"\n"}
-                    {"    "}<span style={{ color: "#60a5fa" }}>&quot;emotion&quot;</span><span style={{ color: "#52525b" }}>:</span> <span style={{ color: "#fbbf24" }}>&quot;warm&quot;</span>{"\n"}
-                    {"  "}<span style={{ color: "#fbbf24" }}>{"}"}&apos;</span>
-                  </code>
-                </pre>
-              </div>
-            </Reveal>
-
-            {/* Capabilities grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-20">
-              {[
-                { stat: "10x", label: "cheaper than alternatives", description: "Full pipeline at $0.01/min cost. Pass the savings on or keep the margin." },
-                { stat: "20+", label: "African accents", description: "Nigerian English, Yoruba, Hausa, Igbo — built in, not bolted on." },
-                { stat: "<500", label: "ms latency", description: "Full round-trip. Optimized for 2G networks and real-world noise." },
-                { stat: "100%", label: "self-hostable", description: "On-premise deployment available. Your data never leaves your servers." },
-              ].map((item, i) => (
-                <Reveal key={item.label} delay={i * 100}>
-                  <div className="rounded-xl p-6 card-hover h-full" style={{ background: "#0f0f11", border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <span className="text-2xl font-bold font-mono block mb-1" style={{ color: "#10b981" }}>{item.stat}</span>
-                    <span className="text-xs uppercase tracking-wider block mb-3" style={{ color: "#a1a1aa" }}>{item.label}</span>
-                    <p className="text-xs leading-relaxed" style={{ color: "#52525b" }}>{item.description}</p>
-                  </div>
-                </Reveal>
-              ))}
+      {/* CTA */}
+      <section className="border-t sabi-pricing-cta" style={{ borderColor: "var(--sabi-border)" }}>
+        <div className="max-w-3xl mx-auto px-6 py-20 text-center text-white">
+          <Reveal>
+            <h2 className="sabi-display text-3xl md:text-4xl mb-4">Ship your first African-accent call today</h2>
+            <p className="text-lg opacity-90 mb-8">1,000 minutes free every month. No card. No sales call.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href={`${MAIL}?subject=Sabi%20API%20access`} className="sabi-cta-primary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
+                Get API key <ArrowIcon />
+              </Link>
+              <Link href={`${MAIL}?subject=Sabi%20Enterprise`} className="sabi-cta-secondary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold border-2 border-white/40 hover:bg-white/10 transition-colors">
+                Talk to sales
+              </Link>
             </div>
-
-            {/* API Pricing tiers */}
-            <div id="pricing" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {devTiers.map((tier, i) => (
-                <Reveal key={tier.name} delay={i * 100}>
-                  <div className="rounded-2xl p-8 flex flex-col relative card-hover h-full" style={{ background: tier.highlighted ? "linear-gradient(to bottom, rgba(16,185,129,0.08), rgba(16,185,129,0.02))" : "#0f0f11", border: tier.highlighted ? "1px solid rgba(16,185,129,0.3)" : "1px solid rgba(255,255,255,0.06)" }}>
-                    {tier.highlighted && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-semibold px-4 py-1 rounded-full" style={{ background: "#10b981", color: "#000" }}>
-                        Most Popular
-                      </div>
-                    )}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold mb-2">{tier.name}</h3>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-bold font-mono">{tier.price}</span>
-                        <span className="text-sm" style={{ color: "#71717a" }}>{tier.unit}</span>
-                      </div>
-                      <p className="text-sm mt-3" style={{ color: "#52525b" }}>{tier.description}</p>
-                    </div>
-                    <ul className="space-y-3 mb-8 flex-1">
-                      {tier.features.map((f) => (
-                        <li key={f} className="flex items-start gap-3 text-sm" style={{ color: "#a1a1aa" }}>
-                          <span className="mt-0.5 flex-shrink-0" style={{ color: "#10b981" }}><CheckIcon /></span>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link href={tier.href} className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all btn-glow" style={tier.highlighted ? { background: "#10b981", color: "#000" } : { background: "transparent", color: "#fafafa", border: "1px solid rgba(255,255,255,0.1)" }}>
-                      {tier.cta} <ArrowIcon />
-                    </Link>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal delay={400}>
-              <p className="text-center text-sm mt-8" style={{ color: "#3f3f46" }}>
-                Volume discounts for 1M+ min/month. On-premise starts at $3,000/mo.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ─── Sabi for Organizations ───────────────────────── */}
-        <section id="organizations" className="relative" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <FloatingOrb color="#06b6d4" size="500px" className="top-20 right-[-200px] opacity-[0.06]" delay="3s" />
-
-          <div className="max-w-6xl mx-auto px-6 py-24">
-            <Reveal>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-xs font-mono px-3 py-1 rounded-full" style={{ border: "1px solid rgba(6,182,212,0.2)", color: "#06b6d4", background: "rgba(6,182,212,0.05)" }}>02</span>
-                <span className="text-sm font-medium uppercase tracking-widest" style={{ color: "#06b6d4" }}>For Organizations</span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={100}>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                You fund it. Kids learn.
-              </h2>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <p className="text-lg max-w-2xl mb-16" style={{ color: "#71717a" }}>
-                Turn-key foundational literacy and numeracy. We handle the telephony, the AI, the curriculum, the student tracking, and the impact measurement. You get a report showing learning outcomes.
-              </p>
-            </Reveal>
-
-            {/* How it works strip */}
-            <Reveal delay={300}>
-              <div className="flex flex-col md:flex-row gap-4 mb-20">
-                {[
-                  { num: "1", title: "You fund a cohort", desc: "100 students, 1,000, or 100,000. Per-student pricing." },
-                  { num: "2", title: "Kids call a toll-free number", desc: "5-minute daily lessons. Any phone. No internet." },
-                  { num: "3", title: "Sabi teaches adaptively", desc: "Market math, phonics, persistent memory. Nigerian context." },
-                  { num: "4", title: "You receive impact data", desc: "Pre/post TaRL assessments, engagement metrics, cost per outcome." },
-                ].map((step, i) => (
-                  <div key={step.num} className="flex-1 rounded-xl p-6" style={{ background: "#0f0f11", border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <span className="text-2xl font-bold font-mono block mb-2" style={{ color: "#06b6d4" }}>{step.num}</span>
-                    <h4 className="font-semibold mb-1 text-sm">{step.title}</h4>
-                    <p className="text-xs" style={{ color: "#52525b" }}>{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-
-            {/* Org pricing */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {orgTiers.map((tier, i) => (
-                <Reveal key={tier.name} delay={i * 100}>
-                  <div className="rounded-2xl p-8 flex flex-col card-hover h-full" style={{ background: "#0f0f11", border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold mb-1">{tier.name}</h3>
-                      <p className="text-xs mb-4" style={{ color: "#52525b" }}>{tier.students} students</p>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-bold font-mono">{tier.price}</span>
-                        <span className="text-sm" style={{ color: "#71717a" }}>{tier.unit}</span>
-                      </div>
-                      <p className="text-sm mt-3" style={{ color: "#52525b" }}>{tier.description}</p>
-                    </div>
-                    <ul className="space-y-3 mb-8 flex-1">
-                      {tier.features.map((f) => (
-                        <li key={f} className="flex items-start gap-3 text-sm" style={{ color: "#a1a1aa" }}>
-                          <span className="mt-0.5 flex-shrink-0" style={{ color: "#06b6d4" }}><CheckIcon /></span>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link href="mailto:info@eduforequality.org?subject=Sabi for Organizations" className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all" style={{ background: "transparent", color: "#fafafa", border: "1px solid rgba(255,255,255,0.1)" }}>
-                      Contact Us <ArrowIcon />
-                    </Link>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal delay={400}>
-              <p className="text-center text-sm mt-8" style={{ color: "#3f3f46" }}>
-                Governments, UN agencies, foundations, and telco CSR programs welcome.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ─── The Only One ─────────────────────────────────── */}
-        <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <div className="max-w-4xl mx-auto px-6 py-24 text-center">
-            <Reveal>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                The only voice AI built for Africa
-              </h2>
-            </Reveal>
-            <Reveal delay={100}>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
-                {[
-                  { icon: "🎙", text: "Other platforms fail on Nigerian accents" },
-                  { icon: "🌍", text: "Other platforms don't support African languages" },
-                  { icon: "💰", text: "Other platforms cost 2–10x more" },
-                  { icon: "🔒", text: "Other platforms can't be self-hosted" },
-                ].map((item) => (
-                  <div key={item.text} className="text-center">
-                    <div className="text-3xl mb-3">{item.icon}</div>
-                    <p className="text-sm" style={{ color: "#71717a" }}>{item.text}</p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ─── Final CTA ────────────────────────────────────── */}
-        <section className="relative overflow-hidden">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full blur-[150px]" style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)", opacity: 0.1, animation: "pulse-glow 6s ease-in-out infinite" }} />
-
-          <div className="relative max-w-3xl mx-auto px-6 py-28 text-center" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-            <Reveal>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6" style={{ background: "linear-gradient(135deg, #fafafa, #10b981)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                Start building with Sabi
-              </h2>
-            </Reveal>
-            <Reveal delay={100}>
-              <p className="text-lg mb-10" style={{ color: "#71717a" }}>
-                The voice AI infrastructure Africa has been waiting for.
-              </p>
-            </Reveal>
-            <Reveal delay={200}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="mailto:api@eduforequality.org?subject=Sabi API Access" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold btn-glow transition-all" style={{ background: "#10b981", color: "#000" }}>
-                  Get API Key <ArrowIcon />
-                </Link>
-                <Link href="mailto:info@eduforequality.org?subject=Sabi Enterprise" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all hover:bg-white/5" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "#fafafa" }}>
-                  Talk to Sales
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ─── Footer ───────────────────────────────────────── */}
-        <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-lg" style={{ color: "#10b981" }}>sabi</span>
-              <span className="text-xs" style={{ color: "#3f3f46" }}>by Education for Equality</span>
-            </div>
-            <div className="flex gap-8 text-sm" style={{ color: "#3f3f46" }}>
-              <Link href="/sabi" className="hover:text-white transition-colors">Sabi for Kids</Link>
-              <a href="https://eduforequality.org" className="hover:text-white transition-colors">Main Site</a>
-              <a href="mailto:info@eduforequality.org" className="hover:text-white transition-colors">Contact</a>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </>
+          </Reveal>
+        </div>
+      </section>
+    </div>
   );
 }
