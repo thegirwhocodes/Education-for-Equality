@@ -58,6 +58,7 @@ AT_SMS_BASE_URL=
 AT_SENDER_ID=
 NEXT_PUBLIC_SABI_LINE="+234 201 700 1459"
 SABI_SMS_WEBHOOK_SECRET=
+SABI_SMS_KEYWORD=
 ```
 
 Fallback provider:
@@ -69,6 +70,10 @@ TWILIO_PHONE_NUMBER=
 ```
 
 Provider selection is automatic: Africa's Talking is used when `AT_API_KEY` and `AT_USERNAME` exist; otherwise Twilio is used if configured. The AT sender uses the sandbox host when `AT_USERNAME=sandbox`; set `AT_SMS_BASE_URL` only if you need to override the default.
+
+If Africa's Talking provisions a shared short code + keyword, set `SABI_SMS_KEYWORD`
+to that keyword. The inbound webhook treats replies such as `SABI HELP`,
+`SABI STOP`, and `SABI A` as `HELP`, `STOP`, and `A`.
 
 ## Africa's Talking inbound setup
 

@@ -100,6 +100,22 @@ function classifySms(text: string): "reply" | "help" | "opt_in" | "opt_out" {
   return "reply";
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function stripSharedShortcodeKeyword(text: string): string {
+  const keyword = (process.env.SABI_SMS_KEYWORD || "").trim();
+  if (!keyword) return text.trim();
+
+  const withoutKeyword = text
+    .trim()
+    .replace(new RegExp(`^${escapeRegExp(keyword)}(?:\\b|[\\s:;,.\\-]+)`, "i"), "")
+    .trim();
+
+  return withoutKeyword || "HELP";
+}
+
 function emptyTwilioResponse() {
   return new NextResponse(
     '<?xml version="1.0" encoding="UTF-8"?><Response></Response>',
@@ -130,9 +146,10 @@ export async function POST(req: NextRequest) {
       req.headers.get("content-type") || ""
     );
     const phoneNumber = incoming.from;
-    const messageBody = incoming.text.trim();
+    const rawMessageBody = incoming.text.trim();
+    const messageBody = stripSharedShortcodeKeyword(rawMessageBody);
 
-    if (!phoneNumber || !messageBody) {
+    if (!phoneNumber || !rawMessageBody) {
       return acceptedResponse(incoming.provider);
     }
 
@@ -140,7 +157,7 @@ export async function POST(req: NextRequest) {
     await logSMS({
       phone_number: phoneNumber,
       direction: "inbound",
-      message: messageBody,
+      message: rawMessageBody,
       sms_type: smsType,
       channel: incoming.provider,
     });
