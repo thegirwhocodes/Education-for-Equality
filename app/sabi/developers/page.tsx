@@ -34,11 +34,11 @@ function SparkIcon() {
 function buildMailto(form: HTMLFormElement) {
   const data = new FormData(form);
   const value = (key: string) => String(data.get(key) || "").trim();
-  const subject = `Sabi developer access - ${value("organization") || value("name") || "new request"}`;
+  const subject = `Sabi early access - ${value("organization") || value("name") || "new request"}`;
   const body = [
     "Hi Sabi team,",
     "",
-    "I would like early developer access.",
+    "I would love to join the Sabi developer early access list.",
     "",
     `Name: ${value("name")}`,
     `Work email: ${value("email")}`,
@@ -47,10 +47,10 @@ function buildMailto(form: HTMLFormElement) {
     `Expected monthly minutes: ${value("volume")}`,
     `Timeline: ${value("timeline")}`,
     "",
-    "Accent, language, telephony, or pilot notes:",
+    "Accent, language, telephony, or launch notes:",
     value("notes") || "-",
     "",
-    "Please send next steps for the Sabi developer pilot.",
+    "Please keep me posted and invite me when the developer pilot opens.",
   ].join("\n");
 
   return `mailto:${API_MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -85,17 +85,17 @@ export default function SabiDevelopersPage() {
           <div>
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-widest sabi-accent-label mb-5">
               <SparkIcon />
-              Private developer pilot
+              Developer API coming soon
             </p>
             <h1 className="sabi-display text-4xl md:text-6xl tracking-tight max-w-3xl mb-5">
-              Build the first African-accent voice call that actually works.
+              Be first in line for Sabi&apos;s African voice API.
             </h1>
             <p className="text-lg md:text-xl leading-relaxed text-[var(--sabi-muted)] max-w-2xl mb-7">
-              Request early access to Sabi&apos;s voice pipeline: speech-to-text, tutoring logic, Nigerian voices, and shared-phone identity for real African phone audio.
+              We&apos;re opening Sabi&apos;s voice pipeline to a small group of builders first. If you&apos;re working on a tutor, hotline, IVR, or voice product for African speakers, tell us what you want to ship.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <a href="#request-access" className="sabi-btn-primary inline-flex items-center justify-center gap-2 px-6 py-3 text-sm">
-                Request access <ArrowIcon />
+                Join early access <ArrowIcon />
               </a>
               <Link href="/sabi/pricing" className="sabi-btn-secondary inline-flex items-center justify-center gap-2 px-6 py-3 text-sm">
                 View pricing
@@ -103,9 +103,9 @@ export default function SabiDevelopersPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
               {[
+                ["Opening", "to builders soon"],
                 ["3-5", "design partners first"],
-                ["1,000", "prototype minutes planned"],
-                ["<10 min", "target first test call"],
+                ["1,000", "prototype minutes target"],
               ].map(([value, label]) => (
                 <div key={label} className="sabi-developer-stat">
                   <div className="sabi-display text-3xl">{value}</div>
@@ -121,7 +121,7 @@ export default function SabiDevelopersPage() {
                 <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444]" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--sabi-admin-gold)]" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--sabi-green)]" />
-                <span className="ml-2 text-xs text-[var(--sabi-admin-muted)]">first-call.js</span>
+                <span className="ml-2 text-xs text-[var(--sabi-admin-muted)]">early-preview.js</span>
               </div>
               <pre className="text-xs md:text-sm leading-relaxed overflow-x-auto">
                 <code>{`await sabi.voice.call({
@@ -172,23 +172,23 @@ export default function SabiDevelopersPage() {
       <section id="request-access" className="max-w-6xl mx-auto px-6 py-14 md:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 items-start">
           <div className="lg:sticky lg:top-24">
-            <p className="text-xs uppercase tracking-widest sabi-accent-label mb-2">Request access</p>
-            <h2 className="sabi-display text-3xl md:text-4xl mb-3">Tell us what you are building.</h2>
+            <p className="text-xs uppercase tracking-widest sabi-accent-label mb-2">Early access</p>
+            <h2 className="sabi-display text-3xl md:text-4xl mb-3">Sign up if this is the voice layer you have been waiting for.</h2>
             <p className="text-[var(--sabi-muted)] leading-relaxed mb-6">
-              We will review the use case and reply with the right path: sandbox key, pilot call, or enterprise conversation.
+              We are opening to a small circle first. Join the list now, tell us what you want to ship, and we will invite the strongest fits into the developer pilot.
             </p>
             <div className="sabi-pilot-strip">
               <div>
                 <span>1</span>
-                <p>Share the use case</p>
+                <p>Join the interest list</p>
               </div>
               <div>
                 <span>2</span>
-                <p>We route the request</p>
+                <p>Tell us the first call you want to ship</p>
               </div>
               <div>
                 <span>3</span>
-                <p>Build your first test call</p>
+                <p>Get invited when the pilot opens</p>
               </div>
             </div>
           </div>
@@ -259,15 +259,15 @@ export default function SabiDevelopersPage() {
 
             <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
               <p className="text-xs leading-relaxed text-[var(--sabi-muted)] max-w-md">
-                This opens a pre-filled email to {API_MAIL}. No payment details, no sales calendar before we know the use case.
+                This opens a pre-filled email to {API_MAIL}. No payment details, no calendar wall, just a clean way to raise your hand.
               </p>
               <button type="submit" className="sabi-btn-primary inline-flex items-center justify-center gap-2 px-6 py-3 text-sm">
-                Send request <ArrowIcon />
+                Join the list <ArrowIcon />
               </button>
             </div>
             {sent && (
               <p className="mt-4 text-sm text-[var(--sabi-green)]">
-                Your email draft is ready. Send it from your mail app so we can reply with next steps.
+                Your email draft is ready. Send it from your mail app and we will know you want in.
               </p>
             )}
           </form>

@@ -9,8 +9,8 @@ export default function SabiShellNav() {
   const onPricing = pathname?.startsWith("/sabi/pricing");
   const onDevelopers = pathname?.startsWith("/sabi/developers");
   const ctaHref = onDevelopers ? "/sabi/pricing" : "/sabi/developers";
-  const ctaLabel = onDevelopers ? "View pricing" : onPricing ? "Get API key" : "For developers";
-  const ctaMobileLabel = onDevelopers ? "Pricing" : onPricing ? "API key" : "For developers";
+  const ctaLabel = onDevelopers ? "View pricing" : onPricing ? "Join early access" : "For developers";
+  const ctaMobileLabel = onDevelopers ? "Pricing" : onPricing ? "Join list" : "For developers";
 
   const linkClass = (href: string) => {
     const active = pathname === href || (href !== "/sabi" && pathname?.startsWith(href));

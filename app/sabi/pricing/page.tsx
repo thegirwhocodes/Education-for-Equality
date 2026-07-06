@@ -78,26 +78,26 @@ const plans = [
     name: "Free",
     price: "$0",
     unit: "",
-    tagline: "1,000 minutes/month, free forever.",
-    description: "Build a whole prototype before you pay a cent. No card required.",
-    cta: "Start free",
+    tagline: "1,000 minutes/month planned for early builders.",
+    description: "Join the early access list and build the first prototype when the pilot opens.",
+    cta: "Join early access",
     href: DEVELOPER_ACCESS,
     highlighted: false,
     features: [
-      "1,000 conversation minutes / month",
+      "First 1,000 prototype minutes when the pilot opens",
       "Nigerian English STT + LLM + TTS",
       "Default Nigerian voice",
-      "Interactive sandbox + full docs",
-      "Community support",
+      "Sandbox and docs rolling out with early access",
+      "Feedback loop with the Sabi team",
     ],
   },
   {
     name: "Pay as you go",
     price: "$0.06",
     unit: "/min",
-    tagline: "Everything, self-serve. Volume discounts apply automatically.",
-    description: "The full pipeline in one call. Instant API key, no sales call.",
-    cta: "Get API key",
+    tagline: "The public-beta rate we are building toward.",
+    description: "For teams that want the full pipeline as soon as Sabi opens to developers.",
+    cta: "Join waitlist",
     href: DEVELOPER_ACCESS,
     highlighted: true,
     features: [
@@ -107,7 +107,7 @@ const plans = [
       "Adaptive per-caller memory",
       "À la carte primitives (transcribe / speak)",
       "Automatic volume pricing (see below)",
-      "99.9% uptime SLA · email support",
+      "Design-partner onboarding support",
     ],
   },
   {
@@ -473,14 +473,14 @@ export default function SabiPricingPage() {
       <section className="border-t sabi-pricing-cta" style={{ borderColor: "var(--sabi-border)" }}>
         <div className="max-w-3xl mx-auto px-6 py-20 text-center text-white">
           <Reveal>
-            <h2 className="sabi-display text-3xl md:text-4xl mb-4">Ship your first African-accent call today</h2>
-            <p className="text-lg opacity-90 mb-8">1,000 minutes free every month. No card. No sales call.</p>
+            <h2 className="sabi-display text-3xl md:text-4xl mb-4">Want to build on Sabi when the API opens?</h2>
+            <p className="text-lg opacity-90 mb-8">Join the early access list. We are inviting the first serious builders into the developer pilot.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={DEVELOPER_ACCESS} className="sabi-cta-primary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
-                Get API key <ArrowIcon />
+                Join early access <ArrowIcon />
               </Link>
               <Link href={DEVELOPER_ACCESS} className="sabi-cta-secondary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold border-2 border-white/40 hover:bg-white/10 transition-colors">
-                Talk to sales
+                Tell us your use case
               </Link>
             </div>
           </Reveal>
