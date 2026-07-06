@@ -60,6 +60,13 @@ function phoneKey(phoneNumber: string): string {
   return String(phoneNumber || "").replace(/\D/g, "").slice(-10);
 }
 
+function cleanSenderId(raw: string | undefined): string {
+  const senderId = String(raw || "").trim();
+  if (!senderId) return "";
+  if (/leave empty|your-|^\(|^</i.test(senderId)) return "";
+  return senderId;
+}
+
 export async function isSMSOptedOut(phoneNumber: string): Promise<boolean> {
   const key = phoneKey(phoneNumber);
   if (!key) return false;
@@ -111,7 +118,7 @@ async function sendATSMS(to: string, message: string): Promise<void> {
     to,
     message,
   });
-  const senderId = process.env.AT_SENDER_ID?.trim();
+  const senderId = cleanSenderId(process.env.AT_SENDER_ID);
   if (senderId) {
     params.set("from", senderId);
   }
