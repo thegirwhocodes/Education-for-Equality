@@ -104,7 +104,10 @@ export async function middleware(request: NextRequest) {
     if (path === '/pricing') {
       return NextResponse.rewrite(new URL('/sabi/pricing', request.url));
     }
-    if (!path.startsWith('/api/') && !path.startsWith('/_next') && !path.startsWith('/sign')) {
+    if (path === '/developers') {
+      return NextResponse.rewrite(new URL('/sabi/developers', request.url));
+    }
+    if (!path.startsWith('/api/') && !path.startsWith('/_next') && !path.startsWith('/sign') && !path.startsWith('/sabi')) {
       return NextResponse.redirect(new URL('/demo', request.url));
     }
   }
