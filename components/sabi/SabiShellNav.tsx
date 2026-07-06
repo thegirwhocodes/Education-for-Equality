@@ -49,13 +49,23 @@ export default function SabiShellNav() {
           </a>
         </nav>
 
-        <Link
-          href={ctaHref}
-          className="sabi-btn-primary px-3 sm:px-4 py-2 text-sm whitespace-nowrap"
-        >
-          <span className="hidden sm:inline sabi-api-key-label">{ctaLabel}</span>
-          <span className="sm:hidden">{ctaMobileLabel}</span>
-        </Link>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href="https://eduforequality.org"
+            className="sabi-header-home-btn px-2 sm:px-3 lg:px-4 py-2 text-sm whitespace-nowrap"
+          >
+            <span className="hidden lg:inline">Edu for Equality</span>
+            <span className="hidden sm:inline lg:hidden">Edu for</span>
+            <span className="sm:hidden">Edu</span>
+          </a>
+          <Link
+            href={ctaHref}
+            className="sabi-btn-primary px-3 sm:px-4 py-2 text-sm whitespace-nowrap"
+          >
+            <span className="hidden sm:inline sabi-api-key-label">{ctaLabel}</span>
+            <span className="sm:hidden">{ctaMobileLabel}</span>
+          </Link>
+        </div>
       </div>
     </header>
   );

@@ -122,6 +122,24 @@ body.sabi-route > main {
   box-shadow: none;
 }
 
+.sabi-shell-header .sabi-header-home-btn {
+  background: rgba(240, 232, 208, 0.06);
+  border: 1px solid rgba(240, 232, 208, 0.18);
+  border-radius: 0.75rem;
+  color: var(--sabi-admin-text);
+  font-weight: 500;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.sabi-shell-header .sabi-header-home-btn:hover {
+  background: rgba(240, 232, 208, 0.12);
+  border-color: rgba(197, 169, 113, 0.45);
+  color: var(--sabi-admin-cream);
+}
+
 .sabi-shell section,
 .sabi-shell footer,
 .sabi-shell header {
