@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 212" width="480" height="509" role="img" aria-label="Sabi spark mark">
+  <defs>
+    <filter id="spark-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#spark-glow)">
+    <path d="M96 22 Q107 91 146 102 Q107 113 96 190 Q85 113 46 102 Q85 91 96 22 Z" fill="#C5A971"/>
+    <path d="M150 30 Q155 47 166 52 Q155 57 150 74 Q145 57 134 52 Q145 47 150 30 Z" fill="#E4D4AC"/>
+  </g>
+</svg>
