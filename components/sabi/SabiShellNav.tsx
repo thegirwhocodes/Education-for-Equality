@@ -47,6 +47,9 @@ export default function SabiShellNav() {
           <a href="mailto:info@eduforequality.org" className="text-[var(--sabi-muted)] hover:text-[var(--sabi-ink)] transition-colors">
             Contact
           </a>
+          <a href="https://eduforequality.org" className="text-[var(--sabi-muted)] hover:text-[var(--sabi-ink)] transition-colors">
+            Education for Equality
+          </a>
         </nav>
 
         <Link
