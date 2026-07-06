@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
-const MAIL = "mailto:api@eduforequality.org";
+const DEVELOPER_ACCESS = "/sabi/developers";
 
 function CheckIcon() {
   return (
@@ -81,7 +81,7 @@ const plans = [
     tagline: "1,000 minutes/month, free forever.",
     description: "Build a whole prototype before you pay a cent. No card required.",
     cta: "Start free",
-    href: `${MAIL}?subject=Sabi%20API%20—%20Free%20tier`,
+    href: DEVELOPER_ACCESS,
     highlighted: false,
     features: [
       "1,000 conversation minutes / month",
@@ -98,7 +98,7 @@ const plans = [
     tagline: "Everything, self-serve. Volume discounts apply automatically.",
     description: "The full pipeline in one call. Instant API key, no sales call.",
     cta: "Get API key",
-    href: `${MAIL}?subject=Sabi%20API%20—%20Pay%20as%20you%20go`,
+    href: DEVELOPER_ACCESS,
     highlighted: true,
     features: [
       "Full STT → LLM → TTS pipeline",
@@ -117,7 +117,7 @@ const plans = [
     tagline: "From $0.015/min on committed volume.",
     description: "For telcos, ministries, banks, and national deployments.",
     cta: "Talk to us",
-    href: `${MAIL}?subject=Sabi%20API%20—%20Enterprise`,
+    href: DEVELOPER_ACCESS,
     highlighted: false,
     features: [
       "Committed-volume rates from $0.015/min",
@@ -476,10 +476,10 @@ export default function SabiPricingPage() {
             <h2 className="sabi-display text-3xl md:text-4xl mb-4">Ship your first African-accent call today</h2>
             <p className="text-lg opacity-90 mb-8">1,000 minutes free every month. No card. No sales call.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={`${MAIL}?subject=Sabi%20API%20access`} className="sabi-cta-primary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
+              <Link href={DEVELOPER_ACCESS} className="sabi-cta-primary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
                 Get API key <ArrowIcon />
               </Link>
-              <Link href={`${MAIL}?subject=Sabi%20Enterprise`} className="sabi-cta-secondary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold border-2 border-white/40 hover:bg-white/10 transition-colors">
+              <Link href={DEVELOPER_ACCESS} className="sabi-cta-secondary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold border-2 border-white/40 hover:bg-white/10 transition-colors">
                 Talk to sales
               </Link>
             </div>

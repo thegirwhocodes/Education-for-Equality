@@ -314,6 +314,136 @@ body.sabi-route > main {
   background: var(--sabi-gold) !important;
 }
 
+/* Developer access page */
+.sabi-developer-hero {
+  background:
+    radial-gradient(900px 420px at 14% -8%, rgba(197, 169, 113, 0.16), transparent 58%),
+    radial-gradient(700px 360px at 92% 6%, rgba(154, 117, 54, 0.12), transparent 54%),
+    var(--sabi-paper);
+}
+
+.sabi-developer-preview {
+  background: var(--sabi-card);
+  border-color: rgba(197, 169, 113, 0.24);
+}
+
+.sabi-mini-terminal {
+  background: linear-gradient(180deg, var(--sabi-side) 0%, var(--sabi-side-deep) 100%);
+  border-bottom: 1px solid var(--sabi-admin-line);
+  color: var(--sabi-admin-cream);
+  padding: 1.25rem;
+}
+
+.sabi-developer-stat {
+  background: rgba(255, 253, 248, 0.72);
+  border: 1px solid rgba(197, 169, 113, 0.2);
+  border-radius: 0.9rem;
+  padding: 1rem;
+}
+
+.sabi-developer-stat .sabi-display {
+  color: var(--sabi-ink);
+  line-height: 0.95;
+}
+
+.sabi-developer-stat p {
+  color: var(--sabi-muted);
+  font-size: 0.78rem;
+  margin-top: 0.45rem;
+}
+
+.sabi-developer-check {
+  color: var(--sabi-gold-deep);
+}
+
+.sabi-fit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(255, 253, 248, 0.76);
+  border: 1px solid rgba(197, 169, 113, 0.18);
+  border-radius: 0.9rem;
+  color: var(--sabi-ink-soft);
+  font-size: 0.95rem;
+  padding: 1rem 1.1rem;
+}
+
+.sabi-fit-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--sabi-gold);
+  box-shadow: 0 0 0 5px rgba(203, 168, 104, 0.14);
+  flex: 0 0 auto;
+}
+
+.sabi-pilot-strip {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sabi-pilot-strip div {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--sabi-muted);
+  font-size: 0.9rem;
+}
+
+.sabi-pilot-strip span {
+  display: inline-flex;
+  width: 1.85rem;
+  height: 1.85rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--sabi-gold-soft);
+  color: var(--sabi-gold-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sabi-access-form label > span {
+  display: block;
+  color: var(--sabi-ink);
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+
+.sabi-input {
+  width: 100%;
+  border: 1px solid var(--sabi-border);
+  border-radius: 0.8rem;
+  background: rgba(255, 253, 248, 0.9);
+  color: var(--sabi-ink);
+  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.4;
+  padding: 0.82rem 0.9rem;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.sabi-input:focus {
+  background: var(--sabi-card);
+  border-color: var(--sabi-gold);
+  box-shadow: 0 0 0 4px rgba(203, 168, 104, 0.16);
+}
+
+.sabi-input::placeholder {
+  color: var(--sabi-meta);
+}
+
+.sabi-textarea {
+  min-height: 8.5rem;
+  resize: vertical;
+}
+
 /* Dark only where it belongs — terminal output */
 .sabi-code-terminal {
   background: linear-gradient(180deg, var(--sabi-side) 0%, var(--sabi-side-deep) 100%) !important;

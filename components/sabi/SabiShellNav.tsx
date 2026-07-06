@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const API_MAIL = "mailto:api@eduforequality.org?subject=Sabi%20API%20access";
-
 export default function SabiShellNav() {
   const pathname = usePathname();
   const onPricing = pathname?.startsWith("/sabi/pricing");
+  const onDevelopers = pathname?.startsWith("/sabi/developers");
+  const ctaHref = onDevelopers ? "/sabi/pricing" : "/sabi/developers";
+  const ctaLabel = onDevelopers ? "View pricing" : onPricing ? "Get API key" : "For developers";
+  const ctaMobileLabel = onDevelopers ? "Pricing" : onPricing ? "API key" : "For developers";
 
   const linkClass = (href: string) => {
     const active = pathname === href || (href !== "/sabi" && pathname?.startsWith(href));
@@ -24,7 +26,7 @@ export default function SabiShellNav() {
           <Image src="/sabi-spark.svg" alt="" width={28} height={30} className="flex-shrink-0 sabi-spark-mark" />
           <div className="min-w-0 leading-tight flex items-baseline gap-2">
             <span className="sabi-wordmark text-xl">Sabi</span>
-            {onPricing && (
+            {(onPricing || onDevelopers) && (
               <span
                 className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded"
                 style={{ background: "var(--sabi-gold-soft)", color: "var(--sabi-gold-deep)" }}
@@ -48,11 +50,11 @@ export default function SabiShellNav() {
         </nav>
 
         <Link
-          href={onPricing ? API_MAIL : "/sabi/pricing"}
+          href={ctaHref}
           className="sabi-btn-primary px-3 sm:px-4 py-2 text-sm whitespace-nowrap"
         >
-          <span className="hidden sm:inline sabi-api-key-label">{onPricing ? "Get API key" : "For developers"}</span>
-          <span className="sm:hidden">{onPricing ? "API key" : "For developers"}</span>
+          <span className="hidden sm:inline sabi-api-key-label">{ctaLabel}</span>
+          <span className="sm:hidden">{ctaMobileLabel}</span>
         </Link>
       </div>
     </header>
