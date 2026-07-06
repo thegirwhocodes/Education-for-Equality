@@ -85,6 +85,18 @@ export async function GET() {
       .limit(500);
     if (!logResult.error) {
       smsLog = (logResult.data as SmsLogRow[]) || [];
+    } else if (/channel/i.test(logResult.error.message || "")) {
+      const fallbackLogResult = await supabase
+        .from("sabi_sms_log")
+        .select("phone_number, direction, message, sms_type, created_at")
+        .order("created_at", { ascending: false })
+        .limit(500);
+      if (!fallbackLogResult.error) {
+        smsLog = ((fallbackLogResult.data as Omit<SmsLogRow, "channel">[]) || []).map((row) => ({
+          ...row,
+          channel: null,
+        }));
+      }
     }
   } catch {
     setupNeeded = true;

@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS sabi_sms_log (
   phone_number    TEXT NOT NULL,
   direction       TEXT NOT NULL DEFAULT 'outbound',  -- 'outbound' | 'inbound'
   message         TEXT,
-  sms_type        TEXT DEFAULT 'general',            -- 'general'|'summary'|'practice'|'reminder'
-  channel         TEXT,                              -- 'at' | 'twilio'
+  sms_type        TEXT DEFAULT 'general',            -- 'general'|'summary'|'practice'|'reminder'|'reply'|'help'|'opt_in'|'opt_out'|'caregiver_*'
+  channel         TEXT,                              -- 'at' | 'twilio' | 'unknown'
   expected_answer TEXT,
   actual_answer   TEXT,
   is_correct      BOOLEAN,

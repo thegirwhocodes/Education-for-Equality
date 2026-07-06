@@ -15,6 +15,78 @@ function getSupabase() {
   );
 }
 
+export type SmsLogPayload = {
+  student_id?: string | null;
+  phone_number: string;
+  direction: "outbound" | "inbound";
+  message: string;
+  sms_type?: string | null;
+  channel?: "at" | "twilio" | "unknown" | string | null;
+  expected_answer?: string | null;
+  actual_answer?: string | null;
+  is_correct?: boolean | null;
+};
+
+export async function logSMS(payload: SmsLogPayload): Promise<void> {
+  try {
+    const supabase = getSupabase();
+    const row = {
+      ...payload,
+      sms_type: payload.sms_type || "general",
+    };
+    const { error } = await supabase.from("sabi_sms_log").insert(row);
+
+    // The newest telephony schema has `channel`; an older voice migration did not.
+    // Keep logging alive if production was migrated from the older file.
+    if (error && "channel" in row && /channel/i.test(error.message || "")) {
+      const withoutChannel = { ...row };
+      delete withoutChannel.channel;
+      const fallback = await supabase.from("sabi_sms_log").insert(withoutChannel);
+      if (fallback.error) {
+        console.error("SMS log error:", fallback.error);
+      }
+      return;
+    }
+
+    if (error) {
+      console.error("SMS log error:", error);
+    }
+  } catch (error) {
+    console.error("SMS log error:", error);
+  }
+}
+
+function phoneKey(phoneNumber: string): string {
+  return String(phoneNumber || "").replace(/\D/g, "").slice(-10);
+}
+
+export async function isSMSOptedOut(phoneNumber: string): Promise<boolean> {
+  const key = phoneKey(phoneNumber);
+  if (!key) return false;
+
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from("sabi_sms_log")
+      .select("phone_number, sms_type, created_at")
+      .eq("direction", "inbound")
+      .in("sms_type", ["opt_out", "opt_in"])
+      .order("created_at", { ascending: false })
+      .limit(200);
+
+    if (error) {
+      console.error("SMS opt-out lookup error:", error);
+      return false;
+    }
+
+    const latestConsentMessage = (data || []).find((row) => phoneKey(row.phone_number) === key);
+    return latestConsentMessage?.sms_type === "opt_out";
+  } catch (error) {
+    console.error("SMS opt-out lookup error:", error);
+    return false;
+  }
+}
+
 /**
  * Detect which SMS provider to use based on available env vars.
  * Africa's Talking is preferred for Nigerian numbers.
@@ -28,19 +100,30 @@ function getSMSProvider(): "at" | "twilio" {
  * Send an SMS via Africa's Talking
  */
 async function sendATSMS(to: string, message: string): Promise<void> {
-  const response = await fetch("https://api.africastalking.com/version1/messaging", {
+  const sandbox = process.env.AT_USERNAME?.trim().toLowerCase() === "sandbox";
+  const messagingUrl =
+    process.env.AT_SMS_BASE_URL ||
+    (sandbox
+      ? "https://api.sandbox.africastalking.com/version1/messaging"
+      : "https://api.africastalking.com/version1/messaging");
+  const params = new URLSearchParams({
+    username: process.env.AT_USERNAME!,
+    to,
+    message,
+  });
+  const senderId = process.env.AT_SENDER_ID?.trim();
+  if (senderId) {
+    params.set("from", senderId);
+  }
+
+  const response = await fetch(messagingUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       apiKey: process.env.AT_API_KEY!,
       Accept: "application/json",
     },
-    body: new URLSearchParams({
-      username: process.env.AT_USERNAME!,
-      to,
-      message,
-      from: process.env.AT_SENDER_ID || "",
-    }),
+    body: params,
   });
 
   if (!response.ok) {
@@ -55,10 +138,15 @@ async function sendATSMS(to: string, message: string): Promise<void> {
 export async function sendSMS(
   to: string,
   message: string,
-  smsType?: string
+  smsType?: string,
+  options?: { ignoreOptOut?: boolean },
 ): Promise<void> {
   try {
     const provider = getSMSProvider();
+    if (!options?.ignoreOptOut && await isSMSOptedOut(to)) {
+      console.warn("SMS not sent because the recipient opted out:", to);
+      return;
+    }
 
     if (provider === "at") {
       await sendATSMS(to, message);
@@ -71,9 +159,7 @@ export async function sendSMS(
       });
     }
 
-    // Log the SMS
-    const supabase = getSupabase();
-    await supabase.from("sabi_sms_log").insert({
+    await logSMS({
       phone_number: to,
       direction: "outbound",
       message,
@@ -133,11 +219,19 @@ export type SmsSendResult = {
 export async function sendSMSResult(
   to: string,
   message: string,
-  options?: { smsType?: string; studentId?: string | null },
+  options?: { smsType?: string; studentId?: string | null; ignoreOptOut?: boolean },
 ): Promise<SmsSendResult> {
   const status = smsProviderStatus();
   if (!status.ready) {
     return { ok: false, provider: "none", live: false, error: status.detail };
+  }
+  if (!options?.ignoreOptOut && await isSMSOptedOut(to)) {
+    return {
+      ok: false,
+      provider: status.provider,
+      live: status.live,
+      error: "This number has opted out of Sabi SMS. Ask them to reply START before sending again.",
+    };
   }
   try {
     if (status.provider === "at") {
@@ -151,8 +245,7 @@ export async function sendSMSResult(
       });
     }
     try {
-      const supabase = getSupabase();
-      await supabase.from("sabi_sms_log").insert({
+      await logSMS({
         student_id: options?.studentId || null,
         phone_number: to,
         direction: "outbound",
