@@ -658,264 +658,715 @@ export default function SabiVoice() {
   // ─── Idle Screen ────────────────────────────────────────────────
   if (!callActive && callState === "idle") {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-center px-4">
-        <div className="text-center mb-10">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0f6b4f] to-[#1a8c6a] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#0f6b4f]/30">
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="1.5"
-            >
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-              <line x1="12" y1="19" x2="12" y2="23" />
-              <line x1="8" y1="23" x2="16" y2="23" />
-            </svg>
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Sabi</h1>
-          <p className="text-white/50 text-sm">Voice AI Tutor</p>
-        </div>
+      <>
+        <section className="sd-hero">
+          <div className="sd-hero-inner">
+            <header className="sd-brand">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sabi-spark.svg"
+                alt=""
+                width={64}
+                height={70}
+                className="sd-spark"
+              />
+              <h1 className="sd-display">Sabi</h1>
+              <p className="sd-byline">
+                <span>/sah&#8209;bee/</span>
+                <span className="sd-dot" aria-hidden />
+                <span>&ldquo;to know&rdquo; in Nigerian Pidgin</span>
+              </p>
+              <p className="sd-tagline">
+                A voice AI tutor. Any phone, any accent, any child.
+              </p>
+            </header>
 
-        {!voiceSupported && (
-          <div className="bg-red-500/20 border border-red-500/30 rounded-xl px-4 py-3 max-w-xs mb-6">
-            <p className="text-red-300 text-sm text-center">
-              Voice not supported in this browser. Please use Chrome.
-            </p>
-          </div>
-        )}
+            {!voiceSupported && (
+              <div className="sd-alert sd-alert-warn">
+                Voice isn&apos;t supported in this browser. Please use Chrome for the demo.
+              </div>
+            )}
 
-        {!student && (
-          <div className="w-full max-w-xs mb-8">
-            <input
-              type="text"
-              value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && nameInput.trim() && startCall()
-              }
-              placeholder="Enter your name"
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center placeholder-white/40 focus:outline-none focus:border-[#1a8c6a] focus:ring-1 focus:ring-[#1a8c6a]"
-            />
-          </div>
-        )}
+            <div className="sd-card">
+              <div className="sd-hairline" aria-hidden />
+              <div className="sd-card-body">
+                {student ? (
+                  <>
+                    <p className="sd-kicker">Welcome back</p>
+                    <h2 className="sd-card-title">Hi {student.name}</h2>
+                    <p className="sd-lead">
+                      {student.total_sessions} lesson{student.total_sessions !== 1 ? "s" : ""} saved on this
+                      device. Sabi remembers where you left off.
+                    </p>
+                    <button
+                      onClick={startCall}
+                      disabled={!voiceSupported}
+                      className="sd-btn-primary"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                      </svg>
+                      Continue with Sabi
+                    </button>
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem("sabi_browser_id");
+                        setStudent(null);
+                      }}
+                      className="sd-btn-ghost"
+                    >
+                      Not {student.name}? Start fresh
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="sd-kicker">Start a lesson</p>
+                    <h2 className="sd-card-title">Say your name, and Sabi listens</h2>
+                    <p className="sd-lead">
+                      Tell her who you are and tap the call button. She teaches through a warm market
+                      scenario, one small idea at a time.
+                    </p>
+                    <label className="sd-field">
+                      <span className="sd-field-label">Your name</span>
+                      <input
+                        type="text"
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && nameInput.trim() && startCall()}
+                        placeholder="Amina"
+                        className="sd-input"
+                        autoFocus
+                      />
+                    </label>
 
-        {student && (
-          <div className="text-center mb-8">
-            <p className="text-white/70 text-sm">
-              Welcome back,{" "}
-              <span className="text-white font-semibold">{student.name}</span>
-            </p>
-            <p className="text-white/40 text-xs mt-1">
-              {student.total_sessions} lesson
-              {student.total_sessions !== 1 ? "s" : ""} saved on this device
-            </p>
-          </div>
-        )}
-
-        <button
-          onClick={startCall}
-          disabled={(!student && !nameInput.trim()) || !voiceSupported}
-          className="w-20 h-20 rounded-full bg-green-500 hover:bg-green-400 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg shadow-green-500/30"
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
-          </svg>
-        </button>
-        <p className="text-white/40 text-xs mt-4">Tap to start a call</p>
-
-        {error && (
-          <div className="mt-6 bg-red-500/20 border border-red-500/30 rounded-xl px-4 py-3 max-w-xs">
-            <p className="text-red-300 text-sm text-center">{error}</p>
-          </div>
-        )}
-
-        {messages.length > 0 && (
-          <div className="mt-8 w-full max-w-md">
-            <p className="text-white/40 text-xs text-center mb-3">
-              Last conversation:
-            </p>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 max-h-40 overflow-y-auto space-y-2">
-              {messages.map((m, i) => (
-                <p
-                  key={i}
-                  className={`text-xs ${m.role === "user" ? "text-white/60" : "text-[#4ade80]/80"}`}
-                >
-                  <span className="font-semibold">
-                    {m.role === "user" ? "You" : "Sabi"}:
-                  </span>{" "}
-                  {m.content}
-                </p>
-              ))}
+                    <button
+                      onClick={startCall}
+                      disabled={!nameInput.trim() || !voiceSupported}
+                      className="sd-btn-primary"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                      </svg>
+                      Call Sabi
+                    </button>
+                    <p className="sd-hint">
+                      Tip: put your phone on speaker so you and Sabi can both hear the lesson.
+                    </p>
+                  </>
+                )}
+              </div>
             </div>
+
+            {error && <div className="sd-alert sd-alert-error">{error}</div>}
+
+            {messages.length > 0 && (
+              <div className="sd-transcript">
+                <p className="sd-transcript-title">Last conversation</p>
+                <div className="sd-transcript-body">
+                  {messages.map((m, i) => (
+                    <p key={i} className={m.role === "user" ? "sd-turn sd-turn-child" : "sd-turn sd-turn-sabi"}>
+                      <span className="sd-turn-role">{m.role === "user" ? "You" : "Sabi"}</span>
+                      {m.content}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </section>
 
-        {student && (
-          <button
-            onClick={() => {
-              localStorage.removeItem("sabi_browser_id");
-              setStudent(null);
-            }}
-            className="mt-6 text-white/30 text-xs hover:text-white/50"
-          >
-            Not {student.name}? Start fresh
-          </button>
-        )}
+        <style jsx>{`
+          .sd-hero {
+            padding: 60px 20px 80px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            min-height: calc(100vh - 80px);
+            background:
+              radial-gradient(900px 420px at 50% -20%, rgba(203, 168, 104, 0.14), transparent 55%),
+              var(--sabi-paper);
+          }
+          .sd-hero-inner {
+            width: 100%;
+            max-width: 500px;
+            display: grid;
+            gap: 22px;
+          }
+          .sd-brand {
+            text-align: center;
+            display: grid;
+            justify-items: center;
+            gap: 4px;
+          }
+          .sd-spark {
+            filter: drop-shadow(0 0 22px rgba(203, 168, 104, 0.42));
+            margin-bottom: 10px;
+            animation: sd-spark-drift 6s ease-in-out infinite;
+          }
+          @keyframes sd-spark-drift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+          }
+          .sd-display {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 68px;
+            font-weight: 600;
+            color: var(--sabi-ink);
+            line-height: 0.95;
+            letter-spacing: 0.01em;
+            margin: 4px 0 8px;
+          }
+          .sd-byline {
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--sabi-muted);
+            font-weight: 500;
+            margin: 0;
+          }
+          .sd-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--sabi-gold);
+          }
+          .sd-tagline {
+            margin: 14px 0 0;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px;
+            line-height: 1.4;
+            color: var(--sabi-ink-soft);
+            font-weight: 500;
+            font-style: italic;
+            max-width: 380px;
+          }
+          .sd-card {
+            background: var(--sabi-card);
+            border: 1px solid var(--sabi-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(45, 36, 20, 0.1), 0 6px 22px rgba(45, 36, 20, 0.06);
+            margin-top: 8px;
+          }
+          .sd-hairline {
+            height: 4px;
+            background: linear-gradient(90deg, var(--sabi-gold) 0%, var(--sabi-gold-light) 45%, rgba(226, 200, 142, 0) 100%);
+          }
+          .sd-card-body {
+            padding: 34px 34px 30px;
+          }
+          .sd-kicker {
+            margin: 0 0 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--sabi-gold-deep);
+          }
+          .sd-card-title {
+            margin: 0;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 30px;
+            font-weight: 600;
+            line-height: 1.15;
+            letter-spacing: 0.005em;
+            color: var(--sabi-ink);
+          }
+          .sd-lead {
+            margin: 14px 0 22px;
+            color: var(--sabi-ink-soft);
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.65;
+          }
+          .sd-field {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 18px;
+          }
+          .sd-field-label {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--sabi-ink-soft);
+          }
+          .sd-input {
+            width: 100%;
+            border: 1px solid var(--sabi-border-strong);
+            border-radius: 12px;
+            background: #ffffff;
+            color: var(--sabi-ink);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 300;
+            padding: 14px 16px;
+            outline: none;
+            transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+          }
+          .sd-input::placeholder {
+            color: var(--sabi-meta);
+          }
+          .sd-input:focus {
+            border-color: var(--sabi-gold);
+            box-shadow: 0 0 0 4px rgba(203, 168, 104, 0.18);
+            background: var(--sabi-card);
+          }
+          .sd-btn-primary {
+            width: 100%;
+            min-height: 52px;
+            border-radius: 13px;
+            background: var(--sabi-ink);
+            color: #f6efe0;
+            border: 1px solid var(--sabi-ink);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+          }
+          .sd-btn-primary:hover {
+            background: #33291c;
+            box-shadow: 0 10px 30px rgba(32, 26, 19, 0.28);
+          }
+          .sd-btn-primary:active {
+            transform: translateY(1px);
+          }
+          .sd-btn-primary:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+          }
+          .sd-btn-ghost {
+            width: 100%;
+            min-height: 40px;
+            margin-top: 10px;
+            border-radius: 11px;
+            background: transparent;
+            color: var(--sabi-gold-deep);
+            border: 1px solid transparent;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+          }
+          .sd-btn-ghost:hover {
+            background: var(--sabi-gold-wash);
+            border-color: var(--sabi-border);
+            color: var(--sabi-ink);
+          }
+          .sd-hint {
+            margin: 14px 0 0;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--sabi-muted);
+            font-weight: 300;
+          }
+          .sd-alert {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.55;
+            border: 1px solid;
+            text-align: center;
+          }
+          .sd-alert-warn {
+            background: #faf0da;
+            border-color: #ecd3a2;
+            color: #9b5b00;
+          }
+          .sd-alert-error {
+            background: #fbeeec;
+            border-color: #f0c1ba;
+            color: #7d1810;
+          }
+          .sd-transcript {
+            background: var(--sabi-card);
+            border: 1px solid var(--sabi-border);
+            border-radius: 16px;
+            padding: 18px 22px 16px;
+            box-shadow: 0 6px 22px rgba(45, 36, 20, 0.05);
+          }
+          .sd-transcript-title {
+            margin: 0 0 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--sabi-gold-deep);
+          }
+          .sd-transcript-body {
+            max-height: 200px;
+            overflow-y: auto;
+            display: grid;
+            gap: 8px;
+          }
+          .sd-turn {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.55;
+          }
+          .sd-turn-role {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--sabi-gold-deep);
+            margin-bottom: 2px;
+          }
+          .sd-turn-child {
+            color: var(--sabi-ink-soft);
+          }
+          .sd-turn-sabi {
+            color: var(--sabi-ink);
+          }
+          .sd-turn-child .sd-turn-role {
+            color: var(--sabi-muted);
+          }
 
-        <p className="absolute bottom-6 text-white/20 text-xs">
-          Education for Equality
-        </p>
-      </div>
+          @media (max-width: 640px) {
+            .sd-hero {
+              padding: 36px 18px 56px;
+            }
+            .sd-display {
+              font-size: 56px;
+            }
+            .sd-tagline {
+              font-size: 19px;
+            }
+            .sd-card-body {
+              padding: 28px 24px 24px;
+            }
+            .sd-card-title {
+              font-size: 26px;
+            }
+          }
+        `}</style>
+      </>
     );
   }
 
   // ─── Active Call Screen ─────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-between px-4 py-8">
-      <div className="text-center">
-        <p className="text-white/40 text-xs uppercase tracking-widest mb-1">
-          {callState === "connecting" ? "Connecting" : "In Call"}
-        </p>
-        <h2 className="text-white text-xl font-semibold">Sabi</h2>
-        <p className="text-white/50 text-sm mt-1">{formatTime(elapsed)}</p>
-      </div>
+    <>
+      <div className="sd-call">
+        <div className="sd-call-top">
+          <p className="sd-call-kicker">
+            {callState === "connecting" ? "Connecting" : "In session"}
+          </p>
+          <h2 className="sd-call-title">Sabi</h2>
+          <p className="sd-call-time">{formatTime(elapsed)}</p>
+        </div>
 
-      <div className="flex flex-col items-center gap-6">
-        <button
-          onClick={handleOrbTap}
-          disabled={callState !== "ready"}
-          className="relative focus:outline-none disabled:cursor-default"
-        >
-          <div
-            className={`w-40 h-40 rounded-full flex items-center justify-center transition-all duration-500 ${
-              callState === "listening"
-                ? "bg-red-500/20 scale-110"
-                : callState === "speaking"
-                  ? "bg-[#1a8c6a]/20"
-                  : callState === "processing"
-                    ? "bg-yellow-500/10"
-                    : "bg-white/5 hover:bg-white/10"
-            }`}
+        <div className="sd-call-center">
+          <button
+            onClick={handleOrbTap}
+            disabled={callState !== "ready"}
+            className={`sd-orb sd-orb-${callState}`}
+            aria-label={statusText[callState]}
           >
-            <div
-              className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
-                callState === "listening"
-                  ? "bg-red-500/30"
-                  : callState === "speaking"
-                    ? "bg-[#1a8c6a]/30 animate-pulse"
-                    : callState === "processing"
-                      ? "bg-yellow-500/20 animate-pulse"
-                      : "bg-white/10"
-              }`}
-            >
+            <div className={`sd-orb-inner sd-orb-inner-${callState}`}>
               {callState === "listening" ? (
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  className="opacity-90 animate-pulse"
-                >
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sd-icon-pulse">
                   <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
                   <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                   <line x1="12" y1="19" x2="12" y2="23" />
                   <line x1="8" y1="23" x2="16" y2="23" />
                 </svg>
               ) : callState === "speaking" ? (
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  className="opacity-90"
-                >
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
                   <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
                   <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
                 </svg>
               ) : callState === "processing" ? (
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/60 animate-bounce" />
-                  <div
-                    className="w-2.5 h-2.5 rounded-full bg-white/60 animate-bounce"
-                    style={{ animationDelay: "0.15s" }}
-                  />
-                  <div
-                    className="w-2.5 h-2.5 rounded-full bg-white/60 animate-bounce"
-                    style={{ animationDelay: "0.3s" }}
-                  />
+                <div className="sd-dots">
+                  <span />
+                  <span style={{ animationDelay: "0.15s" }} />
+                  <span style={{ animationDelay: "0.3s" }} />
                 </div>
               ) : (
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  className="opacity-70"
-                >
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                  <line x1="12" y1="19" x2="12" y2="23" />
-                  <line x1="8" y1="23" x2="16" y2="23" />
-                </svg>
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src="/sabi-spark.svg" alt="" width={44} height={48} className="sd-spark-orb" />
               )}
             </div>
+
+            {callState === "listening" && (
+              <>
+                <div className="sd-ring sd-ring-1" />
+                <div className="sd-ring sd-ring-2" />
+              </>
+            )}
+          </button>
+
+          <p className="sd-status">{statusText[callState]}</p>
+
+          <div className="sd-transcript-live">
+            {messages.slice(-6).map((m, i) => (
+              <div key={i} className={m.role === "user" ? "sd-live-turn sd-live-turn-child" : "sd-live-turn sd-live-turn-sabi"}>
+                <span className="sd-live-role">{m.role === "user" ? "You" : "Sabi"}</span>
+                <span className="sd-live-text">{m.content}</span>
+              </div>
+            ))}
           </div>
 
-          {callState === "listening" && (
-            <>
-              <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping" />
-              <div
-                className="absolute -inset-3 rounded-full border border-red-500/15 animate-ping"
-                style={{ animationDelay: "0.5s" }}
-              />
-            </>
-          )}
-        </button>
-
-        <p className="text-white/60 text-sm">{statusText[callState]}</p>
-
-        <div className="w-full max-w-sm space-y-3 max-h-56 overflow-y-auto px-2">
-          {messages.slice(-6).map((m, i) => (
-            <div
-              key={i}
-              className={`text-sm leading-relaxed ${
-                m.role === "user"
-                  ? "text-white/50 text-right"
-                  : "text-[#4ade80]/90 text-left"
-              }`}
-            >
-              <span className="text-[10px] uppercase tracking-wide opacity-50 block mb-0.5">
-                {m.role === "user" ? "You" : "Sabi"}
-              </span>
-              {m.content}
-            </div>
-          ))}
+          {error && <p className="sd-call-error">{error}</p>}
         </div>
 
-        {error && <p className="text-red-400 text-xs">{error}</p>}
+        <div className="sd-endcall">
+          <button onClick={endCall} className="sd-endcall-btn" aria-label="End call">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.956.956 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" />
+            </svg>
+          </button>
+          <p className="sd-endcall-label">End call</p>
+        </div>
       </div>
 
-      <div className="flex flex-col items-center gap-2">
-        <button
-          onClick={endCall}
-          className="w-14 h-14 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg shadow-red-500/30"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-            <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.956.956 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" />
-          </svg>
-        </button>
-        <p className="text-white/30 text-xs">End Call</p>
-      </div>
-    </div>
+      <style jsx>{`
+        .sd-call {
+          min-height: calc(100vh - 80px);
+          margin: -22px -1px 0;
+          padding: 40px 20px 48px;
+          background: linear-gradient(180deg, #1b1610 0%, #221b12 60%, #2a2318 100%);
+          color: #f1e6cd;
+          font-family: 'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+          font-weight: 300;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          gap: 32px;
+          border-radius: 0;
+        }
+        .sd-call-top {
+          text-align: center;
+          display: grid;
+          gap: 4px;
+          justify-items: center;
+        }
+        .sd-call-kicker {
+          margin: 0;
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: rgba(216, 205, 184, 0.6);
+        }
+        .sd-call-title {
+          margin: 0;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 34px;
+          font-weight: 600;
+          line-height: 1;
+          color: #f6ecd6;
+          letter-spacing: 0.02em;
+        }
+        .sd-call-time {
+          margin: 4px 0 0;
+          font-size: 13px;
+          font-variant-numeric: tabular-nums;
+          color: rgba(216, 205, 184, 0.68);
+        }
+        .sd-call-center {
+          display: grid;
+          justify-items: center;
+          gap: 26px;
+          width: 100%;
+          max-width: 460px;
+        }
+        .sd-orb {
+          position: relative;
+          width: 184px;
+          height: 184px;
+          border-radius: 999px;
+          border: 0;
+          padding: 0;
+          background: transparent;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          outline: none;
+          transition: transform 320ms ease;
+        }
+        .sd-orb:disabled {
+          cursor: default;
+        }
+        .sd-orb:focus-visible {
+          outline: 2px solid var(--sabi-gold);
+          outline-offset: 4px;
+        }
+        .sd-orb-listening {
+          transform: scale(1.06);
+        }
+        .sd-orb-inner {
+          width: 140px;
+          height: 140px;
+          border-radius: 999px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          color: #f6ecd6;
+          border: 1px solid rgba(203, 168, 104, 0.28);
+          background: rgba(203, 168, 104, 0.1);
+          transition: background 320ms ease, box-shadow 320ms ease, border-color 320ms ease;
+        }
+        .sd-orb-inner-listening {
+          background: rgba(203, 168, 104, 0.3);
+          box-shadow: inset 0 0 34px rgba(226, 200, 142, 0.28), 0 0 48px rgba(203, 168, 104, 0.34);
+          border-color: rgba(226, 200, 142, 0.55);
+        }
+        .sd-orb-inner-speaking {
+          background: rgba(226, 200, 142, 0.24);
+          box-shadow: 0 0 44px rgba(226, 200, 142, 0.26);
+          border-color: rgba(226, 200, 142, 0.42);
+          animation: sd-pulse 1.4s ease-in-out infinite;
+        }
+        .sd-orb-inner-processing {
+          background: rgba(203, 168, 104, 0.16);
+          animation: sd-pulse 1.6s ease-in-out infinite;
+        }
+        .sd-orb-inner-ready:hover {
+          background: rgba(203, 168, 104, 0.18);
+          border-color: rgba(226, 200, 142, 0.5);
+        }
+        @keyframes sd-pulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.04); opacity: 0.9; }
+        }
+        .sd-spark-orb {
+          filter: drop-shadow(0 0 22px rgba(226, 200, 142, 0.6));
+          display: block;
+        }
+        .sd-icon-pulse {
+          animation: sd-icon-pulse 1.2s ease-in-out infinite;
+        }
+        @keyframes sd-icon-pulse {
+          0%, 100% { opacity: 0.85; }
+          50% { opacity: 1; }
+        }
+        .sd-dots {
+          display: inline-flex;
+          gap: 8px;
+        }
+        .sd-dots span {
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          background: #e2c88e;
+          animation: sd-bounce 1.2s ease-in-out infinite;
+        }
+        @keyframes sd-bounce {
+          0%, 80%, 100% { transform: scale(0.75); opacity: 0.6; }
+          40% { transform: scale(1); opacity: 1; }
+        }
+        .sd-ring {
+          position: absolute;
+          border-radius: 999px;
+          animation: sd-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .sd-ring-1 {
+          inset: 0;
+          border: 2px solid rgba(226, 200, 142, 0.3);
+        }
+        .sd-ring-2 {
+          inset: -14px;
+          border: 1px solid rgba(203, 168, 104, 0.16);
+          animation-delay: 0.5s;
+        }
+        @keyframes sd-ping {
+          0% { transform: scale(0.92); opacity: 0.8; }
+          75%, 100% { transform: scale(1.35); opacity: 0; }
+        }
+        .sd-status {
+          margin: 0;
+          font-size: 14px;
+          letter-spacing: 0.04em;
+          color: rgba(216, 205, 184, 0.78);
+        }
+        .sd-transcript-live {
+          width: 100%;
+          max-width: 420px;
+          max-height: 220px;
+          overflow-y: auto;
+          display: grid;
+          gap: 14px;
+          padding: 0 6px;
+        }
+        .sd-live-turn {
+          display: grid;
+          gap: 3px;
+          font-size: 14px;
+          line-height: 1.55;
+        }
+        .sd-live-role {
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(226, 200, 142, 0.72);
+        }
+        .sd-live-text {
+          color: #f0e6cf;
+        }
+        .sd-live-turn-child {
+          text-align: right;
+        }
+        .sd-live-turn-child .sd-live-role {
+          color: rgba(216, 205, 184, 0.5);
+        }
+        .sd-live-turn-child .sd-live-text {
+          color: rgba(240, 230, 207, 0.72);
+        }
+        .sd-call-error {
+          color: #f4b8ac;
+          font-size: 12.5px;
+          margin: 0;
+        }
+        .sd-endcall {
+          display: grid;
+          justify-items: center;
+          gap: 8px;
+        }
+        .sd-endcall-btn {
+          width: 60px;
+          height: 60px;
+          border-radius: 999px;
+          background: #c2643f;
+          color: #fffdf8;
+          border: 1px solid #a0522f;
+          cursor: pointer;
+          box-shadow: 0 10px 28px rgba(194, 100, 63, 0.38);
+          transition: transform 140ms ease, background 140ms ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .sd-endcall-btn:hover {
+          background: #b0552f;
+          transform: translateY(-1px);
+        }
+        .sd-endcall-btn:active {
+          transform: translateY(1px);
+        }
+        .sd-endcall-label {
+          margin: 0;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: rgba(216, 205, 184, 0.55);
+        }
+      `}</style>
+    </>
   );
 }
