@@ -65,7 +65,7 @@ const TEST_EMAIL_HTML = `<!doctype html>
       </tr>
       <tr>
         <td style="background:#faf4e6;border-top:1px solid #e8dfc9;padding:22px 40px 26px;">
-          <p style="margin:0;font-size:11px;line-height:1.65;color:#a09482;font-weight:300;letter-spacing:0.03em;">Education for Equality &middot; a U.S.-incorporated organisation &middot; <a href="mailto:info@eduforequality.org" style="color:#9a7536;text-decoration:none;">info@eduforequality.org</a></p>
+          <p style="margin:0;font-size:11px;line-height:1.65;color:#a09482;font-weight:300;letter-spacing:0.03em;">Education for Equality &middot; <a href="mailto:info@eduforequality.org" style="color:#9a7536;text-decoration:none;">info@eduforequality.org</a></p>
         </td>
       </tr>
     </table>

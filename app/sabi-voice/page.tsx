@@ -794,7 +794,7 @@ export default function SabiVoice() {
               </div>
             )}
 
-            <p className="sv-footnote">Education for Equality · a U.S.-incorporated organisation</p>
+            <p className="sv-footnote">Education for Equality</p>
           </div>
         </div>
 

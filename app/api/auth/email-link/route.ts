@@ -91,7 +91,7 @@ function emailHtml(actionLink: string, mode: EmailLinkMode) {
       <tr>
         <td style="background:#ddfbee;border-top:1px solid #c7f4e2;padding:22px 40px 26px;">
           <p style="margin:0;font-size:12px;line-height:1.65;color:#5a6462;font-weight:400;">This link expires soon and can only be used once. If you did not request this, you can ignore this email.</p>
-          <p style="margin:14px 0 0;font-size:11px;line-height:1.65;color:#5a6462;font-weight:400;letter-spacing:0.03em;">Education for Equality &middot; a U.S.-incorporated organisation &middot; <a href="mailto:info@eduforequality.org" style="color:#075449;text-decoration:none;">info@eduforequality.org</a></p>
+          <p style="margin:14px 0 0;font-size:11px;line-height:1.65;color:#5a6462;font-weight:400;letter-spacing:0.03em;">Education for Equality &middot; <a href="mailto:info@eduforequality.org" style="color:#075449;text-decoration:none;">info@eduforequality.org</a></p>
         </td>
       </tr>
     </table>
