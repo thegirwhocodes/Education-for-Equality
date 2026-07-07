@@ -28,12 +28,11 @@ const TEST_EMAIL_HTML = `<!doctype html>
         <td style="padding:36px 40px 6px;">
           <table role="presentation" cellspacing="0" cellpadding="0">
             <tr>
-              <td style="width:42px;vertical-align:middle;">
-                <img src="https://eduforequality.org/sabi-spark.svg" width="38" height="42" alt="" style="display:block;border:0;">
+              <td style="vertical-align:middle;">
+                <img src="https://eduforequality.org/tree-icon.png" width="36" height="36" alt="" style="display:block;border:0;">
               </td>
-              <td style="padding-left:14px;vertical-align:middle;">
-                <div style="font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:24px;font-weight:600;color:#201a13;line-height:1;letter-spacing:0.01em;">Sabi</div>
-                <div style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:#857a68;margin-top:5px;font-weight:400;">Education for Equality</div>
+              <td style="padding-left:10px;vertical-align:middle;">
+                <div style="font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;font-size:18px;font-weight:600;color:#075449;line-height:1;">Education for Equality</div>
               </td>
             </tr>
           </table>

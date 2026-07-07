@@ -67,7 +67,16 @@ function emailHtml(actionLink: string, mode: EmailLinkMode) {
       </tr>
       <tr>
         <td style="padding:34px 40px 4px;">
-          <img src="https://eduforequality.org/logo.png" width="220" height="67" alt="Education for Equality" style="display:block;border:0;width:220px;max-width:100%;height:auto;">
+          <table role="presentation" cellspacing="0" cellpadding="0">
+            <tr>
+              <td style="vertical-align:middle;">
+                <img src="https://eduforequality.org/tree-icon.png" width="36" height="36" alt="" style="display:block;border:0;">
+              </td>
+              <td style="padding-left:10px;vertical-align:middle;">
+                <div style="font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;font-size:18px;font-weight:600;color:#075449;line-height:1;">Education for Equality</div>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
       <tr>
