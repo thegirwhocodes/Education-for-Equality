@@ -1,11 +1,14 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { isBoardMemberUser } from '@/lib/board-access';
 
 const protectedRoutes = ['/dashboard'];
-const advisorBoardRoutes = ['/advisor-board'];
+// /sabi/prepilot and the sabi-server admin proxy (/admin/*) are board-only.
+// The sabi-server side still enforces PIN, so this is defense-in-depth.
+const advisorBoardRoutes = ['/advisor-board', '/sabi/prepilot', '/admin'];
 const advisorBoardApiRoutes = ['/api/advisor-board'];
-const prepilotRoutes = ['/sabi/prepilot', '/sabi/parents'];
-const prepilotApiRoutes = ['/api/sabi/prepilot', '/api/sabi/parents'];
+const prepilotRoutes = ['/sabi/parents'];
+const prepilotApiRoutes = ['/api/sabi/parents'];
 
 function isProtectedPath(path: string) {
   return protectedRoutes.some((route) => path === route || path.startsWith(`${route}/`));
@@ -90,6 +93,16 @@ export async function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
   const path = request.nextUrl.pathname;
   const isSubdomain = host.startsWith('sabi.');
+  const authError =
+    request.nextUrl.searchParams.get('error_code') ||
+    request.nextUrl.searchParams.get('error_description') ||
+    request.nextUrl.searchParams.get('error');
+
+  if (path === '/' && authError) {
+    const url = new URL('/sign-in', request.url);
+    url.searchParams.set('auth_error', authError);
+    return NextResponse.redirect(url);
+  }
 
   if (isSubdomain) {
     if (path === '/') {
@@ -114,13 +127,14 @@ export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next({ request });
   const user = await getSupabaseSession(request, response);
-  const isAdvisorBoardAllowed = Boolean(user) || isAdvisorBoardIpAllowed(request);
+  const isAdvisorBoardAllowed = Boolean(user && isBoardMemberUser(user)) || isAdvisorBoardIpAllowed(request);
+  const isPrepilotAllowed = Boolean(user) || isAdvisorBoardIpAllowed(request);
 
   if (!isAdvisorBoardAllowed && isAdvisorBoardApiPath(path)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (!isAdvisorBoardAllowed && isPrepilotApiPath(path)) {
+  if (!isPrepilotAllowed && isPrepilotApiPath(path)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -130,7 +144,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (!isAdvisorBoardAllowed && isPrepilotPath(path)) {
+  if (!isPrepilotAllowed && isPrepilotPath(path)) {
     const url = new URL('/sign-in', request.url);
     url.searchParams.set('redirectTo', `${request.nextUrl.pathname}${request.nextUrl.search}`);
     return NextResponse.redirect(url);

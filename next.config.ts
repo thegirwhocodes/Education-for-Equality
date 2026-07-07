@@ -9,6 +9,26 @@ const nextConfig: NextConfig = {
         has: [{ type: "host", value: "sabi.eduforequality.org" }],
         destination: "/sabi",
       },
+      // Sabi admin console — hosted by sabi-server on the API subdomain,
+      // proxied under eduforequality.org so the URL stays on the main
+      // domain and the browser treats /admin/* fetches as same-origin.
+      {
+        source: "/sabi/prepilot",
+        destination: "https://api.eduforequality.org/admin/review",
+      },
+      {
+        source: "/sabi/prepilot/:path*",
+        destination: "https://api.eduforequality.org/admin/review/:path*",
+      },
+      {
+        source: "/admin/:path*",
+        destination: "https://api.eduforequality.org/admin/:path*",
+      },
+      // sabi-server /health ping (used by the admin console's status dot)
+      {
+        source: "/health",
+        destination: "https://api.eduforequality.org/health",
+      },
     ];
   },
   async headers() {
