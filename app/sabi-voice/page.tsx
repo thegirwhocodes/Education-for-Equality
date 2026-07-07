@@ -688,264 +688,673 @@ export default function SabiVoice() {
   // ─── Idle Screen ────────────────────────────────────────────────
   if (!callActive && callState === "idle") {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-center px-4 relative">
-        <div className="text-center mb-10">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0f6b4f] to-[#1a8c6a] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#0f6b4f]/30">
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="1.5"
-            >
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-              <line x1="12" y1="19" x2="12" y2="23" />
-              <line x1="8" y1="23" x2="16" y2="23" />
-            </svg>
+      <>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
+        />
+        <div className="sv-shell">
+          <div className="sv-container">
+            <header className="sv-brand">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/sabi-spark.svg" alt="" width={54} height={58} className="sv-spark" />
+              <div className="sv-wordmark">Sabi</div>
+              <div className="sv-byline">Voice AI Tutor · Education for Equality</div>
+            </header>
+
+            {!voiceSupported && (
+              <div className="sv-alert sv-alert-warn">
+                Voice not supported in this browser. Please use Chrome.
+              </div>
+            )}
+
+            {!student ? (
+              <div className="sv-card">
+                <div className="sv-hairline" aria-hidden />
+                <div className="sv-card-body">
+                  <p className="sv-kicker">Start a lesson</p>
+                  <h1 className="sv-display">Say hello to Sabi</h1>
+                  <p className="sv-lead">
+                    Sabi is a warm Nigerian-English voice tutor. Tell her your name and tap the
+                    button — she&apos;ll teach through a real market scenario, one small idea at a time.
+                  </p>
+                  <label className="sv-field">
+                    <span className="sv-field-label">Your name</span>
+                    <input
+                      type="text"
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && nameInput.trim() && startCall()
+                      }
+                      placeholder="Amina"
+                      className="sv-input"
+                    />
+                  </label>
+
+                  <button
+                    onClick={startCall}
+                    disabled={!nameInput.trim() || !voiceSupported}
+                    className="sv-btn-primary"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                    </svg>
+                    Call Sabi
+                  </button>
+                  <p className="sv-hint">Tip: put your phone on speaker so both of you can hear the lesson.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="sv-card">
+                <div className="sv-hairline" aria-hidden />
+                <div className="sv-card-body">
+                  <p className="sv-kicker">Welcome back</p>
+                  <h1 className="sv-display">Hi {student.name}</h1>
+                  <p className="sv-lead">
+                    {student.total_sessions} lesson{student.total_sessions !== 1 ? "s" : ""} saved on this
+                    device. Sabi remembers where you left off.
+                  </p>
+                  <button
+                    onClick={startCall}
+                    disabled={!voiceSupported}
+                    className="sv-btn-primary"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                    </svg>
+                    Continue with Sabi
+                  </button>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("sabi_browser_id");
+                      setStudent(null);
+                    }}
+                    className="sv-btn-ghost"
+                  >
+                    Not {student.name}? Start fresh
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {error && <div className="sv-alert sv-alert-error">{error}</div>}
+
+            {messages.length > 0 && (
+              <div className="sv-transcript">
+                <p className="sv-transcript-title">Last conversation</p>
+                <div className="sv-transcript-body">
+                  {messages.map((m, i) => (
+                    <p key={i} className={m.role === "user" ? "sv-turn sv-turn-child" : "sv-turn sv-turn-sabi"}>
+                      <span className="sv-turn-role">{m.role === "user" ? "You" : "Sabi"}</span>
+                      {m.content}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <p className="sv-footnote">Education for Equality · a U.S.-incorporated organisation</p>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Sabi</h1>
-          <p className="text-white/50 text-sm">Voice AI Tutor</p>
         </div>
 
-        {!voiceSupported && (
-          <div className="bg-red-500/20 border border-red-500/30 rounded-xl px-4 py-3 max-w-xs mb-6">
-            <p className="text-red-300 text-sm text-center">
-              Voice not supported in this browser. Please use Chrome.
-            </p>
-          </div>
-        )}
-
-        {!student && (
-          <div className="w-full max-w-xs mb-8">
-            <input
-              type="text"
-              value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && nameInput.trim() && startCall()
-              }
-              placeholder="Enter your name"
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center placeholder-white/40 focus:outline-none focus:border-[#1a8c6a] focus:ring-1 focus:ring-[#1a8c6a]"
-            />
-          </div>
-        )}
-
-        {student && (
-          <div className="text-center mb-8">
-            <p className="text-white/70 text-sm">
-              Welcome back,{" "}
-              <span className="text-white font-semibold">{student.name}</span>
-            </p>
-            <p className="text-white/40 text-xs mt-1">
-              {student.total_sessions} lesson
-              {student.total_sessions !== 1 ? "s" : ""} saved on this device
-            </p>
-          </div>
-        )}
-
-        <button
-          onClick={startCall}
-          disabled={(!student && !nameInput.trim()) || !voiceSupported}
-          className="w-20 h-20 rounded-full bg-green-500 hover:bg-green-400 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg shadow-green-500/30"
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
-          </svg>
-        </button>
-        <p className="text-white/40 text-xs mt-4">Tap to start a call</p>
-
-        {error && (
-          <div className="mt-6 bg-red-500/20 border border-red-500/30 rounded-xl px-4 py-3 max-w-xs">
-            <p className="text-red-300 text-sm text-center">{error}</p>
-          </div>
-        )}
-
-        {messages.length > 0 && (
-          <div className="mt-8 w-full max-w-md">
-            <p className="text-white/40 text-xs text-center mb-3">
-              Last conversation:
-            </p>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 max-h-40 overflow-y-auto space-y-2">
-              {messages.map((m, i) => (
-                <p
-                  key={i}
-                  className={`text-xs ${m.role === "user" ? "text-white/60" : "text-[#4ade80]/80"}`}
-                >
-                  <span className="font-semibold">
-                    {m.role === "user" ? "You" : "Sabi"}:
-                  </span>{" "}
-                  {m.content}
-                </p>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {student && (
-          <button
-            onClick={() => {
-              localStorage.removeItem("sabi_browser_id");
-              setStudent(null);
-            }}
-            className="mt-6 text-white/30 text-xs hover:text-white/50"
-          >
-            Not {student.name}? Start fresh
-          </button>
-        )}
-
-        <p className="absolute bottom-6 text-white/20 text-xs">
-          Education for Equality
-        </p>
-      </div>
+        <style jsx>{`
+          .sv-shell {
+            min-height: 100vh;
+            padding: 44px 20px 60px;
+            background:
+              radial-gradient(1200px 500px at 85% -10%, rgba(203, 168, 104, 0.14), transparent 60%),
+              radial-gradient(900px 480px at 12% 110%, rgba(154, 117, 54, 0.08), transparent 65%),
+              #f7f2e7;
+            color: #201a13;
+            font-family: 'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+            font-weight: 300;
+            line-height: 1.55;
+            font-size: 14.5px;
+          }
+          .sv-container {
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+          }
+          .sv-brand {
+            text-align: center;
+            display: grid;
+            justify-items: center;
+            gap: 4px;
+            margin-bottom: 6px;
+          }
+          .sv-spark {
+            filter: drop-shadow(0 0 16px rgba(203, 168, 104, 0.4));
+            margin-bottom: 8px;
+          }
+          .sv-wordmark {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #201a13;
+            line-height: 1;
+            letter-spacing: 0.01em;
+          }
+          .sv-byline {
+            font-size: 10.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #857a68;
+            margin-top: 6px;
+          }
+          .sv-card {
+            background: #fffdf8;
+            border: 1px solid #e8dfc9;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(45, 36, 20, 0.1), 0 6px 22px rgba(45, 36, 20, 0.06);
+          }
+          .sv-hairline {
+            height: 4px;
+            background: linear-gradient(90deg, #cba868 0%, #e2c88e 45%, rgba(226, 200, 142, 0) 100%);
+          }
+          .sv-card-body {
+            padding: 30px 28px 26px;
+          }
+          .sv-kicker {
+            margin: 0 0 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #9a7536;
+          }
+          .sv-display {
+            margin: 0;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 30px;
+            font-weight: 600;
+            line-height: 1.12;
+            color: #201a13;
+            letter-spacing: 0.005em;
+          }
+          .sv-lead {
+            margin: 12px 0 18px;
+            color: #4c4438;
+            font-size: 14.5px;
+            font-weight: 300;
+            line-height: 1.65;
+          }
+          .sv-field {
+            display: grid;
+            gap: 6px;
+            margin-bottom: 14px;
+          }
+          .sv-field-label {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: #4c4438;
+          }
+          .sv-input {
+            width: 100%;
+            border: 1px solid #d9cdaf;
+            border-radius: 11px;
+            background: #ffffff;
+            color: #201a13;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 300;
+            padding: 13px 14px;
+            outline: none;
+            transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+          }
+          .sv-input::placeholder {
+            color: #a09482;
+          }
+          .sv-input:focus {
+            border-color: #cba868;
+            box-shadow: 0 0 0 4px rgba(203, 168, 104, 0.18);
+            background: #fffdf8;
+          }
+          .sv-btn-primary {
+            width: 100%;
+            min-height: 50px;
+            border-radius: 12px;
+            background: #1b1610;
+            color: #f6efe0;
+            border: 1px solid #1b1610;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+          }
+          .sv-btn-primary:hover {
+            background: #33291c;
+            box-shadow: 0 8px 24px rgba(32, 26, 19, 0.24);
+          }
+          .sv-btn-primary:active {
+            transform: translateY(1px);
+          }
+          .sv-btn-primary:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+          }
+          .sv-btn-ghost {
+            width: 100%;
+            min-height: 40px;
+            margin-top: 8px;
+            border-radius: 11px;
+            background: transparent;
+            color: #9a7536;
+            border: 1px solid transparent;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+          }
+          .sv-btn-ghost:hover {
+            background: #faf4e6;
+            border-color: #e8dfc9;
+            color: #201a13;
+          }
+          .sv-hint {
+            margin: 12px 0 0;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: #857a68;
+            font-weight: 300;
+          }
+          .sv-alert {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.55;
+            border: 1px solid;
+            text-align: center;
+          }
+          .sv-alert-warn {
+            background: #faf0da;
+            border-color: #ecd3a2;
+            color: #9b5b00;
+          }
+          .sv-alert-error {
+            background: #fbeeec;
+            border-color: #f0c1ba;
+            color: #7d1810;
+          }
+          .sv-transcript {
+            background: #fffdf8;
+            border: 1px solid #e8dfc9;
+            border-radius: 14px;
+            padding: 16px 18px 14px;
+            box-shadow: 0 6px 22px rgba(45, 36, 20, 0.05);
+          }
+          .sv-transcript-title {
+            margin: 0 0 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #9a7536;
+          }
+          .sv-transcript-body {
+            max-height: 180px;
+            overflow-y: auto;
+            display: grid;
+            gap: 8px;
+          }
+          .sv-turn {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #4c4438;
+          }
+          .sv-turn-role {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #9a7536;
+            margin-bottom: 2px;
+          }
+          .sv-turn-child {
+            color: #4c4438;
+          }
+          .sv-turn-sabi {
+            color: #201a13;
+          }
+          .sv-footnote {
+            text-align: center;
+            margin: 12px 0 0;
+            font-size: 11.5px;
+            letter-spacing: 0.02em;
+            color: #a09482;
+            font-weight: 300;
+          }
+        `}</style>
+      </>
     );
   }
 
   // ─── Active Call Screen ─────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a1a15] via-[#0d2b22] to-[#0a1a15] flex flex-col items-center justify-between px-4 py-8">
-      <div className="text-center">
-        <p className="text-white/40 text-xs uppercase tracking-widest mb-1">
-          {callState === "connecting" ? "Connecting" : "In Call"}
-        </p>
-        <h2 className="text-white text-xl font-semibold">Sabi</h2>
-        <p className="text-white/50 text-sm mt-1">{formatTime(elapsed)}</p>
-      </div>
+    <>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
+      />
+      <div className="svc-shell">
+        <div className="svc-topbar">
+          <p className="svc-topbar-kicker">
+            {callState === "connecting" ? "Connecting" : "In session"}
+          </p>
+          <h2 className="svc-topbar-title">Sabi</h2>
+          <p className="svc-topbar-time">{formatTime(elapsed)}</p>
+        </div>
 
-      <div className="flex flex-col items-center gap-6">
-        <button
-          onClick={handleOrbTap}
-          disabled={callState !== "ready"}
-          className="relative focus:outline-none disabled:cursor-default"
-        >
-          <div
-            className={`w-40 h-40 rounded-full flex items-center justify-center transition-all duration-500 ${
-              callState === "listening"
-                ? "bg-red-500/20 scale-110"
-                : callState === "speaking"
-                  ? "bg-[#1a8c6a]/20"
-                  : callState === "processing"
-                    ? "bg-yellow-500/10"
-                    : "bg-white/5 hover:bg-white/10"
-            }`}
+        <div className="svc-orb-wrap">
+          <button
+            onClick={handleOrbTap}
+            disabled={callState !== "ready"}
+            className={`svc-orb svc-orb-${callState}`}
+            aria-label={statusText[callState]}
           >
-            <div
-              className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
-                callState === "listening"
-                  ? "bg-red-500/30"
-                  : callState === "speaking"
-                    ? "bg-[#1a8c6a]/30 animate-pulse"
-                    : callState === "processing"
-                      ? "bg-yellow-500/20 animate-pulse"
-                      : "bg-white/10"
-              }`}
-            >
+            <div className={`svc-orb-inner svc-orb-inner-${callState}`}>
               {callState === "listening" ? (
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  className="opacity-90 animate-pulse"
-                >
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="svc-icon-pulse">
                   <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
                   <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                   <line x1="12" y1="19" x2="12" y2="23" />
                   <line x1="8" y1="23" x2="16" y2="23" />
                 </svg>
               ) : callState === "speaking" ? (
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  className="opacity-90"
-                >
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
                   <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
                   <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
                 </svg>
               ) : callState === "processing" ? (
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/60 animate-bounce" />
-                  <div
-                    className="w-2.5 h-2.5 rounded-full bg-white/60 animate-bounce"
-                    style={{ animationDelay: "0.15s" }}
-                  />
-                  <div
-                    className="w-2.5 h-2.5 rounded-full bg-white/60 animate-bounce"
-                    style={{ animationDelay: "0.3s" }}
-                  />
+                <div className="svc-dots">
+                  <span />
+                  <span style={{ animationDelay: "0.15s" }} />
+                  <span style={{ animationDelay: "0.3s" }} />
                 </div>
               ) : (
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  className="opacity-70"
-                >
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                  <line x1="12" y1="19" x2="12" y2="23" />
-                  <line x1="8" y1="23" x2="16" y2="23" />
-                </svg>
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src="/sabi-spark.svg" alt="" width={42} height={46} className="svc-spark" />
               )}
             </div>
-          </div>
 
-          {callState === "listening" && (
-            <>
-              <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping" />
-              <div
-                className="absolute -inset-3 rounded-full border border-red-500/15 animate-ping"
-                style={{ animationDelay: "0.5s" }}
-              />
-            </>
-          )}
-        </button>
+            {callState === "listening" && (
+              <>
+                <div className="svc-ring svc-ring-1" />
+                <div className="svc-ring svc-ring-2" />
+              </>
+            )}
+          </button>
 
-        <p className="text-white/60 text-sm">{statusText[callState]}</p>
+          <p className="svc-status">{statusText[callState]}</p>
+        </div>
 
-        <div className="w-full max-w-sm space-y-3 max-h-56 overflow-y-auto px-2">
+        <div className="svc-transcript">
           {messages.slice(-6).map((m, i) => (
-            <div
-              key={i}
-              className={`text-sm leading-relaxed ${
-                m.role === "user"
-                  ? "text-white/50 text-right"
-                  : "text-[#4ade80]/90 text-left"
-              }`}
-            >
-              <span className="text-[10px] uppercase tracking-wide opacity-50 block mb-0.5">
-                {m.role === "user" ? "You" : "Sabi"}
-              </span>
-              {m.content}
+            <div key={i} className={m.role === "user" ? "svc-turn svc-turn-child" : "svc-turn svc-turn-sabi"}>
+              <span className="svc-turn-role">{m.role === "user" ? "You" : "Sabi"}</span>
+              <span className="svc-turn-text">{m.content}</span>
             </div>
           ))}
         </div>
 
-        {error && <p className="text-red-400 text-xs">{error}</p>}
+        {error && <p className="svc-error">{error}</p>}
+
+        <div className="svc-endcall">
+          <button onClick={endCall} className="svc-endcall-btn" aria-label="End call">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.956.956 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" />
+            </svg>
+          </button>
+          <p className="svc-endcall-label">End call</p>
+        </div>
       </div>
 
-      <div className="flex flex-col items-center gap-2">
-        <button
-          onClick={endCall}
-          className="w-14 h-14 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg shadow-red-500/30"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-            <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.956.956 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" />
-          </svg>
-        </button>
-        <p className="text-white/30 text-xs">End Call</p>
-      </div>
-    </div>
+      <style jsx>{`
+        .svc-shell {
+          min-height: 100vh;
+          padding: 32px 20px 40px;
+          background: linear-gradient(180deg, #1b1610 0%, #221b12 60%, #2a2318 100%);
+          color: #f1e6cd;
+          font-family: 'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+          font-weight: 300;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
+        }
+        .svc-topbar {
+          text-align: center;
+          display: grid;
+          gap: 4px;
+          justify-items: center;
+        }
+        .svc-topbar-kicker {
+          margin: 0;
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: rgba(216, 205, 184, 0.62);
+        }
+        .svc-topbar-title {
+          margin: 0;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 30px;
+          font-weight: 600;
+          line-height: 1;
+          color: #f6ecd6;
+          letter-spacing: 0.02em;
+        }
+        .svc-topbar-time {
+          margin: 4px 0 0;
+          font-size: 13px;
+          font-variant-numeric: tabular-nums;
+          color: rgba(216, 205, 184, 0.68);
+        }
+        .svc-orb-wrap {
+          display: grid;
+          justify-items: center;
+          gap: 22px;
+        }
+        .svc-orb {
+          position: relative;
+          width: 176px;
+          height: 176px;
+          border-radius: 999px;
+          border: 0;
+          padding: 0;
+          background: transparent;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          outline: none;
+          transition: transform 320ms ease;
+        }
+        .svc-orb:disabled {
+          cursor: default;
+        }
+        .svc-orb:focus-visible {
+          outline: 2px solid #cba868;
+          outline-offset: 4px;
+        }
+        .svc-orb-listening {
+          transform: scale(1.06);
+        }
+        .svc-orb-inner {
+          width: 132px;
+          height: 132px;
+          border-radius: 999px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          color: #f6ecd6;
+          border: 1px solid rgba(203, 168, 104, 0.28);
+          background: rgba(203, 168, 104, 0.1);
+          transition: background 320ms ease, box-shadow 320ms ease, border-color 320ms ease;
+        }
+        .svc-orb-inner-listening {
+          background: rgba(203, 168, 104, 0.28);
+          box-shadow: inset 0 0 32px rgba(226, 200, 142, 0.25), 0 0 40px rgba(203, 168, 104, 0.28);
+          border-color: rgba(226, 200, 142, 0.55);
+        }
+        .svc-orb-inner-speaking {
+          background: rgba(226, 200, 142, 0.22);
+          box-shadow: 0 0 40px rgba(226, 200, 142, 0.22);
+          border-color: rgba(226, 200, 142, 0.42);
+          animation: svc-pulse 1.4s ease-in-out infinite;
+        }
+        .svc-orb-inner-processing {
+          background: rgba(203, 168, 104, 0.15);
+          animation: svc-pulse 1.6s ease-in-out infinite;
+        }
+        .svc-orb-inner-ready:hover {
+          background: rgba(203, 168, 104, 0.18);
+          border-color: rgba(226, 200, 142, 0.5);
+        }
+        @keyframes svc-pulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.04); opacity: 0.9; }
+        }
+        .svc-spark {
+          filter: drop-shadow(0 0 20px rgba(226, 200, 142, 0.55));
+          display: block;
+        }
+        .svc-icon-pulse {
+          animation: svc-icon-pulse 1.2s ease-in-out infinite;
+        }
+        @keyframes svc-icon-pulse {
+          0%, 100% { opacity: 0.85; }
+          50% { opacity: 1; }
+        }
+        .svc-dots {
+          display: inline-flex;
+          gap: 8px;
+        }
+        .svc-dots span {
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          background: #e2c88e;
+          animation: svc-bounce 1.2s ease-in-out infinite;
+        }
+        @keyframes svc-bounce {
+          0%, 80%, 100% { transform: scale(0.75); opacity: 0.6; }
+          40% { transform: scale(1); opacity: 1; }
+        }
+        .svc-ring {
+          position: absolute;
+          border-radius: 999px;
+          animation: svc-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .svc-ring-1 {
+          inset: 0;
+          border: 2px solid rgba(226, 200, 142, 0.28);
+        }
+        .svc-ring-2 {
+          inset: -14px;
+          border: 1px solid rgba(203, 168, 104, 0.14);
+          animation-delay: 0.5s;
+        }
+        @keyframes svc-ping {
+          0% { transform: scale(0.92); opacity: 0.8; }
+          75%, 100% { transform: scale(1.35); opacity: 0; }
+        }
+        .svc-status {
+          margin: 0;
+          font-size: 13.5px;
+          letter-spacing: 0.04em;
+          color: rgba(216, 205, 184, 0.78);
+        }
+        .svc-transcript {
+          width: 100%;
+          max-width: 420px;
+          max-height: 220px;
+          overflow-y: auto;
+          display: grid;
+          gap: 12px;
+          padding: 0 8px;
+        }
+        .svc-turn {
+          display: grid;
+          gap: 3px;
+          font-size: 13.5px;
+          line-height: 1.55;
+        }
+        .svc-turn-role {
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(226, 200, 142, 0.72);
+        }
+        .svc-turn-text {
+          color: #f0e6cf;
+        }
+        .svc-turn-child {
+          text-align: right;
+        }
+        .svc-turn-child .svc-turn-role {
+          color: rgba(216, 205, 184, 0.5);
+        }
+        .svc-turn-child .svc-turn-text {
+          color: rgba(240, 230, 207, 0.72);
+        }
+        .svc-error {
+          color: #f4b8ac;
+          font-size: 12.5px;
+          margin: 0;
+        }
+        .svc-endcall {
+          display: grid;
+          justify-items: center;
+          gap: 6px;
+        }
+        .svc-endcall-btn {
+          width: 56px;
+          height: 56px;
+          border-radius: 999px;
+          background: #c2643f;
+          color: #fffdf8;
+          border: 1px solid #a0522f;
+          cursor: pointer;
+          box-shadow: 0 8px 24px rgba(194, 100, 63, 0.35);
+          transition: transform 140ms ease, background 140ms ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .svc-endcall-btn:hover {
+          background: #b0552f;
+          transform: translateY(-1px);
+        }
+        .svc-endcall-btn:active {
+          transform: translateY(1px);
+        }
+        .svc-endcall-label {
+          margin: 0;
+          font-size: 11px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(216, 205, 184, 0.55);
+        }
+      `}</style>
+    </>
   );
 }

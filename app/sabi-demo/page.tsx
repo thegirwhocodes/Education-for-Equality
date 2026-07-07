@@ -58,25 +58,87 @@ function EntryScreen({
   const hasCompletedSessions = !!student && student.total_sessions > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center px-4 relative">
+    <div
+      className="min-h-screen flex items-center justify-center px-4 relative"
+      style={{
+        background:
+          'radial-gradient(1200px 500px at 85% -10%, rgba(203,168,104,0.14), transparent 60%), radial-gradient(900px 480px at 12% 110%, rgba(154,117,54,0.08), transparent 65%), #f7f2e7',
+        fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
+      }}
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
+      />
       <div className="max-w-lg w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/sabi-spark.svg"
+            alt=""
+            width={54}
+            height={58}
+            style={{ margin: '0 auto 12px', filter: 'drop-shadow(0 0 16px rgba(203,168,104,0.4))' }}
+          />
+          <h1
+            className="mb-1"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: '36px',
+              fontWeight: 600,
+              color: '#201a13',
+              lineHeight: 1,
+              letterSpacing: '0.01em',
+            }}
+          >
             Sabi
           </h1>
-          <p className="text-lg text-white/70">
-            &quot;To Know&quot; in Nigerian Pidgin
+          <p style={{ fontSize: '10.5px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#857a68', marginTop: '8px' }}>
+            &quot;To know&quot; in Nigerian Pidgin
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+        <div
+          className="p-8"
+          style={{
+            background: '#fffdf8',
+            border: '1px solid #e8dfc9',
+            borderRadius: '18px',
+            boxShadow: '0 24px 60px rgba(45,36,20,0.1), 0 6px 22px rgba(45,36,20,0.06)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, #cba868 0%, #e2c88e 45%, rgba(226,200,142,0) 100%)',
+            }}
+          />
           {isReturning ? (
             <>
               <div className="text-center mb-6">
-                <div className="w-20 h-20 bg-[var(--secondary)] rounded-full flex items-center justify-center mx-auto mb-4">
+                <div
+                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ background: '#f4ead4', border: '1px solid #e0cd9f' }}
+                >
                   <span className="text-3xl">👋</span>
                 </div>
-                <h2 className="text-2xl font-bold text-[var(--primary-darker)]">
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontSize: '26px',
+                    fontWeight: 600,
+                    color: '#201a13',
+                    margin: 0,
+                    lineHeight: 1.15,
+                  }}
+                >
                   Welcome back, {student.name}!
                 </h2>
                 <p className="text-gray-600 mt-2">
@@ -159,13 +221,28 @@ function EntryScreen({
           ) : (
             <>
               <div className="text-center mb-6">
-                <div className="w-20 h-20 bg-[var(--secondary)] rounded-full flex items-center justify-center mx-auto mb-4">
+                <div
+                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ background: '#f4ead4', border: '1px solid #e0cd9f' }}
+                >
                   <span className="text-3xl">📞</span>
                 </div>
-                <h2 className="text-2xl font-bold text-[var(--primary-darker)]">
+                <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#9a7536', margin: '0 0 8px' }}>
+                  Start a lesson
+                </p>
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontSize: '30px',
+                    fontWeight: 600,
+                    color: '#201a13',
+                    margin: 0,
+                    lineHeight: 1.15,
+                  }}
+                >
                   Try Sabi
                 </h2>
-                <p className="text-gray-600 mt-2">
+                <p style={{ color: '#4c4438', marginTop: '12px', fontSize: '14.5px', lineHeight: 1.6 }}>
                   An AI tutor that teaches maths through market scenarios.
                   <br />
                   Enter your name to start a lesson.
@@ -181,7 +258,27 @@ function EntryScreen({
                     e.key === "Enter" && nameInput.trim() && onStart()
                   }
                   placeholder="What's your name?"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-center focus:outline-none focus:border-[var(--primary-dark)] focus:ring-1 focus:ring-[var(--primary-dark)]"
+                  className="w-full text-lg text-center"
+                  style={{
+                    border: '1px solid #d9cdaf',
+                    borderRadius: '12px',
+                    background: '#ffffff',
+                    color: '#201a13',
+                    padding: '14px 16px',
+                    fontFamily: 'inherit',
+                    fontWeight: 300,
+                    outline: 'none',
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = '#cba868';
+                    e.currentTarget.style.boxShadow = '0 0 0 4px rgba(203,168,104,0.18)';
+                    e.currentTarget.style.background = '#fffdf8';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = '#d9cdaf';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.background = '#ffffff';
+                  }}
                   autoFocus
                 />
               </div>
@@ -190,16 +287,38 @@ function EntryScreen({
 
           <button
             onClick={onStart}
-            disabled={
-              isLoading || (!student && !nameInput.trim())
-            }
-            className="w-full btn-primary rounded-xl px-6 py-4 text-lg font-semibold disabled:opacity-50"
+            disabled={isLoading || (!student && !nameInput.trim())}
+            className="w-full text-lg"
+            style={{
+              background: '#1b1610',
+              color: '#f6efe0',
+              border: '1px solid #1b1610',
+              borderRadius: '12px',
+              padding: '15px 22px',
+              fontFamily: 'inherit',
+              fontSize: '15px',
+              fontWeight: 500,
+              letterSpacing: '0.01em',
+              cursor: isLoading || (!student && !nameInput.trim()) ? 'not-allowed' : 'pointer',
+              opacity: isLoading || (!student && !nameInput.trim()) ? 0.55 : 1,
+              transition: 'background 140ms ease, box-shadow 140ms ease',
+            }}
+            onMouseEnter={(e) => {
+              if (!e.currentTarget.disabled) {
+                e.currentTarget.style.background = '#33291c';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(32,26,19,0.24)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#1b1610';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           >
             {isLoading
-              ? "Loading..."
+              ? "Loading…"
               : isReturning
-                ? "Continue Learning"
-                : "Start Lesson"}
+                ? "Continue learning"
+                : "Start lesson"}
           </button>
 
           {isReturning && (
@@ -208,14 +327,15 @@ function EntryScreen({
                 localStorage.removeItem("sabi_browser_id");
                 window.location.reload();
               }}
-              className="w-full mt-3 text-sm text-gray-400 hover:text-gray-600"
+              className="w-full mt-3 text-sm"
+              style={{ background: 'transparent', border: 0, color: '#9a7536', padding: '8px', cursor: 'pointer', fontFamily: 'inherit' }}
             >
               Not {student.name}? Start fresh
             </button>
           )}
         </div>
 
-        <p className="text-center text-xs text-white/50 mt-6">
+        <p className="text-center mt-6" style={{ fontSize: '11.5px', color: '#a09482', letterSpacing: '0.02em' }}>
           Sabi is a voice AI tutor built by Education for Equality to reach
           Nigeria&apos;s 20 million out-of-school children.
         </p>
@@ -243,14 +363,61 @@ function EndScreen({
       : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center px-4">
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{
+        background:
+          'radial-gradient(1200px 500px at 85% -10%, rgba(203,168,104,0.14), transparent 60%), radial-gradient(900px 480px at 12% 110%, rgba(154,117,54,0.08), transparent 65%), #f7f2e7',
+        fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
+      }}
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
+      />
       <div className="max-w-lg w-full">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+        <div
+          className="p-8"
+          style={{
+            background: '#fffdf8',
+            border: '1px solid #e8dfc9',
+            borderRadius: '18px',
+            boxShadow: '0 24px 60px rgba(45,36,20,0.1), 0 6px 22px rgba(45,36,20,0.06)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, #cba868 0%, #e2c88e 45%, rgba(226,200,142,0) 100%)',
+            }}
+          />
           <div className="text-center mb-6">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{ background: '#f4ead4', border: '1px solid #e0cd9f' }}
+            >
               <span className="text-3xl">🌟</span>
             </div>
-            <h2 className="text-2xl font-bold text-[var(--primary-darker)]">
+            <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#9a7536', margin: '0 0 8px' }}>
+              Lesson complete
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: '30px',
+                fontWeight: 600,
+                color: '#201a13',
+                margin: 0,
+                lineHeight: 1.15,
+              }}
+            >
               Great job!
             </h2>
             <p className="text-gray-600 mt-2">{summary.summary}</p>
@@ -1049,9 +1216,19 @@ export default function SabiDemo() {
   // Loading state
   if (studentLoading && !sessionStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a] flex items-center justify-center">
-        <div className="animate-pulse text-white text-lg">
-          Loading...
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          background:
+            'radial-gradient(1200px 500px at 85% -10%, rgba(203,168,104,0.14), transparent 60%), #f7f2e7',
+          fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
+        }}
+      >
+        <div
+          className="animate-pulse text-lg"
+          style={{ color: '#9a7536', fontWeight: 500, letterSpacing: '0.05em' }}
+        >
+          Loading…
         </div>
       </div>
     );
@@ -1095,43 +1272,103 @@ export default function SabiDemo() {
 
   // Chat screen
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--primary-darker)] via-[#0a6b5a] to-[#1a5c3a]">
+    <div
+      className="min-h-screen"
+      style={{
+        background: 'linear-gradient(180deg, #1b1610 0%, #221b12 60%, #2a2318 100%)',
+        color: '#f1e6cd',
+        fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
+      }}
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
+      />
       {/* Header with student info + end button */}
-      <div className="bg-[var(--primary-darker)] text-white py-4 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Sabi Demo <span className="text-sm font-normal opacity-60">by Education for Equality</span></h1>
-            <p className="text-sm opacity-80">
-              {student?.name ? `Student: ${student.name}` : "New Student"} —
-              Market Math Lesson
-              {student && student.total_sessions > 0 && (
-                <span className="ml-2">
-                  (Session #{(student.total_sessions || 0) + 1})
+      <div
+        className="py-4 px-4"
+        style={{
+          background: 'linear-gradient(180deg, #1b1610 0%, #221b12 100%)',
+          borderBottom: '1px solid rgba(216,205,184,0.14)',
+          boxShadow: 'inset 0 -1px 0 rgba(203,168,104,0.14)',
+        }}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sabi-spark.svg"
+              alt=""
+              width={32}
+              height={35}
+              style={{ filter: 'drop-shadow(0 0 12px rgba(203,168,104,0.4))', flex: 'none' }}
+            />
+            <div>
+              <h1
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: '22px',
+                  fontWeight: 600,
+                  color: '#f6ecd6',
+                  margin: 0,
+                  lineHeight: 1,
+                  letterSpacing: '0.02em',
+                }}
+              >
+                Sabi Demo{' '}
+                <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(216,205,184,0.62)', fontFamily: "'Lexend', ui-sans-serif, system-ui, sans-serif" }}>
+                  · Education for Equality
                 </span>
-              )}
-            </p>
+              </h1>
+              <p style={{ fontSize: '12.5px', color: 'rgba(216,205,184,0.72)', margin: '3px 0 0' }}>
+                {student?.name ? `Student: ${student.name}` : 'New student'} — Market math lesson
+                {student && student.total_sessions > 0 && (
+                  <span> · Session #{(student.total_sessions || 0) + 1}</span>
+                )}
+              </p>
+            </div>
           </div>
           <button
             onClick={endSession}
             disabled={endingSession || textMessages.length < 2}
-            className="bg-white text-[var(--primary-darker)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-100 disabled:opacity-50 transition-colors"
+            style={{
+              background: '#fffdf8',
+              color: '#201a13',
+              border: '1px solid #cba868',
+              borderRadius: '10px',
+              padding: '10px 18px',
+              fontFamily: 'inherit',
+              fontSize: '13px',
+              fontWeight: 500,
+              cursor: endingSession || textMessages.length < 2 ? 'not-allowed' : 'pointer',
+              opacity: endingSession || textMessages.length < 2 ? 0.55 : 1,
+              transition: 'background 140ms ease',
+            }}
           >
-            {endingSession ? "Saving..." : "End Lesson"}
+            {endingSession ? 'Saving…' : 'End lesson'}
           </button>
         </div>
       </div>
 
       {/* Info banner */}
       <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-sm text-white/90">
-          <strong>Two channels, same AI:</strong> Text chat (left) simulates a{" "}
-          <strong>smartphone app</strong>. Voice chat (right) simulates a{" "}
-          <strong>phone call</strong> — tap the mic to talk. Both channels
-          remember this student across sessions.{" "}
-          <span className="text-white/80">
-            When Sabi wraps up naturally (for example saying what you&apos;ll
-            learn next time), progress saves automatically—you can still tap
-            End Lesson.
+        <div
+          className="px-4 py-3 text-sm"
+          style={{
+            background: 'rgba(203,168,104,0.08)',
+            border: '1px solid rgba(203,168,104,0.24)',
+            borderRadius: '14px',
+            color: 'rgba(240,230,207,0.88)',
+            lineHeight: 1.55,
+          }}
+        >
+          <strong style={{ color: '#f6ecd6' }}>Two channels, same AI:</strong> Text chat (left) simulates a{' '}
+          <strong style={{ color: '#f6ecd6' }}>smartphone app</strong>. Voice chat (right) simulates a{' '}
+          <strong style={{ color: '#f6ecd6' }}>phone call</strong> — tap the mic to talk. Both channels
+          remember this student across sessions.{' '}
+          <span style={{ color: 'rgba(240,230,207,0.7)' }}>
+            When Sabi wraps up naturally (for example saying what you&apos;ll learn next time), progress saves
+            automatically — you can still tap End lesson.
           </span>
         </div>
       </div>
@@ -1166,26 +1403,45 @@ export default function SabiDemo() {
 
       {/* Research callout */}
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6">
-          <h3 className="font-bold text-lg text-white mb-3">
-            Why Market Math?
+        <div
+          className="p-6"
+          style={{
+            background: 'rgba(203,168,104,0.08)',
+            border: '1px solid rgba(203,168,104,0.24)',
+            borderRadius: '18px',
+          }}
+        >
+          <p style={{ fontSize: '10.5px', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(226,200,142,0.72)', margin: '0 0 8px' }}>
+            The evidence
+          </p>
+          <h3
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: '22px',
+              fontWeight: 600,
+              color: '#f6ecd6',
+              margin: '0 0 14px',
+              lineHeight: 1.15,
+            }}
+          >
+            Why market math?
           </h3>
-          <p className="text-sm text-white/80 leading-relaxed mb-3">
-            Weber, Bogler & Vollmer&apos;s study of{" "}
-            <strong>5,997 children in North-West Nigeria (2024)</strong> found
-            that children solved comparable subtraction tasks{" "}
-            <strong>9x more often</strong> in market framing than in formal
-            school format (48.5% vs 5.4%). A separate Nature (2025) study found
-            the same kind of transfer gap among working children in India.
+          <p className="mb-3" style={{ fontSize: '13.5px', color: 'rgba(240,230,207,0.82)', lineHeight: 1.65 }}>
+            Weber, Bogler &amp; Vollmer&apos;s study of{' '}
+            <strong style={{ color: '#f6ecd6' }}>5,997 children in North-West Nigeria (2024)</strong> found
+            that children solved comparable subtraction tasks{' '}
+            <strong style={{ color: '#f6ecd6' }}>9× more often</strong> in market framing than in formal
+            school format (48.5% vs 5.4%). A separate Nature (2025) study found the same kind of transfer gap
+            among working children in India.
           </p>
-          <p className="text-sm text-white/80 leading-relaxed mb-3">
-            <strong>Persistent memory</strong> means Sabi remembers each
-            child&apos;s name, level, and mistakes across sessions — just like a
-            real tutor. End this lesson and start another to see it in action.
+          <p className="mb-3" style={{ fontSize: '13.5px', color: 'rgba(240,230,207,0.82)', lineHeight: 1.65 }}>
+            <strong style={{ color: '#f6ecd6' }}>Persistent memory</strong> means Sabi remembers each
+            child&apos;s name, level, and mistakes across sessions — just like a real tutor. End this lesson
+            and start another to see it in action.
           </p>
-          <p className="text-sm text-white/60 leading-relaxed">
-            Sabi is built by Education for Equality to deliver free,
-            AI-powered voice tutoring to every child in Nigeria who needs it.
+          <p style={{ fontSize: '12.5px', color: 'rgba(216,205,184,0.62)', lineHeight: 1.65 }}>
+            Sabi is built by Education for Equality to deliver free, AI-powered voice tutoring to every child
+            in Nigeria who needs it.
           </p>
         </div>
       </div>
