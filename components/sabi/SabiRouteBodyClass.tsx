@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-/** Hides the global E4E navbar/footer while any /sabi route is mounted. */
+/** Hides the global Education for Equality navbar/footer while any /sabi route is mounted. */
 export default function SabiRouteBodyClass() {
   useEffect(() => {
     document.body.classList.add("sabi-route");

@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { learnerKeyFor, normalizeChildNameForIdentity, normalizePhoneNumber, phoneLookupVariants } from "@/lib/voice/phone-normalization";
+import {
+  normalizeChildNameForIdentity,
+  normalizePhoneNumber,
+  phoneLookupVariants,
+  sanitizeChildNameForStorage,
+} from "@/lib/voice/phone-normalization";
 
 function getSupabase() {
   return createClient(
@@ -81,6 +86,7 @@ export async function GET(req: NextRequest) {
 // POST /api/sabi/student — Create new student (supports browser_id or phone_number)
 export async function POST(req: NextRequest) {
   const { browser_id, phone_number, name } = await req.json();
+  const safeName = sanitizeChildNameForStorage(name || null);
 
   if (!browser_id && !phone_number) {
     return NextResponse.json(
@@ -95,17 +101,6 @@ export async function POST(req: NextRequest) {
   let existingQuery = supabase.from("sabi_students").select("*");
   const normalizedPhone = phone_number ? normalizePhoneNumber(phone_number) : null;
   if (phone_number) {
-    const learnerKey = learnerKeyFor(normalizedPhone!, name || null);
-    if (learnerKey) {
-      const byLearnerKey = await supabase
-        .from("sabi_students")
-        .select("*")
-        .eq("learner_key", learnerKey)
-        .maybeSingle();
-      if (byLearnerKey.data) {
-        return NextResponse.json({ student: byLearnerKey.data });
-      }
-    }
     const byNormalized = await supabase
       .from("sabi_students")
       .select("*")
@@ -133,7 +128,7 @@ export async function POST(req: NextRequest) {
 
   // Create new student
   const insertData: Record<string, unknown> = {
-    name: name || null,
+    name: safeName,
     current_level: "beginner",
     current_module: 0,
     current_topic: "diagnostic",
@@ -154,8 +149,8 @@ export async function POST(req: NextRequest) {
     insertData.phone_number = normalizedPhone;
     insertData.phone_number_normalized = normalizedPhone;
     insertData.phone_household_key = normalizedPhone;
-    insertData.child_name_normalized = normalizeChildNameForIdentity(name || null);
-    insertData.learner_key = learnerKeyFor(normalizedPhone!, name || null);
+    insertData.child_name_normalized = normalizeChildNameForIdentity(safeName);
+    insertData.learner_key = null;
   } else {
     insertData.browser_id = browser_id;
   }
@@ -167,7 +162,7 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error) {
-    const fallbackInsert: Record<string, unknown> = { name: name || null };
+    const fallbackInsert: Record<string, unknown> = { name: safeName };
     if (phone_number) fallbackInsert.phone_number = normalizedPhone;
     else fallbackInsert.browser_id = browser_id;
     const fallback = await supabase

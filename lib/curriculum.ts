@@ -356,6 +356,14 @@ export function getCambridgeSubjects(): Subject[] {
   }));
 }
 
+export function getLearningSubjects(): Subject[] {
+  return [foundationalLiteracy, foundationalNumeracy, ...getCambridgeSubjects()];
+}
+
+export function getLearningSubjectBySlug(slug: string): Subject | undefined {
+  return getLearningSubjects().find((subject) => subject.slug === slug);
+}
+
 // Get a Cambridge lesson by ID (lesson IDs from cambridge-grade4-curriculum.ts)
 export function getCambridgeLessonById(lessonId: string): { subject: Subject; unit: Unit; lesson: Lesson } | undefined {
   const cambridgeSubjects = getCambridgeSubjects();

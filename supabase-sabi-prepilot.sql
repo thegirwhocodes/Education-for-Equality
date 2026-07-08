@@ -198,9 +198,9 @@ CREATE TRIGGER set_sabi_prepilot_events_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION set_sabi_prepilot_updated_at();
 
-ALTER TABLE sabi_prepilot_cohorts DISABLE ROW LEVEL SECURITY;
-ALTER TABLE sabi_prepilot_participants DISABLE ROW LEVEL SECURITY;
-ALTER TABLE sabi_prepilot_call_reviews DISABLE ROW LEVEL SECURITY;
-ALTER TABLE sabi_prepilot_events DISABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_prepilot_cohorts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_prepilot_participants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_prepilot_call_reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_prepilot_events ENABLE ROW LEVEL SECURITY;
 
 SELECT 'sabi pre-pilot operations schema ready' AS status;

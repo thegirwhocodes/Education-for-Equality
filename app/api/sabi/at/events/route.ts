@@ -13,6 +13,10 @@ import {
   insertSabiSession,
   updateSabiStudentProgress,
 } from "@/lib/voice/session-persistence";
+import {
+  normalizeChildNameForIdentity,
+  sanitizeChildNameForStorage,
+} from "@/lib/voice/phone-normalization";
 
 export const maxDuration = 30;
 
@@ -248,11 +252,15 @@ Only include skills that were actually tested. Use 0.0-1.0 scale.`,
         ? Math.min((student.current_module || 0) + 1, 7)
         : stats.recommended_module ?? student.current_module ?? 0;
 
-      // Update name if discovered during call
-      const updatedName = stats.child_name || student.name;
+      // Update name only if the transcript contains a safe human name. Claude
+      // can misread carrier messages like "not available" as identity.
+      const discoveredName = sanitizeChildNameForStorage(stats.child_name);
+      const existingName = sanitizeChildNameForStorage(student.name);
+      const updatedName = discoveredName || existingName;
 
       await updateSabiStudentProgress(supabase, state.studentId, {
           name: updatedName,
+          child_name_normalized: normalizeChildNameForIdentity(updatedName),
           total_sessions: (student.total_sessions || 0) + 1,
           total_correct:
             (student.total_correct || 0) + (stats.correct_count || 0),

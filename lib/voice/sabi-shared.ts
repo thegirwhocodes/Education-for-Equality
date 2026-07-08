@@ -520,6 +520,8 @@ export async function findOrCreateStudentByPhone(
           .update({
             phone_number: normalizedPhone,
             phone_number_normalized: normalizedPhone,
+            phone_household_key: normalizedPhone,
+            learner_key: null,
             updated_at: new Date().toISOString(),
           })
           .eq("id", row.id);

@@ -1,20 +1,20 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { subjects, getSubjectBySlug, getTotalLessons } from '@/lib/curriculum';
+import { getLearningSubjectBySlug, getLearningSubjects, getTotalLessons } from '@/lib/curriculum';
 
 interface SubjectPageProps {
   params: Promise<{ subject: string }>;
 }
 
 export async function generateStaticParams() {
-  return subjects.map((subject) => ({
+  return getLearningSubjects().map((subject) => ({
     subject: subject.slug,
   }));
 }
 
 export async function generateMetadata({ params }: SubjectPageProps) {
   const { subject: subjectSlug } = await params;
-  const subject = getSubjectBySlug(subjectSlug);
+  const subject = getLearningSubjectBySlug(subjectSlug);
 
   if (!subject) {
     return { title: 'Subject Not Found' };
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: SubjectPageProps) {
 
 export default async function SubjectPage({ params }: SubjectPageProps) {
   const { subject: subjectSlug } = await params;
-  const subject = getSubjectBySlug(subjectSlug);
+  const subject = getLearningSubjectBySlug(subjectSlug);
 
   if (!subject) {
     notFound();

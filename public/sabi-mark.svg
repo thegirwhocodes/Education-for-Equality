@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Sabi sound book mark</title>
+  <desc id="desc">An open learning book with voice bars and a gold spark, designed to avoid chat-app or handset associations.</desc>
+  <rect width="512" height="512" rx="92" fill="#FFF8E7"/>
+  <circle cx="256" cy="154" r="21" fill="#F6B642"/>
+  <path d="M217 207v54" fill="none" stroke="#0FA992" stroke-width="20" stroke-linecap="round"/>
+  <path d="M256 191v88" fill="none" stroke="#075449" stroke-width="22" stroke-linecap="round"/>
+  <path d="M295 207v54" fill="none" stroke="#0FA992" stroke-width="20" stroke-linecap="round"/>
+  <path d="M154 286c44-26 82-28 102-6v105c-26-23-64-24-120-1V295c0-5 13-7 18-9Z" fill="none" stroke="#075449" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M358 286c-44-26-82-28-102-6v105c26-23 64-24 120-1V295c0-5-13-7-18-9Z" fill="none" stroke="#075449" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M183 326c27-10 50-9 73 5" fill="none" stroke="#F6B642" stroke-width="14" stroke-linecap="round"/>
+  <path d="M329 326c-27-10-50-9-73 5" fill="none" stroke="#F6B642" stroke-width="14" stroke-linecap="round"/>
+  <path d="M365 157l13-25 13 25 25 13-25 13-13 25-13-25-25-13 25-13Z" fill="#E85D42"/>
+  <circle cx="143" cy="159" r="12" fill="#0FA992"/>
+</svg>

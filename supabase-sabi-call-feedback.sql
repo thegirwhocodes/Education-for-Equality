@@ -58,4 +58,6 @@ CREATE TRIGGER set_sabi_call_feedback_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION set_sabi_call_feedback_updated_at();
 
+ALTER TABLE sabi_call_feedback ENABLE ROW LEVEL SECURITY;
+
 SELECT 'sabi call feedback schema ready' AS status;

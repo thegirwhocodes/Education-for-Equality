@@ -3,6 +3,5 @@
   "mailer_subjects_confirmation": "Confirm your Education for Equality account",
   "mailer_subjects_magic_link": "Your Education for Equality sign-in link",
   "mailer_subjects_recovery": "Recover your Education for Equality account",
-  "mailer_subjects_reauthentication": "{{ .Token }} is your Education for Equality verification code",
-  "smtp_sender_name": "Education for Equality"
+  "mailer_subjects_reauthentication": "{{ .Token }} is your Education for Equality verification code"
 }

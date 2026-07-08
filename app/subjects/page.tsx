@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { subjects, getTotalLessons, type Subject } from '@/lib/curriculum';
+import { getLearningSubjects, getTotalLessons, type Subject } from '@/lib/curriculum';
 
 export const metadata = {
   title: 'Courses | Education for Equality',
@@ -81,6 +81,7 @@ function SubjectCard({ subject }: { subject: Subject }) {
 }
 
 export default function SubjectsPage() {
+  const subjects = getLearningSubjects();
   const foundationalCourses = subjects.filter(s =>
     s.slug === 'foundational-literacy' || s.slug === 'foundational-numeracy'
   );

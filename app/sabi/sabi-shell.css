@@ -2,8 +2,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap");
 
-body.sabi-route #e4e-site-nav,
-body.sabi-route #e4e-site-footer {
+body.sabi-route #education-for-equality-site-nav,
+body.sabi-route #education-for-equality-site-footer {
   display: none !important;
 }
 

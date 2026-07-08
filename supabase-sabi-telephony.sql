@@ -9,7 +9,7 @@
 --   - bucket sabi-audio (PUBLIC)          (lib/voice/audio-storage.ts)
 --
 -- All Sabi tables are touched server-side only with SUPABASE_SERVICE_ROLE_KEY
--- (bypasses RLS), matching supabase-lesson-completions.sql — so RLS is disabled.
+-- (bypasses RLS), so RLS stays enabled with no public policies.
 
 -- 1. sabi_students.phone_number (used by findOrCreateStudentByPhone)
 ALTER TABLE sabi_students ADD COLUMN IF NOT EXISTS phone_number TEXT;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS sabi_active_calls (
 CREATE INDEX IF NOT EXISTS idx_sabi_active_calls_updated_at
   ON sabi_active_calls(updated_at);
 
-ALTER TABLE sabi_active_calls DISABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_active_calls ENABLE ROW LEVEL SECURITY;
 
 -- 3. sabi_sms_log (outbound/inbound SMS log + practice-answer tracking)
 CREATE TABLE IF NOT EXISTS sabi_sms_log (
@@ -58,7 +58,7 @@ CREATE INDEX IF NOT EXISTS idx_sabi_sms_log_lookup
 CREATE INDEX IF NOT EXISTS idx_sabi_sms_log_student_id
   ON sabi_sms_log(student_id);
 
-ALTER TABLE sabi_sms_log DISABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_sms_log ENABLE ROW LEVEL SECURITY;
 
 -- 4. sabi-audio storage bucket (PUBLIC; serves TTS audio to AT <Play>)
 INSERT INTO storage.buckets (id, name, public)

@@ -31,3 +31,6 @@ CREATE TABLE IF NOT EXISTS sabi_sessions (
 CREATE INDEX IF NOT EXISTS idx_sabi_students_browser_id ON sabi_students(browser_id);
 CREATE INDEX IF NOT EXISTS idx_sabi_sessions_student_id ON sabi_sessions(student_id);
 CREATE INDEX IF NOT EXISTS idx_sabi_sessions_created_at ON sabi_sessions(created_at DESC);
+
+ALTER TABLE sabi_students ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sabi_sessions ENABLE ROW LEVEL SECURITY;

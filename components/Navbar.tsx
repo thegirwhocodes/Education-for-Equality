@@ -5,10 +5,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useCurrentUser } from '@/lib/auth/useCurrentUser';
+import { isBoardMemberUser } from '@/lib/board-access';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isSignedIn, user, supabase } = useCurrentUser();
+  const hasBoardAccess = isBoardMemberUser(user);
 
   function handleLogoClick(event: MouseEvent<HTMLAnchorElement>) {
     if (window.location.hostname.startsWith('sabi.')) {
@@ -23,7 +25,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav id="e4e-site-nav" className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav id="education-for-equality-site-nav" className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -54,9 +56,11 @@ export default function Navbar() {
               <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 My Progress
               </Link>
-              <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
-                Board
-              </Link>
+              {hasBoardAccess && (
+                <Link href="/advisor-board/sabi-evidence" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+                  Board
+                </Link>
+              )}
               <Link href="/sabi/prepilot" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 Pilot
               </Link>
@@ -124,9 +128,11 @@ export default function Navbar() {
                 <Link href="/dashboard" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   My Progress
                 </Link>
-                <Link href="/advisor-board" className="text-gray-600 hover:text-[var(--primary-dark)]">
-                  Board
-                </Link>
+                {hasBoardAccess && (
+                  <Link href="/advisor-board/sabi-evidence" className="text-gray-600 hover:text-[var(--primary-dark)]">
+                    Board
+                  </Link>
+                )}
                 <Link href="/sabi/prepilot" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   Pilot
                 </Link>

@@ -9,6 +9,8 @@ import {
   type AdvisorRuntimeState,
   type AdvisorStatus,
 } from '@/lib/advisor-board';
+import { SabiDirectCallPanel } from '@/components/SabiDirectCallPanel';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 type AdvisorStateMap = Record<string, AdvisorRuntimeState & { emailOverride?: string }>;
@@ -33,7 +35,7 @@ type GmailSyncResult = {
   };
 };
 
-const STORAGE_KEY = 'e4e-advisor-board-v1';
+const STORAGE_KEY = 'education-for-equality-advisor-board-v1';
 const DEFAULT_FROM_EMAIL = 'naomi.ivie04@gmail.com';
 
 const statusLabels: Record<AdvisorStatus, string> = {
@@ -228,6 +230,20 @@ export default function AdvisorBoardPage() {
                 One place to track advisor asks, responses, first-meeting emails, follow-ups, and what each person
                 should help move forward for Sabi.
               </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link
+                  href="/advisor-board/sabi-evidence"
+                  className="bg-[var(--primary-dark)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--primary-darker)]"
+                >
+                  Open Sabi evidence
+                </Link>
+                <Link
+                  href="/advisor-board/sabi-evidence/export?mode=board"
+                  className="border border-emerald-300 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50"
+                >
+                  Download board CSV
+                </Link>
+              </div>
             </div>
 
             <div className="grid grid-cols-4 gap-2 text-center">
@@ -248,6 +264,9 @@ export default function AdvisorBoardPage() {
                 <div className="text-xs text-gray-600">Replied</div>
               </div>
             </div>
+          </div>
+          <div className="mt-5">
+            <SabiDirectCallPanel compact />
           </div>
         </div>
       </section>

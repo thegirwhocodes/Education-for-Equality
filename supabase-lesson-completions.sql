@@ -14,6 +14,6 @@ CREATE INDEX IF NOT EXISTS idx_completions_user ON lesson_completions(user_id);
 CREATE INDEX IF NOT EXISTS idx_completions_lesson ON lesson_completions(lesson_id);
 
 -- Disable RLS since we use Supabase Auth + service role key server-side
-ALTER TABLE lesson_completions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lesson_completions ENABLE ROW LEVEL SECURITY;
 
 SELECT 'lesson_completions table created!' as status;

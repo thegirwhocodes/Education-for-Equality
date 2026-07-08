@@ -7,7 +7,7 @@ export const maxDuration = 30;
  * POST /api/sabi/tts
  *
  * Converts text to speech via lib/voice/tts-client.ts:
- * ElevenLabs (default first) → Chatterbox → YarnGPT.
+ * ElevenLabs (default first) → YarnGPT.
  * Set SABI_ELEVENLABS_TTS_ONLY=true to disable fallbacks while testing ElevenLabs.
  */
 export async function POST(req: NextRequest) {

@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { getCambridgeSubjects, subjects as allSubjects } from '@/lib/curriculum';
+import { getLearningSubjects } from '@/lib/curriculum';
 import { useProgress } from '@/lib/useProgress';
 import { useCurrentUser } from '@/lib/auth/useCurrentUser';
+import { isBoardMemberUser } from '@/lib/board-access';
 import { useRef, useCallback, type MouseEvent, type ReactNode } from 'react';
 
 // Glow card — tracks mouse and renders a teal radial spotlight
@@ -43,9 +44,8 @@ function GlowCard({ children, className = '', lift = true }: { children: ReactNo
 
 export default function DashboardPage() {
   const { user } = useCurrentUser();
-  // Include foundational courses + Cambridge subjects
-  const cambridgeSubjects = getCambridgeSubjects();
-  const subjects = [...allSubjects, ...cambridgeSubjects];
+  const hasBoardAccess = isBoardMemberUser(user);
+  const subjects = getLearningSubjects();
   const { completions, loading, completedBySubject, completedCount } = useProgress();
 
   // Calculate total lessons across all subjects
@@ -140,6 +140,26 @@ export default function DashboardPage() {
             </div>
           )}
         </GlowCard>
+
+        {hasBoardAccess && (
+          <GlowCard lift={false} className="mb-8 border-[var(--primary-dark)]">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--primary-dark)]">
+                  Board workspace
+                </p>
+                <h2 className="mt-1 text-xl font-semibold text-gray-950">Sabi evidence console</h2>
+                <p className="mt-1 max-w-3xl text-sm leading-6 text-gray-600">
+                  Review learning indicators, RCT readiness, child-evidence previews, protocol stage, and board-facing
+                  pilot outcomes.
+                </p>
+              </div>
+              <Link href="/advisor-board/sabi-evidence" className="btn-primary whitespace-nowrap text-center">
+                Open Board Evidence
+              </Link>
+            </div>
+          </GlowCard>
+        )}
 
         {/* Subject Progress */}
         <h2 className="text-xl font-semibold mb-4">Progress by Subject</h2>
