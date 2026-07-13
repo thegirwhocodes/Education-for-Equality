@@ -3,9 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { isBoardMemberUser } from '@/lib/board-access';
 
 const protectedRoutes = ['/dashboard'];
-// /sabi/prepilot and the sabi-server admin proxy (/admin/*) are board-only.
-// The sabi-server side still enforces PIN, so this is defense-in-depth.
-const advisorBoardRoutes = ['/advisor-board', '/sabi/prepilot', '/admin'];
+const advisorBoardRoutes = ['/advisor-board'];
 const advisorBoardApiRoutes = ['/api/advisor-board'];
 const prepilotRoutes = ['/sabi/parents'];
 const prepilotApiRoutes = ['/api/sabi/parents'];
