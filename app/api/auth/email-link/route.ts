@@ -4,7 +4,7 @@ import { getDefaultFromEmail, getResendClient } from '@/lib/email/resend';
 import { normalizeLearnerMetadata } from '@/lib/auth/learner-onboarding';
 import { buildAuthCallbackUrl, safeRedirectPath } from '@/lib/auth/url';
 
-type EmailLinkMode = 'signup' | 'magiclink';
+type EmailLinkMode = 'signup' | 'magiclink' | 'reset';
 
 function jsonResponse(body: unknown, status = 200) {
   return NextResponse.json(body, {
@@ -20,7 +20,7 @@ function isEmail(value: unknown): value is string {
 }
 
 function isMode(value: unknown): value is EmailLinkMode {
-  return value === 'signup' || value === 'magiclink';
+  return value === 'signup' || value === 'magiclink' || value === 'reset';
 }
 
 function escapeHtml(value: string) {

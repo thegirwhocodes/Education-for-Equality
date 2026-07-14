@@ -5,13 +5,17 @@ const RATE_LIMIT_PASSWORD_MESSAGE =
 const EXPIRED_LINK_MESSAGE =
   'That Education for Equality magic link is invalid, expired, or already used. Send yourself a fresh sign-in link.';
 const WRONG_PASSWORD_MESSAGE =
-  'Wrong email or password. Try again, or email yourself a sign-in link below.';
+  'Wrong email or password. Reset your password below, or email yourself a sign-in link.';
 const EMAIL_NOT_CONFIRMED_MESSAGE =
   'You have not confirmed your email yet. Check your inbox for the Education for Equality confirmation link, or email yourself a magic sign-in link below.';
 const GOOGLE_NOT_CONFIGURED_MESSAGE =
   'Google sign-in is not configured in Supabase yet. Add the Google OAuth client ID and secret, then enable the provider.';
+const RESET_LINK_EXPIRED_MESSAGE =
+  'That password reset link is invalid, expired, or already used. Request a fresh one from the sign-in page.';
+const WEAK_PASSWORD_MESSAGE = 'Choose a stronger password — at least 8 characters.';
+const SAME_PASSWORD_MESSAGE = 'Your new password must be different from your current one.';
 
-export type AuthErrorContext = 'magic-link' | 'password' | 'oauth';
+export type AuthErrorContext = 'magic-link' | 'password' | 'oauth' | 'reset';
 
 export function authErrorMessage(message: string, context: AuthErrorContext = 'magic-link') {
   const normalized = message.replaceAll('_', ' ').toLowerCase();
@@ -38,6 +42,38 @@ export function authErrorMessage(message: string, context: AuthErrorContext = 'm
   if (context === 'oauth') {
     if (normalized.includes('provider') || normalized.includes('oauth') || normalized.includes('google')) {
       return GOOGLE_NOT_CONFIGURED_MESSAGE;
+    }
+    return message;
+  }
+
+  if (context === 'reset') {
+    if (normalized.includes('rate limit') || normalized.includes('too many')) {
+      return RATE_LIMIT_PASSWORD_MESSAGE;
+    }
+    if (
+      normalized.includes('should be different') ||
+      normalized.includes('different from the old') ||
+      normalized.includes('same password')
+    ) {
+      return SAME_PASSWORD_MESSAGE;
+    }
+    if (
+      normalized.includes('at least') ||
+      normalized.includes('weak') ||
+      normalized.includes('password should be') ||
+      normalized.includes('length')
+    ) {
+      return WEAK_PASSWORD_MESSAGE;
+    }
+    if (
+      normalized.includes('expired') ||
+      normalized.includes('invalid') ||
+      normalized.includes('session') ||
+      normalized.includes('not authenticated') ||
+      normalized.includes('access denied') ||
+      normalized.includes('token')
+    ) {
+      return RESET_LINK_EXPIRED_MESSAGE;
     }
     return message;
   }
