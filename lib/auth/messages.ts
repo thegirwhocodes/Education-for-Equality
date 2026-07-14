@@ -5,9 +5,9 @@ const RATE_LIMIT_PASSWORD_MESSAGE =
 const EXPIRED_LINK_MESSAGE =
   'That Education for Equality magic link is invalid, expired, or already used. Send yourself a fresh sign-in link.';
 const WRONG_PASSWORD_MESSAGE =
-  'Wrong email or password. Reset your password below, or email yourself a sign-in link.';
+  'Wrong email or password. Reset your password or email yourself a sign-in link.';
 const EMAIL_NOT_CONFIRMED_MESSAGE =
-  'You have not confirmed your email yet. Check your inbox for the Education for Equality confirmation link, or email yourself a magic sign-in link below.';
+  'You have not confirmed your email yet. Check your inbox for the Education for Equality confirmation link, or email yourself a magic sign-in link.';
 const GOOGLE_NOT_CONFIGURED_MESSAGE =
   'Google sign-in is not configured in Supabase yet. Add the Google OAuth client ID and secret, then enable the provider.';
 const RESET_LINK_EXPIRED_MESSAGE =
