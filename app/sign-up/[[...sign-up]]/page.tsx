@@ -732,6 +732,20 @@ export default function SignUpPage() {
             </button>
           </form>
 
+          {message && (
+            <div
+              className={`mt-4 rounded-lg border p-3 text-sm leading-6 ${
+                status === 'error'
+                  ? 'border-red-200 bg-red-50 text-red-800'
+                  : 'border-emerald-200 bg-emerald-50 text-emerald-900'
+              }`}
+              role="status"
+              aria-live="polite"
+            >
+              {message}
+            </div>
+          )}
+
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <button
               type="button"
@@ -754,20 +768,6 @@ export default function SignUpPage() {
               Email me a sign-in link instead
             </button>
           </div>
-
-          {message && (
-            <div
-              className={`mt-5 rounded-lg border p-3 text-sm leading-6 ${
-                status === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : 'border-emerald-200 bg-emerald-50 text-emerald-900'
-              }`}
-              role="status"
-              aria-live="polite"
-            >
-              {message}
-            </div>
-          )}
 
           <p className="mt-6 text-center text-sm text-gray-500">
             Already have an account?{' '}

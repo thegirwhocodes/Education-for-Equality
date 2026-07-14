@@ -291,18 +291,9 @@ export default function SignInPage() {
             </button>
           </form>
 
-          <button
-            type="button"
-            onClick={sendMagicLink}
-            disabled={status === 'sending' || status === 'sent' || !email}
-            className="mt-3 w-full rounded-lg border border-emerald-100 bg-[var(--secondary)] px-4 py-3 text-sm font-semibold text-[var(--primary-darker)] transition-colors hover:bg-emerald-100 disabled:opacity-60"
-          >
-            Email me a sign-in link instead
-          </button>
-
           {message && (
             <div
-              className={`mt-5 rounded-lg border p-3 text-sm leading-6 ${
+              className={`mt-4 rounded-lg border p-3 text-sm leading-6 ${
                 status === 'error'
                   ? 'border-red-200 bg-red-50 text-red-800'
                   : 'border-emerald-200 bg-emerald-50 text-emerald-900'
@@ -313,6 +304,15 @@ export default function SignInPage() {
               {message}
             </div>
           )}
+
+          <button
+            type="button"
+            onClick={sendMagicLink}
+            disabled={status === 'sending' || status === 'sent' || !email}
+            className="mt-3 w-full rounded-lg border border-emerald-100 bg-[var(--secondary)] px-4 py-3 text-sm font-semibold text-[var(--primary-darker)] transition-colors hover:bg-emerald-100 disabled:opacity-60"
+          >
+            Email me a sign-in link instead
+          </button>
 
           <p className="mt-6 text-center text-sm text-gray-500">
             New here?{' '}
