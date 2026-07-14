@@ -33,20 +33,28 @@ function escapeHtml(value: string) {
 }
 
 function emailHtml(actionLink: string, mode: EmailLinkMode) {
-  const kicker = mode === 'signup' ? 'Confirm your account' : 'Secure sign-in';
+  const kicker =
+    mode === 'signup' ? 'Confirm your account' : mode === 'reset' ? 'Reset your password' : 'Secure sign-in';
   const title =
     mode === 'signup'
       ? 'Welcome to Education for Equality'
-      : 'Sign in to Education for Equality';
-  const buttonText = mode === 'signup' ? 'Confirm my account' : 'Sign in';
+      : mode === 'reset'
+        ? 'Reset your Education for Equality password'
+        : 'Sign in to Education for Equality';
+  const buttonText =
+    mode === 'signup' ? 'Confirm my account' : mode === 'reset' ? 'Set a new password' : 'Sign in';
   const intro =
     mode === 'signup'
       ? 'Use this secure link to confirm your account and continue setting up the learner.'
-      : 'Use this secure link to continue learning with Education for Equality.';
+      : mode === 'reset'
+        ? 'Use this secure link to choose a new password for your account. It expires soon and can only be used once.'
+        : 'Use this secure link to continue learning with Education for Equality.';
   const preheader =
     mode === 'signup'
       ? 'Confirm your Education for Equality account and start learning with Sabi.'
-      : 'Open this secure link to sign in to Education for Equality.';
+      : mode === 'reset'
+        ? 'Choose a new password for your Education for Equality account.'
+        : 'Open this secure link to sign in to Education for Equality.';
   const safeActionLink = escapeHtml(actionLink);
 
   return `<!doctype html>
@@ -113,7 +121,9 @@ function emailText(actionLink: string, mode: EmailLinkMode) {
   const title =
     mode === 'signup'
       ? 'Confirm your Education for Equality account'
-      : 'Your Education for Equality sign-in link';
+      : mode === 'reset'
+        ? 'Reset your Education for Equality password'
+        : 'Your Education for Equality sign-in link';
 
   return `${title}\n\nOpen this secure link:\n${actionLink}\n\nIf you did not request this, you can ignore this email.`;
 }
@@ -156,14 +166,31 @@ export async function POST(request: NextRequest) {
             redirectTo,
           },
         })
-      : await supabase.auth.admin.generateLink({
-          type: 'magiclink',
-          email,
-          options: {
-            data: metadata || undefined,
-            redirectTo,
-          },
-        });
+      : mode === 'reset'
+        ? await supabase.auth.admin.generateLink({
+            type: 'recovery',
+            email,
+            options: {
+              redirectTo,
+            },
+          })
+        : await supabase.auth.admin.generateLink({
+            type: 'magiclink',
+            email,
+            options: {
+              data: metadata || undefined,
+              redirectTo,
+            },
+          });
+
+  // Password resets must never reveal whether an account exists for the email.
+  // If the account is missing (or the link can't be made), respond as if it worked.
+  if (mode === 'reset' && (error || !data?.properties?.action_link)) {
+    if (error) {
+      console.error('[auth-email-link] reset link generation failed', error.message);
+    }
+    return jsonResponse({ ok: true });
+  }
 
   if (error || !data.properties?.action_link) {
     return jsonResponse({ error: error?.message || 'Could not create a secure email link.' }, 400);
@@ -173,7 +200,9 @@ export async function POST(request: NextRequest) {
   const subject =
     mode === 'signup'
       ? 'Confirm your Education for Equality account'
-      : 'Your Education for Equality sign-in link';
+      : mode === 'reset'
+        ? 'Reset your Education for Equality password'
+        : 'Your Education for Equality sign-in link';
   const { error: sendError } = await resend.emails.send({
     from: getDefaultFromEmail(),
     to: email,
@@ -184,6 +213,10 @@ export async function POST(request: NextRequest) {
 
   if (sendError) {
     console.error('[auth-email-link] Resend send failed', sendError);
+    // Keep resets enumeration-safe even if the provider fails.
+    if (mode === 'reset') {
+      return jsonResponse({ ok: true });
+    }
     return jsonResponse({ error: 'Could not send the email right now.' }, 502);
   }
 

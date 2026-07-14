@@ -122,6 +122,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [learnerType, setLearnerType] = useState('child');
   const [learnerName, setLearnerName] = useState('');
   const [ageRange, setAgeRange] = useState('');
@@ -686,7 +687,7 @@ export default function SignUpPage() {
                 <label className="block text-sm font-semibold text-gray-700">
                   Password
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     required
@@ -699,7 +700,7 @@ export default function SignUpPage() {
                 <label className="block text-sm font-semibold text-gray-700">
                   Confirm password
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={confirmPassword}
                     onChange={(event) => setConfirmPassword(event.target.value)}
                     required
@@ -708,6 +709,17 @@ export default function SignUpPage() {
                     className={inputClassName}
                   />
                 </label>
+
+                <div className="md:col-span-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((value) => !value)}
+                    aria-pressed={showPassword}
+                    className="text-sm font-semibold text-[var(--primary-dark)] hover:underline"
+                  >
+                    {showPassword ? 'Hide passwords' : 'Show passwords'}
+                  </button>
+                </div>
               </div>
             </section>
 

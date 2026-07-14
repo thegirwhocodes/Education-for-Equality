@@ -11,6 +11,7 @@ export default function SignInPage() {
   const isGoogleAuthEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === 'true';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -94,6 +95,45 @@ export default function SignInPage() {
 
     setStatus('sent');
     setMessage('Check your email for a secure Education for Equality sign-in link.');
+  }
+
+  async function sendPasswordReset() {
+    if (!email) {
+      setStatus('error');
+      setMessage('Enter your email above first, then tap "Forgot password?" to reset it.');
+      return;
+    }
+
+    setStatus('sending');
+    setMessage('');
+
+    if (!hasSupabaseBrowserConfig()) {
+      setStatus('error');
+      setMessage('Auth is not configured in this environment yet.');
+      return;
+    }
+
+    const response = await fetch('/api/auth/email-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mode: 'reset',
+        email,
+        redirectTo: '/reset-password',
+      }),
+    });
+    const payload = (await response.json().catch(() => ({}))) as { error?: string };
+
+    if (!response.ok) {
+      setStatus('error');
+      setMessage(payload.error || 'Could not start a password reset right now.');
+      return;
+    }
+
+    setStatus('sent');
+    setMessage('If an account uses that email, a password reset link is on its way. Check your inbox.');
   }
 
   async function signInWithGoogle() {
@@ -200,24 +240,47 @@ export default function SignInPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
+                autoFocus
                 autoComplete="email"
                 placeholder="you@example.com"
                 className="mt-2 w-full rounded-lg border border-emerald-100 bg-white px-4 py-3 text-base text-gray-950 outline-none transition-colors placeholder:text-gray-400 focus:border-[var(--primary-dark)] focus:ring-2 focus:ring-emerald-100"
               />
             </label>
 
-            <label className="block text-sm font-semibold text-gray-700">
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-                autoComplete="current-password"
-                minLength={8}
-                className="mt-2 w-full rounded-lg border border-emerald-100 bg-white px-4 py-3 text-base text-gray-950 outline-none transition-colors focus:border-[var(--primary-dark)] focus:ring-2 focus:ring-emerald-100"
-              />
-            </label>
+            <div>
+              <div className="flex items-center justify-between gap-3">
+                <label htmlFor="signin-password" className="text-sm font-semibold text-gray-700">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={sendPasswordReset}
+                  disabled={status === 'sending'}
+                  className="text-sm font-semibold text-[var(--primary-dark)] hover:underline disabled:opacity-60"
+                >
+                  Forgot password?
+                </button>
+              </div>
+              <div className="relative mt-2">
+                <input
+                  id="signin-password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="w-full rounded-lg border border-emerald-100 bg-white px-4 py-3 pr-16 text-base text-gray-950 outline-none transition-colors focus:border-[var(--primary-dark)] focus:ring-2 focus:ring-emerald-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((value) => !value)}
+                  className="absolute inset-y-0 right-2 my-auto h-8 rounded-md px-2 text-xs font-semibold text-[var(--primary-dark)] hover:bg-emerald-50"
+                  aria-pressed={showPassword}
+                >
+                  {showPassword ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            </div>
 
             <button
               type="submit"
