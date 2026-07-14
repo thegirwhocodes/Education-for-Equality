@@ -315,7 +315,7 @@ export default function SignUpPage() {
 
     if (!isGoogleAuthEnabled) {
       setStatus('error');
-      setMessage(authErrorMessage('google oauth provider is not configured'));
+      setMessage(authErrorMessage('google oauth provider is not configured', 'oauth'));
       return;
     }
 
@@ -333,7 +333,7 @@ export default function SignUpPage() {
     if (error) {
       window.localStorage.removeItem(PENDING_LEARNER_PROFILE_KEY);
       setStatus('error');
-      setMessage(authErrorMessage(error.message));
+      setMessage(authErrorMessage(error.message, 'oauth'));
     }
   }
 

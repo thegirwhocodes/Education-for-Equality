@@ -56,7 +56,7 @@ export default function SignInPage() {
 
     if (error) {
       setStatus('error');
-      setMessage(authErrorMessage(error.message));
+      setMessage(authErrorMessage(error.message, 'password'));
       return;
     }
 
@@ -99,7 +99,7 @@ export default function SignInPage() {
   async function signInWithGoogle() {
     if (!isGoogleAuthEnabled) {
       setStatus('error');
-      setMessage(authErrorMessage('google oauth provider is not configured'));
+      setMessage(authErrorMessage('google oauth provider is not configured', 'oauth'));
       return;
     }
 
@@ -115,7 +115,7 @@ export default function SignInPage() {
 
     if (error) {
       setStatus('error');
-      setMessage(authErrorMessage(error.message));
+      setMessage(authErrorMessage(error.message, 'oauth'));
     }
   }
 
