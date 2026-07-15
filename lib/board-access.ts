@@ -6,8 +6,10 @@ export type BoardUserLike = {
 
 const DEFAULT_BOARD_MEMBER_EMAILS = [
   'naomi.ivie04@gmail.com',
+  'naomi.u.ivie@tuck.dartmouth.edu',
   'simplysonia30@gmail.com',
   'ceo@corruptionobservatory.com',
+  'joshua.ivie@velocitypathways.com',
 ];
 
 const BOARD_MEMBER_NAME_ALIASES = [
@@ -16,6 +18,7 @@ const BOARD_MEMBER_NAME_ALIASES = [
   'richard odeyemi',
   'richard ivie',
   'remi tanimola',
+  'joshua ivie',
 ];
 
 function normalizeText(value: unknown) {

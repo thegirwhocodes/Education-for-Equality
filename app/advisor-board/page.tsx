@@ -2,18 +2,22 @@
 
 import { useEffect, useState } from 'react';
 import { AdvisorsTab } from '@/components/advisor-board/AdvisorsTab';
+import { DocsTab } from '@/components/advisor-board/DocsTab';
 import { PrepilotTab } from '@/components/advisor-board/PrepilotTab';
+import { TasksTab } from '@/components/advisor-board/TasksTab';
+import { TeamTab } from '@/components/advisor-board/TeamTab';
 
-type Tab = 'advisors' | 'prepilot';
+type Tab = 'tasks' | 'docs' | 'team' | 'advisors' | 'prepilot';
 
 const TAB_STORAGE_KEY = 'education-for-equality-advisor-board-active-tab';
+const VALID_TABS: readonly Tab[] = ['tasks', 'docs', 'team', 'advisors', 'prepilot'] as const;
 
 export default function AdvisorBoardPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('advisors');
+  const [activeTab, setActiveTab] = useState<Tab>('tasks');
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(TAB_STORAGE_KEY);
-    if (saved === 'advisors' || saved === 'prepilot') setActiveTab(saved);
+    const saved = window.localStorage.getItem(TAB_STORAGE_KEY) as Tab | null;
+    if (saved && VALID_TABS.includes(saved)) setActiveTab(saved);
   }, []);
 
   useEffect(() => {
@@ -23,9 +27,12 @@ export default function AdvisorBoardPage() {
   return (
     <main className="min-h-screen bg-[#f7fbf9]">
       <div className="border-b border-emerald-100 bg-white">
-        <div className="mx-auto flex max-w-7xl gap-1 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 sm:px-6 lg:px-8">
           {(
             [
+              { id: 'tasks', label: 'Tasks' },
+              { id: 'docs', label: 'Docs' },
+              { id: 'team', label: 'Team' },
               { id: 'advisors', label: 'Advisors' },
               { id: 'prepilot', label: 'Pre-pilot' },
             ] as const
@@ -33,7 +40,7 @@ export default function AdvisorBoardPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-5 py-3 text-sm font-semibold transition ${
+              className={`whitespace-nowrap px-5 py-3 text-sm font-semibold transition ${
                 activeTab === tab.id
                   ? 'border-b-2 border-[var(--primary-dark)] text-[var(--primary-dark)]'
                   : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'
@@ -45,7 +52,11 @@ export default function AdvisorBoardPage() {
         </div>
       </div>
 
-      {activeTab === 'advisors' ? <AdvisorsTab /> : <PrepilotTab />}
+      {activeTab === 'tasks' ? <TasksTab /> : null}
+      {activeTab === 'docs' ? <DocsTab /> : null}
+      {activeTab === 'team' ? <TeamTab /> : null}
+      {activeTab === 'advisors' ? <AdvisorsTab /> : null}
+      {activeTab === 'prepilot' ? <PrepilotTab /> : null}
     </main>
   );
 }
