@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import { GoogleIcon } from '@/components/auth/GoogleIcon';
 import { createBrowserSupabaseClient, hasSupabaseBrowserConfig } from '@/lib/auth/browser';
 import {
   PENDING_LEARNER_PROFILE_KEY,
@@ -751,11 +752,9 @@ export default function SignUpPage() {
               type="button"
               onClick={signUpWithGoogle}
               disabled={status === 'sending'}
-              className="flex w-full items-center justify-center gap-3 rounded-lg border border-emerald-100 bg-white px-4 py-3 text-sm font-semibold text-gray-800 transition-colors hover:bg-emerald-50 disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-60"
             >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-sm font-black text-blue-600">
-                G
-              </span>
+              <GoogleIcon className="h-[18px] w-[18px]" />
               Continue with Google
             </button>
 
