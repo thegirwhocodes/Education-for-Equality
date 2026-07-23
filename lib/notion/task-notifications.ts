@@ -1,5 +1,6 @@
 import 'server-only';
 import { getDefaultFromEmail, getResendClient } from '@/lib/email/resend';
+import { createSignOffToken } from './task-tokens';
 import type { TaskRecord } from './types';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || 'https://eduforequality.org';
@@ -12,7 +13,7 @@ function priorityLine(t: TaskRecord) {
   return bits.join(' · ');
 }
 
-function html(t: TaskRecord, assignerName: string) {
+function html(t: TaskRecord, assignerName: string, signOffUrl: string) {
   const meta = priorityLine(t);
   return `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#0f172a">
@@ -22,14 +23,18 @@ function html(t: TaskRecord, assignerName: string) {
   ${t.definitionOfDone ? `<div style="border-left:3px solid #10b981;padding:8px 12px;margin:16px 0;background:#f0fdf4;font-size:14px"><strong>Definition of Done:</strong><br>${escapeHtml(t.definitionOfDone)}</div>` : ''}
   ${t.notes ? `<p style="margin:12px 0;font-size:14px;white-space:pre-wrap">${escapeHtml(t.notes)}</p>` : ''}
   <div style="margin-top:24px">
-    <a href="${APP_URL}/advisor-board" style="display:inline-block;background:#065f46;color:#fff;padding:10px 16px;text-decoration:none;border-radius:6px;font-weight:600;font-size:14px">Open advisor board</a>
-    <a href="${escapeHtml(t.url)}" style="display:inline-block;margin-left:8px;color:#065f46;font-size:14px">or view in Notion →</a>
+    <a href="${escapeHtml(signOffUrl)}" style="display:inline-block;background:#059669;color:#fff;padding:12px 20px;text-decoration:none;border-radius:8px;font-weight:700;font-size:15px">✅ Sign off — mark this done</a>
   </div>
-  <p style="margin-top:32px;font-size:12px;color:#94a3b8">Assigned by ${escapeHtml(assignerName)} · You can change status right from the board.</p>
+  <p style="margin:14px 0 0;font-size:13px;color:#64748b">Done it? Just tap the green button — no login needed. It marks the task done and puts your name on it.</p>
+  <div style="margin-top:18px">
+    <a href="${APP_URL}/advisor-board" style="display:inline-block;color:#065f46;font-size:14px;font-weight:600">Open advisor board</a>
+    <a href="${escapeHtml(t.url)}" style="display:inline-block;margin-left:12px;color:#94a3b8;font-size:14px">view in Notion →</a>
+  </div>
+  <p style="margin-top:32px;font-size:12px;color:#94a3b8">Assigned by ${escapeHtml(assignerName)}</p>
 </div>`;
 }
 
-function text(t: TaskRecord, assignerName: string) {
+function text(t: TaskRecord, assignerName: string, signOffUrl: string) {
   const lines = [
     `New task assigned to you: ${t.title}`,
     '',
@@ -42,6 +47,8 @@ function text(t: TaskRecord, assignerName: string) {
   if (t.notes) {
     lines.push(t.notes, '');
   }
+  lines.push(`✅ Done it? Sign off here (no login needed): ${signOffUrl}`);
+  lines.push('');
   lines.push(`Open the advisor board: ${APP_URL}/advisor-board`);
   lines.push(`Or view in Notion: ${t.url}`);
   lines.push('', `Assigned by ${assignerName}`);
@@ -75,12 +82,16 @@ export async function sendTaskAssignmentEmails(input: AssignmentEmailInput): Pro
   let sent = 0;
   for (const to of targets) {
     try {
+      const owner = input.task.owners.find((o) => o.email && o.email.toLowerCase() === to.toLowerCase());
+      const signer = owner?.name || to.split('@')[0];
+      const token = createSignOffToken(input.task.id, signer);
+      const signOffUrl = `${APP_URL}/api/tasks/sign-off?token=${encodeURIComponent(token)}`;
       await resend.emails.send({
         from,
         to,
         subject,
-        html: html(input.task, input.assignerName),
-        text: text(input.task, input.assignerName),
+        html: html(input.task, input.assignerName, signOffUrl),
+        text: text(input.task, input.assignerName, signOffUrl),
       });
       sent++;
     } catch (e) {
