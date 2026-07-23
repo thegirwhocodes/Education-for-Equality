@@ -1,0 +1,41 @@
+name: Sabi monitor
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # every 5 minutes (GitHub may delay under load)
+  workflow_dispatch: {} # lets us run it on demand to test
+
+# Don't pile up overlapping runs
+concurrency:
+  group: sabi-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      # Restore the rolling state file so ongoing problems don't re-alert.
+      - name: Restore monitor state
+        uses: actions/cache@v4
+        with:
+          path: state.json
+          key: monitor-state-${{ github.run_id }}
+          restore-keys: |
+            monitor-state-
+
+      - name: Run monitor
+        env:
+          SENTRY_TOKEN: ${{ secrets.MONITORING_SENTRY_TOKEN }}
+          SENTRY_ORG: ${{ secrets.MONITORING_SENTRY_ORG }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_WHATSAPP_FROM: ${{ secrets.TWILIO_WHATSAPP_FROM }}
+          MONITORING_WHATSAPP_TO: ${{ secrets.MONITORING_WHATSAPP_TO }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          MONITORING_ALERT_EMAIL: ${{ secrets.MONITORING_ALERT_EMAIL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          ROBOT_URL: ${{ secrets.ROBOT_URL }}
+        run: node .github/monitor/monitor.mjs
