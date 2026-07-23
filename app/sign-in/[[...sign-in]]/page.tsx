@@ -6,6 +6,7 @@ import { GoogleIcon } from '@/components/auth/GoogleIcon';
 import { createBrowserSupabaseClient, hasSupabaseBrowserConfig } from '@/lib/auth/browser';
 import { authErrorMessage } from '@/lib/auth/messages';
 import { buildAuthCallbackUrl } from '@/lib/auth/url';
+import { reportUserFacingError } from '@/lib/monitoring/report';
 
 export default function SignInPage() {
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
@@ -59,6 +60,7 @@ export default function SignInPage() {
     if (error) {
       setStatus('error');
       setMessage(authErrorMessage(error.message, 'password'));
+      reportUserFacingError('sign-in-password', error.message, { email });
       return;
     }
 
@@ -91,6 +93,7 @@ export default function SignInPage() {
     if (!response.ok) {
       setStatus('error');
       setMessage(payload.error || 'Could not send the sign-in link right now.');
+      reportUserFacingError('sign-in-magic-link', payload.error || `HTTP ${response.status}`, { email });
       return;
     }
 
@@ -157,6 +160,7 @@ export default function SignInPage() {
     if (error) {
       setStatus('error');
       setMessage(authErrorMessage(error.message, 'oauth'));
+      reportUserFacingError('sign-in-google', error.message, { email });
     }
   }
 
