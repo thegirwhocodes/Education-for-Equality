@@ -46,6 +46,8 @@ function pageToTask(page: any): TaskRecord {
     dueDate: propDate(p['Due Date']),
     definitionOfDone: propText(p['Definition of Done']),
     notes: propText(p['Notes']),
+    signedOffBy: propText(p['Signed Off By']) || undefined,
+    signedOffAt: propDate(p['Signed Off At']),
     createdTime: page.created_time,
     lastEditedTime: page.last_edited_time,
   };
@@ -150,7 +152,14 @@ export interface UpdateTaskInput {
 export async function updateTask(id: string, input: UpdateTaskInput): Promise<TaskRecord> {
   const properties: NotionPageProps = {};
   if (input.title !== undefined) properties.Task = { title: [{ text: { content: input.title } }] };
-  if (input.status !== undefined) properties.Status = { status: { name: input.status } };
+  if (input.status !== undefined) {
+    properties.Status = { status: { name: input.status } };
+    // Reopening a task clears its sign-off signature so it never shows a stale one.
+    if (input.status !== 'Done') {
+      properties['Signed Off By'] = { rich_text: [] };
+      properties['Signed Off At'] = { date: null };
+    }
+  }
   if (input.priority !== undefined) properties.Priority = { select: { name: input.priority } };
   if (input.area !== undefined) properties.Area = { select: { name: input.area } };
   if (input.ownerIds !== undefined) {
@@ -166,6 +175,23 @@ export async function updateTask(id: string, input: UpdateTaskInput): Promise<Ta
     properties.Notes = { rich_text: [{ text: { content: input.notes } }] };
   }
 
+  const page = await notionFetch<any>(`/pages/${id}`, {
+    method: 'PATCH',
+    body: { properties },
+    revalidate: 0,
+  });
+  return pageToTask(page);
+}
+
+// Sign off a task: marks it Done and stamps who signed it and when.
+// This is the "sign our work" action — the completion signature.
+export async function signOffTask(id: string, signerName: string, at?: string): Promise<TaskRecord> {
+  const signedAt = at ?? new Date().toISOString();
+  const properties: NotionPageProps = {
+    Status: { status: { name: 'Done' } },
+    'Signed Off By': { rich_text: [{ text: { content: signerName } }] },
+    'Signed Off At': { date: { start: signedAt } },
+  };
   const page = await notionFetch<any>(`/pages/${id}`, {
     method: 'PATCH',
     body: { properties },

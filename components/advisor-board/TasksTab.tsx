@@ -184,6 +184,22 @@ export function TasksTab() {
     }
   }
 
+  async function signOff(id: string) {
+    setSavingId(id);
+    const prev = tasks;
+    try {
+      const res = await fetch(`/api/notion/tasks/${id}/sign-off`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'failed');
+      setTasks((cur) => cur.map((t) => (t.id === id ? data.task : t)));
+    } catch {
+      setTasks(prev);
+      setError('Could not sign off this task. Try again.');
+    } finally {
+      setSavingId(null);
+    }
+  }
+
   async function createTaskFromDraft() {
     if (!draft.title.trim()) return;
     try {
@@ -216,7 +232,7 @@ export function TasksTab() {
         <div>
           <h2 className="text-xl font-bold text-gray-900">Tasks</h2>
           <p className="text-xs text-gray-500">
-            Live from Notion — Sabi Command Center → Tasks. Changes here sync both ways.
+            Live from Notion — Sabi Command Center → Tasks. Finish something? Hit <span className="font-semibold text-emerald-700">Sign off ✓</span> to mark it done and put your name on it.
           </p>
         </div>
         <button
@@ -439,6 +455,25 @@ export function TasksTab() {
                             ))}
                           </select>
 
+                          {t.status === 'Done' && t.signedOffBy ? (
+                            <span
+                              className="whitespace-nowrap rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-800 ring-1 ring-emerald-200"
+                              title={`Signed off${t.signedOffAt ? ` ${new Date(t.signedOffAt).toLocaleString()}` : ''}`}
+                            >
+                              ✍️ {t.signedOffBy}
+                              {t.signedOffAt ? ` · ${formatDate(t.signedOffAt)}` : ''}
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => signOff(t.id)}
+                              disabled={savingId === t.id}
+                              className="whitespace-nowrap rounded-full bg-emerald-600 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+                              title="Mark done and sign your name to it"
+                            >
+                              {savingId === t.id ? 'Signing…' : 'Sign off ✓'}
+                            </button>
+                          )}
+
                           <a
                             href={t.url}
                             target="_blank"
@@ -448,8 +483,6 @@ export function TasksTab() {
                           >
                             ↗
                           </a>
-
-                          <span className="w-2" />
                         </div>
 
                         {expanded ? (
@@ -468,6 +501,12 @@ export function TasksTab() {
                             ) : null}
                             {!t.definitionOfDone && !t.notes ? (
                               <p className="italic text-gray-400">No DoD or notes yet. Edit in Notion.</p>
+                            ) : null}
+                            {t.signedOffBy ? (
+                              <p className="mb-2 font-medium text-emerald-700">
+                                ✍️ Signed off by {t.signedOffBy}
+                                {t.signedOffAt ? ` on ${new Date(t.signedOffAt).toLocaleString()}` : ''}
+                              </p>
                             ) : null}
                             <p className="mt-2 text-[10px] uppercase tracking-widest text-gray-400">
                               Last edited {new Date(t.lastEditedTime).toLocaleString()}

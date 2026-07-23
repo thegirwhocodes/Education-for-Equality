@@ -81,6 +81,23 @@ export function isBoardMemberUser(user?: BoardUserLike | null) {
   return BOARD_MEMBER_NAME_ALIASES.some((alias) => name.includes(alias));
 }
 
+// Best human-readable name for a signed-in board member, for sign-off signatures.
+export function boardUserDisplayName(user?: BoardUserLike | null): string {
+  if (!user) return 'A board member';
+  const metadata = (user.user_metadata || {}) as Record<string, unknown>;
+  const appMetadata = (user.app_metadata || {}) as Record<string, unknown>;
+  const fromMeta =
+    metadata.full_name ||
+    metadata.name ||
+    metadata.display_name ||
+    appMetadata.full_name ||
+    appMetadata.name ||
+    [metadata.first_name, metadata.last_name].filter(Boolean).join(' ').trim();
+  if (fromMeta && String(fromMeta).trim()) return String(fromMeta).trim();
+  if (user.email) return String(user.email).split('@')[0];
+  return 'A board member';
+}
+
 export function boardAccessLabel(user?: BoardUserLike | null) {
   if (!user) return 'Sign in required';
   if (isBoardMemberUser(user)) return 'Board account';

@@ -31,6 +31,8 @@ export interface TaskRecord {
   dueDate?: string;
   definitionOfDone: string;
   notes: string;
+  signedOffBy?: string;
+  signedOffAt?: string;
   createdTime: string;
   lastEditedTime: string;
 }
