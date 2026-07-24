@@ -35,6 +35,32 @@ async function sentryQuery(project: string, query: string, token: string): Promi
   }
 }
 
+// Second, independent watcher for the dead-man's switch. This runs on Vercel
+// while the cloud monitor runs on GitHub Actions — so if GitHub ever stops,
+// this notices the missed check-ins and tells Naomi. Silence never means "fine".
+async function cloudMonitorHealth(token: string): Promise<{ ok: boolean; detail: string }> {
+  try {
+    const r = await fetch(`https://sentry.io/api/0/organizations/${ORG}/monitors/sabi-cloud-monitor/`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
+    });
+    if (!r.ok) return { ok: true, detail: 'could not check' };
+    const m = await r.json();
+    const env = m?.environments?.[0] ?? m?.latestEnvironments?.[0] ?? {};
+    const status = env.status as string | undefined;
+    const last = env.lastCheckIn as string | undefined;
+    const bad = !!status && ['error', 'missed_checkin', 'timeout'].includes(status);
+    return {
+      ok: !bad,
+      detail: bad
+        ? `NOT running (status: ${status}${last ? `, last seen ${new Date(last).toLocaleString()}` : ''})`
+        : 'running ✓',
+    };
+  } catch {
+    return { ok: true, detail: 'could not check' };
+  }
+}
+
 export async function GET(req: Request) {
   // Vercel Cron sends `Authorization: Bearer <CRON_SECRET>`. Reject anything else.
   const auth = req.headers.get('authorization');
@@ -72,20 +98,27 @@ export async function GET(req: Request) {
     projectLines.push('• (Sentry token not set — showing uptime only)');
   }
 
+  // 2b) Is the cloud monitor itself still alive? (dead-man's switch)
+  const monitor = token ? await cloudMonitorHealth(token) : { ok: true, detail: 'not checked' };
+
   // 3) Compose a plain-English digest
-  const healthy = !anyDown && userFacing === 0;
-  const severity: AlertSeverity = anyDown || userFacing > 0 ? 'warning' : 'info';
+  const healthy = !anyDown && userFacing === 0 && monitor.ok;
+  const severity: AlertSeverity = anyDown || userFacing > 0 || !monitor.ok ? 'warning' : 'info';
   const headline = healthy
     ? 'All good today ✓'
-    : anyDown
-      ? 'Something is DOWN — needs a look'
-      : `${userFacing} thing${userFacing === 1 ? '' : 's'} a user hit today`;
+    : !monitor.ok
+      ? 'The safety monitor STOPPED — I am flying blind'
+      : anyDown
+        ? 'Something is DOWN — needs a look'
+        : `${userFacing} thing${userFacing === 1 ? '' : 's'} a user hit today`;
 
   const body = [
     `Daily health check for Sabi.`,
     ``,
     `Uptime:`,
     ...uptime.map((u) => `• ${u.name}: ${u.ok ? 'up ✓' : 'DOWN ✗'}`),
+    ``,
+    `Safety monitor (checks every 5 min): ${monitor.detail}`,
     ``,
     `Errors in the last 24 hours:`,
     ...projectLines,

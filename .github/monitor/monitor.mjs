@@ -95,6 +95,22 @@ async function alert(title, body) {
   console.log(`ALERT "${title}" -> whatsapp:${w} email:${e}`);
 }
 
+// Dead-man's switch: check in to Sentry every run. If this monitor ever stops
+// running (GitHub Actions disabled, workflow broken, repo archived), Sentry
+// sees the missed check-ins and raises the alarm — so the monitor itself is
+// monitored. This is the guarantee that silence never means "all fine".
+async function checkIn(status = 'ok') {
+  if (!SENTRY_TOKEN) return;
+  try {
+    await fetch(`https://sentry.io/api/0/organizations/${SENTRY_ORG}/monitors/sabi-cloud-monitor/checkins/`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${SENTRY_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    });
+    console.log(`dead-man's switch check-in: ${status}`);
+  } catch (e) { console.error('check-in failed', e); }
+}
+
 async function main() {
   const state = loadState();
   state.uptime ??= {};
@@ -130,7 +146,12 @@ async function main() {
   state.robot = robotState;
 
   saveState(state);
+  await checkIn('ok');
   console.log('monitor tick complete', { uptime: state.uptime, robot: state.robot, newIssues: issues.length });
 }
 
-main().catch((e) => { console.error('monitor crashed', e); process.exit(1); });
+main().catch(async (e) => {
+  console.error('monitor crashed', e);
+  await checkIn('error');
+  process.exit(1);
+});
