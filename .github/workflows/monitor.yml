@@ -38,4 +38,5 @@ jobs:
           MONITORING_ALERT_EMAIL: ${{ secrets.MONITORING_ALERT_EMAIL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           ROBOT_URL: ${{ secrets.ROBOT_URL }}
+          SENTRY_CHECKIN_URL: ${{ secrets.SENTRY_CHECKIN_URL }}
         run: node .github/monitor/monitor.mjs

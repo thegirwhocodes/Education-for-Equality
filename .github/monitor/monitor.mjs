@@ -11,7 +11,7 @@ const {
   SENTRY_TOKEN, SENTRY_ORG = 'sabi-43',
   TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_FROM, MONITORING_WHATSAPP_TO,
   RESEND_API_KEY, RESEND_FROM = 'Education for Equality <no-reply@eduforequality.org>',
-  MONITORING_ALERT_EMAIL, CRON_SECRET, ROBOT_URL,
+  MONITORING_ALERT_EMAIL, CRON_SECRET, ROBOT_URL, SENTRY_CHECKIN_URL,
 } = process.env;
 
 const UPTIME = [
@@ -100,13 +100,14 @@ async function alert(title, body) {
 // sees the missed check-ins and raises the alarm — so the monitor itself is
 // monitored. This is the guarantee that silence never means "all fine".
 async function checkIn(status = 'ok') {
-  if (!SENTRY_TOKEN) return;
+  // Cron check-ins go through the DSN ingest endpoint (the web API rejects POST).
+  if (!SENTRY_CHECKIN_URL) return;
   try {
-    await fetch(`https://sentry.io/api/0/organizations/${SENTRY_ORG}/monitors/sabi-cloud-monitor/checkins/`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${SENTRY_TOKEN}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status }),
-    });
+    const r = await fetch(`${SENTRY_CHECKIN_URL}?status=${status}`, { method: 'POST' });
+    if (!r.ok) {
+      console.error(`dead-man's switch check-in FAILED: HTTP ${r.status}`);
+      return;
+    }
     console.log(`dead-man's switch check-in: ${status}`);
   } catch (e) { console.error('check-in failed', e); }
 }
