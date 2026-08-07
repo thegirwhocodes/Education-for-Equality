@@ -11,7 +11,9 @@ const VOICE_CONFIG = {
 // Speech recognition configuration
 const SPEECH_CONFIG = {
   input: "speech" as const,
-  speechTimeout: "2" as const, // 2 seconds of silence = done talking (reduces long pauses)
+  // Latency-first Twilio test: one second of silence ends the child's turn.
+  // Restore to "2" if natural pauses begin clipping multi-word answers.
+  speechTimeout: "1" as const,
   language: "en-GH", // Ghanaian English — closest supported African English in Twilio
   speechModel: "phone_call" as const,
 };
@@ -34,6 +36,7 @@ export function createGatherResponse(
     ...SPEECH_CONFIG,
     action: actionUrl,
     method: "POST",
+    actionOnEmptyResult: "true",
   };
 
   if (options?.hints) {
@@ -42,7 +45,7 @@ export function createGatherResponse(
   if (options?.timeout) {
     gatherOpts.timeout = options.timeout;
   }
-  if (options?.callSid) {
+  if (options?.callSid && !/[?&]callSid=/.test(actionUrl)) {
     gatherOpts.action = `${actionUrl}${actionUrl.includes("?") ? "&" : "?"}callSid=${options.callSid}`;
   }
 

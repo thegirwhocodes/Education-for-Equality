@@ -74,19 +74,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Add child's speech to conversation and get updated state in one call
-    const updatedState = await addMessage(callSid, "user", speechResult);
-    const messages = (updatedState?.messages || [...state.messages, { role: "user" as const, content: speechResult }]).map((m) => ({
+    // Build the next turn from the state already loaded above. Persist the
+    // child's message in parallel with tutor inference so the database write
+    // does not add another serial pause to the phone conversation.
+    const messages = [...state.messages, { role: "user" as const, content: speechResult }].map((m) => ({
       role: m.role as "user" | "assistant",
       content: m.content,
     }));
+    const persistUserMessage = addMessage(callSid, "user", speechResult);
 
     // Check if we've had too many turns (auto wrap-up after ~12 exchanges)
     const turnCount = messages.filter((m) => m.role === "user").length;
     const shouldWrapUp = turnCount >= 12;
 
     // Get Sabi's response from Claude
-    let sabiResponse: string;
+    let sabiResponsePromise: Promise<string>;
     if (shouldWrapUp) {
       // Force wrap-up by adding context
       const wrapUpMessages = [
@@ -98,10 +100,15 @@ export async function POST(req: NextRequest) {
         },
       ];
       // Remove the system message from the actual messages, just use it for this call
-      sabiResponse = await callSabiVoiceFast(wrapUpMessages, state.studentId);
+      sabiResponsePromise = callSabiVoiceFast(wrapUpMessages, state.studentId);
     } else {
-      sabiResponse = await callSabiVoiceFast(messages, state.studentId);
+      sabiResponsePromise = callSabiVoiceFast(messages, state.studentId);
     }
+
+    const [sabiResponse] = await Promise.all([
+      sabiResponsePromise,
+      persistUserMessage,
+    ]);
 
     // Store Sabi's response in call state
     await addMessage(callSid, "assistant", sabiResponse);
