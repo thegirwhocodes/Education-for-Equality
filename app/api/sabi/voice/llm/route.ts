@@ -3,9 +3,12 @@ import Anthropic from "@anthropic-ai/sdk";
 import {
   findOrCreateStudentByPhone,
   getStudentMemory,
-  SABI_SYSTEM_PROMPT,
-  VOICE_SYSTEM_ADDENDUM,
 } from "@/lib/voice/sabi-shared";
+import {
+  HACKATHON_SABI_SYSTEM_PROMPT,
+  HACKATHON_VOICE_SYSTEM_ADDENDUM,
+} from "@/lib/voice/sabi-hackathon-runtime";
+import { SABI_SAFETY_PREAMBLE } from "@/lib/voice/guardrails";
 
 // Allow up to 60 seconds for Claude streaming
 export const maxDuration = 60;
@@ -84,8 +87,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Build system prompt with memory
-    const systemPrompt = SABI_SYSTEM_PROMPT + VOICE_SYSTEM_ADDENDUM + memoryContext;
+    // Final MIT hackathon teaching behavior, with only the current safety
+    // preamble and database-compatible memory lookup retained.
+    const systemPrompt =
+      HACKATHON_SABI_SYSTEM_PROMPT +
+      SABI_SAFETY_PREAMBLE +
+      HACKATHON_VOICE_SYSTEM_ADDENDUM +
+      memoryContext;
 
     // Convert OpenAI messages to Claude format (skip system messages)
     const claudeMessages = incomingMessages
