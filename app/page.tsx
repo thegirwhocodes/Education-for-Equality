@@ -1,5 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import type { Metadata } from 'next';
+import { SITE_URL, orgOpenGraph } from '@/lib/seo';
+
+export const metadata: Metadata = {
+  title: {
+    absolute:
+      'Education for Equality — the nonprofit building Sabi, an AI tutor children reach by phone',
+  },
+  description:
+    'Education for Equality is a nonprofit bringing foundational literacy and numeracy to children in Nigeria through Sabi, a free AI tutor reachable on any phone — no smartphone, no internet, no data.',
+  alternates: { canonical: SITE_URL },
+  openGraph: orgOpenGraph(),
+};
 
 const partnerLogos = [
   {

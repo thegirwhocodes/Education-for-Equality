@@ -1,5 +1,15 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { grade4Curriculum, getTotalLessons, getTotalDuration } from '@/lib/cambridge-grade4-curriculum';
+import { SITE_URL, orgOpenGraph } from '@/lib/seo';
+
+export const metadata: Metadata = {
+  title: 'Curriculum — Cambridge-aligned lessons by grade',
+  description:
+    'The Cambridge-aligned curriculum behind Sabi, broken down by grade. Grade 4 is live, with further grades in development.',
+  alternates: { canonical: `${SITE_URL}/curriculum` },
+  openGraph: orgOpenGraph('/curriculum'),
+};
 
 // Define available grades (Grade 4 is active, others coming soon)
 const grades = [

@@ -12,20 +12,17 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    const noindex = { key: "X-Robots-Tag", value: "noindex, nofollow" };
+    // Header rules match the *incoming* path, so the sabi. subdomain's /demo
+    // and /chat need their own entries — the middleware rewrite to
+    // /sabi-voice and /sabi-demo happens too late for the rules below.
     return [
-      {
-        source: "/sabi/demo/:path*",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-      },
-      {
-        source: "/sabi-voice/:path*",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-      },
-      {
-        source: "/sabi-demo/:path*",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-      },
-    ];
+      "/sabi/demo/:path*",
+      "/sabi-voice/:path*",
+      "/sabi-demo/:path*",
+      "/demo/:path*",
+      "/chat/:path*",
+    ].map((source) => ({ source, headers: [noindex] }));
   },
 };
 

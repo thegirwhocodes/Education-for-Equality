@@ -1,8 +1,13 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { SITE_URL, orgOpenGraph } from '@/lib/seo';
 
-export const metadata = {
-  title: 'About Us | Education for Equality',
-  description: 'Learn about our mission to provide free quality education to underprivileged children in Nigeria.',
+export const metadata: Metadata = {
+  title: 'About Education for Equality — the nonprofit behind Sabi',
+  description:
+    'Education for Equality is the nonprofit behind Sabi, the AI tutor children reach by phone call. Our mission is free quality education for underprivileged children in Nigeria.',
+  alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: orgOpenGraph('/about'),
 };
 
 export default function AboutPage() {
