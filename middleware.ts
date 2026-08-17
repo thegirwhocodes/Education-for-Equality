@@ -2,6 +2,9 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { isBoardMemberUser } from '@/lib/board-access';
 
+// Served verbatim on every host — never rewritten or redirected.
+const CRAWLER_FILES = new Set(['/robots.txt', '/sitemap.xml', '/favicon.ico']);
+
 const protectedRoutes = ['/dashboard'];
 const advisorBoardRoutes = ['/advisor-board'];
 const advisorBoardApiRoutes = ['/api/advisor-board'];
@@ -118,7 +121,9 @@ export async function middleware(request: NextRequest) {
     if (path === '/developers') {
       return NextResponse.rewrite(new URL('/sabi/developers', request.url));
     }
-    if (!path.startsWith('/api/') && !path.startsWith('/_next') && !path.startsWith('/sign') && !path.startsWith('/sabi')) {
+    // Crawler files must be served, not swept into the /demo catch-all below —
+    // otherwise the subdomain has no reachable robots.txt or sitemap at all.
+    if (!CRAWLER_FILES.has(path) && !path.startsWith('/api/') && !path.startsWith('/_next') && !path.startsWith('/sign') && !path.startsWith('/sabi')) {
       return NextResponse.redirect(new URL('/demo', request.url));
     }
   }
@@ -159,7 +164,9 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next|monitoring|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // `txt` and `xml` are excluded so robots.txt and sitemap.xml bypass
+    // middleware entirely instead of hitting the subdomain redirect.
+    '/((?!_next|monitoring|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|txt|xml|docx?|xlsx?|zip|webmanifest)).*)',
     '/(api|trpc)(.*)',
   ],
 };

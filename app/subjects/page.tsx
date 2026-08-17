@@ -1,9 +1,14 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getLearningSubjects, getTotalLessons, type Subject } from '@/lib/curriculum';
+import { SITE_URL, orgOpenGraph } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Courses | Education for Equality',
-  description: 'Browse foundational literacy and numeracy courses, plus Grade 4 Cambridge curriculum.',
+export const metadata: Metadata = {
+  title: 'Courses — foundational literacy and numeracy',
+  description:
+    'Browse the foundational literacy and numeracy courses Sabi teaches, plus the Grade 4 Cambridge curriculum.',
+  alternates: { canonical: `${SITE_URL}/subjects` },
+  openGraph: orgOpenGraph('/subjects'),
 };
 
 function SubjectCard({ subject }: { subject: Subject }) {

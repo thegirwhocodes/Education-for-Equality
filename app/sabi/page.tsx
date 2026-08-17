@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SABI_FAQS } from "@/lib/seo";
 
 function PhoneIcon() {
   return (
@@ -45,12 +46,18 @@ export default function SabiLanding() {
           <p className="sabi-byline mb-4">
             Education for Equality
           </p>
-          <h1 className="sabi-display text-6xl md:text-8xl mb-4">Sabi</h1>
+          <h1 className="mb-4">
+            <span className="sabi-display text-6xl md:text-8xl block">Sabi</span>
+            <span className="block text-xl md:text-3xl mt-4 font-normal text-[var(--sabi-text-secondary)]">
+              The free AI tutor children reach by phone call
+            </span>
+          </h1>
           <p className="text-lg md:text-xl text-[var(--sabi-text-secondary)] mb-2 italic">
             /sah-bee/ — &quot;to know&quot; in Nigerian Pidgin
           </p>
           <p className="text-lg md:text-xl text-[var(--sabi-muted)] max-w-2xl mx-auto mt-6 leading-relaxed">
-            An AI tutor any child can reach by calling a phone number. No smartphone. No internet. No cost.
+            A child dials a number and gets foundational reading and maths in five-minute
+            spoken lessons. No smartphone. No internet. No cost.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
@@ -242,6 +249,27 @@ export default function SabiLanding() {
               See pricing <ArrowIcon />
             </span>
           </Link>
+        </div>
+      </section>
+
+      {/* FAQ — the visible source of the FAQPage structured data in layout.tsx.
+          Both render from SABI_FAQS so the markup and the schema stay identical. */}
+      <section className="sabi-section-crisis border-t">
+        <div className="max-w-3xl mx-auto px-6 py-20">
+          <div className="text-center mb-12">
+            <h2 className="sabi-display text-3xl md:text-4xl mb-4">
+              Common questions about Sabi
+            </h2>
+          </div>
+
+          <dl className="flex flex-col gap-8">
+            {SABI_FAQS.map((faq) => (
+              <div key={faq.question}>
+                <dt className="font-semibold text-lg mb-2">{faq.question}</dt>
+                <dd className="text-[var(--sabi-muted)] leading-relaxed">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
