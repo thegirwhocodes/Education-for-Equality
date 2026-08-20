@@ -106,15 +106,22 @@ function getSMSProvider(): "at" | "twilio" {
 /**
  * Send an SMS via Africa's Talking
  */
+/** AT usernames must reach the API clean; stored values have carried stray whitespace. */
+function atUsername(): string {
+  return String(process.env.AT_USERNAME || "").replace(/\\n/g, "").trim();
+}
+
 async function sendATSMS(to: string, message: string): Promise<void> {
-  const sandbox = process.env.AT_USERNAME?.trim().toLowerCase() === "sandbox";
+  const sandbox = atUsername().toLowerCase() === "sandbox";
   const messagingUrl =
     process.env.AT_SMS_BASE_URL ||
     (sandbox
       ? "https://api.sandbox.africastalking.com/version1/messaging"
       : "https://api.africastalking.com/version1/messaging");
   const params = new URLSearchParams({
-    username: process.env.AT_USERNAME!,
+    // The stored value has carried a trailing newline; AT rejects the account
+    // if it reaches the API un-stripped.
+    username: atUsername(),
     to,
     message,
   });

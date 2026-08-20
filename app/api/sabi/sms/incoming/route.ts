@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseTwilioBody } from "@/lib/voice/twiml";
 import { checkPracticeAnswer, logSMS, sendSMS } from "@/lib/voice/sms";
+import { callRequestReply, requestSabiCall } from "@/lib/voice/call-request";
 
 export const runtime = "nodejs";
 
@@ -83,19 +84,16 @@ function webhookAuthorized(req: NextRequest): boolean {
   return supplied === secret;
 }
 
-function callbackNumber(): string {
-  return (
-    process.env.NEXT_PUBLIC_SABI_LINE ||
-    process.env.AT_SENDER_ID ||
-    process.env.TWILIO_PHONE_NUMBER ||
-    "+234 201 700 1459"
-  );
-}
-
-function classifySms(text: string): "reply" | "help" | "opt_in" | "opt_out" {
+function classifySms(
+  text: string
+): "reply" | "help" | "opt_in" | "opt_out" | "call_request" {
   const normalized = text.trim().toUpperCase();
   if (/^(STOP|UNSUBSCRIBE|CANCEL|END|QUIT)\b/.test(normalized)) return "opt_out";
   if (/^(START|YES|Y)\b/.test(normalized)) return "opt_in";
+  // Checked before HELP so "CALL ME" never falls through to the info blurb.
+  if (/^(CALL\s*ME|CALL|CALLME|RING\s*ME|RING|LESSON|TEACH\s*ME|TEACH)\b/.test(normalized)) {
+    return "call_request";
+  }
   if (/^(HELP|INFO)\b/.test(normalized)) return "help";
   return "reply";
 }
@@ -175,17 +173,27 @@ export async function POST(req: NextRequest) {
     if (smsType === "opt_in") {
       await sendSMS(
         phoneNumber,
-        `Welcome back to Sabi SMS. Flash ${callbackNumber()} when you want Sabi to call back for a lesson. Reply STOP any time to pause SMS.`,
+        "Welcome back to Sabi SMS. Text CALL any time you want a lesson and Sabi will ring you — the call is free. Reply STOP to pause SMS.",
         "opt_in_confirmation",
         { ignoreOptOut: true },
       );
       return acceptedResponse(incoming.provider);
     }
 
+    if (smsType === "call_request") {
+      const outcome = await requestSabiCall(phoneNumber);
+      console.log(
+        `[sms] call request from ${phoneNumber} -> ${outcome.status}`,
+        outcome.status === "failed" ? outcome.reason : ""
+      );
+      await sendSMS(phoneNumber, callRequestReply(outcome), `call_request_${outcome.status}`);
+      return acceptedResponse(incoming.provider);
+    }
+
     if (smsType === "help") {
       await sendSMS(
         phoneNumber,
-        `Sabi is the free Education for Equality phone tutor. Flash ${callbackNumber()} and Sabi will call back. Sabi will never ask for money or passwords. Reply STOP to pause SMS.`,
+        "Sabi is the free Education for Equality phone tutor. Text CALL and Sabi will ring you for a short lesson — you are never charged. Sabi will never ask for money or passwords. Reply STOP to pause SMS.",
         "help"
       );
       return acceptedResponse(incoming.provider);
@@ -201,7 +209,7 @@ export async function POST(req: NextRequest) {
       // No pending practice question — send a friendly response
       await sendSMS(
         phoneNumber,
-        `Hi! To start a lesson with Sabi, flash ${callbackNumber()} and Sabi will call back. Sabi teaches reading and maths through short phone lessons.`,
+        "Hi! Text CALL and Sabi will ring you for a short maths lesson. The call is free — you are not charged.",
         "general"
       );
     }
