@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { parseTwilioBody } from "@/lib/voice/twiml";
 import { checkPracticeAnswer, logSMS, sendSMS } from "@/lib/voice/sms";
 import { callRequestReply, requestSabiCall } from "@/lib/voice/call-request";
+import { classifyInbound, stripKeyword } from "@/lib/voice/inbound-intent";
 
 export const runtime = "nodejs";
 
@@ -84,36 +85,6 @@ function webhookAuthorized(req: NextRequest): boolean {
   return supplied === secret;
 }
 
-function classifySms(
-  text: string
-): "reply" | "help" | "opt_in" | "opt_out" | "call_request" {
-  const normalized = text.trim().toUpperCase();
-  if (/^(STOP|UNSUBSCRIBE|CANCEL|END|QUIT)\b/.test(normalized)) return "opt_out";
-  if (/^(START|YES|Y)\b/.test(normalized)) return "opt_in";
-  // Checked before HELP so "CALL ME" never falls through to the info blurb.
-  if (/^(CALL\s*ME|CALL|CALLME|RING\s*ME|RING|LESSON|TEACH\s*ME|TEACH)\b/.test(normalized)) {
-    return "call_request";
-  }
-  if (/^(HELP|INFO)\b/.test(normalized)) return "help";
-  return "reply";
-}
-
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function stripSharedShortcodeKeyword(text: string): string {
-  const keyword = (process.env.SABI_SMS_KEYWORD || "").trim();
-  if (!keyword) return text.trim();
-
-  const withoutKeyword = text
-    .trim()
-    .replace(new RegExp(`^${escapeRegExp(keyword)}(?:\\b|[\\s:;,.\\-]+)`, "i"), "")
-    .trim();
-
-  return withoutKeyword || "HELP";
-}
-
 function emptyTwilioResponse() {
   return new NextResponse(
     '<?xml version="1.0" encoding="UTF-8"?><Response></Response>',
@@ -145,13 +116,13 @@ export async function POST(req: NextRequest) {
     );
     const phoneNumber = incoming.from;
     const rawMessageBody = incoming.text.trim();
-    const messageBody = stripSharedShortcodeKeyword(rawMessageBody);
+    const messageBody = stripKeyword(rawMessageBody);
 
     if (!phoneNumber || !rawMessageBody) {
       return acceptedResponse(incoming.provider);
     }
 
-    const smsType = classifySms(messageBody);
+    const smsType = classifyInbound(messageBody);
     await logSMS({
       phone_number: phoneNumber,
       direction: "inbound",
