@@ -153,7 +153,7 @@ export default function SabiTesterGuidePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl space-y-14 divide-y divide-[#d8c9a5]/30 px-5 py-12 sm:px-8 sm:py-16">
+      <main className="mx-auto max-w-5xl space-y-8 px-5 py-12 sm:space-y-10 sm:px-8 sm:py-16 [&>section+section]:border-t [&>section+section]:border-[#ded3bc] [&>section+section]:pt-8 sm:[&>section+section]:pt-10">
         <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8a6926]">
@@ -302,7 +302,7 @@ export default function SabiTesterGuidePage() {
           </div>
         </section>
 
-        <section className="grid gap-7 pt-10 lg:grid-cols-[0.85fr_1.15fr]">
+        <section className="grid gap-7 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8a6926]">
               Join the five-day test
