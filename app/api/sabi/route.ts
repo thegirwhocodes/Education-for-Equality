@@ -33,9 +33,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ response });
   } catch (error) {
     console.error("Sabi API error:", error);
-    return NextResponse.json(
-      { error: "Failed to get response from Sabi" },
-      { status: 500 }
-    );
+    const message =
+      error instanceof Error && error.message.includes("try again in a moment")
+        ? error.message
+        : "Failed to get response from Sabi";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

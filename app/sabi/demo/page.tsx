@@ -587,7 +587,14 @@ export default function SabiVoice() {
       runTurn();
     } catch (err) {
       console.error("Init error:", err);
-      setError("Failed to start. Check that API keys are configured.");
+      const message = err instanceof Error ? err.message : "";
+      if (/No LLM provider/i.test(message)) {
+        setError("Failed to start. Check that API keys are configured.");
+      } else if (/busy|try again/i.test(message)) {
+        setError("Sabi is busy right now. Please try again in a moment.");
+      } else {
+        setError("Sabi couldn't start. Please try again in a moment.");
+      }
       endCall();
     }
   };

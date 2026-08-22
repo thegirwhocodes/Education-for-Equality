@@ -105,6 +105,82 @@ async function callOpenAICompat(
   return openAIMessageText(data);
 }
 
+function isRetryableProviderError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err);
+  return (
+    /\b429\b/.test(msg) ||
+    /rate[_ ]limit/i.test(msg) ||
+    /tokens per minute/i.test(msg) ||
+    /TPM/i.test(msg) ||
+    /\b503\b/.test(msg) ||
+    /overloaded/i.test(msg) ||
+    /timeout/i.test(msg)
+  );
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const GROQ_FALLBACK_MODEL = "openai/gpt-oss-20b";
+const SABI_BUSY_ERROR =
+  "Sabi is busy right now. Please try again in a moment.";
+
+function greetingUserSeed(memoryContext: string): string {
+  if (/\n- Name:\s+\S/.test(memoryContext)) {
+    return "This is the start of a new call. Greet this child by name in one or two short spoken sentences and begin. Do not ask their name.";
+  }
+  return "This is the start of a new call. Greet me and ask my name.";
+}
+
+/**
+ * Groq gpt-oss models spend part of max_tokens on hidden reasoning.
+ * 200 completion tokens often left `content` empty, which used to fall
+ * through to unpaid Claude and 500 the website demo.
+ */
+async function callGroqVoice(
+  systemPrompt: string,
+  apiMessages: Array<{ role: "user" | "assistant"; content: string }>,
+  apiKey: string
+): Promise<string> {
+  const models = [...new Set([GROQ_LLM_MODEL, GROQ_FALLBACK_MODEL])];
+  let lastError: unknown;
+
+  for (const model of models) {
+    try {
+      const text = await callOpenAICompat(systemPrompt, apiMessages, {
+        baseUrl: "https://api.groq.com/openai/v1",
+        apiKey,
+        model,
+        maxTokens: 512,
+        provider: "Groq",
+      });
+      if (text.trim()) return text;
+      lastError = new Error(`Groq ${model} returned empty content`);
+    } catch (err) {
+      lastError = err;
+      console.warn(
+        `Groq ${model} failed:`,
+        err instanceof Error ? err.message : err
+      );
+    }
+  }
+
+  if (isRetryableProviderError(lastError)) {
+    await sleep(2000);
+    const text = await callOpenAICompat(systemPrompt, apiMessages, {
+      baseUrl: "https://api.groq.com/openai/v1",
+      apiKey,
+      model: GROQ_FALLBACK_MODEL,
+      maxTokens: 512,
+      provider: "Groq",
+    });
+    if (text.trim()) return text;
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("Groq LLM failed");
+}
+
 function openAIMessageText(data: {
   choices?: Array<{ message?: { content?: unknown } }>;
 }): string {
@@ -681,10 +757,9 @@ export async function callSabi(
     buildNumericGradingHint(messages);
 
   // Claude / OpenAI-compat APIs require at least one user message.
-  // Seed a first-call prompt so the tutor greets and asks the child's name.
   const apiMessages =
     messages.length === 0
-      ? [{ role: "user" as const, content: "This is the start of a new call. Greet me and ask my name." }]
+      ? [{ role: "user" as const, content: greetingUserSeed(memoryContext) }]
       : messages;
 
   const response = await anthropic.messages.create({
@@ -729,16 +804,9 @@ export async function callSabiVoiceFast(
     ]);
   }
 
-  let curriculumContext = "";
-  try {
-    const { getSabiCurriculumContext } = await import("../rag/retrieval");
-    curriculumContext = await getSabiCurriculumContext(currentModule);
-  } catch {
-    curriculumContext = getModuleCurriculum(currentModule);
-  }
-  if (!curriculumContext) {
-    curriculumContext = getModuleCurriculum(currentModule);
-  }
+  // Skip RAG here: /api/rag/embed 500s on Vercel (transformers.js), and the
+  // two nested fetches only delay the Groq turn. Module text is the live path.
+  const curriculumContext = getModuleCurriculum(currentModule);
 
   const systemPrompt =
     SABI_CORE_PROMPT +
@@ -750,10 +818,9 @@ export async function callSabiVoiceFast(
 
   const apiMessages =
     messages.length === 0
-      ? [{ role: "user" as const, content: "This is the start of a new call. Greet me and ask my name." }]
+      ? [{ role: "user" as const, content: greetingUserSeed(memoryContext) }]
       : messages;
 
-  // Try Cerebras first (~0.1s for 200 tokens)
   const cerebrasKey = cleanApiKey(process.env.CEREBRAS_API_KEY);
   if (cerebrasKey) {
     try {
@@ -761,32 +828,41 @@ export async function callSabiVoiceFast(
         baseUrl: "https://api.cerebras.ai/v1",
         apiKey: cerebrasKey,
         model: CEREBRAS_LLM_MODEL,
-        maxTokens: 200,
+        maxTokens: 512,
         provider: "Cerebras",
       });
-      if (text) return guardOutput(text).text;
+      if (text.trim()) return guardOutput(text).text;
     } catch (e) {
       console.warn("Cerebras failed, trying Groq:", e instanceof Error ? e.message : e);
     }
   }
 
-  // Try Groq LLM (~0.6s for 200 tokens)
   const groqKey = cleanApiKey(process.env.GROQ_API_KEY);
   if (groqKey) {
     try {
-      const text = await callOpenAICompat(systemPrompt, apiMessages, {
-        baseUrl: "https://api.groq.com/openai/v1",
-        apiKey: groqKey,
-        model: GROQ_LLM_MODEL,
-        maxTokens: 200,
-        provider: "Groq",
-      });
-      if (text) return guardOutput(text).text;
+      const text = await callGroqVoice(systemPrompt, apiMessages, groqKey);
+      if (text.trim()) return guardOutput(text).text;
     } catch (e) {
       console.warn("Groq LLM failed, falling back to Claude:", e instanceof Error ? e.message : e);
     }
   }
 
-  // Last resort: Claude Haiku (~1s but always reliable)
-  return callSabi(messages, studentId, true);
+  try {
+    return await callSabi(messages, studentId, true);
+  } catch (e) {
+    console.warn("Claude last resort failed:", e instanceof Error ? e.message : e);
+    if (groqKey) {
+      try {
+        await sleep(2000);
+        const text = await callGroqVoice(systemPrompt, apiMessages, groqKey);
+        if (text.trim()) return guardOutput(text).text;
+      } catch (retryErr) {
+        console.warn(
+          "Groq retry after Claude failed:",
+          retryErr instanceof Error ? retryErr.message : retryErr
+        );
+      }
+    }
+    throw new Error(SABI_BUSY_ERROR);
+  }
 }
