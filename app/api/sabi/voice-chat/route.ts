@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { callSabi } from "@/lib/voice/sabi-shared";
+import { callSabiVoiceFast } from "@/lib/voice/sabi-shared";
 import { transcribeAudio } from "@/lib/voice/stt";
 import { synthesizeSpeech } from "@/lib/voice/tts-client";
 import { normalizeNumberMishears } from "@/lib/voice/answer-matcher";
@@ -8,7 +8,7 @@ import { normalizeNumberMishears } from "@/lib/voice/answer-matcher";
  * POST /api/sabi/voice-chat
  *
  * Full voice pipeline for browser testing — mirrors what happens on a real phone call.
- * Pipeline: Groq Whisper STT → Claude Haiku → YarnGPT/ElevenLabs TTS
+ * Pipeline: Groq Whisper STT → Cerebras/Groq/Claude → ElevenLabs/YarnGPT TTS
  *
  * Accepts FormData:
  *   - audio: audio blob from MediaRecorder (webm/ogg)
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     // If no audio, this is an init request — just get Sabi's greeting
     if (!audioFile) {
-      const response = await callSabi(messages, studentId || null, true);
+      const response = await callSabiVoiceFast(messages, studentId || null);
       const audioBuffer = await synthesizeSpeech(response);
       const audioBase64 = audioBuffer.toString("base64");
 
@@ -74,8 +74,8 @@ export async function POST(req: NextRequest) {
       { role: "user" as const, content: childText },
     ];
 
-    // 3. LLM — get Sabi's response from Claude
-    const response = await callSabi(updatedMessages, studentId || null, true);
+    // 3. LLM — Cerebras → Groq → Claude
+    const response = await callSabiVoiceFast(updatedMessages, studentId || null);
 
     // 4. TTS — convert to audio via YarnGPT (or ElevenLabs fallback)
     const audioBuffer = await synthesizeSpeech(response);

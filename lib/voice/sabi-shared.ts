@@ -16,7 +16,25 @@ import { SABI_SAFETY_PREAMBLE, guardInput, guardOutput } from "./guardrails";
 import { raiseSafeguardingIncident } from "./safeguarding";
 import { normalizePhoneNumber, phoneLookupVariants } from "./phone-normalization";
 
-const anthropic = new Anthropic();
+function cleanApiKey(value: string | undefined | null): string {
+  if (!value) return "";
+  return value
+    .replace(/\\n/g, "")
+    .replace(/\\r/g, "")
+    .replace(/\n/g, "")
+    .replace(/\r/g, "")
+    .trim();
+}
+
+const anthropic = new Anthropic({
+  apiKey: cleanApiKey(process.env.ANTHROPIC_API_KEY) || undefined,
+});
+
+// Current catalog IDs as of Aug 2026. Llama 3.3 IDs 404 on both Groq and Cerebras.
+const CEREBRAS_LLM_MODEL =
+  process.env.CEREBRAS_MODEL?.trim() || "gpt-oss-120b";
+const GROQ_LLM_MODEL =
+  process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-120b";
 
 /**
  * Run the input guardrail on the latest child utterance. On a crisis or hard
@@ -84,7 +102,26 @@ async function callOpenAICompat(
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content ?? "";
+  return openAIMessageText(data);
+}
+
+function openAIMessageText(data: {
+  choices?: Array<{ message?: { content?: unknown } }>;
+}): string {
+  const content = data.choices?.[0]?.message?.content;
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) {
+    return content
+      .map((part) => {
+        if (typeof part === "string") return part;
+        if (part && typeof part === "object" && "text" in part) {
+          return String((part as { text?: string }).text ?? "");
+        }
+        return "";
+      })
+      .join("");
+  }
+  return "";
 }
 
 function getSupabase() {
@@ -643,10 +680,11 @@ export async function callSabi(
     memoryContext +
     buildNumericGradingHint(messages);
 
-  // Claude API requires at least one user message
+  // Claude / OpenAI-compat APIs require at least one user message.
+  // Seed a first-call prompt so the tutor greets and asks the child's name.
   const apiMessages =
     messages.length === 0
-      ? [{ role: "user" as const, content: "Hi, I want to learn!" }]
+      ? [{ role: "user" as const, content: "This is the start of a new call. Greet me and ask my name." }]
       : messages;
 
   const response = await anthropic.messages.create({
@@ -712,17 +750,17 @@ export async function callSabiVoiceFast(
 
   const apiMessages =
     messages.length === 0
-      ? [{ role: "user" as const, content: "Hi, I want to learn!" }]
+      ? [{ role: "user" as const, content: "This is the start of a new call. Greet me and ask my name." }]
       : messages;
 
   // Try Cerebras first (~0.1s for 200 tokens)
-  const cerebrasKey = process.env.CEREBRAS_API_KEY;
+  const cerebrasKey = cleanApiKey(process.env.CEREBRAS_API_KEY);
   if (cerebrasKey) {
     try {
       const text = await callOpenAICompat(systemPrompt, apiMessages, {
         baseUrl: "https://api.cerebras.ai/v1",
         apiKey: cerebrasKey,
-        model: "llama-3.3-70b",
+        model: CEREBRAS_LLM_MODEL,
         maxTokens: 200,
         provider: "Cerebras",
       });
@@ -733,13 +771,13 @@ export async function callSabiVoiceFast(
   }
 
   // Try Groq LLM (~0.6s for 200 tokens)
-  const groqKey = process.env.GROQ_API_KEY;
+  const groqKey = cleanApiKey(process.env.GROQ_API_KEY);
   if (groqKey) {
     try {
       const text = await callOpenAICompat(systemPrompt, apiMessages, {
         baseUrl: "https://api.groq.com/openai/v1",
         apiKey: groqKey,
-        model: "llama-3.3-70b-versatile",
+        model: GROQ_LLM_MODEL,
         maxTokens: 200,
         provider: "Groq",
       });
