@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function SignupForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [preferredCallTime, setPreferredCallTime] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const [error, setError] = useState("");
@@ -17,7 +18,12 @@ export default function SignupForm() {
       const response = await fetch("/api/sabi/tester-signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone_number: phone, email }),
+        body: JSON.stringify({
+          name,
+          phone_number: phone,
+          preferred_call_time: preferredCallTime,
+          email,
+        }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -37,9 +43,9 @@ export default function SignupForm() {
       <div className="rounded-lg border border-[var(--sabi-gold,#CBA868)] p-6 text-center">
         <p className="text-lg font-semibold mb-2">You&apos;re on the list.</p>
         <p className="text-[var(--sabi-muted)]">
-          Sabi will call you in your evening window, between{" "}
-          <strong>6pm and 8pm Lagos time</strong>, starting tomorrow. Save{" "}
-          <strong>+1 715 312 2345</strong> as <em>Sabi</em> so you don&apos;t ignore it.
+          Save <strong>+234 201 700 1459</strong> as <em>Sabi</em>. Ring once
+          and hang up whenever you are ready; Sabi will call you back. Your
+          scheduled calls will use the Lagos-time window you selected.
         </p>
       </div>
     );
@@ -78,6 +84,23 @@ export default function SignupForm() {
         />
         <p className="mt-1 text-sm text-[var(--sabi-muted)]">
           The phone you&apos;ll actually answer. Calls are free to receive.
+        </p>
+      </div>
+
+      <div>
+        <label htmlFor="preferred-call-time" className="block mb-1 font-medium">
+          What time should Sabi call?
+        </label>
+        <input
+          id="preferred-call-time"
+          value={preferredCallTime}
+          onChange={(e) => setPreferredCallTime(e.target.value)}
+          required
+          type="time"
+          className="w-full rounded-md border px-4 py-3"
+        />
+        <p className="mt-1 text-sm text-[var(--sabi-muted)]">
+          Lagos time. Pick a time when you can speak for about ten minutes.
         </p>
       </div>
 

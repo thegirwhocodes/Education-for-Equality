@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
+import { getDefaultFromEmail, getResendClient } from "@/lib/email/resend";
 
 export const runtime = "nodejs";
 
@@ -58,6 +59,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const preferredCallTime = String(body.preferred_call_time ?? "").trim();
+  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(preferredCallTime)) {
+    return NextResponse.json(
+      {
+        error: "invalid_call_time",
+        message: "Please choose the time Sabi should call you.",
+      },
+      { status: 400 }
+    );
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceKey) {
@@ -66,22 +78,52 @@ export async function POST(req: NextRequest) {
   }
 
   const supabase = createClient(url, serviceKey);
-  const { error } = await supabase.from("sabi_tester_signups").upsert(
+  const { error: storageError } = await supabase.from("sabi_tester_signups").upsert(
     {
       name,
       phone_number: phone,
       email: rawEmail || null,
+      notes: `Preferred call time: ${preferredCallTime} Africa/Lagos`,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "phone_number" }
   );
 
-  if (error) {
-    // Never lose a volunteer to a schema problem: the details are logged so the
-    // sign-up can be recovered by hand.
-    console.error("tester-signup: insert failed", { phone, message: error.message });
-    return NextResponse.json({ error: "save_failed" }, { status: 500 });
+  if (storageError) {
+    console.error("tester-signup: insert failed; using email delivery", {
+      phone,
+      message: storageError.message,
+    });
   }
 
-  return NextResponse.json({ ok: true, phone_number: phone });
+  try {
+    const { error: emailError } = await getResendClient().emails.send({
+      from: getDefaultFromEmail(),
+      to: ["nivie@wesleyan.edu"],
+      subject: `New Sabi adult tester: ${name}`,
+      text: [
+        "A volunteer joined the five-day Sabi adult test.",
+        "",
+        `Name: ${name}`,
+        `Phone: ${phone}`,
+        `Preferred call time: ${preferredCallTime} Lagos time`,
+        rawEmail ? `Email: ${rawEmail}` : "Email: not provided",
+      ].join("\n"),
+    });
+    if (emailError) throw new Error(emailError.message);
+  } catch (emailError) {
+    console.error("tester-signup: email delivery failed", {
+      phone,
+      message: emailError instanceof Error ? emailError.message : String(emailError),
+    });
+    if (storageError) {
+      return NextResponse.json({ error: "save_failed" }, { status: 500 });
+    }
+  }
+
+  return NextResponse.json({
+    ok: true,
+    phone_number: phone,
+    stored: !storageError,
+  });
 }
