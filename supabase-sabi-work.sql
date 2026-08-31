@@ -1,5 +1,6 @@
 -- Sabi Workspace: team, documents, tasks, status updates.
 -- Run in Supabase SQL editor on project ffrezdtqagwdacvqcqgn.
+-- Then run curriculum-app/supabase-sabi-knowledge.sql for Intelligence, projects, and partners.
 
 CREATE TABLE IF NOT EXISTS sabi_work_people (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

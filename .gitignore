@@ -46,3 +46,6 @@ next-env.d.ts
 
 # Sentry (source map upload token)
 .env.sentry-build-plugin
+
+# generated knowledge inventory (paths + hashes)
+/scripts/knowledge/artifacts.inventory.json

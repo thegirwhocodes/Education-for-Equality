@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { WorkDoc, WorkPerson, WorkTask, WorkUpdate } from '@/lib/workspace/types';
+import type { WorkDoc, WorkPerson, WorkProject, WorkTask, WorkUpdate } from '@/lib/workspace/types';
 import { DOC_TYPES, SEATS, TASK_PRIORITIES, TASK_STATUSES } from '@/lib/workspace/types';
 
 type Tab = 'tasks' | 'docs' | 'team' | 'updates';
@@ -17,20 +17,22 @@ export default function WorkDesk() {
   const [tasks, setTasks] = useState<WorkTask[]>([]);
   const [docs, setDocs] = useState<WorkDoc[]>([]);
   const [updates, setUpdates] = useState<WorkUpdate[]>([]);
+  const [projects, setProjects] = useState<WorkProject[]>([]);
   const [view, setView] = useState<'open' | 'done' | 'all'>('open');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
     setError('');
-    const [p, t, d, u] = await Promise.all([
+    const [p, t, d, u, pr] = await Promise.all([
       fetch('/api/workspace/people'),
       fetch(`/api/workspace/tasks?view=${view}`),
       fetch('/api/workspace/docs'),
       fetch('/api/workspace/updates'),
+      fetch('/api/workspace/projects'),
     ]);
     if ([p, t, d, u].some((r) => r.status === 503)) {
-      setError('Work tables are not on Supabase yet. Ask Naomi to run supabase/supabase-sabi-work.sql.');
+      setError('Work tables are not on Supabase yet. Ask Naomi to run supabase-sabi-work.sql then supabase-sabi-knowledge.sql.');
       return;
     }
     if (![p, t, d, u].every((r) => r.ok)) {
@@ -41,6 +43,7 @@ export default function WorkDesk() {
     setTasks((await t.json()).tasks ?? []);
     setDocs((await d.json()).docs ?? []);
     setUpdates((await u.json()).updates ?? []);
+    if (pr.ok) setProjects((await pr.json()).projects ?? []);
   }, [view]);
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export default function WorkDesk() {
           tasks={tasks}
           people={people}
           docs={docs}
+          projects={projects}
           view={view}
           setView={setView}
           busy={busy}
@@ -87,6 +91,7 @@ function TasksPanel({
   tasks,
   people,
   docs,
+  projects,
   view,
   setView,
   busy,
@@ -96,6 +101,7 @@ function TasksPanel({
   tasks: WorkTask[];
   people: WorkPerson[];
   docs: WorkDoc[];
+  projects: WorkProject[];
   view: 'open' | 'done' | 'all';
   setView: (v: 'open' | 'done' | 'all') => void;
   busy: boolean;
@@ -106,6 +112,7 @@ function TasksPanel({
   const [assigneeId, setAssigneeId] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState('P2');
+  const [projectId, setProjectId] = useState('');
   const [openId, setOpenId] = useState<string | null>(null);
 
   async function createTask(e: React.FormEvent) {
@@ -114,7 +121,13 @@ function TasksPanel({
     await fetch('/api/workspace/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, assigneeId: assigneeId || null, dueDate: dueDate || null, priority }),
+      body: JSON.stringify({
+        title,
+        assigneeId: assigneeId || null,
+        dueDate: dueDate || null,
+        priority,
+        projectId: projectId || null,
+      }),
     });
     setTitle('');
     setBusy(false);
@@ -152,6 +165,14 @@ function TasksPanel({
               <option key={p}>{p}</option>
             ))}
           </select>
+          <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
+            <option value="">No project</option>
+            {projects.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.title}
+              </option>
+            ))}
+          </select>
           <button className="primary" type="submit" disabled={busy || !title.trim()}>
             Add task
           </button>
@@ -168,6 +189,7 @@ function TasksPanel({
         <thead>
           <tr>
             <th>Task</th>
+            <th>Project</th>
             <th>Who</th>
             <th>Due</th>
             <th>Status</th>
@@ -213,6 +235,20 @@ function TasksPanel({
                     </div>
                   </div>
                 ) : null}
+              </td>
+              <td>
+                <select
+                  value={task.project_id || ''}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={(e) => void patch(task.id, { projectId: e.target.value || null })}
+                >
+                  <option value="">—</option>
+                  {projects.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.title}
+                    </option>
+                  ))}
+                </select>
               </td>
               <td>
                 <select

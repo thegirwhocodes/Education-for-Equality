@@ -111,9 +111,128 @@ body:has(.sabi-workspace) > footer {
   border-color: #3a3226;
 }
 
+.ws-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 10px 0 12px;
+}
+
+.ws-subnav a {
+  color: #b8ae9a;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.ws-subnav a.active,
+.ws-subnav a:hover {
+  background: var(--side-soft);
+  color: #f6efe0;
+}
+
+.ws-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.ws-home-grid a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ws-chain {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+.ws-chain-step {
+  border-left: 3px solid var(--gold);
+  padding: 8px 12px;
+  background: var(--gold-wash);
+  border-radius: 0 10px 10px 0;
+}
+
+.ws-arch {
+  display: grid;
+  gap: 12px;
+}
+
+.ws-arch-group {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--card);
+}
+
+.ws-arch-group h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.ws-arch-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ws-arch-nodes a,
+.ws-arch-nodes span {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--gold-wash);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ws-cal {
+  display: grid;
+  gap: 10px;
+}
+
+.ws-cal-day {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ws-link {
+  color: var(--gold-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ws-link:hover {
+  text-decoration: underline;
+}
+
+.ws-two {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+}
+
+@media (max-width: 860px) {
+  .ws-two,
+  .ws-cal-day {
+    grid-template-columns: 1fr;
+  }
+}
+
 .ws-body {
   padding: 24px 28px 64px;
-  max-width: 1180px;
+  max-width: 1240px;
 }
 
 .ws-card {

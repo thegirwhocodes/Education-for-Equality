@@ -31,7 +31,7 @@ function AccessLimited() {
       <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#9a7536]">Workspace access required</p>
       <h1 className="mt-2 text-3xl font-bold text-[#201a13]">This desk is for Sabi workers.</h1>
       <p className="mt-3 max-w-xl text-sm leading-6 text-[#4c4438]">
-        Sign in with an approved Education for Equality account to open Classroom and Work.
+        Sign in with an approved Education for Equality account to open Product, Work, Company, and Intelligence.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
         <Link href="/dashboard" className="border border-[#d9cdaf] px-4 py-2 text-sm font-semibold text-[#201a13]">
@@ -55,7 +55,7 @@ export default async function WorkspaceLayout({ children }: { children: ReactNod
       <header className="ws-top">
         <div className="ws-top-row">
           <div>
-            <p className="ws-kicker">Sabi</p>
+            <p className="ws-kicker">Sabi OS</p>
             <h1>Workspace</h1>
           </div>
           <p className="ws-who">{boardUserDisplayName(user)}</p>

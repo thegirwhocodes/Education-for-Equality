@@ -1,7 +1,7 @@
-import ClassroomDesk from './ClassroomDesk';
+import OsHome from './OsHome';
 
 export const dynamic = 'force-dynamic';
 
-export default function ClassroomPage() {
-  return <ClassroomDesk />;
+export default function WorkspaceHomePage() {
+  return <OsHome />;
 }

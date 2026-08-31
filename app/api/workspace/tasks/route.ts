@@ -10,13 +10,15 @@ export async function GET(req: Request) {
   const view = url.searchParams.get('view') || 'open';
   const mine = url.searchParams.get('assigneeId');
   try {
+    const projectId = url.searchParams.get('projectId');
     let q = workspaceDb()
       .from('sabi_work_tasks')
-      .select('*, assignee:sabi_work_people(id,name,email,seat,active)')
+      .select('*, assignee:sabi_work_people(id,name,email,seat,active), project:sabi_work_projects(id,title,status)')
       .order('due_date', { ascending: true, nullsFirst: false });
     if (view === 'done') q = q.eq('status', 'Done');
     else if (view === 'open') q = q.neq('status', 'Done');
     if (mine) q = q.eq('assignee_id', mine);
+    if (projectId) q = q.eq('project_id', projectId);
     const { data, error } = await q;
     if (error) throw error;
     return NextResponse.json({ tasks: data ?? [] });
@@ -47,6 +49,8 @@ export async function POST(req: Request) {
         due_date: body.dueDate || null,
         notes: String(body.notes || ''),
         linked_doc_id: body.linkedDocId || null,
+        project_id: body.projectId || null,
+        linked_knowledge_id: body.linkedKnowledgeId || null,
         created_by: g.actor,
       })
       .select('*, assignee:sabi_work_people(id,name,email,seat,active)')
