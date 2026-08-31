@@ -6,8 +6,8 @@ import { isBoardMemberUser } from '@/lib/board-access';
 const CRAWLER_FILES = new Set(['/robots.txt', '/sitemap.xml', '/favicon.ico']);
 
 const protectedRoutes = ['/dashboard'];
-const advisorBoardRoutes = ['/advisor-board'];
-const advisorBoardApiRoutes = ['/api/advisor-board'];
+const advisorBoardRoutes = ['/advisor-board', '/workspace'];
+const advisorBoardApiRoutes = ['/api/advisor-board', '/api/workspace'];
 const prepilotRoutes = ['/sabi/parents'];
 const prepilotApiRoutes = ['/api/sabi/parents'];
 

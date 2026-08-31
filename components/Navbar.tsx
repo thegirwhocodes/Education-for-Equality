@@ -57,9 +57,14 @@ export default function Navbar() {
                 My Progress
               </Link>
               {hasBoardAccess && (
+                <>
+                <Link href="/workspace" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
+                  Workspace
+                </Link>
                 <Link href="/advisor-board/sabi-evidence" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                   Board
                 </Link>
+                </>
               )}
               <Link href="/sabi/prepilot" className="text-gray-600 hover:text-[var(--primary-dark)] transition-colors">
                 Pilot
@@ -129,9 +134,14 @@ export default function Navbar() {
                   My Progress
                 </Link>
                 {hasBoardAccess && (
+                  <>
+                  <Link href="/workspace" className="text-gray-600 hover:text-[var(--primary-dark)]">
+                    Workspace
+                  </Link>
                   <Link href="/advisor-board/sabi-evidence" className="text-gray-600 hover:text-[var(--primary-dark)]">
                     Board
                   </Link>
+                  </>
                 )}
                 <Link href="/sabi/prepilot" className="text-gray-600 hover:text-[var(--primary-dark)]">
                   Pilot

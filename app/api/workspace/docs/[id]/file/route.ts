@@ -18,7 +18,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const { data: file, error: dlErr } = await db.storage.from(WORK_BUCKET).download(doc.storage_path);
     if (dlErr || !file) return NextResponse.json({ error: 'missing_file' }, { status: 404 });
     const buf = Buffer.from(await file.arrayBuffer());
-    return new NextResponse(buf, {
+    return new NextResponse(new Uint8Array(buf), {
       headers: {
         'Content-Type': doc.content_type || 'application/octet-stream',
         'Content-Disposition': `attachment; filename="${encodeURIComponent(doc.original_filename)}"`,

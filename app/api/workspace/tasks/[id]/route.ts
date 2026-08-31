@@ -29,6 +29,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (typeof body.priority === 'string') patch.priority = body.priority;
   if ('assigneeId' in body) patch.assignee_id = body.assigneeId || null;
   if ('dueDate' in body) patch.due_date = body.dueDate || null;
+  if ('linkedDocId' in body) patch.linked_doc_id = body.linkedDocId || null;
   if (typeof body.notes === 'string') patch.notes = body.notes;
   try {
     const { data, error } = await workspaceDb()

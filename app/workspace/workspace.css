@@ -1,0 +1,265 @@
+.sabi-workspace {
+  --ink: #201a13;
+  --ink-soft: #4c4438;
+  --muted: #857a68;
+  --paper: #f7f2e7;
+  --card: #fffdf8;
+  --line: #e8dfc9;
+  --line-strong: #d9cdaf;
+  --gold: #cba868;
+  --gold-deep: #9a7536;
+  --gold-soft: #f4ead4;
+  --gold-wash: #faf4e6;
+  --green: #1e7b43;
+  --green-soft: #e6f3ea;
+  --green-line: #b9dcc6;
+  --warn: #9b5b00;
+  --warn-bg: #faf0da;
+  --warn-line: #ecd3a2;
+  --bad: #b42318;
+  --bad-bg: #fbeeec;
+  --bad-line: #f0c1ba;
+  --side: #1b1610;
+  --side-soft: #2a2318;
+  --side-text: #d8cdb8;
+  --serif: var(--ws-serif), Georgia, serif;
+  --sans: var(--ws-sans), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+  margin: -1px 0 -80px;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(203, 168, 104, 0.10), transparent 60%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+body:has(.sabi-workspace) > nav,
+body:has(.sabi-workspace) > footer {
+  display: none;
+}
+
+.sabi-workspace h1,
+.sabi-workspace h2,
+.sabi-workspace h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.sabi-workspace h1 {
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+}
+
+.ws-top {
+  background: var(--side);
+  color: var(--side-text);
+  padding: 18px 28px 0;
+  border-bottom: 1px solid #3a3226;
+}
+
+.ws-top-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.ws-kicker {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.ws-top h1 {
+  color: #f6efe0;
+  margin-top: 6px;
+}
+
+.ws-who {
+  font-size: 12px;
+  color: #b8ae9a;
+  padding-bottom: 14px;
+}
+
+.ws-worlds {
+  display: flex;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.ws-worlds a {
+  color: #d8cdb8;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 10px 10px 0 0;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-bottom: 0;
+}
+
+.ws-worlds a.active {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: #3a3226;
+}
+
+.ws-body {
+  padding: 24px 28px 64px;
+  max-width: 1180px;
+}
+
+.ws-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(45, 36, 20, 0.06);
+  padding: 18px;
+}
+
+.ws-banner {
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid var(--warn-line);
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.ws-banner.ok {
+  background: var(--green-soft);
+  border-color: var(--green-line);
+  color: var(--green);
+}
+
+.ws-banner.bad {
+  background: var(--bad-bg);
+  border-color: var(--bad-line);
+  color: var(--bad);
+}
+
+.ws-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.ws-tabs button {
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+}
+
+.ws-tabs button.active,
+.ws-tabs button:hover {
+  border-color: var(--gold);
+  background: var(--gold-wash);
+}
+
+.sabi-workspace button.primary,
+.sabi-workspace .primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #f6efe0;
+}
+
+.sabi-workspace button,
+.sabi-workspace input,
+.sabi-workspace select,
+.sabi-workspace textarea {
+  font: inherit;
+  font-weight: 400;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  background: var(--card);
+  color: var(--ink);
+}
+
+.sabi-workspace button {
+  min-height: 38px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.sabi-workspace button.active {
+  border-color: var(--gold);
+  background: var(--gold-wash);
+}
+
+.sabi-workspace input,
+.sabi-workspace select,
+.sabi-workspace textarea {
+  min-height: 38px;
+  padding: 8px 12px;
+}
+
+.sabi-workspace table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sabi-workspace th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  padding: 8px 6px;
+  border-bottom: 2px solid var(--gold);
+  font-weight: 600;
+}
+
+.sabi-workspace td {
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.sabi-workspace tbody tr:hover {
+  background: var(--gold-soft);
+}
+
+.ws-form {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.ws-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ws-muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.ws-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ws-error {
+  color: var(--bad);
+  font-size: 13px;
+}

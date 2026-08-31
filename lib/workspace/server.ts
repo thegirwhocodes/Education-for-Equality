@@ -33,6 +33,10 @@ export function handleWorkspaceError(e: unknown) {
   if (message === 'supabase_not_configured') {
     return NextResponse.json({ error: 'supabase_not_configured' }, { status: 503 });
   }
+  const blob = `${message} ${JSON.stringify(e)}`;
+  if (/sabi_work_|schema cache|does not exist|PGRST/i.test(blob)) {
+    return NextResponse.json({ error: 'work_tables_missing' }, { status: 503 });
+  }
   console.error('[workspace]', e);
   return NextResponse.json({ error: 'internal_error' }, { status: 500 });
 }

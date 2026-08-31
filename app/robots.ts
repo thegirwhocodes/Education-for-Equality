@@ -10,6 +10,7 @@ const CRAWL_EXCLUDED = [
   "/api/",
   "/sentry-example-page",
   "/advisor-board",
+  "/workspace",
   "/sabi/parents",
   "/sabi/demo",
   "/sabi-voice",
