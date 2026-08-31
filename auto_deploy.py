@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+    #!/usr/bin/env python3
 """Compatibility entrypoint for the workspace safe snapshot hook."""
 
 from pathlib import Path
