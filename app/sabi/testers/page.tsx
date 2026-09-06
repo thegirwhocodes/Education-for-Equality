@@ -127,9 +127,6 @@ export default function SabiTesterGuidePage() {
             One short phone lesson a day. Your job is not to be polite—it is to find
             every place Sabi misunderstands, teaches badly or breaks.
           </p>
-          <p className="mt-5 inline-flex border border-[#d9bb72]/50 px-4 py-2 text-sm font-semibold text-[#f1d99e]">
-            Testing week: Monday 24 August – Sunday 30 August 2026
-          </p>
           <div className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-white/20 border-y border-white/20 py-4">
             <div className="pr-4">
               <p className="text-2xl font-semibold">5</p>
@@ -192,11 +189,6 @@ export default function SabiTesterGuidePage() {
               If Naomi arranged a daily time instead, simply answer when Sabi rings.
               If the callback does not arrive, message Naomi with your network—MTN,
               Airtel, Glo or 9mobile—and the time you tried.
-            </p>
-            <p>
-              The round begins <strong>Monday 24 August</strong> and ends{" "}
-              <strong>Sunday 30 August 2026</strong>. Complete five calls during that
-              week; the weekend gives you time to catch up if you miss a weekday.
             </p>
             <div className="border-l-4 border-[#c99c3d] bg-white px-5 py-4 text-sm">
               Save the number as <strong>Sabi</strong>. There is no automatic second
