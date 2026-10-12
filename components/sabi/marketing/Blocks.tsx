@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { CallRings } from "@/components/sabi/marketing/FeaturePhone";
 import { ArrowIcon, MicIcon } from "@/components/sabi/marketing/Icons";
 import { Container } from "@/components/sabi/marketing/Section";
-import { FOUNDER_QUOTE, PILOT } from "@/lib/sabi/content";
+import { FOUNDER_QUOTE } from "@/lib/sabi/content";
 import { SABI_FAQS } from "@/lib/seo";
 import { CONTACT_EMAIL, SABI_ROUTES } from "@/lib/sabi/site";
 
@@ -41,9 +41,6 @@ export function CtaBand({
         <h2 className="sabi-display sabi-hero-title max-w-4xl">{title}</h2>
         <p className="mt-6 text-lg md:text-xl max-w-xl text-[var(--sabi-ink-soft)]">{lede}</p>
         <div className="mt-9">{actions}</div>
-        <p className="sabi-mono text-xs mt-12 text-[var(--sabi-ink-soft)]">
-          {PILOT.where} pilot planned {PILOT.when} · {PILOT.size} {PILOT.detail}
-        </p>
       </Container>
     </section>
   );
