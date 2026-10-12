@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SabiLogo } from "@/components/sabi/SabiLogo";
 import { MenuIcon, MicIcon } from "@/components/sabi/marketing/Icons";
-import { SABI_PRIMARY_NAV, SABI_ROUTES, isActivePath } from "@/lib/sabi/site";
+import { SABI_PARENT_URL, SABI_PRIMARY_NAV, SABI_ROUTES, isActivePath } from "@/lib/sabi/site";
 
 export default function SabiShellNav() {
   const pathname = usePathname();
@@ -31,6 +31,15 @@ export default function SabiShellNav() {
     : { href: SABI_ROUTES.talk, label: "Talk to Sabi", short: "Talk to Sabi" };
 
   return (
+    <>
+    <div className="sabi-parent-strip">
+      <p className="max-w-7xl mx-auto px-5 md:px-8">
+        Sabi is a spin-off of{" "}
+        <a href={SABI_PARENT_URL}>
+          Education for Equality <span aria-hidden="true">↗</span>
+        </a>
+      </p>
+    </div>
     <header className="sticky top-0 z-50 sabi-shell-header">
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between gap-4">
         <Link href={SABI_ROUTES.home} className="flex items-center gap-2 min-w-0" aria-label="Sabi home">
@@ -94,5 +103,6 @@ export default function SabiShellNav() {
         </ul>
       </nav>
     </header>
+    </>
   );
 }

@@ -9,7 +9,7 @@ import { AWARDS } from "@/lib/seo";
 
 export const metadata = sabiPageMetadata({
   path: "/about",
-  title: "About Sabi — built in Lagos by Education for Equality",
+  title: "About Sabi — a spin-off of Education for Equality",
   description:
     "Why Naomi Ivie started Education for Equality, what the name Sabi means, and the advisors and programmes behind the phone tutor.",
 });
@@ -21,7 +21,7 @@ export default function AboutPage() {
         eyebrow="About"
         tone="paper"
         title="Built for the children we grew up beside."
-        lede="Sabi is made by Education for Equality, a 501(c)(3) nonprofit, and built for Lagos first. Our job is simple to say and hard to do: every child should be able to read and count."
+        lede="Sabi is a spin-off of Education for Equality, built for Lagos first. Our job is simple to say and hard to do: every child should be able to read and count."
       />
 
       <section className="sabi-tone-white">

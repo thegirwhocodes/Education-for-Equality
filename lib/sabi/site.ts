@@ -8,6 +8,8 @@
  * those clean URLs are what each page declares as canonical.
  */
 
+export const SABI_PARENT_URL = "https://eduforequality.org";
+
 export const SABI_ROUTES = {
   home: "/sabi",
   howItWorks: "/sabi/how-it-works",
@@ -17,7 +19,7 @@ export const SABI_ROUTES = {
   about: "/sabi/about",
   pricing: "/sabi/pricing",
   developers: "/sabi/developers",
-  // Served by the subdomain rewrites in middleware.ts.
+  // Rewritten to /sabi-voice and /sabi-demo in middleware.ts, on both hosts.
   talk: "/demo",
   chat: "/chat",
 } as const;

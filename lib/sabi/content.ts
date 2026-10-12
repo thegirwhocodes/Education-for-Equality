@@ -165,7 +165,7 @@ export const PRINCIPLES = [
   },
   {
     title: "Built to reach everyone.",
-    body: "No subscription, no app, no data plan. Sponsored by Education for Equality, a 501(c)(3) nonprofit.",
+    body: "No subscription, no app, no data plan. A family needs nothing but a phone that can take a call.",
   },
 ];
 

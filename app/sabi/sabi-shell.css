@@ -1,10 +1,14 @@
 /* Sabi — danfo yellow, ink, and Lagos green. Built around the phone call. */
 
+/* :has() hides the org chrome on first paint; the body class covers browsers without it. */
+body:has(.sabi-shell) #education-for-equality-site-nav,
+body:has(.sabi-shell) #education-for-equality-site-footer,
 body.sabi-route #education-for-equality-site-nav,
 body.sabi-route #education-for-equality-site-footer {
   display: none !important;
 }
 
+body:has(.sabi-shell) > main,
 body.sabi-route > main {
   flex-grow: 1;
   display: flex;
@@ -70,6 +74,34 @@ body.sabi-route > main {
   font-family: var(--sabi-font-body), ui-sans-serif, system-ui, sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
+}
+
+.sabi-parent-strip {
+  background: var(--sabi-ink);
+  color: rgba(255, 255, 255, 0.78);
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 9px 0;
+}
+
+@media (max-width: 480px) {
+  .sabi-parent-strip {
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+}
+
+.sabi-parent-strip a {
+  white-space: nowrap;
+  color: var(--sabi-yellow);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sabi-parent-strip a:hover {
+  color: #fff;
 }
 
 .sabi-shell ::selection {
