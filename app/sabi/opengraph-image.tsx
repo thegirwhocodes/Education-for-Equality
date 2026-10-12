@@ -5,6 +5,9 @@ export const alt =
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const INK = "#0f1512";
+const YELLOW = "#ffc629";
+
 export default function Image() {
   return new ImageResponse(
     (
@@ -15,46 +18,68 @@ export default function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "linear-gradient(135deg, #10261f 0%, #1c3d31 55%, #2b5a45 100%)",
-          color: "#f6f1e4",
-          padding: "72px 80px",
+          background: YELLOW,
+          color: INK,
+          padding: "64px 80px",
           fontFamily: "sans-serif",
+          position: "relative",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            fontSize: 26,
-            letterSpacing: 4,
-            textTransform: "uppercase",
-            color: "#e2c275",
-          }}
-        >
-          Education for Equality
+        {[360, 520, 680, 840].map((d) => (
+          <div
+            key={d}
+            style={{
+              position: "absolute",
+              right: 180 - d / 2,
+              top: 315 - d / 2,
+              width: d,
+              height: d,
+              borderRadius: 9999,
+              border: "3px solid rgba(15,21,18,0.18)",
+            }}
+          />
+        ))}
+
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 18,
+              background: INK,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+            }}
+          >
+            <div style={{ width: 8, height: 16, borderRadius: 4, background: YELLOW }} />
+            <div style={{ width: 8, height: 36, borderRadius: 4, background: YELLOW }} />
+            <div style={{ width: 8, height: 22, borderRadius: 4, background: YELLOW }} />
+          </div>
+          <div style={{ display: "flex", fontSize: 56, fontWeight: 800, letterSpacing: -2 }}>sabi</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", fontSize: 132, fontWeight: 700, lineHeight: 1 }}>
-            Sabi
-          </div>
-          <div style={{ display: "flex", fontSize: 34, color: "#c9d8cf", marginTop: 18 }}>
-            /sah-bee/ — &ldquo;to know&rdquo; in Nigerian Pidgin
-          </div>
           <div
             style={{
               display: "flex",
-              fontSize: 44,
-              lineHeight: 1.3,
-              marginTop: 34,
-              maxWidth: 940,
+              fontSize: 104,
+              fontWeight: 800,
+              lineHeight: 0.95,
+              letterSpacing: -4,
+              maxWidth: 820,
             }}
           >
-            An AI tutor any child can reach by calling a phone number.
+            The tutor who picks up the phone.
+          </div>
+          <div style={{ display: "flex", fontSize: 32, marginTop: 28, color: "#3a423d" }}>
+            Free reading and maths lessons on any phone. No internet. No cost.
           </div>
         </div>
 
-        <div style={{ display: "flex", fontSize: 30, color: "#e2c275" }}>
-          No smartphone. No internet. No cost.
+        <div style={{ display: "flex", fontSize: 24, letterSpacing: 2, textTransform: "uppercase" }}>
+          Education for Equality · /sah-bee/ — &ldquo;to know&rdquo;
         </div>
       </div>
     ),
