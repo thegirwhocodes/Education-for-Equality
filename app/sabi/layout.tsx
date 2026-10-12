@@ -1,6 +1,5 @@
-import SabiShell from "@/components/sabi/SabiShell";
+import SabiFrame from "@/components/sabi/SabiFrame";
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import {
   SABI_URL,
   jsonLdGraph,
@@ -9,28 +8,6 @@ import {
   sabiProductNode,
   sabiVideoNode,
 } from "@/lib/seo";
-import "./sabi-shell.css";
-
-const display = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--sabi-font-display",
-  display: "swap",
-});
-
-const body = Instrument_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--sabi-font-body",
-  display: "swap",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--sabi-font-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   // `absolute` so the brand name isn't repeated by the "%s | Sabi" template.
@@ -38,7 +15,7 @@ export const metadata: Metadata = {
     absolute: "Sabi — the AI tutor children reach by phone call",
   },
   description:
-    'Sabi (/sah-bee/, "to know" in Nigerian Pidgin) is an AI tutor a child reaches by calling a phone number. Foundational reading and maths in five-minute spoken lessons — no smartphone, no internet, no data. Built by Education for Equality.',
+    'Sabi (/sah-bee/, "to know" in Nigerian Pidgin) is an AI tutor a child reaches by calling a phone number. Foundational reading and maths in five-minute spoken lessons — no smartphone, no internet, no data. A spin-off of Education for Equality.',
   // The Sabi pages are served on both eduforequality.org/sabi and the sabi.
   // subdomain; the subdomain is the one canonical home for the product.
   alternates: { canonical: SABI_URL },
@@ -47,12 +24,12 @@ export const metadata: Metadata = {
     siteName: "Sabi",
     title: "Sabi — the AI tutor children reach by phone call",
     description:
-      "An AI tutor any child can reach by calling a phone number. No smartphone. No internet. No cost.",
+      "An AI tutor any child can reach by calling a phone number. No smartphone. No internet.",
   },
   twitter: {
     title: "Sabi — the AI tutor children reach by phone call",
     description:
-      "An AI tutor any child can reach by calling a phone number. No smartphone. No internet. No cost.",
+      "An AI tutor any child can reach by calling a phone number. No smartphone. No internet.",
   },
 };
 
@@ -82,7 +59,7 @@ export default function SabiLayout({ children }: { children: React.ReactNode }) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
-      <SabiShell className={`${display.variable} ${body.variable} ${mono.variable}`}>{children}</SabiShell>
+      <SabiFrame>{children}</SabiFrame>
     </>
   );
 }

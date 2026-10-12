@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 
+import { SabiMark } from "@/components/sabi/SabiLogo";
+import "@/components/sabi/call/sabi-call.css";
+import "@/components/sabi/call/sabi-chat.css";
 import { normalizeMoneyForSpeech } from "@/lib/voice/normalize-money-for-speech";
 import {
   looksLikeLessonWrapUpAssistantMessage,
@@ -56,295 +59,139 @@ function EntryScreen({
   // if they never tapped "End Lesson" or session save failed — still show welcome + stats.
   const isReturning = !!student;
   const hasCompletedSessions = !!student && student.total_sessions > 0;
+  const attempts = student ? student.total_correct + student.total_wrong : 0;
+  const accuracy = student && attempts > 0 ? Math.round((student.total_correct / attempts) * 100) : 0;
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 relative"
-      style={{
-        background:
-          'radial-gradient(1200px 500px at 85% -10%, rgba(203,168,104,0.14), transparent 60%), radial-gradient(900px 480px at 12% 110%, rgba(154,117,54,0.08), transparent 65%), #f7f2e7',
-        fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
-      }}
-    >
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
-      />
-      <div className="max-w-lg w-full">
-        <div className="text-center mb-8">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/sabi-spark.svg"
-            alt=""
-            width={54}
-            height={58}
-            style={{ margin: '0 auto 12px', filter: 'drop-shadow(0 0 16px rgba(203,168,104,0.4))' }}
-          />
-          <h1
-            className="mb-1"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: '36px',
-              fontWeight: 600,
-              color: '#201a13',
-              lineHeight: 1,
-              letterSpacing: '0.01em',
-            }}
-          >
-            Sabi
+    <section className="sabi-call-start">
+      <div className="sabi-call-start-grid">
+        <div className="sabi-call-intro">
+          <p className="sabi-eyebrow">Chat with Sabi · text and voice</p>
+          <h1 className="sabi-display sabi-call-start-title">
+            One tutor, <span className="sabi-call-highlight">two channels.</span>
           </h1>
-          <p style={{ fontSize: '10.5px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#857a68', marginTop: '8px' }}>
-            &quot;To know&quot; in Nigerian Pidgin
+          <p className="sabi-call-start-lede">
+            Type to Sabi the way a child would on a smartphone, or talk to her the way a child would on a phone call.
+            Both channels share one memory of the learner.
           </p>
         </div>
 
-        <div
-          className="p-8"
-          style={{
-            background: '#fffdf8',
-            border: '1px solid #e8dfc9',
-            borderRadius: '18px',
-            boxShadow: '0 24px 60px rgba(45,36,20,0.1), 0 6px 22px rgba(45,36,20,0.06)',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '4px',
-              background: 'linear-gradient(90deg, #cba868 0%, #e2c88e 45%, rgba(226,200,142,0) 100%)',
-            }}
-          />
-          {isReturning ? (
-            <>
-              <div className="text-center mb-6">
-                <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
-                  style={{ background: '#f4ead4', border: '1px solid #e0cd9f' }}
-                >
-                  <span className="text-3xl">👋</span>
-                </div>
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontSize: '26px',
-                    fontWeight: 600,
-                    color: '#201a13',
-                    margin: 0,
-                    lineHeight: 1.15,
-                  }}
-                >
-                  Welcome back, {student.name}!
-                </h2>
-                <p className="text-gray-600 mt-2">
-                  {hasCompletedSessions ? (
-                    <>
-                      You&apos;ve completed {student.total_sessions} saved lesson
-                      {student.total_sessions !== 1 ? "s" : ""} so far
-                    </>
-                  ) : (
-                    <>
-                      No saved lessons yet — when you&apos;re done, tap{" "}
-                      <strong className="text-[var(--primary-darker)]">End Lesson</strong>{" "}
-                      so your progress shows here next time.
-                    </>
+        <ol className="sabi-call-checklist">
+          <li>
+            <span className="sabi-mono">01</span>Enter a name. Sabi greets the learner and starts a market-maths lesson.
+          </li>
+          <li>
+            <span className="sabi-mono">02</span>Answer in the text panel, or tap the microphone in the voice panel.
+          </li>
+          <li>
+            <span className="sabi-mono">03</span>End the lesson and come back: Sabi remembers where you stopped.
+          </li>
+        </ol>
+
+        <div className="sabi-call-start-side">
+          <div className="sabi-call-card">
+            <div className="sabi-call-card-top">
+              <SabiMark size={36} />
+              <div>
+                <p className="sabi-call-card-name">Sabi</p>
+                <p className="sabi-mono sabi-call-card-meta">{isReturning ? "Remembers you" : "Lesson ready"}</p>
+              </div>
+              <span className="sabi-call-live" aria-hidden="true" />
+            </div>
+
+            <div className="sabi-call-card-body">
+              {isReturning ? (
+                <>
+                  <h2 className="sabi-display sabi-call-card-title">Welcome back, {student.name}.</h2>
+                  <p className="sabi-call-card-lede">
+                    {hasCompletedSessions ? (
+                      <>
+                        You&apos;ve completed {student.total_sessions} saved lesson
+                        {student.total_sessions !== 1 ? "s" : ""} so far.
+                      </>
+                    ) : (
+                      <>No saved lessons yet. When you&apos;re done, tap End lesson so your progress shows here next time.</>
+                    )}
+                  </p>
+
+                  {student.last_session_summary && (
+                    <div className="sabi-chat-note">
+                      <p className="sabi-eyebrow">Last time</p>
+                      <p>{student.last_session_summary}</p>
+                    </div>
                   )}
-                </p>
-              </div>
 
-              {/* Last session info */}
-              {student.last_session_summary && (
-                <div className="bg-[var(--secondary)] rounded-xl p-4 mb-6">
-                  <p className="text-sm font-semibold text-[var(--primary-darker)] mb-1">
-                    Last time:
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    {student.last_session_summary}
-                  </p>
-                </div>
+                  <dl className="sabi-chat-stats">
+                    <div>
+                      <dt>Lessons saved</dt>
+                      <dd>{student.total_sessions}</dd>
+                    </div>
+                    <div>
+                      <dt>Correct</dt>
+                      <dd>{student.total_correct}</dd>
+                    </div>
+                    <div>
+                      <dt>Accuracy</dt>
+                      <dd>{accuracy}%</dd>
+                    </div>
+                  </dl>
+
+                  {sessions.length > 0 && (
+                    <div>
+                      <p className="sabi-eyebrow">Session history</p>
+                      <ul className="sabi-chat-history">
+                        {sessions.map((s, i) => (
+                          <li key={i}>{s.summary}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <label className="sabi-call-field">
+                  <span>Your name</span>
+                  <input
+                    type="text"
+                    value={nameInput}
+                    onChange={(e) => onNameChange(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && nameInput.trim() && onStart()}
+                    placeholder="Amina"
+                    autoComplete="given-name"
+                    autoFocus
+                  />
+                </label>
               )}
 
-              {/* Quick stats */}
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <div className="bg-gray-50 rounded-xl p-3 text-center">
-                  <p className="text-2xl font-bold text-[var(--primary-darker)]">
-                    {student.total_sessions}
-                  </p>
-                  <p className="text-xs text-gray-500">Lessons saved</p>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-3 text-center">
-                  <p className="text-2xl font-bold text-green-600">
-                    {student.total_correct}
-                  </p>
-                  <p className="text-xs text-gray-500">Correct</p>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-3 text-center">
-                  <p className="text-2xl font-bold text-[var(--primary-darker)]">
-                    {student.total_correct + student.total_wrong > 0
-                      ? Math.round(
-                          (student.total_correct /
-                            (student.total_correct + student.total_wrong)) *
-                            100
-                        )
-                      : 0}
-                    %
-                  </p>
-                  <p className="text-xs text-gray-500">Accuracy</p>
-                </div>
-              </div>
+              <button
+                onClick={onStart}
+                disabled={isLoading || (!student && !nameInput.trim())}
+                className="sabi-btn-gold sabi-call-cta"
+              >
+                {isLoading ? "Loading…" : isReturning ? "Continue learning" : "Start lesson"}
+              </button>
 
-              {/* Session history */}
-              {sessions.length > 0 && (
-                <div className="mb-6">
-                  <p className="text-sm font-semibold text-gray-700 mb-2">
-                    Session History:
-                  </p>
-                  <div className="space-y-2">
-                    {sessions.map((s, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-gray-600"
-                      >
-                        <span className="text-green-500 mt-0.5">●</span>
-                        <span>{s.summary}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {isReturning && (
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("sabi_browser_id");
+                    window.location.reload();
+                  }}
+                  className="sabi-call-ghost"
+                >
+                  Not {student.name}? Start fresh
+                </button>
               )}
-            </>
-          ) : (
-            <>
-              <div className="text-center mb-6">
-                <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
-                  style={{ background: '#f4ead4', border: '1px solid #e0cd9f' }}
-                >
-                  <span className="text-3xl">📞</span>
-                </div>
-                <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#9a7536', margin: '0 0 8px' }}>
-                  Start a lesson
-                </p>
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontSize: '30px',
-                    fontWeight: 600,
-                    color: '#201a13',
-                    margin: 0,
-                    lineHeight: 1.15,
-                  }}
-                >
-                  Try Sabi
-                </h2>
-                <p style={{ color: '#4c4438', marginTop: '12px', fontSize: '14.5px', lineHeight: 1.6 }}>
-                  An AI tutor that teaches maths through market scenarios.
-                  <br />
-                  Enter your name to start a lesson.
-                </p>
-              </div>
-
-              <div className="mb-6">
-                <input
-                  type="text"
-                  value={nameInput}
-                  onChange={(e) => onNameChange(e.target.value)}
-                  onKeyDown={(e) =>
-                    e.key === "Enter" && nameInput.trim() && onStart()
-                  }
-                  placeholder="What's your name?"
-                  className="w-full text-lg text-center"
-                  style={{
-                    border: '1px solid #d9cdaf',
-                    borderRadius: '12px',
-                    background: '#ffffff',
-                    color: '#201a13',
-                    padding: '14px 16px',
-                    fontFamily: 'inherit',
-                    fontWeight: 300,
-                    outline: 'none',
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = '#cba868';
-                    e.currentTarget.style.boxShadow = '0 0 0 4px rgba(203,168,104,0.18)';
-                    e.currentTarget.style.background = '#fffdf8';
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = '#d9cdaf';
-                    e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.style.background = '#ffffff';
-                  }}
-                  autoFocus
-                />
-              </div>
-            </>
-          )}
-
-          <button
-            onClick={onStart}
-            disabled={isLoading || (!student && !nameInput.trim())}
-            className="w-full text-lg"
-            style={{
-              background: '#1b1610',
-              color: '#f6efe0',
-              border: '1px solid #1b1610',
-              borderRadius: '12px',
-              padding: '15px 22px',
-              fontFamily: 'inherit',
-              fontSize: '15px',
-              fontWeight: 500,
-              letterSpacing: '0.01em',
-              cursor: isLoading || (!student && !nameInput.trim()) ? 'not-allowed' : 'pointer',
-              opacity: isLoading || (!student && !nameInput.trim()) ? 0.55 : 1,
-              transition: 'background 140ms ease, box-shadow 140ms ease',
-            }}
-            onMouseEnter={(e) => {
-              if (!e.currentTarget.disabled) {
-                e.currentTarget.style.background = '#33291c';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(32,26,19,0.24)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#1b1610';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            {isLoading
-              ? "Loading…"
-              : isReturning
-                ? "Continue learning"
-                : "Start lesson"}
-          </button>
-
-          {isReturning && (
-            <button
-              onClick={() => {
-                localStorage.removeItem("sabi_browser_id");
-                window.location.reload();
-              }}
-              className="w-full mt-3 text-sm"
-              style={{ background: 'transparent', border: 0, color: '#9a7536', padding: '8px', cursor: 'pointer', fontFamily: 'inherit' }}
-            >
-              Not {student.name}? Start fresh
-            </button>
-          )}
+            </div>
+          </div>
         </div>
-
-        <p className="text-center mt-6" style={{ fontSize: '11.5px', color: '#a09482', letterSpacing: '0.02em' }}>
-          Sabi is a voice AI tutor built by Education for Equality to reach
-          Nigeria&apos;s 20 million out-of-school children.
-        </p>
       </div>
-    </div>
+    </section>
   );
 }
 
 // ─── End Screen ─────────────────────────────────────────────────
+
+const LEVEL_PROGRESS: Record<string, number> = { beginner: 33, intermediate: 66 };
 
 function EndScreen({
   summary,
@@ -353,171 +200,123 @@ function EndScreen({
   summary: SessionSummary;
   onRestart: () => void;
 }) {
-  const accuracy =
-    summary.total_correct + summary.total_wrong > 0
-      ? Math.round(
-          (summary.total_correct /
-            (summary.total_correct + summary.total_wrong)) *
-            100
-        )
-      : 0;
+  const attempts = summary.total_correct + summary.total_wrong;
+  const accuracy = attempts > 0 ? Math.round((summary.total_correct / attempts) * 100) : 0;
+  const progress = LEVEL_PROGRESS[summary.current_level] ?? 100;
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{
-        background:
-          'radial-gradient(1200px 500px at 85% -10%, rgba(203,168,104,0.14), transparent 60%), radial-gradient(900px 480px at 12% 110%, rgba(154,117,54,0.08), transparent 65%), #f7f2e7',
-        fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
-      }}
-    >
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
-      />
-      <div className="max-w-lg w-full">
-        <div
-          className="p-8"
-          style={{
-            background: '#fffdf8',
-            border: '1px solid #e8dfc9',
-            borderRadius: '18px',
-            boxShadow: '0 24px 60px rgba(45,36,20,0.1), 0 6px 22px rgba(45,36,20,0.06)',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '4px',
-              background: 'linear-gradient(90deg, #cba868 0%, #e2c88e 45%, rgba(226,200,142,0) 100%)',
-            }}
-          />
-          <div className="text-center mb-6">
-            <div
-              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
-              style={{ background: '#f4ead4', border: '1px solid #e0cd9f' }}
-            >
-              <span className="text-3xl">🌟</span>
-            </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#9a7536', margin: '0 0 8px' }}>
-              Lesson complete
-            </p>
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: '30px',
-                fontWeight: 600,
-                color: '#201a13',
-                margin: 0,
-                lineHeight: 1.15,
-              }}
-            >
-              Great job!
-            </h2>
-            <p className="text-gray-600 mt-2">{summary.summary}</p>
-          </div>
+    <section className="sabi-call-start">
+      <div className="sabi-chat-end">
+        <p className="sabi-eyebrow">Lesson complete</p>
+        <h1 className="sabi-display sabi-call-start-title">
+          Well done<span className="sabi-call-highlight">.</span>
+        </h1>
+        <p className="sabi-call-start-lede">{summary.summary}</p>
 
-          {/* This session */}
-          <div className="bg-[var(--secondary)] rounded-xl p-4 mb-4">
-            <p className="text-sm font-semibold text-[var(--primary-darker)] mb-3">
-              This Session:
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">
-                  {summary.correct_count}
-                </p>
-                <p className="text-xs text-gray-600">Correct</p>
+        <div className="sabi-call-card mt-10">
+          <div className="sabi-call-card-body">
+            <p className="sabi-eyebrow">This lesson</p>
+            <dl className="sabi-chat-stats sabi-chat-stats-2">
+              <div>
+                <dt>Correct</dt>
+                <dd>{summary.correct_count}</dd>
               </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-orange-500">
-                  {summary.wrong_count}
-                </p>
-                <p className="text-xs text-gray-600">To practice</p>
+              <div>
+                <dt>To practise</dt>
+                <dd>{summary.wrong_count}</dd>
               </div>
-            </div>
-          </div>
+            </dl>
 
-          {/* All-time stats */}
-          <div className="bg-gray-50 rounded-xl p-4 mb-6">
-            <p className="text-sm font-semibold text-gray-700 mb-3">
-              All-Time Progress:
-            </p>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-[var(--primary-darker)]">
-                  {summary.total_sessions}
-                </p>
-                <p className="text-xs text-gray-500">Total Sessions</p>
+            <p className="sabi-eyebrow mt-4">All time</p>
+            <dl className="sabi-chat-stats">
+              <div>
+                <dt>Lessons</dt>
+                <dd>{summary.total_sessions}</dd>
               </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">
-                  {summary.total_correct}
-                </p>
-                <p className="text-xs text-gray-500">Total Correct</p>
+              <div>
+                <dt>Correct</dt>
+                <dd>{summary.total_correct}</dd>
               </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-[var(--primary-darker)]">
-                  {accuracy}%
-                </p>
-                <p className="text-xs text-gray-500">Accuracy</p>
+              <div>
+                <dt>Accuracy</dt>
+                <dd>{accuracy}%</dd>
               </div>
-            </div>
+            </dl>
 
-            {/* Progress bar */}
-            <div className="mt-3">
-              <div className="flex justify-between text-xs text-gray-500 mb-1">
+            <div className="sabi-chat-level">
+              <div className="sabi-chat-level-label">
                 <span>Level: {summary.current_level}</span>
-                <span>
-                  {summary.current_level === "beginner"
-                    ? "33%"
-                    : summary.current_level === "intermediate"
-                      ? "66%"
-                      : "100%"}
-                </span>
+                <span className="sabi-mono">{progress}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  className="bg-[var(--primary-dark)] h-2.5 rounded-full transition-all"
-                  style={{
-                    width:
-                      summary.current_level === "beginner"
-                        ? "33%"
-                        : summary.current_level === "intermediate"
-                          ? "66%"
-                          : "100%",
-                  }}
-                />
+              <div
+                className="sabi-chat-level-track"
+                role="progressbar"
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="Level progress"
+              >
+                <span style={{ width: `${progress}%` }} />
               </div>
             </div>
-          </div>
 
-          <div className="bg-[var(--primary-darker)] text-white rounded-xl p-4 mb-6 text-center">
-            <p className="text-sm">
-              In the real Sabi, you&apos;d just call the same phone number
-              tomorrow — and Sabi would remember everything from today.
+            <p className="sabi-chat-note sabi-chat-note-ink">
+              On the real line, the child calls the same number tomorrow, and Sabi remembers everything from today.
             </p>
-          </div>
 
-          <button
-            onClick={onRestart}
-            className="w-full btn-primary rounded-xl px-6 py-4 text-lg font-semibold"
-          >
-            Start Another Lesson
-          </button>
+            <button onClick={onRestart} className="sabi-btn-gold sabi-call-cta">
+              Start another lesson
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 // ─── Chat Panel ─────────────────────────────────────────────────
+
+function Bubbles({
+  messages,
+  isLoading,
+  childLabel,
+  scrollRef,
+}: {
+  messages: Message[];
+  isLoading: boolean;
+  childLabel: string;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  return (
+    <div ref={scrollRef} className="sabi-chat-thread" aria-live="polite">
+      {messages.map((msg, i) => (
+        <p key={i} className={msg.role === "user" ? "sabi-chat-bubble sabi-chat-bubble-child" : "sabi-chat-bubble"}>
+          <span className="sabi-call-bubble-role">{msg.role === "user" ? childLabel : "Sabi"}</span>
+          {msg.content}
+        </p>
+      ))}
+      {isLoading && (
+        <p className="sabi-chat-bubble sabi-chat-thinking">
+          <span className="sabi-call-bubble-role">Sabi</span>
+          <span className="sabi-call-dots" aria-label="Sabi is thinking">
+            <i />
+            <i />
+            <i />
+          </span>
+        </p>
+      )}
+    </div>
+  );
+}
+
+function PanelHead({ title, subtitle, tone }: { title: string; subtitle: string; tone: "ink" | "green" }) {
+  return (
+    <div className={`sabi-chat-panel-head sabi-chat-panel-head-${tone}`}>
+      <p className="sabi-display">{title}</p>
+      <p>{subtitle}</p>
+    </div>
+  );
+}
 
 function ChatPanel({
   title,
@@ -545,66 +344,23 @@ function ChatPanel({
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-[var(--primary-darker)] text-white px-5 py-4">
-        <h2 className="text-lg font-bold">{title}</h2>
-        <p className="text-sm opacity-80">{subtitle}</p>
-      </div>
-
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                msg.role === "user"
-                  ? "bg-[var(--primary-dark)] text-white rounded-br-md"
-                  : "bg-gray-100 text-gray-800 rounded-bl-md"
-              }`}
-            >
-              {msg.role === "assistant" && (
-                <span className="font-semibold text-[var(--primary-darker)] block mb-1">
-                  Sabi
-                </span>
-              )}
-              {msg.content}
-            </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-500 px-4 py-2.5 rounded-2xl rounded-bl-md text-sm">
-              <span className="font-semibold text-[var(--primary-darker)] block mb-1">
-                Sabi
-              </span>
-              <span className="animate-pulse">Thinking...</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="border-t p-3">
-        <div className="flex gap-2">
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputValue}
-            onChange={(e) => onInputChange(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !isLoading && onSend()}
-            placeholder="Type your answer..."
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[var(--primary-dark)] focus:ring-1 focus:ring-[var(--primary-dark)]"
-            disabled={isLoading}
-          />
-          <button
-            onClick={onSend}
-            disabled={isLoading || !inputValue.trim()}
-            className="btn-primary rounded-xl px-5 py-2.5 text-sm disabled:opacity-50"
-          >
-            Send
-          </button>
-        </div>
+    <div className="sabi-chat-panel">
+      <PanelHead title={title} subtitle={subtitle} tone="ink" />
+      <Bubbles messages={messages} isLoading={isLoading} childLabel="You" scrollRef={scrollRef} />
+      <div className="sabi-chat-compose">
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputValue}
+          onChange={(e) => onInputChange(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && !isLoading && onSend()}
+          placeholder="Type your answer…"
+          aria-label="Your answer"
+          disabled={isLoading}
+        />
+        <button onClick={onSend} disabled={isLoading || !inputValue.trim()} className="sabi-btn-primary">
+          Send
+        </button>
       </div>
     </div>
   );
@@ -616,7 +372,6 @@ function VoicePanel({
   title,
   subtitle,
   messages,
-  onSend,
   isLoading,
   isListening,
   isSpeaking,
@@ -641,88 +396,35 @@ function VoicePanel({
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
   }, [messages]);
 
+  const status = isSpeaking
+    ? "Sabi is speaking…"
+    : isListening
+      ? "Listening… speak now"
+      : isLoading
+        ? "Sabi is thinking…"
+        : "Tap the microphone to talk to Sabi";
+
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-[#1a5c3a] text-white px-5 py-4">
-        <h2 className="text-lg font-bold">{title}</h2>
-        <p className="text-sm opacity-80">{subtitle}</p>
-      </div>
-
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                msg.role === "user"
-                  ? "bg-[#1a5c3a] text-white rounded-br-md"
-                  : "bg-gray-100 text-gray-800 rounded-bl-md"
-              }`}
-            >
-              {msg.role === "assistant" && (
-                <span className="font-semibold text-[#1a5c3a] block mb-1">
-                  Sabi
-                </span>
-              )}
-              {msg.role === "user" && (
-                <span className="font-semibold block mb-1 opacity-80">
-                  You (voice)
-                </span>
-              )}
-              {msg.content}
-            </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-500 px-4 py-2.5 rounded-2xl rounded-bl-md text-sm">
-              <span className="font-semibold text-[#1a5c3a] block mb-1">
-                Sabi
-              </span>
-              <span className="animate-pulse">Thinking...</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="border-t p-4">
+    <div className="sabi-chat-panel">
+      <PanelHead title={title} subtitle={subtitle} tone="green" />
+      <Bubbles messages={messages} isLoading={isLoading} childLabel="You (voice)" scrollRef={scrollRef} />
+      <div className="sabi-chat-voice">
         {!voiceSupported ? (
-          <p className="text-center text-sm text-red-500">
-            Voice not supported in this browser. Try Chrome.
-          </p>
+          <p className="sabi-call-alert sabi-call-alert-warn">Voice isn&apos;t supported in this browser. Try Chrome.</p>
         ) : (
-          <div className="flex flex-col items-center gap-3">
-            <div className="text-xs text-gray-500 text-center">
-              {isSpeaking
-                ? "Sabi is speaking..."
-                : isListening
-                  ? "Listening... speak now"
-                  : isLoading
-                    ? "Sabi is thinking..."
-                    : "Tap the microphone to talk to Sabi"}
-            </div>
+          <>
             <button
               onClick={isListening ? onStopListening : onStartListening}
               disabled={isLoading || isSpeaking}
-              className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl transition-all disabled:opacity-40 ${
-                isListening
-                  ? "bg-red-500 animate-pulse scale-110"
-                  : isSpeaking
-                    ? "bg-yellow-500"
-                    : "bg-[#1a5c3a] hover:bg-[#0f3d25] hover:scale-105"
-              }`}
+              className={`sabi-chat-mic ${isListening ? "is-listening" : isSpeaking ? "is-speaking" : ""}`}
+              aria-label={isListening ? "Stop listening" : "Start talking"}
             >
-              {isSpeaking ? (
-                <SpeakerIcon />
-              ) : isListening ? (
-                <StopIcon />
-              ) : (
-                <MicIcon />
-              )}
+              {isSpeaking ? <SpeakerIcon /> : isListening ? <StopIcon /> : <MicIcon />}
             </button>
-          </div>
+            <p className="sabi-chat-voice-status" role="status">
+              {status}
+            </p>
+          </>
         )}
       </div>
     </div>
@@ -733,7 +435,7 @@ function VoicePanel({
 
 function MicIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
       <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
       <line x1="12" y1="19" x2="12" y2="23" />
@@ -744,7 +446,7 @@ function MicIcon() {
 
 function StopIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <rect x="6" y="6" width="12" height="12" rx="2" />
     </svg>
   );
@@ -752,7 +454,7 @@ function StopIcon() {
 
 function SpeakerIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
       <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
@@ -1216,21 +918,13 @@ export default function SabiDemo() {
   // Loading state
   if (studentLoading && !sessionStarted) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center"
-        style={{
-          background:
-            'radial-gradient(1200px 500px at 85% -10%, rgba(203,168,104,0.14), transparent 60%), #f7f2e7',
-          fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
-        }}
-      >
-        <div
-          className="animate-pulse text-lg"
-          style={{ color: '#9a7536', fontWeight: 500, letterSpacing: '0.05em' }}
-        >
-          Loading…
-        </div>
-      </div>
+      <section className="sabi-call-start sabi-chat-loading" aria-busy="true">
+        <span className="sabi-call-dots" aria-label="Loading">
+          <i />
+          <i />
+          <i />
+        </span>
+      </section>
     );
   }
 
@@ -1272,113 +966,38 @@ export default function SabiDemo() {
 
   // Chat screen
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background: 'linear-gradient(180deg, #1b1610 0%, #221b12 60%, #2a2318 100%)',
-        color: '#f1e6cd',
-        fontFamily: "'Lexend', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif",
-      }}
-    >
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
-      />
-      {/* Header with student info + end button */}
-      <div
-        className="py-4 px-4"
-        style={{
-          background: 'linear-gradient(180deg, #1b1610 0%, #221b12 100%)',
-          borderBottom: '1px solid rgba(216,205,184,0.14)',
-          boxShadow: 'inset 0 -1px 0 rgba(203,168,104,0.14)',
-        }}
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <section className="sabi-chat">
+      <div className="sabi-chat-inner">
+        <header className="sabi-chat-bar">
           <div className="flex items-center gap-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/sabi-spark.svg"
-              alt=""
-              width={32}
-              height={35}
-              style={{ filter: 'drop-shadow(0 0 12px rgba(203,168,104,0.4))', flex: 'none' }}
-            />
+            <SabiMark size={40} tone="yellow" />
             <div>
-              <h1
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: '22px',
-                  fontWeight: 600,
-                  color: '#f6ecd6',
-                  margin: 0,
-                  lineHeight: 1,
-                  letterSpacing: '0.02em',
-                }}
-              >
-                Sabi Demo{' '}
-                <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(216,205,184,0.62)', fontFamily: "'Lexend', ui-sans-serif, system-ui, sans-serif" }}>
-                  · Education for Equality
-                </span>
-              </h1>
-              <p style={{ fontSize: '12.5px', color: 'rgba(216,205,184,0.72)', margin: '3px 0 0' }}>
-                {student?.name ? `Student: ${student.name}` : 'New student'} — Market math lesson
-                {student && student.total_sessions > 0 && (
-                  <span> · Session #{(student.total_sessions || 0) + 1}</span>
-                )}
+              <h1 className="sabi-display sabi-chat-bar-title">Market maths lesson</h1>
+              <p className="sabi-mono sabi-chat-bar-meta">
+                {student?.name ? student.name : "New student"}
+                {student && student.total_sessions > 0 && <> · Session #{(student.total_sessions || 0) + 1}</>}
               </p>
             </div>
           </div>
           <button
             onClick={endSession}
             disabled={endingSession || textMessages.length < 2}
-            style={{
-              background: '#fffdf8',
-              color: '#201a13',
-              border: '1px solid #cba868',
-              borderRadius: '10px',
-              padding: '10px 18px',
-              fontFamily: 'inherit',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: endingSession || textMessages.length < 2 ? 'not-allowed' : 'pointer',
-              opacity: endingSession || textMessages.length < 2 ? 0.55 : 1,
-              transition: 'background 140ms ease',
-            }}
+            className="sabi-btn-gold sabi-chat-end-btn"
           >
-            {endingSession ? 'Saving…' : 'End lesson'}
+            {endingSession ? "Saving…" : "End lesson"}
           </button>
-        </div>
-      </div>
+        </header>
 
-      {/* Info banner */}
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <div
-          className="px-4 py-3 text-sm"
-          style={{
-            background: 'rgba(203,168,104,0.08)',
-            border: '1px solid rgba(203,168,104,0.24)',
-            borderRadius: '14px',
-            color: 'rgba(240,230,207,0.88)',
-            lineHeight: 1.55,
-          }}
-        >
-          <strong style={{ color: '#f6ecd6' }}>Two channels, same AI:</strong> Text chat (left) simulates a{' '}
-          <strong style={{ color: '#f6ecd6' }}>smartphone app</strong>. Voice chat (right) simulates a{' '}
-          <strong style={{ color: '#f6ecd6' }}>phone call</strong> — tap the mic to talk. Both channels
-          remember this student across sessions.{' '}
-          <span style={{ color: 'rgba(240,230,207,0.7)' }}>
-            When Sabi wraps up naturally (for example saying what you&apos;ll learn next time), progress saves
-            automatically — you can still tap End lesson.
-          </span>
-        </div>
-      </div>
+        <p className="sabi-chat-banner">
+          <strong>Two channels, same tutor.</strong> The text panel simulates a smartphone app. The voice panel
+          simulates a phone call: tap the mic to talk. Both remember this learner across lessons. When Sabi wraps up
+          naturally, progress saves automatically, and you can still tap End lesson.
+        </p>
 
-      {/* Dual panels */}
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[600px]">
+        <div className="sabi-chat-panels">
           <ChatPanel
-            title="App Channel"
-            subtitle="Smartphone with internet — type to chat"
+            title="App channel"
+            subtitle="Smartphone with internet · type to chat"
             messages={textMessages}
             onSend={handleTextSend}
             inputValue={textInput}
@@ -1387,8 +1006,8 @@ export default function SabiDemo() {
             inputRef={textInputRef}
           />
           <VoicePanel
-            title="Voice Channel"
-            subtitle="Any phone, no internet — speak to learn"
+            title="Voice channel"
+            subtitle="Any phone, no internet · speak to learn"
             messages={voiceMessages}
             onSend={handleVoiceSend}
             isLoading={voiceLoading}
@@ -1399,52 +1018,22 @@ export default function SabiDemo() {
             voiceSupported={voiceSupported}
           />
         </div>
-      </div>
 
-      {/* Research callout */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div
-          className="p-6"
-          style={{
-            background: 'rgba(203,168,104,0.08)',
-            border: '1px solid rgba(203,168,104,0.24)',
-            borderRadius: '18px',
-          }}
-        >
-          <p style={{ fontSize: '10.5px', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(226,200,142,0.72)', margin: '0 0 8px' }}>
-            The evidence
+        <aside className="sabi-chat-evidence">
+          <p className="sabi-eyebrow">The evidence</p>
+          <h2 className="sabi-display">Why market maths?</h2>
+          <p>
+            Weber, Bogler &amp; Vollmer&apos;s study of <strong>5,997 children in North-West Nigeria (2024)</strong>{" "}
+            found that children solved comparable subtraction tasks <strong>9× more often</strong> in market framing
+            than in formal school format (48.5% vs 5.4%). A separate Nature (2025) study found the same kind of
+            transfer gap among working children in India.
           </p>
-          <h3
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: '22px',
-              fontWeight: 600,
-              color: '#f6ecd6',
-              margin: '0 0 14px',
-              lineHeight: 1.15,
-            }}
-          >
-            Why market math?
-          </h3>
-          <p className="mb-3" style={{ fontSize: '13.5px', color: 'rgba(240,230,207,0.82)', lineHeight: 1.65 }}>
-            Weber, Bogler &amp; Vollmer&apos;s study of{' '}
-            <strong style={{ color: '#f6ecd6' }}>5,997 children in North-West Nigeria (2024)</strong> found
-            that children solved comparable subtraction tasks{' '}
-            <strong style={{ color: '#f6ecd6' }}>9× more often</strong> in market framing than in formal
-            school format (48.5% vs 5.4%). A separate Nature (2025) study found the same kind of transfer gap
-            among working children in India.
+          <p>
+            <strong>Persistent memory</strong> means Sabi remembers each child&apos;s name, level, and mistakes
+            across lessons, like a real tutor. End this lesson and start another to see it in action.
           </p>
-          <p className="mb-3" style={{ fontSize: '13.5px', color: 'rgba(240,230,207,0.82)', lineHeight: 1.65 }}>
-            <strong style={{ color: '#f6ecd6' }}>Persistent memory</strong> means Sabi remembers each
-            child&apos;s name, level, and mistakes across sessions — just like a real tutor. End this lesson
-            and start another to see it in action.
-          </p>
-          <p style={{ fontSize: '12.5px', color: 'rgba(216,205,184,0.62)', lineHeight: 1.65 }}>
-            Sabi is built by Education for Equality to deliver AI-powered voice tutoring to every child
-            in Nigeria who needs it.
-          </p>
-        </div>
+        </aside>
       </div>
-    </div>
+    </section>
   );
 }

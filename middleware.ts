@@ -106,15 +106,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Sabi pages link to /demo and /chat, and are served on both hosts.
+  if (path === '/demo') {
+    return NextResponse.rewrite(new URL('/sabi-voice', request.url));
+  }
+  if (path === '/chat') {
+    return NextResponse.rewrite(new URL('/sabi-demo', request.url));
+  }
+
   if (isSubdomain) {
     if (path === '/') {
       return NextResponse.rewrite(new URL('/sabi', request.url));
-    }
-    if (path === '/demo') {
-      return NextResponse.rewrite(new URL('/sabi-voice', request.url));
-    }
-    if (path === '/chat') {
-      return NextResponse.rewrite(new URL('/sabi-demo', request.url));
     }
     const page = path.replace(/^\/|\/$/g, '');
     if ((SABI_SUBDOMAIN_PAGES as readonly string[]).includes(page)) {

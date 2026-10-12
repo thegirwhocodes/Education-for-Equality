@@ -137,9 +137,7 @@ export default function AboutPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <a
-              href="https://eduforequality.org/donate"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:info@eduforequality.org?subject=Supporting%20Education%20for%20Equality"
               className="btn-primary text-center"
             >
               Donate Now

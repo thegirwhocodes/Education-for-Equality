@@ -1,0 +1,537 @@
+/* Talk to Sabi: start screen (paper) and live call screen (ink). Relies on .sabi-shell tokens. */
+
+/* ---------- Start screen ---------- */
+
+.sabi-call-start {
+  flex: 1;
+  padding: 56px 20px 88px;
+}
+
+/* Mobile puts the call card straight after the headline so it's above the fold. */
+.sabi-call-start-grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: 32px;
+  align-items: start;
+  grid-template-areas: "intro" "side" "list";
+}
+
+.sabi-call-intro { grid-area: intro; }
+.sabi-call-start-side { grid-area: side; }
+.sabi-call-start-grid > .sabi-call-checklist { grid-area: list; }
+
+@media (min-width: 1024px) {
+  .sabi-call-start {
+    padding: 96px 32px 120px;
+  }
+  .sabi-call-start-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "intro side" "list side";
+    column-gap: 72px;
+    row-gap: 0;
+  }
+  .sabi-call-start-grid > .sabi-call-checklist {
+    margin-top: 36px;
+  }
+}
+
+.sabi-call-start-title {
+  margin-top: 18px;
+  font-size: clamp(2.8rem, 6.4vw, 5.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+.sabi-call-highlight {
+  background: linear-gradient(transparent 58%, var(--sabi-yellow) 58%, var(--sabi-yellow) 92%, transparent 92%);
+  padding: 0 0.04em;
+}
+
+.sabi-call-start-lede {
+  margin-top: 24px;
+  max-width: 34rem;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-call-checklist {
+  max-width: 34rem;
+  list-style: none;
+  padding: 0;
+  border-top: 1.5px solid var(--sabi-ink);
+}
+
+.sabi-call-checklist li {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 8px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--sabi-border);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.sabi-call-checklist .sabi-mono {
+  font-size: 12px;
+  padding-top: 3px;
+  color: var(--sabi-green-bright);
+}
+
+.sabi-call-start-side {
+  display: grid;
+  gap: 18px;
+}
+
+.sabi-call-card {
+  background: var(--sabi-card);
+  border: 2px solid var(--sabi-ink);
+  border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--sabi-yellow);
+  overflow: hidden;
+}
+
+.sabi-call-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1.5px solid var(--sabi-ink);
+  background: var(--sabi-yellow-wash);
+}
+
+.sabi-call-card-name {
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.1;
+}
+
+.sabi-call-card-meta {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sabi-muted);
+}
+
+.sabi-call-live {
+  margin-left: auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--sabi-green-bright);
+  box-shadow: 0 0 0 0 rgba(19, 134, 111, 0.5);
+  animation: sabi-call-beacon 2s ease-out infinite;
+}
+
+@keyframes sabi-call-beacon {
+  0% { box-shadow: 0 0 0 0 rgba(19, 134, 111, 0.45); }
+  70%, 100% { box-shadow: 0 0 0 10px rgba(19, 134, 111, 0); }
+}
+
+.sabi-call-card-body {
+  padding: 24px 20px 22px;
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .sabi-call-card-body {
+    padding: 28px 28px 26px;
+  }
+}
+
+.sabi-call-card-title {
+  font-size: 2rem;
+  line-height: 1.02;
+}
+
+.sabi-call-card-lede {
+  color: var(--sabi-ink-soft);
+  line-height: 1.6;
+}
+
+.sabi-call-field {
+  display: grid;
+  gap: 8px;
+}
+
+.sabi-call-field span {
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sabi-muted);
+}
+
+.sabi-call-field input {
+  width: 100%;
+  border: 1.5px solid var(--sabi-border-strong);
+  border-radius: 14px;
+  background: var(--sabi-paper);
+  color: var(--sabi-ink);
+  font: inherit;
+  font-size: 1.15rem;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.sabi-call-field input::placeholder {
+  color: var(--sabi-meta);
+}
+
+.sabi-call-field input:focus {
+  border-color: var(--sabi-ink);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 198, 41, 0.45);
+}
+
+.sabi-call-cta {
+  width: 100%;
+  min-height: 56px;
+  font-size: 1.05rem;
+}
+
+.sabi-call-cta:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 3px 3px 0 var(--sabi-ink);
+}
+
+.sabi-call-ghost {
+  justify-self: center;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  color: var(--sabi-ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.sabi-call-ghost:hover {
+  color: var(--sabi-ink);
+}
+
+.sabi-call-alert {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1.5px solid;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.sabi-call-alert-warn {
+  background: var(--sabi-yellow-wash);
+  border-color: var(--sabi-yellow);
+  color: var(--sabi-ink);
+}
+
+.sabi-call-alert-error {
+  background: #fdecea;
+  border-color: var(--sabi-coral);
+  color: #7a1c0d;
+}
+
+.sabi-call-history {
+  background: var(--sabi-card);
+  border: 1px solid var(--sabi-border);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+.sabi-call-history-body {
+  margin-top: 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.sabi-call-line {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.sabi-call-line-role {
+  display: block;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sabi-green-bright);
+}
+
+.sabi-call-line-child {
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-call-line-child .sabi-call-line-role {
+  color: var(--sabi-muted);
+}
+
+/* ---------- Live call ---------- */
+
+.sabi-call-live-screen {
+  flex: 1;
+  min-height: calc(100svh - 72px);
+  padding: 40px 20px 44px;
+  background:
+    radial-gradient(640px 420px at 50% 38%, rgba(255, 198, 41, 0.12), transparent 70%),
+    var(--sabi-ink);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.sabi-call-live-screen .sabi-eyebrow {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.sabi-call-top {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.sabi-call-top-name {
+  color: #fff;
+  font-size: 2.6rem;
+}
+
+.sabi-call-top-time {
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sabi-yellow);
+}
+
+.sabi-call-centre {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+}
+
+.sabi-call-orb {
+  position: relative;
+  width: 196px;
+  height: 196px;
+  border: 0;
+  padding: 0;
+  background: none;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  cursor: default;
+}
+
+.sabi-call-orb.is-ready {
+  cursor: pointer;
+}
+
+.sabi-call-orb:focus-visible {
+  outline: 3px solid var(--sabi-yellow);
+  outline-offset: 6px;
+}
+
+.sabi-call-orb-core {
+  position: relative;
+  z-index: 1;
+  width: 148px;
+  height: 148px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--sabi-yellow);
+  color: var(--sabi-ink);
+  box-shadow: 0 0 0 10px rgba(255, 198, 41, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.sabi-call-orb.is-connecting .sabi-call-orb-core {
+  background: rgba(255, 198, 41, 0.35);
+  color: #fff;
+}
+
+.sabi-call-orb.is-listening .sabi-call-orb-core {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 14px rgba(255, 198, 41, 0.18), 0 0 60px rgba(255, 198, 41, 0.35);
+}
+
+.sabi-call-orb.is-ready:hover .sabi-call-orb-core {
+  background: var(--sabi-yellow-light);
+}
+
+.sabi-call-orb-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 198, 41, 0.45);
+  opacity: 0;
+}
+
+.sabi-call-orb.is-listening .sabi-call-orb-ring,
+.sabi-call-orb.is-ready .sabi-call-orb-ring {
+  animation: sabi-call-ring 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.sabi-call-orb-ring-2 {
+  animation-delay: 0.7s !important;
+}
+
+@keyframes sabi-call-ring {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  80%, 100% { transform: scale(1.45); opacity: 0; }
+}
+
+.sabi-call-bars {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 52px;
+}
+
+.sabi-call-bars i {
+  display: block;
+  width: 11px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.sabi-call-bars i:nth-child(1) { height: 24px; }
+.sabi-call-bars i:nth-child(2) { height: 52px; }
+.sabi-call-bars i:nth-child(3) { height: 32px; }
+
+.sabi-call-bars.is-speaking i {
+  animation: sabi-call-talk 0.9s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.sabi-call-bars.is-speaking i:nth-child(2) { animation-delay: 0.15s; }
+.sabi-call-bars.is-speaking i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes sabi-call-talk {
+  0%, 100% { transform: scaleY(0.55); }
+  50% { transform: scaleY(1); }
+}
+
+.sabi-call-dots {
+  display: flex;
+  gap: 9px;
+}
+
+.sabi-call-dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--sabi-ink);
+  animation: sabi-call-bounce 1.2s ease-in-out infinite;
+}
+
+.sabi-call-dots i:nth-child(2) { animation-delay: 0.15s; }
+.sabi-call-dots i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes sabi-call-bounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.sabi-call-status {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sabi-call-transcript {
+  width: 100%;
+  max-width: 560px;
+  max-height: 260px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.sabi-call-bubble {
+  justify-self: start;
+  max-width: 85%;
+  padding: 10px 14px 11px;
+  border-radius: 16px 16px 16px 4px;
+  background: #fff;
+  color: var(--sabi-ink);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.sabi-call-bubble-child {
+  justify-self: end;
+  border-radius: 16px 16px 4px 16px;
+  background: var(--sabi-yellow);
+}
+
+.sabi-call-bubble-role {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sabi-green-bright);
+}
+
+.sabi-call-bubble-child .sabi-call-bubble-role {
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-call-live-error {
+  color: #ffb4a6;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.sabi-call-end {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.sabi-call-end-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--sabi-coral);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(240, 87, 58, 0.4);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.sabi-call-end-btn:hover {
+  background: #d9452a;
+  transform: translateY(-1px);
+}
+
+.sabi-call-end-btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sabi-call-live,
+  .sabi-call-orb-ring,
+  .sabi-call-bars i,
+  .sabi-call-dots i {
+    animation: none !important;
+  }
+}

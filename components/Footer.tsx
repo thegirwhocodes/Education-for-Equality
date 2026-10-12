@@ -54,7 +54,7 @@ export default function Footer() {
               </li>
               <li>+1 (860) 436-7048</li>
               <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><a href="https://eduforequality.org/donate" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Donate</a></li>
+              <li><a href="mailto:info@eduforequality.org?subject=Supporting%20Education%20for%20Equality" className="hover:text-white transition-colors">Donate</a></li>
             </ul>
           </div>
         </div>
