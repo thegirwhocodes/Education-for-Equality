@@ -34,7 +34,7 @@ export default function SabiShellNav() {
     <>
     <div className="sabi-parent-strip">
       <p className="max-w-7xl mx-auto px-5 md:px-8">
-        Sabi is a spin-off of{" "}
+        Sabi is an initiative of{" "}
         <a href={SABI_PARENT_URL}>
           Education for Equality <span aria-hidden="true">↗</span>
         </a>

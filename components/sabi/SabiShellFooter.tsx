@@ -14,7 +14,7 @@ export default function SabiShellFooter() {
           <div className="col-span-2 md:col-span-4">
             <SabiMark size={40} tone="yellow" />
             <p className="mt-5 max-w-sm text-[15px] leading-relaxed sabi-footer-lede">
-              A tutor any child can reach by calling a phone number. Built for Lagos as a spin-off of{" "}
+              A tutor any child can reach by calling a phone number. Built for Lagos as an initiative of{" "}
               <a href="https://eduforequality.org" className="underline underline-offset-4">
                 Education for Equality
               </a>

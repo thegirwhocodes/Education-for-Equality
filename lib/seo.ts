@@ -112,7 +112,7 @@ export const sabiProductNode = {
   description:
     "Sabi is an AI tutor a child reaches by calling a phone number. It teaches foundational literacy and numeracy in short spoken lessons, remembers each learner between calls, and needs no smartphone, internet, or data.",
   disambiguatingDescription:
-    "Sabi (pronounced /sah-bee/, Nigerian Pidgin for \"to know\") is a voice AI tutor for children in Nigeria, a spin-off of Education for Equality.",
+    "Sabi (pronounced /sah-bee/, Nigerian Pidgin for \"to know\") is a voice AI tutor for children in Nigeria, an initiative of Education for Equality.",
   featureList: [
     "Works on any phone, including a basic feature phone on 2G",
     "No app, no internet connection, and no data cost to the family",
@@ -153,7 +153,7 @@ export const SABI_FAQS: { question: string; answer: string }[] = [
   {
     question: "What is Sabi?",
     answer:
-      "Sabi is an AI tutor that a child reaches by calling an ordinary phone number. It teaches foundational reading and maths in short spoken lessons, with no smartphone, no internet, and no data cost to the family. Sabi is a spin-off of Education for Equality.",
+      "Sabi is an AI tutor that a child reaches by calling an ordinary phone number. It teaches foundational reading and maths in short spoken lessons, with no smartphone, no internet, and no data cost to the family. Sabi is an initiative of Education for Equality.",
   },
   {
     question: "What does the name Sabi mean?",
@@ -183,7 +183,7 @@ export const SABI_FAQS: { question: string; answer: string }[] = [
   {
     question: "Who built Sabi?",
     answer:
-      "Sabi is a spin-off of Education for Equality, the organisation founded by Naomi Ivie. Its work has been recognised by the MIT Sloan Africa Business Challenge, the Wesleyan New Venture Awards, the UNICEF AI Ventures Accelerator, and Schmidt Futures x Rhodes Trust Rise for the World.",
+      "Sabi is an initiative of Education for Equality, the organisation founded by Naomi Ivie. Its work has been recognised by the MIT Sloan Africa Business Challenge, the Wesleyan New Venture Awards, the UNICEF AI Ventures Accelerator, and Schmidt Futures x Rhodes Trust Rise for the World.",
   },
 ];
 

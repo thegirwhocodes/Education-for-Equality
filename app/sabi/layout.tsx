@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     absolute: "Sabi — the AI tutor children reach by phone call",
   },
   description:
-    'Sabi (/sah-bee/, "to know" in Nigerian Pidgin) is an AI tutor a child reaches by calling a phone number. Foundational reading and maths in five-minute spoken lessons — no smartphone, no internet, no data. A spin-off of Education for Equality.',
+    'Sabi (/sah-bee/, "to know" in Nigerian Pidgin) is an AI tutor a child reaches by calling a phone number. Foundational reading and maths in five-minute spoken lessons — no smartphone, no internet, no data. An initiative of Education for Equality.',
   // The Sabi pages are served on both eduforequality.org/sabi and the sabi.
   // subdomain; the subdomain is the one canonical home for the product.
   alternates: { canonical: SABI_URL },
