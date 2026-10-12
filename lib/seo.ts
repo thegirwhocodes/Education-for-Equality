@@ -23,7 +23,7 @@ const SOCIAL_PROFILES = [
   "https://www.instagram.com/_educationforequality/",
 ];
 
-const AWARDS = [
+export const AWARDS = [
   "MIT Sloan Africa Business Challenge — 2nd place",
   "Wesleyan New Venture Awards — Grand Prize",
   "UNICEF AI Ventures Accelerator — inaugural cohort",

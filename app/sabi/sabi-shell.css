@@ -1171,6 +1171,665 @@ body.sabi-route > main {
   overflow: hidden;
 }
 
+/* ---------- Section tones ---------- */
+
+.sabi-tone-white {
+  background: var(--sabi-card);
+}
+
+.sabi-tone-paper {
+  background: var(--sabi-paper);
+}
+
+.sabi-tone-yellow {
+  background: var(--sabi-yellow);
+  color: var(--sabi-ink);
+}
+
+.sabi-tone-green,
+.sabi-tone-ink {
+  color: #fff;
+}
+
+.sabi-tone-green {
+  background: var(--sabi-green);
+}
+
+.sabi-tone-ink {
+  background: var(--sabi-ink);
+}
+
+.sabi-tone-green .sabi-display,
+.sabi-tone-ink .sabi-display,
+.sabi-tone-green .sabi-big-stat,
+.sabi-tone-ink .sabi-big-stat {
+  color: #fff;
+}
+
+.sabi-tone-green .sabi-section-index,
+.sabi-tone-ink .sabi-section-index,
+.sabi-tone-green .sabi-eyebrow,
+.sabi-tone-ink .sabi-eyebrow {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.sabi-tone-green .sabi-lede,
+.sabi-tone-ink .sabi-lede,
+.sabi-tone-green .sabi-page-lede,
+.sabi-tone-ink .sabi-page-lede {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sabi-tone-yellow .sabi-section-index,
+.sabi-tone-yellow .sabi-eyebrow {
+  color: var(--sabi-ink);
+}
+
+.sabi-lede {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--sabi-muted);
+}
+
+/* ---------- Page header ---------- */
+
+.sabi-page-header {
+  border-bottom: 1.5px solid var(--sabi-ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.sabi-page-header.sabi-tone-paper,
+.sabi-page-header.sabi-tone-white {
+  border-bottom-color: var(--sabi-border);
+}
+
+.sabi-page-title {
+  font-size: clamp(2.8rem, 6.6vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+.sabi-page-lede {
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-page-eyebrow {
+  display: inline-block;
+  padding-top: 0.6rem;
+  border-top: 1.5px solid currentColor;
+  min-width: 180px;
+}
+
+/* ---------- Mobile nav ---------- */
+
+.sabi-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--sabi-ink);
+  color: var(--sabi-ink);
+}
+
+.sabi-menu-button:hover {
+  background: var(--sabi-yellow);
+}
+
+@media (min-width: 1024px) {
+  .sabi-menu-button,
+  .sabi-mobile-nav {
+    display: none !important;
+  }
+}
+
+.sabi-mobile-nav {
+  border-top: 1px solid var(--sabi-border);
+  background: var(--sabi-paper);
+}
+
+.sabi-mobile-link {
+  display: block;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--sabi-border);
+  font-family: var(--sabi-font-display), ui-sans-serif, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.sabi-mobile-link[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+/* ---------- Cross-page links ---------- */
+
+.sabi-next-page {
+  display: block;
+  background: var(--sabi-paper);
+  border-top: 1.5px solid var(--sabi-ink);
+  transition: background 0.2s ease;
+}
+
+.sabi-next-page:hover {
+  background: var(--sabi-yellow-wash);
+}
+
+.sabi-next-arrow {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--sabi-ink);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sabi-next-page:hover .sabi-next-arrow {
+  background: var(--sabi-yellow);
+  transform: translateX(4px);
+}
+
+.sabi-audience-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  padding: 2rem;
+  border-radius: 22px;
+  border: 1.5px solid var(--sabi-ink);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.sabi-audience-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--sabi-ink);
+}
+
+.sabi-audience-card.sabi-tone-ink:hover,
+.sabi-audience-card.sabi-tone-green:hover {
+  box-shadow: 6px 6px 0 var(--sabi-yellow);
+}
+
+.sabi-audience-body {
+  opacity: 0.8;
+}
+
+.sabi-audience-arrow {
+  margin-top: auto;
+  padding-top: 2rem;
+  display: inline-flex;
+  align-self: flex-start;
+  transition: transform 0.2s ease;
+}
+
+.sabi-audience-card:hover .sabi-audience-arrow {
+  transform: translateX(6px);
+}
+
+/* ---------- How it works ---------- */
+
+.sabi-phone-name {
+  font-family: var(--sabi-font-display), ui-sans-serif, sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.sabi-timeline {
+  display: grid;
+  gap: 2.5rem;
+  position: relative;
+}
+
+@media (min-width: 900px) {
+  .sabi-timeline {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
+
+  .sabi-timeline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2.15rem;
+    height: 1.5px;
+    background: var(--sabi-ink);
+  }
+}
+
+.sabi-timeline li {
+  position: relative;
+}
+
+.sabi-timeline-time {
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--sabi-muted);
+}
+
+.sabi-timeline-dot {
+  display: block;
+  margin-top: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--sabi-yellow);
+  border: 1.5px solid var(--sabi-ink);
+  position: relative;
+}
+
+.sabi-feature-panel {
+  border-radius: 22px;
+  padding: 2rem;
+  border: 1.5px solid var(--sabi-ink);
+}
+
+@media (min-width: 768px) {
+  .sabi-feature-panel {
+    padding: 2.75rem;
+  }
+}
+
+.sabi-sms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 360px;
+  font-size: 14px;
+}
+
+.sabi-sms-out,
+.sabi-sms-in {
+  padding: 0.6rem 0.9rem;
+  border-radius: 16px;
+  border: 1.5px solid var(--sabi-ink);
+}
+
+.sabi-sms-out {
+  align-self: flex-end;
+  background: var(--sabi-ink);
+  color: #fff;
+  font-weight: 600;
+  border-bottom-right-radius: 4px;
+}
+
+.sabi-sms-in {
+  align-self: flex-start;
+  background: var(--sabi-card);
+  border-bottom-left-radius: 4px;
+}
+
+.sabi-learner-chip {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--sabi-admin-line);
+  background: #19211c;
+  font-size: 13px;
+  color: var(--sabi-admin-text);
+}
+
+.sabi-learner-chip strong {
+  color: var(--sabi-yellow);
+  font-size: 15px;
+}
+
+.sabi-pipeline {
+  display: grid;
+  gap: 1px;
+  background: var(--sabi-admin-line);
+  border: 1px solid var(--sabi-admin-line);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .sabi-pipeline {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.sabi-pipeline li {
+  background: var(--sabi-ink);
+  padding: 2rem 1.75rem 2.25rem;
+}
+
+.sabi-pipeline li h3 {
+  color: var(--sabi-yellow) !important;
+}
+
+.sabi-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid var(--sabi-ink);
+  box-shadow: 8px 8px 0 var(--sabi-ink);
+  background: var(--sabi-ink);
+}
+
+.sabi-video-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 198, 41, 0.12), transparent 60%),
+    var(--sabi-ink);
+}
+
+.sabi-video-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sabi-video-bars i {
+  display: block;
+  width: 7px;
+  border-radius: 4px;
+  background: var(--sabi-yellow);
+  opacity: 0.85;
+  transition: transform 0.3s ease;
+}
+
+.sabi-video-poster:hover .sabi-video-bars i {
+  transform: scaleY(1.12);
+}
+
+.sabi-video-play {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.1rem 0.75rem 0.9rem;
+  border-radius: 999px;
+  background: var(--sabi-yellow);
+  color: var(--sabi-ink);
+  border: 1.5px solid var(--sabi-ink);
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* ---------- Evidence ---------- */
+
+.sabi-table-wrap {
+  overflow-x: auto;
+  border: 1.5px solid var(--sabi-ink);
+  border-radius: 18px;
+  background: var(--sabi-card);
+}
+
+.sabi-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.sabi-table thead th {
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sabi-muted);
+  padding: 1rem 1.25rem;
+  border-bottom: 1.5px solid var(--sabi-ink);
+}
+
+.sabi-table tbody th,
+.sabi-table td {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--sabi-border);
+  vertical-align: baseline;
+}
+
+.sabi-table tbody tr:last-child th,
+.sabi-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.sabi-table tbody th {
+  font-weight: 600;
+}
+
+/* ---------- Families ---------- */
+
+.sabi-fact-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--sabi-card);
+  border: 1.5px solid var(--sabi-ink);
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 var(--sabi-ink);
+  overflow: hidden;
+}
+
+.sabi-fact-card > div {
+  padding: 1.4rem 1.5rem;
+  border-bottom: 1px solid var(--sabi-border);
+}
+
+.sabi-fact-card > div:nth-child(odd) {
+  border-right: 1px solid var(--sabi-border);
+}
+
+.sabi-fact-card > div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.sabi-fact-card dt {
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sabi-muted);
+}
+
+.sabi-fact-card dd {
+  font-size: 2.2rem;
+  margin-top: 0.4rem;
+}
+
+.sabi-notice {
+  padding: 1rem 1.15rem;
+  border-left: 4px solid var(--sabi-yellow);
+  background: var(--sabi-yellow-wash);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-topic {
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-family: var(--sabi-font-display), ui-sans-serif, sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.015em;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sabi-topic::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--sabi-yellow);
+  flex: 0 0 auto;
+}
+
+/* ---------- Partners ---------- */
+
+.sabi-way-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  border-radius: 22px;
+  border: 1.5px solid var(--sabi-border-strong);
+  background: var(--sabi-paper);
+  transition: border-color 0.2s ease;
+}
+
+.sabi-way-card:hover {
+  border-color: var(--sabi-ink);
+}
+
+@media (min-width: 768px) {
+  .sabi-way-card {
+    padding: 2.5rem;
+  }
+}
+
+.sabi-cost-grid > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-top: 1.5px solid var(--sabi-ink);
+}
+
+.sabi-cost-grid dt {
+  font-size: clamp(2rem, 3.6vw, 3rem);
+}
+
+.sabi-cost-grid dd {
+  text-align: right;
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-logo-wall {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--sabi-border-strong);
+  border-left: 1px solid var(--sabi-border-strong);
+}
+
+@media (min-width: 768px) {
+  .sabi-logo-wall {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .sabi-logo-wall {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.sabi-logo-wall li {
+  border-right: 1px solid var(--sabi-border-strong);
+  border-bottom: 1px solid var(--sabi-border-strong);
+}
+
+.sabi-logo-wall a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  padding: 1.25rem;
+  filter: grayscale(1);
+  opacity: 0.75;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+
+.sabi-logo-wall a:hover {
+  filter: none;
+  opacity: 1;
+  background: var(--sabi-card);
+}
+
+/* ---------- About ---------- */
+
+.sabi-portrait {
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1.5px solid var(--sabi-ink);
+  box-shadow: 10px 10px 0 var(--sabi-yellow);
+}
+
+.sabi-story p {
+  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  line-height: 1.6;
+  color: var(--sabi-ink-soft);
+}
+
+.sabi-story p + p {
+  margin-top: 1.4em;
+}
+
+.sabi-story p:first-child::first-letter {
+  font-family: var(--sabi-font-display), ui-sans-serif, sans-serif;
+  font-weight: 800;
+  float: left;
+  font-size: 4.6em;
+  line-height: 0.8;
+  margin: 0.08em 0.1em 0 0;
+  color: var(--sabi-ink);
+}
+
+.sabi-name {
+  font-size: clamp(6rem, 16vw, 13rem);
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  font-weight: 800;
+}
+
+.sabi-award-list li {
+  display: grid;
+  gap: 0.4rem 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--sabi-admin-line);
+  color: var(--sabi-admin-text);
+}
+
+.sabi-award-list li:last-child {
+  border-bottom: 1px solid var(--sabi-admin-line);
+}
+
+@media (min-width: 768px) {
+  .sabi-award-list li {
+    grid-template-columns: 1fr 1fr;
+    align-items: baseline;
+  }
+}
+
+.sabi-award-list .sabi-display {
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  color: var(--sabi-yellow) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sabi-shell *,
   .sabi-shell *::before,
