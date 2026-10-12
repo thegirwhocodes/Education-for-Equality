@@ -16,6 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes: { url: string; priority: number; freq: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
     // Sabi — the product, and the pages that should win the brand query.
     { url: SABI_URL, priority: 1, freq: "weekly" },
+    { url: `${SABI_URL}/how-it-works`, priority: 0.8, freq: "monthly" },
+    { url: `${SABI_URL}/families`, priority: 0.8, freq: "monthly" },
+    { url: `${SABI_URL}/evidence`, priority: 0.7, freq: "monthly" },
+    { url: `${SABI_URL}/partners`, priority: 0.7, freq: "monthly" },
+    { url: `${SABI_URL}/about`, priority: 0.6, freq: "monthly" },
     { url: `${SABI_URL}/pricing`, priority: 0.7, freq: "monthly" },
     { url: `${SABI_URL}/developers`, priority: 0.7, freq: "monthly" },
 

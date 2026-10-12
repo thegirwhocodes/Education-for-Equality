@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { isBoardMemberUser } from '@/lib/board-access';
+import { SABI_SUBDOMAIN_PAGES } from '@/lib/sabi/site';
 
 // Served verbatim on every host — never rewritten or redirected.
 const CRAWLER_FILES = new Set(['/robots.txt', '/sitemap.xml', '/favicon.ico']);
@@ -115,11 +116,9 @@ export async function middleware(request: NextRequest) {
     if (path === '/chat') {
       return NextResponse.rewrite(new URL('/sabi-demo', request.url));
     }
-    if (path === '/pricing') {
-      return NextResponse.rewrite(new URL('/sabi/pricing', request.url));
-    }
-    if (path === '/developers') {
-      return NextResponse.rewrite(new URL('/sabi/developers', request.url));
+    const page = path.replace(/^\/|\/$/g, '');
+    if ((SABI_SUBDOMAIN_PAGES as readonly string[]).includes(page)) {
+      return NextResponse.rewrite(new URL(`/sabi/${page}`, request.url));
     }
     // Crawler files must be served, not swept into the /demo catch-all below —
     // otherwise the subdomain has no reachable robots.txt or sitemap at all.
