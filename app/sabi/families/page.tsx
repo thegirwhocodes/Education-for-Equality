@@ -8,9 +8,9 @@ import { SABI_ROUTES } from "@/lib/sabi/site";
 
 export const metadata = sabiPageMetadata({
   path: "/families",
-  title: "Sabi for families — free phone lessons for your child",
+  title: "Sabi for families — phone lessons for your child",
   description:
-    "How Sabi works for parents: text CALL and Sabi rings your child for a free five-minute reading or maths lesson. What it costs (nothing) and how it keeps children safe.",
+    "How Sabi works for parents: text CALL and Sabi rings your child for a five-minute reading or maths lesson. What it costs (nothing) and how it keeps children safe.",
 });
 
 const FAMILY_FAQS = [

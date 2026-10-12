@@ -196,7 +196,7 @@ const AUDIENCES = [
     href: SABI_ROUTES.partners,
     who: "For schools & funders",
     title: "Bring Sabi to a whole community.",
-    body: "Host a pilot cohort, sponsor children, keep the line free, or evaluate it with us.",
+    body: "Host a pilot cohort, sponsor children, keep the line open, or evaluate it with us.",
     tone: "green",
   },
   {

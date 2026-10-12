@@ -87,7 +87,7 @@ export default function Navbar() {
                 Log In
               </Link>
               <Link href="/sign-up" className="btn-primary text-sm">
-                Sign Up Free
+                Sign Up
               </Link>
               </>
             ) : (
@@ -161,7 +161,7 @@ export default function Navbar() {
                   Log In
                 </Link>
                 <Link href="/sign-up" className="btn-primary text-center text-sm">
-                  Sign Up Free
+                  Sign Up
                 </Link>
                 </>
               ) : (

@@ -385,7 +385,7 @@ export default function SignUpPage() {
           <div className="flex flex-col gap-4 border-b border-emerald-100 pb-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary-dark)]">
-                Free account
+                Create an account
               </p>
               <h2 className="mt-2 text-2xl font-bold text-gray-950">Create learner profile</h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600">

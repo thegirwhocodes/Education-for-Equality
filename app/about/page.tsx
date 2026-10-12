@@ -5,7 +5,7 @@ import { SITE_URL, orgOpenGraph } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'About Education for Equality — the nonprofit behind Sabi',
   description:
-    'Education for Equality is the nonprofit behind Sabi, the AI tutor children reach by phone call. Our mission is free quality education for underprivileged children in Nigeria.',
+    'Education for Equality is the nonprofit behind Sabi, the AI tutor children reach by phone call. Our mission is quality education for underprivileged children in Nigeria.',
   alternates: { canonical: `${SITE_URL}/about` },
   openGraph: orgOpenGraph('/about'),
 };
@@ -31,7 +31,7 @@ export default function AboutPage() {
           <div className="prose prose-lg max-w-none">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Mission</h2>
             <p className="text-[var(--text-muted)] mb-6">
-              Education for Equality is an initiative that aims to increase the accessibility of free,
+              Education for Equality is an initiative that aims to increase the accessibility of
               quality education to children in Nigeria, and by extension, children across Africa,
               so that they have the opportunity to attain an excellent quality of life and standard of living.
             </p>
@@ -71,9 +71,9 @@ export default function AboutPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Free Curriculum</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">Complete Curriculum</h3>
                 <p className="text-sm text-[var(--text-muted)]">
-                  Complete K-12 curriculum covering Math, English, Science, and Social Studies at no cost.
+                  Complete K-12 curriculum covering Math, English, Science, and Social Studies.
                 </p>
               </div>
 

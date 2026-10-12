@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <h3 className="font-semibold text-lg mb-4">Education for Equality</h3>
             <p className="text-gray-300 text-sm mb-4 max-w-md">
-              Free quality education for underprivileged children in Nigeria.
+              Quality education for underprivileged children in Nigeria.
               Empowering the next generation through accessible learning.
             </p>
             <div className="flex gap-4">

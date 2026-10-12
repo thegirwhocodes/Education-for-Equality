@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Sabi — the free AI tutor children reach by phone call, from Education for Equality";
+  "Sabi — the AI tutor children reach by phone call, from Education for Equality";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -74,7 +74,7 @@ export default function Image() {
             The tutor who picks up the phone.
           </div>
           <div style={{ display: "flex", fontSize: 32, marginTop: 28, color: "#3a423d" }}>
-            Free reading and maths lessons on any phone. No internet. No cost.
+            Reading and maths lessons on any phone. No internet needed.
           </div>
         </div>
 

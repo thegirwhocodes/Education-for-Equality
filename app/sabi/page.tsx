@@ -31,7 +31,7 @@ export default function SabiHome() {
             </h1>
             <p className="mt-7 text-lg md:text-xl leading-relaxed max-w-xl text-[var(--sabi-ink-soft)]">
               Sabi teaches children to read and count in five-minute phone calls. It works on any handset, needs no
-              internet, and is free for every family.
+              internet, and reaches every family.
             </p>
             <div className="mt-9">
               <TryButtons />

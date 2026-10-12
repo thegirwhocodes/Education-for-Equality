@@ -1440,7 +1440,7 @@ export default function SabiDemo() {
             and start another to see it in action.
           </p>
           <p style={{ fontSize: '12.5px', color: 'rgba(216,205,184,0.62)', lineHeight: 1.65 }}>
-            Sabi is built by Education for Equality to deliver free, AI-powered voice tutoring to every child
+            Sabi is built by Education for Equality to deliver AI-powered voice tutoring to every child
             in Nigeria who needs it.
           </p>
         </div>

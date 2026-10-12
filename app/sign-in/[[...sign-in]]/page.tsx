@@ -324,7 +324,7 @@ export default function SignInPage() {
               onClick={goToSignUp}
               className="font-semibold text-[var(--primary-dark)] hover:underline"
             >
-              Start learning free
+              Start learning
             </Link>
           </p>
         </div>

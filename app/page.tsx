@@ -9,7 +9,7 @@ export const metadata: Metadata = {
       'Education for Equality — the nonprofit building Sabi, an AI tutor children reach by phone',
   },
   description:
-    'Education for Equality is a nonprofit bringing foundational literacy and numeracy to children in Nigeria through Sabi, a free AI tutor reachable on any phone — no smartphone, no internet, no data.',
+    'Education for Equality is a nonprofit bringing foundational literacy and numeracy to children in Nigeria through Sabi, an AI tutor reachable on any phone — no smartphone, no internet, no data.',
   alternates: { canonical: SITE_URL },
   openGraph: orgOpenGraph(),
 };
@@ -107,7 +107,7 @@ export default function Home() {
           </h1>
           <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed mb-10">
             70% of children in low-income countries cannot read a simple sentence by age 10.
-            Millions of adults never got the chance to learn. We deliver free, AI-powered
+            Millions of adults never got the chance to learn. We deliver AI-powered
             literacy and numeracy courses to anyone who needs them — on any phone.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -246,7 +246,7 @@ export default function Home() {
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-darker)] mb-4">
-            Free Foundational Courses
+            Foundational Courses
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             For children and adults who never had the chance to learn. AI-powered voice lessons that meet every learner where they are.
@@ -381,9 +381,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="font-bold text-lg text-[var(--primary-darker)] mb-2">100% Free</h3>
+            <h3 className="font-bold text-lg text-[var(--primary-darker)] mb-2">Built on Evidence</h3>
             <p className="text-sm text-gray-600">
-              Every lesson is completely free. No hidden costs, no subscriptions, ever.
+              Lessons follow structured, level-based methods proven to raise reading and maths scores.
             </p>
           </div>
 

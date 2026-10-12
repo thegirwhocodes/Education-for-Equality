@@ -48,7 +48,7 @@ export const SABI_OG_IMAGE = {
   url: `${SITE_URL}/sabi/opengraph-image`,
   width: 1200,
   height: 630,
-  alt: "Sabi — the free AI tutor children reach by phone call",
+  alt: "Sabi — the AI tutor children reach by phone call",
 };
 
 /** Open Graph block for an Education for Equality page. */
@@ -112,7 +112,7 @@ export const sabiProductNode = {
   description:
     "Sabi is an AI tutor a child reaches by calling a phone number. It teaches foundational literacy and numeracy in short spoken lessons, remembers each learner between calls, and needs no smartphone, internet, or data.",
   disambiguatingDescription:
-    "Sabi (pronounced /sah-bee/, Nigerian Pidgin for \"to know\") is a free voice AI tutor for children in Nigeria, built by the nonprofit Education for Equality.",
+    "Sabi (pronounced /sah-bee/, Nigerian Pidgin for \"to know\") is a voice AI tutor for children in Nigeria, built by the nonprofit Education for Equality.",
   featureList: [
     "Works on any phone, including a basic feature phone on 2G",
     "No app, no internet connection, and no data cost to the family",
@@ -126,13 +126,6 @@ export const sabiProductNode = {
     audienceType: "Primary-school children in Nigeria and across Africa",
   },
   inLanguage: ["en-NG", "en"],
-  isAccessibleForFree: true,
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-    description: "Free for families. Toll-free calls, no subscription.",
-  },
   publisher: { "@id": ORG_ID },
   creator: { "@id": FOUNDER_ID },
   award: AWARDS,
@@ -160,7 +153,7 @@ export const SABI_FAQS: { question: string; answer: string }[] = [
   {
     question: "What is Sabi?",
     answer:
-      "Sabi is a free AI tutor that a child reaches by calling an ordinary phone number. It teaches foundational reading and maths in short spoken lessons, with no smartphone, no internet, and no data cost to the family. Sabi is built by Education for Equality, a nonprofit.",
+      "Sabi is an AI tutor that a child reaches by calling an ordinary phone number. It teaches foundational reading and maths in short spoken lessons, with no smartphone, no internet, and no data cost to the family. Sabi is built by Education for Equality, a nonprofit.",
   },
   {
     question: "What does the name Sabi mean?",
@@ -180,7 +173,7 @@ export const SABI_FAQS: { question: string; answer: string }[] = [
   {
     question: "How much does Sabi cost?",
     answer:
-      "Sabi is free for families. Calls are toll-free and there is no subscription or paywall. Developers and organisations can license the same African-accent voice pipeline from $0.06 per minute, with 1,000 minutes free every month.",
+      "Families pay no subscription and need no data plan. Developers and organisations can license the same African-accent voice pipeline from $0.06 per minute, with 1,000 minutes included every month.",
   },
   {
     question: "Where does Sabi operate?",

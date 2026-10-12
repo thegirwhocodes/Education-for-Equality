@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Sabi",
   },
   description:
-    "Sabi is a free AI tutor children reach by calling an ordinary phone number — no smartphone, no internet, no data. Built by Education for Equality to teach foundational literacy and numeracy across Nigeria and Africa.",
+    "Sabi is an AI tutor children reach by calling an ordinary phone number — no smartphone, no internet, no data. Built by Education for Equality to teach foundational literacy and numeracy across Nigeria and Africa.",
   applicationName: "Sabi",
   category: "education",
   authors: [{ name: "Education for Equality", url: SITE_URL }],
@@ -55,13 +55,13 @@ export const metadata: Metadata = {
     locale: "en_NG",
     title: "Sabi — the AI tutor a child reaches by phone call",
     description:
-      "No internet. No smartphone. Just a phone call. Sabi is a free voice AI tutor teaching foundational literacy and numeracy to children across Nigeria and Africa.",
+      "No internet. No smartphone. Just a phone call. Sabi is a voice AI tutor teaching foundational literacy and numeracy to children across Nigeria and Africa.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Sabi — the AI tutor a child reaches by phone call",
     description:
-      "A free voice AI tutor that teaches children over an ordinary phone call — no internet or smartphone needed. By Education for Equality.",
+      "A voice AI tutor that teaches children over an ordinary phone call — no internet or smartphone needed. By Education for Equality.",
   },
   robots: {
     index: true,

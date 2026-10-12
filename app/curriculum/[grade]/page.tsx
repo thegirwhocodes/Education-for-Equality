@@ -269,6 +269,6 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: `${gradeData.gradeName} Curriculum - Education for Equality`,
-    description: `Free ${gradeData.gradeName} lessons aligned to ${gradeData.stage}. Learn Math, English, Science, and Social Studies with video lessons.`,
+    description: `${gradeData.gradeName} lessons aligned to ${gradeData.stage}. Learn Math, English, Science, and Social Studies with video lessons.`,
   };
 }

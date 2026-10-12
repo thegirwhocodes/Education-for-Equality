@@ -11,7 +11,7 @@ export const metadata = sabiPageMetadata({
   path: "/partners",
   title: "Partner with Sabi — schools, governments, funders and telecoms",
   description:
-    "Bring Sabi to a community: host a pilot cohort, sponsor children at around $2 a year, keep the line free, or evaluate Sabi with us.",
+    "Bring Sabi to a community: host a pilot cohort, sponsor children at around $2 a year, keep the line open, or evaluate Sabi with us.",
 });
 
 const mailto = (subject: string) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;

@@ -11,7 +11,7 @@ export const metadata = sabiPageMetadata({
   path: "/about",
   title: "About Sabi — built in Lagos by Education for Equality",
   description:
-    "Why Naomi Ivie started Education for Equality, what the name Sabi means, and the advisors and programmes behind the free phone tutor.",
+    "Why Naomi Ivie started Education for Equality, what the name Sabi means, and the advisors and programmes behind the phone tutor.",
 });
 
 export default function AboutPage() {

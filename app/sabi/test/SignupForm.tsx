@@ -83,7 +83,7 @@ export default function SignupForm() {
           placeholder="0803 123 4567"
         />
         <p className="mt-1 text-sm text-[var(--sabi-muted)]">
-          The phone you&apos;ll actually answer. Calls are free to receive.
+          The phone you&apos;ll actually answer. You are not charged to receive calls.
         </p>
       </div>
 

@@ -47,7 +47,7 @@ export default function Image() {
               color: "#c9d8cf",
             }}
           >
-            We build Sabi — a free AI tutor a child reaches by calling an ordinary phone number.
+            We build Sabi — an AI tutor a child reaches by calling an ordinary phone number.
           </div>
         </div>
 

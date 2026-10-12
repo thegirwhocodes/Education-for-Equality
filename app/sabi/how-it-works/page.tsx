@@ -70,7 +70,7 @@ export default function HowItWorksPage() {
 
       <Section tone="white" containerClassName="grid lg:grid-cols-2 gap-6">
         <div className="sabi-feature-panel sabi-tone-yellow">
-          <p className="sabi-eyebrow">Free to reach</p>
+          <p className="sabi-eyebrow">Easy to reach</p>
           <h3 className="sabi-display text-3xl md:text-4xl mt-5">Text CALL. Sabi rings you back.</h3>
           <p className="mt-4 text-[var(--sabi-ink-soft)] leading-relaxed max-w-md">
             Families send the word CALL by SMS or WhatsApp, and Sabi calls them. The family never pays for the lesson
@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
           </p>
           <div className="sabi-sms mt-8" aria-hidden="true">
             <span className="sabi-sms-out">CALL</span>
-            <span className="sabi-sms-in">Sabi will ring you for a short lesson. The call is free — you are not charged.</span>
+            <span className="sabi-sms-in">Sabi will ring you for a short lesson. You are not charged.</span>
           </div>
         </div>
         <div className="sabi-feature-panel sabi-tone-ink">

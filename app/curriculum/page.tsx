@@ -53,7 +53,7 @@ export default function CurriculumPage() {
             </h1>
             <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto">
               Our curriculum follows the internationally recognized Cambridge Primary and Lower Secondary framework,
-              filled with free educational content from Khan Academy and other Open Educational Resources.
+              filled with educational content from Khan Academy and other Open Educational Resources.
             </p>
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function CurriculumPage() {
                   Open Educational Resources
                 </h3>
                 <p className="text-gray-600">
-                  We use free, high-quality videos from Khan Academy and text content from OpenStax, CK-12,
+                  We use high-quality videos from Khan Academy and text content from OpenStax, CK-12,
                   and iCivics. All content is properly attributed and used under Creative Commons licenses.
                 </p>
               </div>
@@ -267,7 +267,7 @@ export default function CurriculumPage() {
             Start Learning Today
           </h2>
           <p className="text-white/80 mb-6">
-            All content is free and available immediately. No account required to start.
+            All content is available immediately. No account required to start.
           </p>
           <Link
             href="/curriculum/grade-4"

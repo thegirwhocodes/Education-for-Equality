@@ -35,22 +35,22 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   // `absolute` so the brand name isn't repeated by the "%s | Sabi" template.
   title: {
-    absolute: "Sabi — the free AI tutor children reach by phone call",
+    absolute: "Sabi — the AI tutor children reach by phone call",
   },
   description:
-    'Sabi (/sah-bee/, "to know" in Nigerian Pidgin) is a free AI tutor a child reaches by calling a phone number. Foundational reading and maths in five-minute spoken lessons — no smartphone, no internet, no data. Built by Education for Equality.',
+    'Sabi (/sah-bee/, "to know" in Nigerian Pidgin) is an AI tutor a child reaches by calling a phone number. Foundational reading and maths in five-minute spoken lessons — no smartphone, no internet, no data. Built by Education for Equality.',
   // The Sabi pages are served on both eduforequality.org/sabi and the sabi.
   // subdomain; the subdomain is the one canonical home for the product.
   alternates: { canonical: SABI_URL },
   openGraph: {
     url: SABI_URL,
     siteName: "Sabi",
-    title: "Sabi — the free AI tutor children reach by phone call",
+    title: "Sabi — the AI tutor children reach by phone call",
     description:
       "An AI tutor any child can reach by calling a phone number. No smartphone. No internet. No cost.",
   },
   twitter: {
-    title: "Sabi — the free AI tutor children reach by phone call",
+    title: "Sabi — the AI tutor children reach by phone call",
     description:
       "An AI tutor any child can reach by calling a phone number. No smartphone. No internet. No cost.",
   },
@@ -68,7 +68,7 @@ const jsonLd = jsonLdGraph([
     name: "Sabi",
     alternateName: "Sabi — Education for Equality",
     description:
-      "Sabi is a free AI tutor children reach by calling an ordinary phone number.",
+      "Sabi is an AI tutor children reach by calling an ordinary phone number.",
     publisher: { "@id": organizationNode["@id"] },
     about: { "@id": sabiProductNode["@id"] },
     inLanguage: "en",

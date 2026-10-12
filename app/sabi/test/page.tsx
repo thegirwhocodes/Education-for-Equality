@@ -50,7 +50,7 @@ export default function TestSabiPage() {
           <strong>Sabi calls you, between 6pm and 8pm Lagos time.</strong> You never
           dial, and you never pay. The call comes from{" "}
           <strong>+1 715 312 2345</strong> — save it as <em>Sabi</em> so you
-          don&apos;t ignore it. Incoming international calls are free to receive in
+          don&apos;t ignore it. You are not charged to receive incoming international calls in
           Nigeria.
         </p>
       </section>

@@ -120,7 +120,7 @@ export const EVIDENCE = [
     title: "per student, per year",
     body: "Ten to a hundred times cheaper than the alternatives. At $2 a student, reaching 100,000 children costs $200,000 a year.",
     source: "Self-hosted open-source stack",
-    informs: "Why it can stay free for families.",
+    informs: "Why it can reach every family.",
   },
 ];
 
@@ -164,13 +164,13 @@ export const PRINCIPLES = [
     body: "Sabi remembers every child: their name, their level, their mistakes. Each call picks up where the last one ended.",
   },
   {
-    title: "Free. Always.",
-    body: "Toll-free calls. No subscription, no paywall. Sponsored by Education for Equality, a 501(c)(3) nonprofit.",
+    title: "Built to reach everyone.",
+    body: "No subscription, no app, no data plan. Sponsored by Education for Equality, a 501(c)(3) nonprofit.",
   },
 ];
 
 export const FAMILY_STEPS = [
-  { title: "Text CALL", body: "Send the word CALL by SMS or WhatsApp. Sabi rings you back, and the call is free." },
+  { title: "Text CALL", body: "Send the word CALL by SMS or WhatsApp. Sabi rings you back." },
   { title: "Sabi rings you", body: "Answer, and hand the phone to your child. Each lesson takes five to seven minutes." },
   { title: "Same time tomorrow", body: "Sabi remembers where your child stopped and carries on from there." },
 ];
@@ -219,8 +219,8 @@ export const PARTNER_WAYS = [
   },
   {
     who: "Telecoms",
-    title: "Keep the line free",
-    body: "Toll-free numbers and free callbacks are what keep Sabi free for families. Help us reach every network.",
+    title: "Keep the line open",
+    body: "Short codes and callbacks are how families reach Sabi. Help us reach every network.",
     cta: "Partner on the line",
     subject: "Sabi telecoms partnership",
   },
