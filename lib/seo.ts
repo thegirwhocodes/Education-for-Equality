@@ -27,8 +27,6 @@ export const AWARDS = [
   "MIT Sloan Africa Business Challenge — 2nd place",
   "Wesleyan New Venture Awards — Grand Prize",
   "UNICEF AI Ventures Accelerator — inaugural cohort",
-  "Schmidt Futures x Rhodes Trust Rise for the World — finalist",
-  "Patricelli Center for Entrepreneurship — Social Impact Fellow",
 ];
 
 /**
@@ -183,7 +181,7 @@ export const SABI_FAQS: { question: string; answer: string }[] = [
   {
     question: "Who built Sabi?",
     answer:
-      "Sabi is an initiative of Education for Equality, the organisation founded by Naomi Ivie. Its work has been recognised by the MIT Sloan Africa Business Challenge, the Wesleyan New Venture Awards, the UNICEF AI Ventures Accelerator, and Schmidt Futures x Rhodes Trust Rise for the World.",
+      "Sabi is an initiative of Education for Equality, the organisation founded by Naomi Ivie. Its work has been recognised by the MIT Sloan Africa Business Challenge, the Wesleyan New Venture Awards and the UNICEF AI Ventures Accelerator.",
   },
 ];
 
