@@ -106,6 +106,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (process.env.NODE_ENV === 'development' && path === '/') {
+    return NextResponse.rewrite(new URL('/sabi', request.url));
+  }
+
   // Sabi pages link to /demo and /chat, and are served on both hosts.
   if (path === '/demo') {
     return NextResponse.rewrite(new URL('/sabi-voice', request.url));

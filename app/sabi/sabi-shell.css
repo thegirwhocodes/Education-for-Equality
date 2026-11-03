@@ -18,26 +18,26 @@ body.sabi-route > main {
 
 .sabi-shell {
   /* Core palette */
-  --sabi-yellow: #ffc629;
-  --sabi-yellow-light: #ffd95e;
-  --sabi-yellow-wash: #fff4cc;
-  --sabi-ink: #0f1512;
-  --sabi-ink-soft: #3a423d;
-  --sabi-green: #0b4f43;
-  --sabi-green-bright: #13866f;
-  --sabi-green-soft: #e3efe9;
-  --sabi-coral: #f0573a;
-  --sabi-paper: #f4f4ef;
+  --sabi-yellow: #4057e8;
+  --sabi-yellow-light: #7183ff;
+  --sabi-yellow-wash: #edf0ff;
+  --sabi-ink: #11182b;
+  --sabi-ink-soft: #3e4a62;
+  --sabi-green: #273783;
+  --sabi-green-bright: #4057e8;
+  --sabi-green-soft: #e6eaff;
+  --sabi-coral: #f47b5d;
+  --sabi-paper: #f5f7fb;
   --sabi-card: #ffffff;
 
   /* Text & lines */
   --sabi-text: var(--sabi-ink);
   --sabi-text-secondary: var(--sabi-ink-soft);
-  --sabi-muted: #5d665f;
-  --sabi-meta: #858d86;
-  --sabi-border: #dfe1d8;
-  --sabi-border-strong: #c4c8bb;
-  --sabi-shadow: 0 1px 0 rgba(15, 21, 18, 0.04);
+  --sabi-muted: #566176;
+  --sabi-meta: #778298;
+  --sabi-border: #dfe5ef;
+  --sabi-border-strong: #cbd2e1;
+  --sabi-shadow: 0 6px 20px rgba(24, 36, 75, 0.06);
 
   /* Legacy token names still used across /sabi subpages */
   --sabi-gold: var(--sabi-yellow);

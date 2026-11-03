@@ -1,5 +1,6 @@
 import SabiFrame from "@/components/sabi/SabiFrame";
 import type { Metadata } from "next";
+import "./sabi-home.css";
 import {
   SABI_URL,
   jsonLdGraph,

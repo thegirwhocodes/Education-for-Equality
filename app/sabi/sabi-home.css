@@ -1,0 +1,1736 @@
+@keyframes sabi-v2-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.82);
+  }
+}
+
+@keyframes sabi-v2-wave {
+  0%,
+  100% {
+    transform: scaleY(0.55);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.sabi-pilot-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
+  white-space: nowrap;
+  border: 1px solid #d7def6;
+  border-radius: 999px;
+  background: #f0f2ff;
+  color: #3346b7;
+  padding: 0.46rem 0.68rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sabi-pilot-tag__dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #f47b5d;
+  box-shadow: 0 0 0 3px rgba(244, 123, 93, 0.14);
+  animation: sabi-v2-pulse 1.8s ease-in-out infinite;
+}
+
+.sabi-shell-header {
+  background: rgba(249, 250, 253, 0.88);
+  border-color: #e0e5ef;
+}
+
+.sabi-nav-link {
+  color: #566176;
+}
+
+.sabi-nav-link:hover,
+.sabi-nav-link.is-active {
+  color: #17224d;
+}
+
+.sabi-nav-link.is-active::after {
+  background: #4057e8;
+}
+
+.sabi-btn-primary {
+  background: #4057e8;
+  border-color: #4057e8;
+  color: #fff;
+}
+
+.sabi-btn-primary:hover {
+  background: #2f42c8;
+  border-color: #2f42c8;
+}
+
+.sabi-shell-footer {
+  background: #121a36;
+}
+
+.sabi-shell-footer a:hover {
+  color: #aab5ff !important;
+}
+
+.sabi-footer-wordmark {
+  color: #8998ff;
+}
+
+.sabi-footer-meta {
+  border-color: rgba(218, 225, 248, 0.15);
+}
+
+.sabi-v2 {
+  --sabi-v2-paper: #f5f7fb;
+  --sabi-v2-white: #ffffff;
+  --sabi-v2-ink: #121a2f;
+  --sabi-v2-muted: #5d6980;
+  --sabi-v2-blue: #4057e8;
+  --sabi-v2-blue-deep: #17224d;
+  --sabi-v2-blue-soft: #e9edff;
+  --sabi-v2-coral: #f47b5d;
+  --sabi-v2-line: #dfe5ef;
+  position: relative;
+  overflow: hidden;
+  background: var(--sabi-v2-paper);
+  color: var(--sabi-v2-ink);
+  font-family: var(--sabi-font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.sabi-v2-container {
+  width: min(1220px, calc(100% - 56px));
+  margin-inline: auto;
+}
+
+.sabi-v2-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--sabi-v2-line);
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
+}
+
+.sabi-v2-hero::before {
+  position: absolute;
+  z-index: -2;
+  top: -19rem;
+  right: -13rem;
+  width: 58rem;
+  height: 58rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(89, 108, 241, 0.13), rgba(89, 108, 241, 0) 68%);
+  content: "";
+}
+
+.sabi-v2-hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(52, 69, 141, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 69, 141, 0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+  content: "";
+  mask-image: linear-gradient(90deg, transparent 0%, #000 62%, #000 100%);
+  pointer-events: none;
+}
+
+.sabi-v2-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 5rem);
+  padding-block: clamp(3.6rem, 7vw, 6rem) clamp(4.5rem, 7vw, 6.5rem);
+}
+
+.sabi-v2-hero-copy {
+  max-width: 590px;
+}
+
+.sabi-v2-kicker,
+.sabi-v2-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #465577;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.sabi-v2-kicker {
+  border: 1px solid #dce2f0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 0.58rem 0.8rem;
+}
+
+.sabi-v2-kicker__dot {
+  width: 0.46rem;
+  height: 0.46rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--sabi-v2-coral);
+  box-shadow: 0 0 0 3px rgba(244, 123, 93, 0.14);
+}
+
+.sabi-v2-title {
+  max-width: 660px;
+  margin: 1.65rem 0 0;
+  color: var(--sabi-v2-ink);
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(3.4rem, 5.1vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.072em;
+  line-height: 0.93;
+}
+
+.sabi-v2-title span {
+  display: block;
+  color: var(--sabi-v2-blue);
+}
+
+.sabi-v2-lede {
+  max-width: 525px;
+  margin: 1.65rem 0 0;
+  color: var(--sabi-v2-muted);
+  font-size: clamp(1.04rem, 1.4vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.sabi-v2-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.sabi-v2-button,
+.sabi-v2-text-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.sabi-v2-button {
+  min-height: 50px;
+  padding: 0 1.15rem;
+}
+
+.sabi-v2-button:hover,
+.sabi-v2-text-link:hover {
+  transform: translateY(-2px);
+}
+
+.sabi-v2-button--primary {
+  border: 1px solid #4057e8;
+  background: #4057e8;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(64, 87, 232, 0.2);
+}
+
+.sabi-v2-button--primary:hover {
+  border-color: #3045ce;
+  background: #3045ce;
+  box-shadow: 0 14px 28px rgba(64, 87, 232, 0.25);
+}
+
+.sabi-v2-button__icon {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.sabi-v2-text-link {
+  min-height: 48px;
+  border: 1px solid #dfe4ed;
+  background: rgba(255, 255, 255, 0.7);
+  color: #25314c;
+  padding: 0 1rem;
+}
+
+.sabi-v2-text-link:hover {
+  border-color: #bdc8e4;
+  background: #fff;
+}
+
+.sabi-v2-meaning {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  max-width: 390px;
+  margin-top: 2.2rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid #dfe4ed;
+}
+
+.sabi-v2-meaning__mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--sabi-v2-blue-soft);
+  color: var(--sabi-v2-blue);
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.sabi-v2-meaning p {
+  margin: 0;
+  color: var(--sabi-v2-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sabi-v2-meaning span {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--sabi-v2-muted);
+  font-size: 11px;
+}
+
+.sabi-v2-call-demo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(173, 190, 255, 0.22);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 22% 54%, rgba(75, 104, 238, 0.26), transparent 34%),
+    linear-gradient(145deg, #1c2859 0%, #121a3a 100%);
+  box-shadow:
+    0 32px 80px rgba(24, 39, 104, 0.18),
+    0 2px 5px rgba(14, 24, 62, 0.12);
+  color: #f7f8ff;
+}
+
+.sabi-v2-call-demo::before {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(213, 222, 255, 0.035) 1px, transparent 1px);
+  background-size: 100% 48px;
+  content: "";
+  pointer-events: none;
+}
+
+.sabi-v2-call-demo__top,
+.sabi-v2-call-demo__footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.sabi-v2-call-demo__top {
+  min-height: 54px;
+  padding: 0 22px;
+  border-bottom: 1px solid rgba(226, 232, 255, 0.12);
+  color: rgba(236, 240, 255, 0.72);
+}
+
+.sabi-v2-call-demo__status,
+.sabi-v2-call-demo__network {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sabi-v2-call-demo__status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sabi-v2-coral);
+  box-shadow: 0 0 0 4px rgba(244, 123, 93, 0.14);
+}
+
+.sabi-v2-call-demo__network {
+  color: #c6cffb;
+}
+
+.sabi-v2-call-demo__network span {
+  color: #6e7cae;
+}
+
+.sabi-v2-call-demo__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(145px, 0.83fr) minmax(45px, 0.22fr) minmax(220px, 1.14fr);
+  align-items: center;
+  gap: 10px;
+  padding: 1rem 18px 1.15rem;
+}
+
+.sabi-v2-call-demo__phone {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 400px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sabi-v2-call-demo__phone .sabi-rings {
+  z-index: 0;
+}
+
+.sabi-v2-call-demo__phone .sabi-rings span {
+  border-color: rgba(162, 180, 255, 0.12);
+}
+
+.sabi-v2-call-demo__phone .sabi-rings .sabi-ring-pulse {
+  border-color: rgba(162, 180, 255, 0.3);
+}
+
+.sabi-v2-call-demo__phone .sabi-phone {
+  z-index: 1;
+  transform: scale(0.76) rotate(-5deg);
+  transform-origin: center;
+  border: 1px solid #49516b;
+  background: linear-gradient(145deg, #343a4b 0%, #12151f 34%, #080a11 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -6px 0 rgba(0, 0, 0, 0.3),
+    0 28px 45px rgba(4, 8, 24, 0.4);
+}
+
+.sabi-v2-call-demo__phone .sabi-phone-speaker {
+  background: #636c84;
+}
+
+.sabi-v2-call-demo__phone .sabi-phone-screen {
+  background: linear-gradient(145deg, #eff2ff, #cbd5ff);
+  color: #202b55;
+  box-shadow:
+    inset 0 0 0 3px #303952,
+    inset 0 5px 14px rgba(20, 35, 90, 0.13),
+    0 0 26px rgba(123, 145, 255, 0.18);
+}
+
+.sabi-v2-call-demo__phone .sabi-phone-screen p,
+.sabi-v2-call-demo__phone .sabi-phone-screen span {
+  color: #25345d;
+}
+
+.sabi-v2-call-demo__phone .sabi-phone-name {
+  color: #17224d;
+}
+
+.sabi-v2-call-demo__phone .sabi-phone-bars i {
+  background: #4057e8;
+  box-shadow: 0 0 8px rgba(64, 87, 232, 0.35);
+}
+
+.sabi-v2-call-demo__phone .sabi-phone-key {
+  background: linear-gradient(180deg, #30384b, #1e2433);
+  color: #eff2ff;
+}
+
+.sabi-v2-call-demo__phone-note {
+  position: absolute;
+  right: -0.15rem;
+  bottom: 0.2rem;
+  color: rgba(218, 225, 255, 0.58);
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sabi-v2-call-demo__wave-column {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.sabi-v2-call-demo__wave-label,
+.sabi-v2-call-demo__wave-note {
+  color: rgba(199, 209, 251, 0.55);
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.07em;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.sabi-v2-call-demo__wave {
+  display: flex;
+  height: 120px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.sabi-v2-call-demo__wave i {
+  width: 3px;
+  height: var(--wave-height);
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #a9b6ff, #6176f0 55%, #f47b5d);
+  box-shadow: 0 0 12px rgba(103, 126, 247, 0.38);
+  transform: scaleY(0.7);
+  transform-origin: center;
+}
+
+.sabi-v2-call-demo__wave.is-playing i {
+  animation: sabi-v2-wave 0.72s ease-in-out infinite;
+  animation-delay: var(--wave-delay);
+}
+
+.sabi-v2-call-demo__transcript {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 356px;
+  flex-direction: column;
+  border: 1px solid rgba(224, 229, 243, 0.9);
+  border-radius: 19px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 18px 35px rgba(7, 14, 43, 0.2);
+  color: #18213b;
+  padding: 17px 16px 12px;
+}
+
+.sabi-v2-call-demo__transcript-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8ebf4;
+}
+
+.sabi-v2-call-demo__transcript-head p {
+  margin: 0.25rem 0 0;
+  color: #1b2440;
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.sabi-v2-call-demo__eyebrow {
+  color: #69758e;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+.sabi-v2-call-demo__lesson-tag {
+  border: 1px solid #d9def2;
+  border-radius: 999px;
+  background: #f1f3ff;
+  color: #4254ca;
+  padding: 0.35rem 0.45rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 7px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.sabi-v2-call-demo__turns {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  margin: 11px 0 9px;
+  padding: 0;
+  list-style: none;
+}
+
+.sabi-v2-call-demo__turns li {
+  border: 1px solid transparent;
+  border-radius: 11px;
+  padding: 8px 9px;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.sabi-v2-call-demo__turns li.is-active {
+  transform: translateX(2px);
+  border-color: #d8defa;
+  background: #f3f5ff;
+}
+
+.sabi-v2-call-demo__turn-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  color: #4057e8;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sabi-v2-call-demo__turn-meta time {
+  color: #8a94a9;
+  font-weight: 400;
+}
+
+.sabi-v2-call-demo__turns li p {
+  margin: 0.35rem 0 0;
+  color: #4f5b72;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.sabi-v2-call-demo__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 10px;
+  border-top: 1px solid #e8ebf4;
+  color: #8b95a8;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+}
+
+.sabi-v2-call-demo__controls button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  background: transparent;
+  color: #3148ce;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.sabi-v2-call-demo__play-icon {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8ecff;
+}
+
+.sabi-v2-call-demo__play-icon.is-playing {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.sabi-v2-call-demo__play-icon.is-playing i {
+  width: 3px;
+  height: 8px;
+  border-radius: 1px;
+  background: #4057e8;
+}
+
+.sabi-v2-call-demo__footer {
+  min-height: 40px;
+  padding: 0 22px;
+  border-top: 1px solid rgba(226, 232, 255, 0.12);
+  color: rgba(201, 210, 249, 0.56);
+  font-size: 8px;
+}
+
+.sabi-v2-proof-strip {
+  border-bottom: 1px solid var(--sabi-v2-line);
+  background: #fff;
+}
+
+.sabi-v2-proof-strip ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: min(1220px, calc(100% - 56px));
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.sabi-v2-proof-strip li {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-right: 1px solid #e7ebf2;
+  color: #34415d;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sabi-v2-proof-strip li:last-child {
+  border-right: 0;
+}
+
+.sabi-v2-proof-check {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9edff;
+  color: #4057e8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sabi-v2-section {
+  padding-block: clamp(4.7rem, 8vw, 7.6rem);
+}
+
+.sabi-v2-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.7fr);
+  align-items: end;
+  gap: 3rem;
+  margin-bottom: 2.6rem;
+}
+
+.sabi-v2-section-head h2,
+.sabi-v2-distribution h2,
+.sabi-v2-api-copy h2,
+.sabi-v2-final-card h2 {
+  margin: 1rem 0 0;
+  color: var(--sabi-v2-ink);
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.5rem, 4.7vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+
+.sabi-v2-section-head h2 span {
+  color: var(--sabi-v2-blue);
+}
+
+.sabi-v2-section-head > div:last-child p {
+  max-width: 410px;
+  margin: 0;
+  color: var(--sabi-v2-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.sabi-v2-inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  color: #3449c5;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sabi-v2-inline-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.sabi-v2-metrics {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.88fr;
+  gap: 14px;
+}
+
+.sabi-v2-metric {
+  position: relative;
+  display: flex;
+  min-height: 275px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid var(--sabi-v2-line);
+  border-radius: 22px;
+  background: #fff;
+  padding: 25px;
+  transition:
+    transform 230ms cubic-bezier(0.18, 0.84, 0.22, 1),
+    border-color 230ms ease,
+    box-shadow 230ms ease;
+}
+
+.sabi-v2-metric::after,
+.sabi-v2-step::after {
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(420px circle at 50% 0%, rgba(64, 87, 232, 0.09), transparent 56%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.sabi-v2-metric:hover,
+.sabi-v2-step:hover {
+  transform: translateY(-5px);
+  border-color: #c2cbee;
+  box-shadow: 0 18px 38px rgba(30, 48, 113, 0.09);
+}
+
+.sabi-v2-metric:hover::after,
+.sabi-v2-step:hover::after {
+  opacity: 1;
+}
+
+.sabi-v2-metric--lead {
+  border-color: #d9dff6;
+  background: linear-gradient(135deg, #edf0ff 0%, #e7ebff 100%);
+}
+
+.sabi-v2-metric__top,
+.sabi-v2-metric__bottom {
+  position: relative;
+  z-index: 1;
+}
+
+.sabi-v2-metric__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sabi-v2-metric__index {
+  color: #68758d;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.sabi-v2-metric__badge {
+  border: 1px solid #d8def1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  color: #53628b;
+  padding: 0.32rem 0.52rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sabi-v2-metric__value {
+  margin: 2rem 0 0;
+  color: #2537a6;
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(3.8rem, 6.4vw, 6.2rem);
+  font-weight: 700;
+  letter-spacing: -0.085em;
+  line-height: 0.88;
+}
+
+.sabi-v2-metric:not(.sabi-v2-metric--lead) .sabi-v2-metric__value {
+  color: #17224d;
+  font-size: clamp(3.6rem, 5.5vw, 5rem);
+}
+
+.sabi-v2-metric__label {
+  margin: 0.9rem 0 0;
+  color: #27334e;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.sabi-v2-metric__source {
+  margin: 0.75rem 0 0;
+  color: #758099;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+
+.sabi-v2-distribution {
+  padding: 0 0 clamp(4.5rem, 7vw, 7rem);
+}
+
+.sabi-v2-distribution-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.8fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  overflow: hidden;
+  border: 1px solid #354172;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 100% 10%, rgba(99, 122, 255, 0.24), transparent 40%),
+    #17224d;
+  color: #fff;
+  padding: clamp(2rem, 5vw, 3.7rem);
+}
+
+.sabi-v2-distribution-card::after {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(228, 233, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 54px;
+  content: "";
+  pointer-events: none;
+}
+
+.sabi-v2-distribution-copy,
+.sabi-v2-distribution-data {
+  position: relative;
+  z-index: 1;
+}
+
+.sabi-v2-distribution .sabi-v2-eyebrow {
+  color: #acb9ff;
+}
+
+.sabi-v2-distribution h2 {
+  max-width: 640px;
+  color: #fff;
+  font-size: clamp(2.5rem, 4.5vw, 4.2rem);
+}
+
+.sabi-v2-distribution-copy > p {
+  max-width: 550px;
+  margin: 1.25rem 0 0;
+  color: #c4cbe2;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.sabi-v2-founder-quote {
+  max-width: 565px;
+  margin: 2rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid #f47b5d;
+  color: #e7eaff;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.sabi-v2-founder-quote cite {
+  display: block;
+  margin-top: 0.65rem;
+  color: #9eabd3;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sabi-v2-distribution-data {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+}
+
+.sabi-v2-phone-fact {
+  border: 1px solid rgba(206, 216, 255, 0.18);
+  border-radius: 18px;
+  background: rgba(238, 241, 255, 0.07);
+  padding: 1.1rem 1.2rem;
+}
+
+.sabi-v2-phone-fact strong {
+  display: block;
+  color: #fff;
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 3.15rem;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 0.95;
+}
+
+.sabi-v2-phone-fact span {
+  display: block;
+  margin-top: 0.45rem;
+  color: #c0c9e6;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.sabi-v2-pipeline {
+  background: #fff;
+  border-top: 1px solid var(--sabi-v2-line);
+  border-bottom: 1px solid var(--sabi-v2-line);
+}
+
+.sabi-v2-pipeline .sabi-v2-section-head {
+  margin-bottom: 2.4rem;
+}
+
+.sabi-v2-pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sabi-v2-step {
+  position: relative;
+  min-height: 270px;
+  overflow: hidden;
+  border: 1px solid #e0e5ef;
+  border-radius: 20px;
+  background: #fbfcfe;
+  padding: 1.3rem;
+  transition:
+    transform 230ms cubic-bezier(0.18, 0.84, 0.22, 1),
+    border-color 230ms ease,
+    box-shadow 230ms ease;
+}
+
+.sabi-v2-step__top,
+.sabi-v2-step__content {
+  position: relative;
+  z-index: 1;
+}
+
+.sabi-v2-step__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.sabi-v2-step__number {
+  color: #4057e8;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sabi-v2-step__signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #7c879d;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sabi-v2-step__signal i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f47b5d;
+}
+
+.sabi-v2-step__content {
+  margin-top: 2.4rem;
+}
+
+.sabi-v2-step h3 {
+  margin: 0;
+  color: #18213b;
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+}
+
+.sabi-v2-step p {
+  margin: 0.8rem 0 0;
+  color: #606d83;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.sabi-v2-pipeline-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  color: #69758b;
+  font-size: 12px;
+}
+
+.sabi-v2-pipeline-foot strong {
+  color: #27334e;
+  font-weight: 600;
+}
+
+.sabi-v2-api-section {
+  padding-block: clamp(4.7rem, 8vw, 7.4rem);
+}
+
+.sabi-v2-api-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  border: 1px solid #dce2f4;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #edf0ff 0%, #e5eaff 100%);
+  padding: clamp(1.5rem, 4vw, 3.2rem);
+}
+
+.sabi-v2-api-copy h2 {
+  max-width: 520px;
+  margin-top: 1.15rem;
+  font-size: clamp(2.5rem, 4.2vw, 3.9rem);
+}
+
+.sabi-v2-api-copy > p {
+  max-width: 480px;
+  margin: 1.2rem 0 0;
+  color: #5d6980;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.sabi-v2-api-pricing {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 1.35rem;
+}
+
+.sabi-v2-api-pricing > div {
+  min-width: 0;
+  border: 1px solid #dce2ef;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.74);
+  padding: 0.8rem;
+}
+
+.sabi-v2-api-pricing span {
+  display: block;
+  color: #77829a;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sabi-v2-api-pricing strong {
+  display: block;
+  margin-top: 0.5rem;
+  color: #1a2549;
+  font-family: var(--sabi-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.sabi-v2-api-pricing strong small {
+  color: #64708a;
+  font-family: var(--sabi-font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.sabi-v2-api-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  color: #3348cb;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sabi-v2-api-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.sabi-v2-terminal {
+  overflow: hidden;
+  border: 1px solid #39436f;
+  border-radius: 20px;
+  background: #111831;
+  box-shadow: 0 24px 50px rgba(22, 34, 84, 0.2);
+  color: #edf0ff;
+}
+
+.sabi-v2-terminal__chrome {
+  display: flex;
+  min-height: 51px;
+  align-items: center;
+  gap: 0.8rem;
+  border-bottom: 1px solid rgba(212, 221, 255, 0.12);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0 14px;
+}
+
+.sabi-v2-terminal__lights {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 5px;
+}
+
+.sabi-v2-terminal__lights i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff8c72;
+}
+
+.sabi-v2-terminal__lights i:nth-child(2) {
+  background: #f2c56e;
+}
+
+.sabi-v2-terminal__lights i:nth-child(3) {
+  background: #74d9a5;
+}
+
+.sabi-v2-terminal__title {
+  overflow: hidden;
+  color: #bcc7ee;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sabi-v2-terminal__title span {
+  color: #68749d;
+  padding-inline: 0.35rem;
+}
+
+.sabi-v2-terminal__chrome button {
+  flex: 0 0 auto;
+  margin-left: auto;
+  border: 1px solid rgba(191, 203, 255, 0.22);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #d4dcff;
+  cursor: pointer;
+  padding: 0.42rem 0.55rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  transition: background-color 160ms ease;
+}
+
+.sabi-v2-terminal__chrome button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.sabi-v2-terminal__code {
+  overflow-x: auto;
+  margin: 0;
+  padding: 1.25rem 1rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: clamp(9px, 1vw, 11px);
+  line-height: 2.1;
+  tab-size: 2;
+}
+
+.sabi-v2-terminal__line {
+  display: grid;
+  min-width: max-content;
+  grid-template-columns: 25px 1fr;
+  gap: 0.65rem;
+  padding-inline: 0.25rem;
+}
+
+.sabi-v2-terminal__line-number {
+  color: #596588;
+  user-select: none;
+}
+
+.sabi-v2-terminal__line code {
+  color: #d7def9;
+  font-family: inherit;
+}
+
+.sabi-v2-terminal__line.is-command code {
+  color: #a9b6ff;
+}
+
+.sabi-v2-terminal__line.is-header code {
+  color: #b8ddcf;
+}
+
+.sabi-v2-terminal__line.is-data code {
+  color: #f0c7a4;
+}
+
+.sabi-v2-terminal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid rgba(212, 221, 255, 0.12);
+  color: #7380a8;
+  padding: 0.7rem 1rem;
+  font-family: var(--sabi-font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+}
+
+.sabi-v2-final {
+  padding: 0 0 clamp(4rem, 7vw, 6rem);
+}
+
+.sabi-v2-final-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2rem;
+  overflow: hidden;
+  border: 1px solid #3648ba;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(184, 194, 255, 0.3), transparent 34%),
+    #4057e8;
+  color: #fff;
+  padding: clamp(2rem, 5vw, 3.3rem);
+}
+
+.sabi-v2-final-card h2 {
+  max-width: 680px;
+  margin-top: 0.8rem;
+  color: #fff;
+  font-size: clamp(2.3rem, 4.1vw, 3.8rem);
+}
+
+.sabi-v2-final-card p {
+  max-width: 560px;
+  margin: 0.9rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.sabi-v2-final-card .sabi-v2-eyebrow {
+  color: #d7dcff;
+}
+
+.sabi-v2-final-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  min-width: 205px;
+}
+
+.sabi-v2-final-actions .sabi-v2-button--primary {
+  border-color: #fff;
+  background: #fff;
+  color: #273ba9;
+  box-shadow: 0 10px 24px rgba(21, 36, 125, 0.15);
+}
+
+.sabi-v2-final-actions .sabi-v2-button--primary:hover {
+  background: #edf0ff;
+}
+
+.sabi-v2-final-actions .sabi-v2-text-link {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sabi-v2-final-actions .sabi-v2-text-link:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.sabi-v2 a:focus-visible,
+.sabi-v2 button:focus-visible {
+  outline: 3px solid rgba(244, 123, 93, 0.8);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1100px) {
+  .sabi-v2-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3.25rem;
+  }
+
+  .sabi-v2-hero-copy {
+    max-width: 800px;
+  }
+
+  .sabi-v2-call-demo {
+    width: min(100%, 820px);
+    margin-inline: auto;
+  }
+
+  .sabi-v2-pipeline-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sabi-v2-api-card {
+    grid-template-columns: 1fr;
+  }
+
+  .sabi-v2-api-copy {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sabi-pilot-tag {
+    display: none;
+  }
+
+  .sabi-v2-container,
+  .sabi-v2-proof-strip ul {
+    width: min(100% - 36px, 620px);
+  }
+
+  .sabi-v2-hero-grid {
+    padding-block: 3.5rem 4rem;
+  }
+
+  .sabi-v2-title {
+    font-size: clamp(3rem, 11vw, 4.4rem);
+  }
+
+  .sabi-v2-proof-strip ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sabi-v2-proof-strip li {
+    min-height: 58px;
+    justify-content: flex-start;
+    border-bottom: 1px solid #e7ebf2;
+    padding-left: 0.55rem;
+  }
+
+  .sabi-v2-proof-strip li:nth-child(2) {
+    border-right: 0;
+  }
+
+  .sabi-v2-proof-strip li:nth-child(n + 3) {
+    border-bottom: 0;
+  }
+
+  .sabi-v2-section-head {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .sabi-v2-section-head h2 {
+    font-size: clamp(2.4rem, 8vw, 3.5rem);
+  }
+
+  .sabi-v2-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .sabi-v2-metric {
+    min-height: 220px;
+  }
+
+  .sabi-v2-distribution-card {
+    grid-template-columns: 1fr;
+  }
+
+  .sabi-v2-distribution-data {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sabi-v2-pipeline-foot {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sabi-v2-final-card {
+    grid-template-columns: 1fr;
+  }
+
+  .sabi-v2-final-actions {
+    width: min(100%, 300px);
+  }
+}
+
+@media (max-width: 620px) {
+  .sabi-v2-container,
+  .sabi-v2-proof-strip ul {
+    width: calc(100% - 32px);
+  }
+
+  .sabi-v2-title {
+    font-size: clamp(2.75rem, 12vw, 3.8rem);
+  }
+
+  .sabi-v2-lede {
+    font-size: 16px;
+  }
+
+  .sabi-v2-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sabi-v2-button,
+  .sabi-v2-text-link {
+    width: 100%;
+  }
+
+  .sabi-v2-meaning {
+    margin-top: 1.7rem;
+  }
+
+  .sabi-v2-call-demo {
+    border-radius: 22px;
+  }
+
+  .sabi-v2-call-demo__top,
+  .sabi-v2-call-demo__footer {
+    padding-inline: 14px;
+    font-size: 7px;
+  }
+
+  .sabi-v2-call-demo__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.55rem;
+    padding: 0.8rem 12px 0.9rem;
+  }
+
+  .sabi-v2-call-demo__phone {
+    height: 342px;
+    overflow: hidden;
+  }
+
+  .sabi-v2-call-demo__phone .sabi-phone {
+    transform: scale(0.7) rotate(-4deg);
+  }
+
+  .sabi-v2-call-demo__phone-note {
+    right: 0.5rem;
+    bottom: 0.2rem;
+  }
+
+  .sabi-v2-call-demo__wave-column {
+    height: 42px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .sabi-v2-call-demo__wave-label,
+  .sabi-v2-call-demo__wave-note {
+    font-size: 7px;
+  }
+
+  .sabi-v2-call-demo__wave-label br {
+    display: none;
+  }
+
+  .sabi-v2-call-demo__wave {
+    height: 40px;
+    gap: 2px;
+  }
+
+  .sabi-v2-call-demo__wave i {
+    width: 2px;
+    max-height: 30px;
+  }
+
+  .sabi-v2-call-demo__transcript {
+    min-height: 0;
+    padding: 14px 12px 10px;
+  }
+
+  .sabi-v2-call-demo__turns {
+    gap: 3px;
+    margin-block: 8px;
+  }
+
+  .sabi-v2-call-demo__turns li {
+    padding: 7px;
+  }
+
+  .sabi-v2-call-demo__turns li p {
+    font-size: 11px;
+  }
+
+  .sabi-v2-call-demo__footer span:last-child {
+    text-align: right;
+  }
+
+  .sabi-v2-proof-strip li {
+    gap: 0.42rem;
+    font-size: 10px;
+  }
+
+  .sabi-v2-proof-check {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .sabi-v2-section {
+    padding-block: 4.3rem;
+  }
+
+  .sabi-v2-metric {
+    min-height: 205px;
+    padding: 21px;
+  }
+
+  .sabi-v2-metric__value {
+    font-size: 4.4rem;
+  }
+
+  .sabi-v2-distribution-card {
+    gap: 1.8rem;
+    border-radius: 24px;
+    padding: 1.45rem;
+  }
+
+  .sabi-v2-distribution h2,
+  .sabi-v2-api-copy h2 {
+    font-size: clamp(2.3rem, 9vw, 3.2rem);
+  }
+
+  .sabi-v2-distribution-data {
+    gap: 8px;
+  }
+
+  .sabi-v2-phone-fact {
+    padding: 0.8rem;
+  }
+
+  .sabi-v2-phone-fact strong {
+    font-size: 2.5rem;
+  }
+
+  .sabi-v2-phone-fact span {
+    font-size: 10px;
+  }
+
+  .sabi-v2-pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sabi-v2-step {
+    min-height: 195px;
+  }
+
+  .sabi-v2-step__content {
+    margin-top: 1.5rem;
+  }
+
+  .sabi-v2-api-card {
+    gap: 1.8rem;
+    border-radius: 24px;
+    padding: 1.25rem;
+  }
+
+  .sabi-v2-api-pricing {
+    gap: 7px;
+  }
+
+  .sabi-v2-api-pricing > div {
+    padding: 0.68rem;
+  }
+
+  .sabi-v2-api-pricing strong {
+    font-size: 16px;
+  }
+
+  .sabi-v2-terminal {
+    border-radius: 15px;
+  }
+
+  .sabi-v2-terminal__chrome {
+    gap: 0.45rem;
+    padding-inline: 10px;
+  }
+
+  .sabi-v2-terminal__title {
+    font-size: 7px;
+  }
+
+  .sabi-v2-terminal__chrome button {
+    padding: 0.38rem;
+    font-size: 7px;
+  }
+
+  .sabi-v2-terminal__code {
+    padding: 1rem 0.6rem;
+    font-size: 8px;
+  }
+
+  .sabi-v2-terminal__line {
+    grid-template-columns: 20px 1fr;
+    gap: 0.4rem;
+  }
+
+  .sabi-v2-terminal__foot {
+    font-size: 7px;
+    padding-inline: 0.65rem;
+  }
+
+  .sabi-v2-final-card {
+    gap: 1.6rem;
+    border-radius: 24px;
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sabi-pilot-tag__dot,
+  .sabi-v2-call-demo__wave.is-playing i {
+    animation: none;
+  }
+
+  .sabi-v2 *,
+  .sabi-v2 *::before,
+  .sabi-v2 *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
