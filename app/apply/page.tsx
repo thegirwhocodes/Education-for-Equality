@@ -73,10 +73,7 @@ export default function ApplyPage() {
                 <rect x="17.75" y="9" width="4.5" height="22" rx="2.25" fill="#F8C544" />
                 <rect x="25.5" y="13" width="4.5" height="14" rx="2.25" fill="#F8C544" />
               </svg>
-              <span className="font-extrabold text-[26px] tracking-tight text-white lowercase" style={{ letterSpacing: '-0.04em', lineHeight: 1 }}>sabi</span>
-              <span className="text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0FA992]/20 text-[#16FDDB] font-semibold border border-[#0FA992]/40 ml-1">
-                by Education for Equality
-              </span>
+              <span className="font-extrabold text-[28px] tracking-tight text-white lowercase" style={{ letterSpacing: '-0.04em', lineHeight: 1 }}>sabi</span>
             </a>
           </div>
 
