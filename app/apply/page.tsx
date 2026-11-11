@@ -16,6 +16,7 @@ export default function ApplyPage() {
     githubUrl: '',
     technologies: [] as string[],
     bugStory: '',
+    whySabi: '',
     creditPreference: 'yes',
   });
 
@@ -64,16 +65,25 @@ export default function ApplyPage() {
       <header className="border-b border-[#1A1A1A] bg-[#0A0A0A]/90 sticky top-0 z-50 backdrop-blur px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#141414] border border-[#2B2B2B] flex items-center justify-center shadow-md shadow-[#CBA868]/15 p-1">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 212" className="w-5 h-5" role="img" aria-label="Sabi spark">
-                <path d="M96 22 Q107 91 146 102 Q107 113 96 190 Q85 113 46 102 Q85 91 96 22 Z" fill="#D9BC7A"/>
-                <path d="M150 30 Q155 47 166 52 Q155 57 150 74 Q145 57 134 52 Q145 47 150 30 Z" fill="#EDD9A8"/>
+            {/* Official Sabi & E4E Sound Book Logo Mark */}
+            <div className="w-9 h-9 rounded-xl bg-[#FFF8E7] flex items-center justify-center shadow-md shadow-[#CBA868]/20 p-1 border border-[#F6B642]/30">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-full h-full" role="img" aria-label="Sabi logo">
+                <circle cx="256" cy="154" r="28" fill="#F6B642"/>
+                <path d="M217 207v54" fill="none" stroke="#0FA992" strokeWidth="24" strokeLinecap="round"/>
+                <path d="M256 191v88" fill="none" stroke="#075449" strokeWidth="26" strokeLinecap="round"/>
+                <path d="M295 207v54" fill="none" stroke="#0FA992" strokeWidth="24" strokeLinecap="round"/>
+                <path d="M154 286c44-26 82-28 102-6v105c-26-23-64-24-120-1V295c0-5 13-7 18-9Z" fill="none" stroke="#075449" strokeWidth="26" strokeLinejoin="round"/>
+                <path d="M358 286c-44-26-82-28-102-6v105c26-23 64-24 120-1V295c0-5-13-7-18-9Z" fill="none" stroke="#075449" strokeWidth="26" strokeLinejoin="round"/>
+                <path d="M183 326c27-10 50-9 73 5" fill="none" stroke="#F6B642" strokeWidth="16" strokeLinecap="round"/>
+                <path d="M329 326c-27-10-50-9-73 5" fill="none" stroke="#F6B642" strokeWidth="16" strokeLinecap="round"/>
+                <path d="M365 157l13-25 13 25 25 13-25 13-13 25-13-25-25-13 25-13Z" fill="#E85D42"/>
+                <circle cx="143" cy="159" r="16" fill="#0FA992"/>
               </svg>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-wider text-white text-base">SABI</span>
-                <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#CBA868]/15 text-[#CBA868] font-medium border border-[#CBA868]/30">
+                <span className="font-black tracking-wider text-white text-base">Sabi</span>
+                <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#0FA992]/20 text-[#16FDDB] font-semibold border border-[#0FA992]/40">
                   by Education for Equality
                 </span>
               </div>
@@ -339,6 +349,20 @@ export default function ApplyPage() {
                       </label>
                     ))}
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                    Why do you want to work for Sabi, and what excites you about providing educational access to children? *
+                  </label>
+                  <textarea
+                    rows={3}
+                    required
+                    placeholder="Tell us what draws you to our mission and what excites you about building voice AI for children who lack internet access."
+                    value={formData.whySabi}
+                    onChange={(e) => setFormData({ ...formData, whySabi: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm resize-none"
+                  />
                 </div>
 
                 <div>

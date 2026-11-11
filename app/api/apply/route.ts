@@ -11,6 +11,7 @@ export async function POST(req: Request) {
       githubUrl,
       technologies,
       bugStory,
+      whySabi,
       creditPreference,
     } = body;
 
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     const techString = Array.isArray(technologies) ? technologies.join(', ') : technologies || 'None listed';
-    const notesContent = `Major: ${major || 'N/A'}\n\nTech Stack: ${techString}\n\nCSPL 493 Credit Preference: ${creditPreference || 'N/A'}\n\nBug Hunt Diagnostic Story:\n${bugStory || 'N/A'}`;
+    const notesContent = `Major: ${major || 'N/A'}\n\nTech Stack: ${techString}\n\nCSPL 493 Credit Preference: ${creditPreference || 'N/A'}\n\nWhy Sabi & Educational Access:\n${whySabi || 'N/A'}\n\nBug Hunt Diagnostic Story:\n${bugStory || 'N/A'}`;
 
     const notionPayload = {
       parent: { database_id: databaseId },
