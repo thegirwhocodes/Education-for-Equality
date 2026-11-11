@@ -65,29 +65,19 @@ export default function ApplyPage() {
       <header className="border-b border-[#1A1A1A] bg-[#0A0A0A]/90 sticky top-0 z-50 backdrop-blur px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* Official Sabi & E4E Sound Book Logo Mark */}
-            <div className="w-9 h-9 rounded-xl bg-[#FFF8E7] flex items-center justify-center shadow-md shadow-[#CBA868]/20 p-1 border border-[#F6B642]/30">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-full h-full" role="img" aria-label="Sabi logo">
-                <circle cx="256" cy="154" r="28" fill="#F6B642"/>
-                <path d="M217 207v54" fill="none" stroke="#0FA992" strokeWidth="24" strokeLinecap="round"/>
-                <path d="M256 191v88" fill="none" stroke="#075449" strokeWidth="26" strokeLinecap="round"/>
-                <path d="M295 207v54" fill="none" stroke="#0FA992" strokeWidth="24" strokeLinecap="round"/>
-                <path d="M154 286c44-26 82-28 102-6v105c-26-23-64-24-120-1V295c0-5 13-7 18-9Z" fill="none" stroke="#075449" strokeWidth="26" strokeLinejoin="round"/>
-                <path d="M358 286c-44-26-82-28-102-6v105c26-23 64-24 120-1V295c0-5-13-7-18-9Z" fill="none" stroke="#075449" strokeWidth="26" strokeLinejoin="round"/>
-                <path d="M183 326c27-10 50-9 73 5" fill="none" stroke="#F6B642" strokeWidth="16" strokeLinecap="round"/>
-                <path d="M329 326c-27-10-50-9-73 5" fill="none" stroke="#F6B642" strokeWidth="16" strokeLinecap="round"/>
-                <path d="M365 157l13-25 13 25 25 13-25 13-13 25-13-25-25-13 25-13Z" fill="#E85D42"/>
-                <circle cx="143" cy="159" r="16" fill="#0FA992"/>
+            {/* Official Sabi Handset Voice Logo Mark */}
+            <Link href="https://sabi.eduforequality.org" className="flex items-center gap-2.5 hover:opacity-90 transition">
+              <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true" className="shrink-0 rounded-xl shadow-md">
+                <rect width="40" height="40" rx="11" fill="#101413" stroke="#2D3734" strokeWidth="1.5" />
+                <rect x="10" y="15" width="4.5" height="10" rx="2.25" fill="#F8C544" />
+                <rect x="17.75" y="9" width="4.5" height="22" rx="2.25" fill="#F8C544" />
+                <rect x="25.5" y="13" width="4.5" height="14" rx="2.25" fill="#F8C544" />
               </svg>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black tracking-wider text-white text-base">Sabi</span>
-                <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#0FA992]/20 text-[#16FDDB] font-semibold border border-[#0FA992]/40">
-                  by Education for Equality
-                </span>
-              </div>
-            </div>
+              <span className="font-extrabold text-[26px] tracking-tight text-white lowercase" style={{ letterSpacing: '-0.04em', lineHeight: 1 }}>sabi</span>
+              <span className="text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0FA992]/20 text-[#16FDDB] font-semibold border border-[#0FA992]/40 ml-1">
+                by Education for Equality
+              </span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">
@@ -95,18 +85,18 @@ export default function ApplyPage() {
               href={NOTION_JOB_SPEC_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#2B2B2B] bg-[#141414] hover:bg-[#1F1F1F] text-xs font-medium text-[#D4D4D4] hover:text-white transition"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[#2B2B2B] bg-[#141414] hover:bg-[#1F1F1F] text-sm font-medium text-[#D4D4D4] hover:text-white transition"
             >
               <span>📄</span> Notion Job Spec ↗
             </a>
             <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#121212] border border-[#222] text-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="text-[#888]">Toll-Free Telephony:</span>
-              <span className="text-white font-mono text-[11px]">+234 201 700 1459</span>
+              <span className="text-white font-mono text-[12px]">+234 201 700 1459</span>
             </div>
             <a
               href="#apply"
-              className="px-4 py-1.5 rounded-lg bg-[#CBA868] text-black font-semibold text-xs hover:bg-[#D8B97C] transition shadow-md shadow-[#CBA868]/20"
+              className="px-4 py-2 rounded-lg bg-[#CBA868] text-black font-semibold text-sm hover:bg-[#D8B97C] transition shadow-md shadow-[#CBA868]/20"
             >
               Apply Now
             </a>
@@ -125,7 +115,7 @@ export default function ApplyPage() {
           }}
         >
           <div className="absolute bottom-6 left-6 sm:left-8 right-6 flex items-center justify-between">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#111]/85 backdrop-blur border border-[#333] text-xs text-[#DDD]">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#111]/85 backdrop-blur border border-[#333] text-sm text-[#DDD]">
               <span className="text-base">🏛️</span>
               <span className="font-semibold text-white tracking-wide">Education for Equality Inc.</span>
               <span className="text-[#666]">·</span>
@@ -137,7 +127,7 @@ export default function ApplyPage() {
         {/* Hero Section */}
         <section className="space-y-4 text-center sm:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-serif leading-tight">
-            Sabi / Education for Equality — SWE Intern Application (Spring 2027)
+            Sabi / Education for Equality — SWE Intern Application (Fall 2026 – Spring 2027)
           </h1>
           <h2 className="text-xl sm:text-2xl text-[#CBA868] font-medium flex items-center gap-2">
             <span className="text-2xl">🏛️</span>
@@ -145,29 +135,29 @@ export default function ApplyPage() {
           </h2>
 
           {/* Snapshot Specs */}
-          <div className="p-6 rounded-2xl bg-[#0E0E0E] border border-[#1E1E1E] space-y-2 text-sm text-[#CCC]">
+          <div className="p-6 rounded-2xl bg-[#0E0E0E] border border-[#1E1E1E] space-y-2.5 text-[15.5px] text-[#CCC]">
             <p><strong>Organization:</strong> Education for Equality / Sabi (Social Impact EdTech)</p>
             <p><strong>Location:</strong> Remote / Middletown, CT (Hybrid flexibility)</p>
-            <p><strong>Hours:</strong> 5 – 10 hours/week (Spring 2027) with potential Summer 2027 full-time track</p>
+            <p><strong>Hours:</strong> 5 – 10 hours/week (Fall 2026 – Spring 2027) with potential Summer 2027 full-time track</p>
             <p><strong>Compensation:</strong> Paid Stipend / Course Credit Available via Wesleyan CSPL 493 (0.25 credit)</p>
           </div>
         </section>
 
         {/* About Sabi & Education for Equality */}
         <section className="p-7 rounded-2xl bg-[#0E0E0E] border border-[#1E1E1E] space-y-4 shadow-xl">
-          <h2 className="text-xl font-bold text-white">About Sabi &amp; Education for Equality</h2>
-          <p className="text-sm text-[#A6A6A6] leading-relaxed">
+          <h2 className="font-bold text-white uppercase tracking-wider text-[13px] text-[#999]">About Sabi &amp; Education for Equality:</h2>
+          <p className="text-[15.5px] text-[#A6A6A6] leading-relaxed">
             Education for Equality (E4E) is a social venture founded at Wesleyan University (backed by the Patricelli Center New Venture Award and the MIT Africa Business Challenge). We are solving foundational learning poverty for 33 million children across Sub-Saharan Africa who lack smartphones and internet access.
           </p>
-          <p className="text-sm text-[#A6A6A6] leading-relaxed">
+          <p className="text-[15.5px] text-[#A6A6A6] leading-relaxed">
             Our core product, Sabi, is a voice-first AI tutor that children talk to over standard, toll-free 2G phone calls (<strong>+234 201 700 1459</strong>). Sabi conducts interactive, adaptive math and reading lessons using localized accents and pedagogies.
           </p>
         </section>
 
         {/* What You’ll Work On */}
         <section className="p-7 rounded-2xl bg-[#0E0E0E] border border-[#1E1E1E] space-y-5 shadow-xl">
-          <h2 className="text-xl font-bold text-white">What You’ll Work On</h2>
-          <ul className="space-y-3.5 text-sm text-[#CCC]">
+          <h2 className="font-bold text-white uppercase tracking-wider text-[13px] text-[#999]">What You’ll Work On:</h2>
+          <ul className="space-y-3.5 text-[15.5px] text-[#CCC]">
             <li className="flex items-start gap-2.5">
               <span className="text-[#CBA868] font-bold mt-0.5">●</span>
               <span><strong>Realtime Voice Pipeline:</strong> Build and optimize WebSockets and bidirectional audio streaming using Google Gemini Live (<code>gemini-flash-live-preview</code>), Whisper, and TTS engines under high-latency network conditions.</span>
@@ -190,8 +180,8 @@ export default function ApplyPage() {
         {/* What We’re Looking For & Bonus Points */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <section className="p-7 rounded-2xl bg-[#0E0E0E] border border-[#1E1E1E] space-y-4 shadow-xl">
-            <h2 className="text-lg font-bold text-white">What We’re Looking For</h2>
-            <ul className="space-y-2.5 text-xs text-[#CCC]">
+            <h2 className="font-bold text-white uppercase tracking-wider text-[13px] text-[#999]">What We’re Looking For:</h2>
+            <ul className="space-y-3 text-[14.5px] text-[#CCC]">
               <li className="flex items-start gap-2">
                 <span className="text-emerald-400 font-bold mt-0.5">✓</span>
                 <span>Current Wesleyan student (majoring or interested in Computer Science, Data Analysis, or related technical fields).</span>
@@ -216,8 +206,8 @@ export default function ApplyPage() {
           </section>
 
           <section className="p-7 rounded-2xl bg-[#0E0E0E] border border-[#1E1E1E] space-y-4 shadow-xl">
-            <h2 className="text-lg font-bold text-white">Bonus Points (Not Required)</h2>
-            <ul className="space-y-2.5 text-xs text-[#CCC]">
+            <h2 className="font-bold text-white uppercase tracking-wider text-[13px] text-[#999]">Bonus Points (Not Required):</h2>
+            <ul className="space-y-3 text-[14.5px] text-[#CCC]">
               <li className="flex items-start gap-2">
                 <span className="text-[#CBA868] font-bold mt-0.5">+</span>
                 <span>Experience with Linux server administration (Docker, Ubuntu).</span>
@@ -235,28 +225,28 @@ export default function ApplyPage() {
         </div>
 
         {/* The Application Form */}
-        <section id="apply" className="p-8 rounded-3xl bg-[#0C0C0C] border border-[#222] shadow-2xl relative">
+        <section id="apply" className="p-8 sm:p-10 rounded-3xl bg-[#0C0C0C] border border-[#222] shadow-2xl relative">
           <div className="max-w-2xl mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1A1A1A] pb-4">
               <div>
-                <h2 className="text-2xl font-bold text-white font-serif">Submit Your Application</h2>
-                <p className="text-xs text-[#8E8E8E] mt-1">Takes 3 minutes. Applications reviewed on a rolling basis.</p>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white font-serif">Submit Your Application</h2>
+                <p className="text-sm text-[#8E8E8E] mt-1">Takes 3 minutes. Applications reviewed on a rolling basis.</p>
               </div>
               <a
                 href={GOOGLE_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-[#CBA868] hover:underline flex items-center gap-1 self-start sm:self-auto"
+                className="text-sm text-[#CBA868] hover:underline flex items-center gap-1 self-start sm:self-auto font-medium"
               >
                 Prefer Google Forms? Click here ↗
               </a>
             </div>
 
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="space-y-5 text-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-6 text-[15.5px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                    <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                       Full Name *
                     </label>
                     <input
@@ -265,18 +255,18 @@ export default function ApplyPage() {
                       placeholder="e.g. Maya Chen"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm"
+                      className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base transition"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                    <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                       Graduation Class Year *
                     </label>
                     <select
                       required
                       value={formData.classYear}
                       onChange={(e) => setFormData({ ...formData, classYear: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm cursor-pointer"
+                      className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base cursor-pointer transition"
                     >
                       <option value="" disabled>Select class year</option>
                       <option value="2025">Class of 2025</option>
@@ -288,9 +278,9 @@ export default function ApplyPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                    <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                       Wesleyan Email *
                     </label>
                     <input
@@ -299,11 +289,11 @@ export default function ApplyPage() {
                       placeholder="you@wesleyan.edu"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm"
+                      className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base transition"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                    <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                       Major(s) / Minor(s) *
                     </label>
                     <input
@@ -312,13 +302,13 @@ export default function ApplyPage() {
                       placeholder="e.g. Computer Science &amp; Math"
                       value={formData.major}
                       onChange={(e) => setFormData({ ...formData, major: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm"
+                      className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base transition"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                  <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                     GitHub Profile or Project Link *
                   </label>
                   <input
@@ -327,16 +317,16 @@ export default function ApplyPage() {
                     placeholder="https://github.com/your-username"
                     value={formData.githubUrl}
                     onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base transition"
                   />
                   <span className="text-[11px] text-[#666] mt-1 block">Link a repo, personal site, or PR where we can see real code you wrote.</span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                  <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                     What technologies have you worked with?
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-[#BBB]">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-sm text-[#CCC]">
                     {['Python', 'FastAPI/Flask', 'Supabase/SQL', 'WebSockets', 'AI-APIs', 'Docker/Linux'].map((tech) => (
                       <label key={tech} className="flex items-center gap-2 p-2 rounded-lg bg-[#141414] border border-[#222] cursor-pointer hover:border-[#333]">
                         <input
@@ -352,41 +342,41 @@ export default function ApplyPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                  <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                     Why do you want to work for Sabi? What excites you about providing educational access to children? *
                   </label>
                   <textarea
-                    rows={3}
+                    rows={4}
                     required
                     placeholder="Tell us what draws you to our mission and what excites you about building voice AI for children who lack internet access."
                     value={formData.whySabi}
                     onChange={(e) => setFormData({ ...formData, whySabi: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base leading-relaxed resize-none transition"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                  <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                     The Bug Hunt: What&apos;s the nastiest technical bug you&apos;ve ever had to hunt down and fix? *
                   </label>
                   <textarea
-                    rows={3}
+                    rows={4}
                     required
                     placeholder="Tell us what broke, how you investigated it, and how you fixed it. We care about how you diagnose problems!"
                     value={formData.bugStory}
                     onChange={(e) => setFormData({ ...formData, bugStory: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base leading-relaxed resize-none transition"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
+                  <label className="block text-sm font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
                     Wesleyan Academic Credit (CSPL 493)
                   </label>
                   <select
                     value={formData.creditPreference}
                     onChange={(e) => setFormData({ ...formData, creditPreference: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-sm cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white focus:outline-none focus:border-[#CBA868] text-base cursor-pointer transition"
                   >
                     <option value="yes">Yes, I want to receive 0.25 academic credit via CSPL 493</option>
                     <option value="no">No, participating for practical experience and project portfolio</option>
@@ -397,7 +387,7 @@ export default function ApplyPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#CBA868] to-[#9E7734] hover:opacity-95 text-black font-bold text-sm tracking-wide shadow-lg shadow-[#CBA868]/20 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-[#CBA868] to-[#9E7734] hover:opacity-95 text-black font-bold text-base tracking-wide shadow-lg shadow-[#CBA868]/20 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-4"
                 >
                   <span>{isSubmitting ? 'Submitting to Pipeline...' : 'Submit Application'}</span>
                   <span>➔</span>
