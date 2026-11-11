@@ -66,7 +66,7 @@ export default function ApplyPage() {
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Official Sabi Handset Voice Logo Mark */}
-            <Link href="https://sabi.eduforequality.org" className="flex items-center gap-2.5 hover:opacity-90 transition">
+            <a href="https://sabi.eduforequality.org" className="flex items-center gap-2.5 hover:opacity-90 transition">
               <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true" className="shrink-0 rounded-xl shadow-md">
                 <rect width="40" height="40" rx="11" fill="#101413" stroke="#2D3734" strokeWidth="1.5" />
                 <rect x="10" y="15" width="4.5" height="10" rx="2.25" fill="#F8C544" />
@@ -77,7 +77,7 @@ export default function ApplyPage() {
               <span className="text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0FA992]/20 text-[#16FDDB] font-semibold border border-[#0FA992]/40 ml-1">
                 by Education for Equality
               </span>
-            </Link>
+            </a>
           </div>
 
           <div className="flex items-center gap-3">
