@@ -129,7 +129,7 @@ export default function ApplyPage() {
               <span className="text-base">🏛️</span>
               <span className="font-semibold text-white tracking-wide">Education for Equality Inc.</span>
               <span className="text-[#666]">·</span>
-              <span className="text-[#CBA868]">Official Venture Recruitment</span>
+              <span className="text-[#CBA868]">Software Engineering Internship</span>
             </div>
           </div>
         </div>
