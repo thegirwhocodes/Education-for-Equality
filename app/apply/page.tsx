@@ -353,7 +353,7 @@ export default function ApplyPage() {
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-1.5">
-                    Why do you want to work for Sabi, and what excites you about providing educational access to children? *
+                    Why do you want to work for Sabi? What excites you about providing educational access to children? *
                   </label>
                   <textarea
                     rows={3}
